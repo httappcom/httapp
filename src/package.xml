@@ -27,6 +27,7 @@
     </types>
     <types>
         <members>Incident__c</members>
+        <members>Instruction__c</members>
         <members>Knowledge_Base__c</members>
         <members>Medical_Profile__c</members>
         <members>Message__c</members>
@@ -58,6 +59,8 @@
     <types>
         <members>Nuehealth_PRM</members>
         <members>Nuehealth_PRM/MarketingProductInquiryResponse</members>
+        <members>Nuehealth_PRM/Thank_You_MQ</members>
+        <members>Nuehealth_PRM/Thank_You_New_Treatment</members>
         <name>EmailTemplate</name>
     </types>
     <types>
@@ -66,6 +69,7 @@
     </types>
     <types>
         <members>Incident__c-Incident Layout</members>
+        <members>Instruction__c-Instruction Layout</members>
         <members>Knowledge_Base__c-Knowledge Base Layout</members>
         <members>Medical_Profile__c-Medical Profile Layout</members>
         <members>Message__c-Message Layout</members>
@@ -74,20 +78,14 @@
         <members>Procedure_Catalog_Price__c-Procedure Catalog Price Layout</members>
         <members>Procedure_Catalog__c-Procedure Catalog Layout</members>
         <members>Procedure_Line_Item__c-Procedure Line Item Layout</members>
-        <members>QuoteLineItem-HTT Quote Line Item Layout</members>
-        <members>Travel_Itinerary__c-Travel Itinerary Layout</members>
+        <members>Travel__c-Travel Layout</members>
         <members>Treatment_Quote__c-Interaction Quote Layout</members>
         <members>Treatment__c-Treatment Layout</members>
         <name>Layout</name>
     </types>
     <types>
-        <members>EHRApplicationStyle</members>
         <members>avatar</members>
         <members>bkgd</members>
-        <members>jquery</members>
-        <members>jquery_custom_css</members>
-        <members>jsonSuggest</members>
-        <members>jsonSuggestJS</members>
         <members>paperclip</members>
         <members>sfscript</members>
         <members>sfstyles</members>

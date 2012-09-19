@@ -255,7 +255,7 @@
         <fields>NAME</fields>
         <fields>Patient__c</fields>
         <fields>CREATED_DATE</fields>
-        <relatedList>Travel_Itinerary__c.Treatment__c</relatedList>
+        <relatedList>Travel__c.Treatment__c</relatedList>
         <sortField>CREATED_DATE</sortField>
         <sortOrder>Desc</sortOrder>
     </relatedLists>
