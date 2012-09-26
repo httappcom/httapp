@@ -95,5 +95,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <version>20.0</version>
+    <version>25.0</version>
 </Package>

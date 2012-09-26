@@ -22,6 +22,15 @@
         <senderType>CurrentUser</senderType>
         <template>Nuehealth_PRM/Thank_You_New_Treatment</template>
     </alerts>
+    <fieldUpdates>
+        <fullName>Rephase_to_Treatment</fullName>
+        <field>Phase__c</field>
+        <literalValue>(3) Travel</literalValue>
+        <name>Rephase to Treatment</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
     <rules>
         <fullName>MQ Stage</fullName>
         <actions>
@@ -50,6 +59,26 @@
         </criteriaItems>
         <description>Workflow rule to fire when a new treatment is created</description>
         <triggerType>onCreateOnly</triggerType>
+    </rules>
+    <rules>
+        <fullName>Travel Converted restaging</fullName>
+        <actions>
+            <name>Rephase_to_Treatment</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>(2) Interaction</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Treatment Approved</value>
+        </criteriaItems>
+        <description>When treatment staged in &quot;Travel Converted&quot;, change treatment Phase to &quot;(3) Travel&quot;</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>Travel Itinerary Stage</fullName>

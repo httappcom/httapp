@@ -1,13 +1,25 @@
-#Tue Sep 11 22:35:06 PDT 2012
+#Tue Sep 25 17:56:07 PDT 2012
+ExecuteAnonymousApex_code=Debug
+ExecuteAnonymousApex_profiling=Info
+ExecuteAnonymousCallout=Info
+ExecuteAnonymousDb=Info
+ExecuteAnonymousValidation=Info
+ExecuteAnonymousWorkflow=Info
+RunTestApex_code=Debug
+RunTestApex_profiling=Info
+RunTestCallout=Info
+RunTestDb=Info
+RunTestValidation=Info
+RunTestWorkflow=Info
 eclipse.preferences.version=1
-endpointApiVersion=20.0
+endpointApiVersion=25.0
 endpointEnvironment=Production/Developer Edition
 endpointServer=www.salesforce.com
 httpsProtocol=true
-ideVersion=20.0
+ideVersion=25.0
 keependpoint=false
-metadataFormatVersion=20.0
+metadataFormatVersion=25.0
 namespacePrefix=htt
 packageName=unpackaged
 readTimeout=400
-username=mikef@httapp.com
+username=stephan@htt.com

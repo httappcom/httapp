@@ -35,6 +35,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>The list of all the procedures in the system.</description>
     <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -47,6 +48,7 @@
     </fields>
     <fields>
         <fullName>Facility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>What Hospital, facility provides this Procedure.</description>
         <externalId>false</externalId>
         <label>Facility</label>

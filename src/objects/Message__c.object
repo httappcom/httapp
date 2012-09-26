@@ -68,6 +68,7 @@
     </fields>
     <fields>
         <fullName>From__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>This is a user lookup field that let&apos;s the receptant know who sent the message.</description>
         <externalId>false</externalId>
         <label>From</label>
@@ -162,6 +163,7 @@
     </fields>
     <fields>
         <fullName>To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>To</label>
         <referenceTo>User</referenceTo>
@@ -215,8 +217,8 @@
         <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>Priority__c</customTabListAdditionalFields>
         <customTabListAdditionalFields>To__c</customTabListAdditionalFields>
-        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <lookupDialogsAdditionalFields>Priority__c</lookupDialogsAdditionalFields>
         <lookupDialogsAdditionalFields>To__c</lookupDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>Priority__c</lookupPhoneDialogsAdditionalFields>
