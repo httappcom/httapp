@@ -467,7 +467,6 @@
                 <div class="treatmentformwhite">
                     <div class="fieldwrapper">
                         <div class="fieldwrap"><div class="label">Quote Name</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Opportunity Name</div> <div class="item">(insert custom object)</div></div>
                         <div class="fieldwrap"><div class="label">Expiration Date</div> <div class="item">(insert custom object)</div></div>
                         <div class="fieldwrap"><div class="label">Syncing</div> <div class="item">(insert custom object)</div></div>
                         <div class="fieldwrap"><div class="label">Status</div> <div class="item">(insert custom object)</div></div>
@@ -619,10 +618,8 @@
                         <div class="fieldwrap"><div class="label">Pre-op</div> <div class="item">{!travel.Pre_Op__c}</div></div>
                         <div class="fieldwrap"><div class="label">Pre-op Instructions</div> <div class="item">{!travel.Pre_Op_Instructions__c}</div></div>
                         <div class="fieldwrap"><div class="label">Itinerary Summary</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Owner</div> <div class="item">{!travel.Owner.Name}</div></div>
-                        <div class="fieldwrap"><div class="label">Opportunity</div> <div class="item">{!travel.Opportunity__c}</div></div>
+                        <div class="fieldwrap"><div class="label">Owner</div> <div class="item">Travel doesnt have an owner</div></div>
                         <div class="fieldwrap"><div class="label">Date of Birth</div> <div class="item">{!travel.Date_Of_Birth__c}</div></div>
-                        <div class="fieldwrap"><div class="label">Companion</div> <div class="item">{!travel.Companion__c}</div></div>
                         <div class="fieldwrap"><div class="label">Visa Status</div> <div class="item">{!travel.Visa_Status__c}</div></div>
                         <div class="fieldwrap"><div class="label">Passport Status</div> <div class="item">{!travel.Passport_Status__c}</div></div>
                     </div>
