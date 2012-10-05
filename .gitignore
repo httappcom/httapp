@@ -3,3 +3,4 @@
 .project
 salesforce.schema
 tools/build.properties
+build.properties
