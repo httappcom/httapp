@@ -30,7 +30,8 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <type>Default</type>
+        <content>PatientTabWithData</content>
+        <type>Visualforce</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Core object in the PRM data model.</description>
@@ -447,6 +448,11 @@
         <type>Picklist</type>
     </fields>
     <label>Patient</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Patient Name</label>
         <trackHistory>false</trackHistory>

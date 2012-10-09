@@ -45,7 +45,7 @@
     <types>
         <members>Incident__c</members>
         <members>Knowledge_Base__c</members>
-        <members>Patients</members>
+        <members>Patient__c</members>
         <members>Pipeline</members>
         <members>Procedure_Catalog__c</members>
         <members>Treatment__c</members>
@@ -89,6 +89,10 @@
         <members>paperclip</members>
         <members>sfscript</members>
         <members>sfstyles</members>
+        <members>jQueryTwisty</members>
+        <members>twistyClosed</members>
+        <members>twistyOpen</members>
+        <members>jQuery</members>
         <name>StaticResource</name>
     </types>
     <types>

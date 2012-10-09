@@ -5,7 +5,7 @@
     <label>Nuehealth PRM</label>
     <logo>PRM_Documents/Header_Logo.jpeg</logo>
     <tab>Pipeline</tab>
-    <tab>Patients</tab>
+    <tab>Patient__c</tab>
     <tab>Knowledge_Base__c</tab>
     <tab>Incident__c</tab>
     <tab>standard-report</tab>
