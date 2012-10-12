@@ -1336,7 +1336,7 @@
         <fullName>Patient_Not_Committed_required_if_lost</fullName>
         <active>true</active>
         <errorConditionFormula>AND(  AND( ISPICKVAL( Phase__c , &apos;(1) Inquiry&apos;) , ISPICKVAL( Stage__c , &apos;Lost&apos;)), ISBLANK( Patient_Not_Committed_Reason__c ) )</errorConditionFormula>
-        <errorDisplayField>Additional_Amount__c</errorDisplayField>
+        <errorDisplayField>Patient_Not_Committed_Reason__c</errorDisplayField>
         <errorMessage>&apos;Patient Not Committed Reason&apos; is required when stage is &apos;Lost&apos;</errorMessage>
     </validationRules>
 </CustomObject>
