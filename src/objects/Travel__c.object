@@ -35,6 +35,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Travel Plans</description>
     <enableActivities>true</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -44,6 +45,13 @@
         <externalId>false</externalId>
         <label>Airfare Coordination Needed</label>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Arrival_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Arrival Date</label>
+        <required>false</required>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Booking_Status__c</fullName>
@@ -70,6 +78,13 @@
         <fullName>Date_Of_Birth__c</fullName>
         <externalId>false</externalId>
         <label>Date Of Birth</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Departure_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Departure Date</label>
         <required>false</required>
         <type>Date</type>
     </fields>
@@ -144,6 +159,7 @@
         <relationshipLabel>Travels</relationshipLabel>
         <relationshipName>Travels</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
@@ -208,6 +224,7 @@
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>

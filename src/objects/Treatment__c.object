@@ -35,6 +35,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>What Treatment is the patient interested in.</description>
     <enableActivities>true</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -259,6 +260,14 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Patient_Not_Committed_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Not Committed Reason</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Patient__c</fullName>
         <externalId>false</externalId>
         <label>Patient</label>
@@ -266,6 +275,7 @@
         <relationshipLabel>Treatments</relationshipLabel>
         <relationshipName>Treatments</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
@@ -389,10 +399,6 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Neurology</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Cosmetic/Plastic</fullName>
                 <default>false</default>
             </picklistValues>
@@ -426,6 +432,10 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Kidney Dialysis</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Neurology</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -1322,4 +1332,11 @@
     <pluralLabel>Treatments</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Patient_Not_Committed_required_if_lost</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(  AND( ISPICKVAL( Phase__c , &apos;(1) Inquiry&apos;) , ISPICKVAL( Stage__c , &apos;Lost&apos;)), ISBLANK( Patient_Not_Committed_Reason__c ) )</errorConditionFormula>
+        <errorDisplayField>Patient_Not_Committed_Reason__c</errorDisplayField>
+        <errorMessage>&apos;Patient Not Committed Reason&apos; is required when stage is &apos;Lost&apos;</errorMessage>
+    </validationRules>
 </CustomObject>
