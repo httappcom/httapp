@@ -67,7 +67,8 @@ public class PatientUtil {
                                Response_SLA__c, 
                                Stage__c,
                                Sub_Stage__c,
-                               Treatment_Date__c 
+                               Treatment_Date__c,
+                               Patient__r.Name 
                        from Treatments__r),
                        (select id,
                                Owner.Name,
@@ -172,7 +173,9 @@ public class PatientUtil {
                               LastModifiedBy.Name, 
                               LastModifiedDate,
                               Patient__c, 
-                              Treatment__c 
+                              Treatment__c ,
+                              Patient__r.Name, 
+                              Treatment__r.Name                                                             
                        From Incidents__r),
                       (SELECT Id,
                               Name,
@@ -271,7 +274,8 @@ public class PatientUtil {
                                Response_SLA__c, 
                                Stage__c,
                                Sub_Stage__c,
-                               Treatment_Date__c 
+                               Treatment_Date__c,
+                               Patient__r.Name 
                        from Treatments__r),
                        (select id,
                                Owner.Name,
@@ -378,7 +382,9 @@ public class PatientUtil {
                               LastModifiedBy.Name, 
                               LastModifiedDate,
                               Patient__c, 
-                              Treatment__c 
+                              Treatment__c,                              
+                              Patient__r.Name,
+                              Treatment__r.Name                              
                        From Incidents__r),
                       (SELECT Id,
                               Name,
