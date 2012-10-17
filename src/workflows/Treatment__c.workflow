@@ -23,6 +23,15 @@
         <template>Nuehealth_PRM/Thank_You_New_Treatment</template>
     </alerts>
     <fieldUpdates>
+        <fullName>Change_Phase_to_Travel</fullName>
+        <field>Phase__c</field>
+        <literalValue>(3) Travel</literalValue>
+        <name>Change Phase to Travel</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Change_phase_to_Interaction</fullName>
         <field>Phase__c</field>
         <literalValue>(2) Interaction</literalValue>
@@ -36,6 +45,42 @@
         <field>Stage__c</field>
         <literalValue>Contact Established</literalValue>
         <name>Change stage to &apos;Contact Established&apos;</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Clear_Stage</fullName>
+        <field>Stage__c</field>
+        <name>Clear Stage</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Do_Not_Contact_Patient</fullName>
+        <field>Do_Not_Contact__c</field>
+        <literalValue>1</literalValue>
+        <name>Do Not Contact Patient</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <targetObject>Patient__c</targetObject>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Phase_to_Post_Op</fullName>
+        <field>Phase__c</field>
+        <literalValue>(4) Post-Op</literalValue>
+        <name>Phase to Post Op</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Stage_to_Ongoing_Relationship</fullName>
+        <field>Stage__c</field>
+        <literalValue>Ongoing Relationship</literalValue>
+        <name>Stage to Ongoing Relationship</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
@@ -88,6 +133,72 @@
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
+        <fullName>Ongoing Relationship</fullName>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>(4) Post-Op</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>notEqual</operation>
+            <value>Relationship Terminated</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Stage_to_Ongoing_Relationship</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
+            <timeLength>30</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>Relationship Terminated</fullName>
+        <actions>
+            <name>Do_Not_Contact_Patient</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Relationship Terminated</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>(4) Post-Op</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Stage Travel Converted to Travel Phase</fullName>
+        <actions>
+            <name>Change_Phase_to_Travel</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Clear_Stage</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Travel Converted</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>(2) Interaction</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
         <fullName>Travel Itinerary Stage</fullName>
         <actions>
             <name>Call_Patient_48</name>
@@ -121,6 +232,29 @@
             <value>Travel Itinerary</value>
         </criteriaItems>
         <description>WF fires when the treatment enters Travel Itinerary Stage</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Travel%3A Post Treatment to Post Op</fullName>
+        <actions>
+            <name>Clear_Stage</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Phase_to_Post_Op</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>(3) Travel</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Post-Treatment</value>
+        </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <tasks>

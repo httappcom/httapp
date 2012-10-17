@@ -52,17 +52,14 @@ private class TreatmentTests {
 		
 		/*Travel Phase*/
 		setPhaseToTravel();
-//		MISSING WORKFLOWS FOR ASSERT
-//		setPhaseTravelStageAtProvider();
-//		MISSING WORKFLOWS FOR ASSERT
-//		setPhaseTravelStagePostTreatment();
+		setPhaseTravelStageAtProvider();
+		setPhaseTravelStagePostTreatment();
 		
 		/*Post-Op Phase*/
 		setPhaseToPostOp();
 		setPaymentTypeCash();
 		setPhasePostOpStageOngoing();
-//		MISSING WORKFLOWS FOR ASSERT		
-//		setPhasePostOpStageTerminated();
+		setPhasePostOpStageTerminated();
 	}
 
 
@@ -359,6 +356,8 @@ private class TreatmentTests {
 		Travel__c testrecord = new Travel__c();
 		testrecord.patient__c = p.id;
 		testrecord.treatment__c = t.id;
+		testrecord.Arrival_Date__c = system.today().adddays(5);
+		testrecord.Departure_Date__c = system.today().adddays(4);
 		return testrecord;
 	}
 }

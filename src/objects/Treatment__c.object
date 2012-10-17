@@ -148,6 +148,13 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Final_Departure_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Final Departure Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Financial_Reconciliation__c</fullName>
         <externalId>false</externalId>
         <label>Financial Reconciliation</label>

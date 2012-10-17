@@ -54,6 +54,13 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Arrived__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Arrived</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Booking_Status__c</fullName>
         <externalId>false</externalId>
         <label>Booking Status</label>
