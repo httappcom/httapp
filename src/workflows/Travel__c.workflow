@@ -20,7 +20,7 @@
     </fieldUpdates>
     <rules>
         <fullName>At Provider</fullName>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Travel__c.Arrival_Date__c</field>
             <operation>greaterThan</operation>

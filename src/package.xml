@@ -96,7 +96,8 @@
         <name>StaticResource</name>
     </types>
     <types>
-        <members>Treatment__c</members>
+      <members>Treatment__c</members>
+      <members>Travel__c</members>
         <name>Workflow</name>
     </types>
     <version>25.0</version>
