@@ -1,0 +1,193 @@
+<apex:page Controller="PipelineController" sidebar="false">
+ <apex:form > 
+<head>
+<title>Pipeline</title>
+<apex:includeScript value="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" />
+<apex:includeScript value="{!$Resource.sfscript}" />
+ <apex:stylesheet value="{!$Resource.sfstyles}"/>
+</head>
+
+<div class="wrapper">   
+    <div class="pipelinechartsfull">
+        <div class="pipelineHeading">Patients</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+           
+              <tr>
+                 <td>  
+                  <table widht="50%">    
+                   <td><apex:commandLink action="{!firstTreatments}">First</apex:commandlink></td>
+                   <td><apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}">Previous</apex:commandlink></td>
+                   <td><apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}">Next</apex:commandlink></td>
+                   <td><apex:commandLink action="{!lastTreatments}">Last</apex:commandlink></td>                
+                  </table>
+                 </td>
+                </tr>        
+                <tr class="chartheader">  
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>                                                            
+                    <td valign="top"><a href="#">Procedure Date</a></td>
+                    <td valign="top"><a href="#">Created Date</a></td>
+                    <td valign="top"><a href="#">Phase</a></td>
+                    <td valign="top"><a href="#">Stage</a></td>
+                    <td valign="top"><a href="#">Sub Stage</a></td>                                        
+                </tr>  
+             <apex:outputPanel id="treatmentTable">               
+              <apex:repeat value="{!treatments}" var="t" >            
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">{!t.Patient__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!t.Name}</a></td>
+                    <td valign="top"><a href="#"><apex:outputField value="{!t.Procedure_Date__c}"/></a></td>
+                    <td valign="top"><a href="#"><apex:outputField value="{!t.Createddate}"/></a></td>                    
+                    <td valign="top"><a href="#">{!t.Phase__c}</a></td>
+                    <td valign="top"><a href="#">{!t.Stage__c}</a></td>
+                    <td valign="top"><a href="#">{!t.Sub_Stage__c}</a></td>                                        
+                </tr>
+              </apex:repeat>  
+             </apex:outputPanel>                               
+            </table>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+    <div class="pipelinechartscol1">
+        <div class="pipelineHeading">Tasks</div>
+               <apex:selectList value="{!selectedTaskOption}" size="1" id="sidebardropdown" styleClass="sidebardropdown" onChange="onChangeCC(this.options[this.selectedIndex].value);">
+               <apex:selectOptions value="{!taskOptions}" />
+                   <apex:actionfunction name="onChangeCC" action="{!searchTask}" reRender="taskResult"/>
+               </apex:selectList>                         
+           <apex:outputPanel id="taskResult">                 
+             <table width="100%" border="0" cellspacing="0" cellpadding="0">  
+                <tr>
+                 <!-- <td>  
+                  <table widht="50%">    
+                    <td><apex:commandLink action="{!firstTasks}">First</apex:commandlink></td>
+                    <td><apex:commandLink action="{!previousTasks}" rendered="{!hasPrevious}">Previous</apex:commandlink></td>
+                    <td><apex:commandLink action="{!nextTasks}" rendered="{!hasNext}">Next</apex:commandlink></td>
+                     <td><apex:commandLink action="{!lastTasks}">Last</apex:commandlink></td>
+                   </table>
+                  </td>  -->
+                </tr>            
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Task</a></td>
+                </tr>
+              <apex:repeat value="{!tasks}" var="tvar">                 
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">{!tvar.what.Name}</a></td>
+                    <td valign="top"><a href="#"></a></td>
+                    <td valign="top"><a href="#">{!tvar.subject}</a></td>
+                </tr>   
+              </apex:repeat>
+           </table>
+          </apex:outputPanel>              
+    </div>  
+    <div class="pipelinechartscol2">
+        <div class="pipelineHeading">Incidents</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>  
+          <table widht="50%">    
+          <td><apex:commandLink action="{!firstIncidents}">First</apex:commandlink></td>
+          <td><apex:commandLink action="{!previousIncidents}" rendered="{!hasPreviousIncident}">Previous</apex:commandlink></td>
+          <td><apex:commandLink action="{!nextIncidents}" rendered="{!hasNextIncident}">Next</apex:commandlink></td>
+          <td><apex:commandLink action="{!lastIncidents}">Last</apex:commandlink></td>
+          </table>
+        </td>
+    </tr>              
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Incidents</a></td>
+                </tr>
+              <apex:repeat value="{!incidents}" var="i">                 
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">{!i.Name}</a></td>
+                    <td valign="top"><a href="#">{!i.Treatment__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!i.Name}</a></td>
+                </tr>   
+              </apex:repeat>                                              
+            </table>
+    </div>      
+    <div style="clear:both"></div>
+    <div class="pipelinechartscol1">
+        <div class="pipelineHeading">Payment</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>  
+          <table widht="50%">    
+          <td><apex:commandLink action="{!firstPayments}">First</apex:commandlink></td>
+          <td><apex:commandLink action="{!previousPayments}" rendered="{!hasPreviousPayment}">Previous</apex:commandlink></td>
+          <td><apex:commandLink action="{!nextPayments}" rendered="{!hasNextPayment}">Next</apex:commandlink></td>
+          <td><apex:commandLink action="{!lastPayments}">Last</apex:commandlink></td>
+          </table>
+        </td>
+    </tr>              
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Payments</a></td>
+                </tr>
+              <apex:repeat value="{!payments}" var="p">                 
+                <tr class="chartdetailsodd">                 
+                    <td valign="top"><a href="#">{!p.Patient__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!p.Treatment__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!p.Name}</a></td>
+                </tr>                      
+              </apex:repeat>                                                 
+            </table>
+    </div>  
+    <div class="pipelinechartscol2">
+        <div class="pipelineHeading">Care Team Invitations</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Invitation</a></td>
+                </tr>
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">John Lockhart</a></td>
+                    <td valign="top"><a href="#">Hip Replacement</a></td>
+                    <td valign="top"><a href="#">Invitation 1</a></td>
+                </tr>   
+                <tr class="chartdetailseven">
+                    <td valign="top"><a href="#">Sally Smith</a></td>
+                    <td valign="top"><a href="#">Knee Surgery</a></td>
+                    <td valign="top"><a href="#">Invitation 2</a></td>
+                </tr>                               
+            </table>    
+    </div>  
+    <div style="clear:both"></div>  
+    <div class="pipelinechartsfull">
+        <div class="pipelineHeading">Questions &amp; Messaging</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">  
+    <tr>
+        <td>  
+          <table widht="50%">             
+          <td><apex:commandLink action="{!firstMessages}">First</apex:commandlink></td>
+          <td><apex:commandLink action="{!previousMessages}" rendered="{!hasPreviousMessage}">Previous</apex:commandlink></td>
+          <td><apex:commandLink action="{!nextMessages}" rendered="{!hasNextMessage}">Next</apex:commandlink></td>
+          <td><apex:commandLink action="{!lastMessages}">Last</apex:commandlink></td>
+          </table>          
+        </td>
+    </tr>                       
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Location</a></td>
+                    <td valign="top"><a href="#">Message</a></td>
+                    <td valign="top"><a href="#">Invitation</a></td>
+                </tr>
+              <apex:repeat value="{!messages}" var="m">                 
+                <tr class="chartdetailsodd">                
+                    <td valign="top"><a href="#">(Custom Field)</a></td>
+                    <td valign="top"><a href="#">(Custom Field)</a></td>
+                    <td valign="top"><a href="#">(Custom Field)</a></td>
+                    <td valign="top"><a href="#">{!m.Name}</a></td>
+                    <td valign="top"><a href="#">{!m.From_Name__c}</a></td>                    
+                </tr> 
+               </apex:repeat>                                                  
+            </table>
+    </div>
+
+ </apex:form>  
+</apex:page>

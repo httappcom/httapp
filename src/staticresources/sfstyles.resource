@@ -10,11 +10,6 @@ form {
 .wrapper {
 	position: relative;
 }
-.col1{
-	width: 200px;
-	float:left;
-	z-index: 100;
-}
 
 .vfButtonBar {
 	background-color: #E5F1F6;
@@ -62,39 +57,13 @@ form {
 .sidebardetails{
 	margin-left:10px;
 }
-.label {
-	color: gray;
-	text-align: left;
-}
-.labelleft {
-	color: gray;
-	text-align: left;
-	float:left;
-	margin-right:5px;
-}
-.item {
-	margin-bottom: 5px;
-	font-weight: bold;
-}
-.itemsmall {
-	margin-bottom: 5px;
-	font-weight: normal;
-	float:left;
-	width:120px;
-}
-.item a, .itemsmall a {
-	color: #015BA7;
-	text-decoration: none;
-}
-.item a:hover, .itemsmall a:hover {
-	text-decoration: underline;
-}
+
 .optionindent {
 	margin-left:20px;
 }
 .col2 {
-	margin: 0 20px 0 20px;
-	padding: 0 200px;
+	margin: 0 20px 0 0;
+	padding: 0 200px 0 0;
 	min-width:500px;
 }
 .col2Heading{
@@ -104,37 +73,10 @@ form {
 	color:#EA6C1A;
 }
 
-.completionSteps{
-	height: 40px;
-}
-.steps1wrap {
-	float:left;
-	margin:10px 10px 10px 0px;
-}
-.steps2wrap {
-	float:left;
-	margin:10px 10px 10px 10px;
-}
-.steps1box {
-	width:200px;
-	height:20px;
-	background-image:url(bkgd.gif);
-	background-position:-150 0px;
-	background-repeat:no-repeat;
-	border:1px solid #000;
-}
-
-.steps2box {
-	width:200px;
-	height:20px;
-	background-image:url(bkgd.gif);
-	background-position:-150 0px;
-	background-repeat:no-repeat;
-	border:1px solid #000;
-}
 .mainNav {
 	margin:20px auto 0px auto;
 	height:30px;
+	width:500px;
 }
 .mainNav h3 {
 	font-size: 20px;
@@ -206,8 +148,16 @@ form {
 	padding:5px;
 	background-color:#eee;
 }
+.treatmentformwhite {
+	border:1px solid #ccc;
+	padding:5px;
+	background-color:#fff;
+}
+treatmentwrapper {
+	background-color:#fff;
+}
 .navform {
-	border:1px solid #EA6C1A;
+	border:1px solid #ccc;
 	padding:5px;
 	background-color:#eee;
 }
@@ -220,10 +170,6 @@ form {
 .formfield {
 	padding-right:30px;
 	width:30%
-}
-#seemore {
-	display:none; 
-	margin-top:5px
 }
 .tabs {
 	margin-top: 10px;
@@ -263,7 +209,7 @@ form {
 }
 
 .boxcolfull {
-	width:100%;
+	width:95%;
 }
 
 .col3 {
@@ -339,4 +285,137 @@ form {
 }
 .chartdetailseven{
 	background-color:#ddd;
+}
+
+.orangeheader{
+	height:30px; 
+	background-color:#ea6b1a;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+.orangeheadertitle{
+	float:left;
+	color:#fff;
+	font-size:18px;
+	font-weight:bold;
+	line-height: 30px;
+	margin-left: 5px;
+}
+
+.treatmentwrapper{
+	float:right;
+	line-height:28px;
+}
+
+.treatmenttitle{
+	float:left;
+	color:#fff;
+	margin-right:5px;
+}
+.treatmentboxeswrapper{
+	float:left;
+	color:#fff;
+	padding-top:4px;
+	margin-right:10px;
+}
+
+.treatmentbox{
+	width:15px; 
+	height:15px; 
+	background-color:#fff; 
+	border:1px solid #ccc;
+	float:left;
+	margin-right:2px;
+}
+.treatmentboxon{
+	width:15px; 
+	height:15px; 
+	background-color:#ccc; 
+	border:1px solid #ccc;
+	float:left;
+	margin-right:2px;
+}
+.orangeheaderoption{
+	float:right;
+	line-height:30px;
+	margin-right:10px;
+}
+
+.twistyOpen, .twistyClosed {
+	padding: 0px 0px 0px 20px;
+	margin-top:5px;
+
+}
+.twistyOpen {
+	background:url(/resource/1348458584000/twistyOpen) no-repeat center left;
+	background-color: #EA6B1A;
+}
+.twistyClosed {
+	background:url(/resource/1348458565000/twistyClosed) no-repeat center left;
+	background-color: #EA6B1A;
+}
+
+.label {
+	color: gray;
+	text-align: left;
+	float: left;
+	margin-right: 5px;
+	width:100px;
+}
+.labellong {
+	color: gray;
+	text-align: left;
+	float: left;
+	margin-right: 5px;
+}
+.labelnextrow {
+	color: gray;
+	text-align: left;
+}
+.item {
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+.itemsmall {
+	margin-bottom: 5px;
+	font-weight: normal;
+	float:left;
+	width:160px;
+}
+.item a, .itemsmall a {
+	color: #015BA7;
+	text-decoration: none;
+}
+.item a:hover, .itemsmall a:hover {
+	text-decoration: underline;
+}
+
+.fieldwrap{
+	width:49%;
+	float:left;
+}
+.fieldwrapfull{
+	width:95%;
+	float:left;
+}
+.fieldwrapper{
+	margin: 0 0 0 10px;
+	display:table;
+	width:100%
+}
+.fieldheading{
+	font-weight:bold;
+	font-size:14px;
+	margin:10px 0 5px 0;
+	width:95%;
+}
+.fieldsubheading{
+	font-weight:bold;
+	font-size:12px;
+	margin:10px 0 5px 0;
+	width:95%;
+}
+.treatmentfieldwrapper {
+	display:block;
 }
