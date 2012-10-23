@@ -68,6 +68,7 @@ public class PatientUtil {
                                Stage__c,
                                Sub_Stage__c,
                                Treatment_Date__c,
+                               Patient_Not_Committed_Reason__c,
                                Patient__r.Name 
                        from Treatments__r),
                        (select id,
@@ -275,6 +276,7 @@ public class PatientUtil {
                                Stage__c,
                                Sub_Stage__c,
                                Treatment_Date__c,
+                               Patient_Not_Committed_Reason__c,
                                Patient__r.Name 
                        from Treatments__r),
                        (select id,
