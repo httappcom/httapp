@@ -119,7 +119,30 @@ private class TreatmentTests {
 		treatment.Phase__c ='(1) Inquiry';
 		treatment.stage__c = 'Responding';
 		update treatment;
+		
+		//substages
+		setAllPhaseInquiryStageRespondingSubstages();
 	}
+	
+	/** 
+	 * Iterates through all the substages of Inquiry - Responding
+	 */
+	
+	static void setAllPhaseInquiryStageRespondingSubstages () {
+		treatment.Phase__c ='(1) Inquiry';
+		treatment.stage__c = 'Responding';
+		treatment.Sub_Stage__c = 'Response 1';
+		update treatment;
+		
+		treatment.Sub_Stage__c = 'Response 2';
+		update treatment;
+		
+		treatment.Sub_Stage__c = 'Response 3';
+		update treatment;
+		
+		treatment.Sub_Stage__c = 'Response 4';
+		update treatment;
+	}	
 	
 	/**
 	 * Sets Treatment phase to Inquiry, stage Lost
@@ -150,6 +173,10 @@ private class TreatmentTests {
 		treatment.Phase__c = '(2) Interaction';
 		treatment.Stage__c = 'Contact Established';
 		update treatment;
+		
+		//substage
+		treatment.Sub_Stage__c = 'Treatment Information Given';
+		update treatment;
 	}
 	
 	/**
@@ -168,15 +195,39 @@ private class TreatmentTests {
 		treatment.Phase__c = '(2) Interaction';
 		treatment.Stage__c = 'Medical Information';
 		update treatment;
+		
+		//substages
+		treatment.Sub_Stage__c = 'Patient Providing Medical Information';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Medical Records Requested';
+		update treatment;
 	}
 	
 	/**
 	 * Sets Treatment phase to Interaction, stage Treatment Approval Requested
+	 * ASSERT: Stage changed to 'Patient Lost' from substage 'No Treatment'
+	 * ASSERT: Substage cleared when stage set to patient lost
 	 */		
 	static void setPhaseInteractionStageTreatmentApproval(){
 		treatment.Phase__c = '(2) Interaction';
 		treatment.Stage__c = 'Treatment Approval Requested';
 		update treatment;
+		
+		treatment.sub_stage__c = 'Treatment Approval Requested';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Treatment Approved';
+		update treatment;
+		
+		treatment.sub_stage__c = 'No Treatment';
+		update treatment;
+		
+		treatmentCheck = [select id, phase__c, stage__c, sub_stage__c 
+							from treatment__c where id = :treatment.id];
+		
+		System.assertEquals('Patient Lost',treatmentCheck.stage__c);
+		system.assertEquals(null, treatmentCheck.sub_stage__c);
 	}
 	
 	/**
@@ -185,6 +236,20 @@ private class TreatmentTests {
 	static void setPhaseInteractionStageQuoting(){
 		treatment.Phase__c = '(2) Interaction';
 		treatment.Stage__c = 'Quoting';
+		update treatment;
+		
+		
+		//substages
+		treatment.sub_stage__c = 'Quote in Process';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Quote Signed';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Quote Revision';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Quote Rejected';
 		update treatment;
 	}
 	
@@ -203,6 +268,22 @@ private class TreatmentTests {
 	static void setPhaseInteractionStageConsult(){
 		treatment.Phase__c = '(2) Interaction';
 		treatment.Stage__c = 'Consult';
+		update treatment;
+		
+		//substages
+		treatment.sub_stage__c = 'Consult Requested';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Consult Booked';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Consult Futher Booking';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Consult No Further Booking';
+		update treatment;
+		
+		treatment.sub_stage__c = 'No Show or Cancelled';
 		update treatment;
 	}
 	
@@ -229,7 +310,21 @@ private class TreatmentTests {
 	 */		
 	static void setPhaseToTravel() {
 		treatment.phase__c = '(3) Travel';
-		treatment.stage__c = null;
+		treatment.stage__c = 'Travel Itinerary';
+		update treatment;
+		
+		//substages
+		
+		treatment.sub_stage__c = 'Trip Preparation';
+		update treatment;
+		
+		treatment.sub_Stage__c = 'Treatment Itinerary Provided';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Reschedule Trip';
+		update treatment;
+		
+		treatment.sub_stage__c = 'Trip Cancelled';
 		update treatment;
 	}
 	
@@ -253,7 +348,19 @@ private class TreatmentTests {
 		
 		system.assertEquals('(3) Travel',treatmentCheck.phase__c);
 		system.assertEquals('At Provider',treatmentCheck.stage__c);
-		system.assertEquals('Treatment In Progress',treatmentCheck.Sub_Stage__c);	
+		system.assertEquals('Treatment In Progress',treatmentCheck.Sub_Stage__c);
+		
+		//substages
+		
+		treatment.Sub_Stage__c = 'Treatment In Progress';
+		update treatment;
+		
+		treatment.Sub_Stage__c = 'Treatment Add';
+		update treatment;
+		
+		treatment.Sub_Stage__c = 'Patient Disqualified';
+		update treatment;
+		
 	}
 	
 	/**
@@ -279,6 +386,14 @@ private class TreatmentTests {
 		treatment.Phase__c = '(4) Post-Op';
 		treatment.Sub_Stage__c = null;
 		update treatment;
+		
+		//substages
+		
+		treatment.Sub_Stage__c = 'Financial Reconciliation';
+		update treatment;
+		
+		treatment.sub_Stage__c = 'Treatment Closed/Claim Pending';
+		update treatment;
 	}
 	
 	/**
@@ -301,7 +416,13 @@ private class TreatmentTests {
 		treatmentCheck = [select id, patient__r.do_not_contact__c 
 							from Treatment__c where id = :treatment.id];
 		
-		system.assertEquals(false,treatmentCheck.patient__r.do_not_Contact__c);					
+		system.assertEquals(false,treatmentCheck.patient__r.do_not_Contact__c);		
+		
+		//substages
+		
+		treatment.Sub_Stage__c = 'Maintain Communication';
+		update treatment;
+		
 	}
 	
 	/**

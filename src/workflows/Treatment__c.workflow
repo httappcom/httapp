@@ -58,6 +58,14 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Clear_SubStage</fullName>
+        <field>Sub_Stage__c</field>
+        <name>Clear SubStage</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Do_Not_Contact_Patient</fullName>
         <field>Do_Not_Contact__c</field>
         <literalValue>1</literalValue>
@@ -85,6 +93,15 @@
         <operation>Literal</operation>
         <protected>false</protected>
     </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Stage_to_Patient_Lost</fullName>
+        <field>Stage__c</field>
+        <literalValue>Patient Lost</literalValue>
+        <name>Stage to Patient Lost</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
     <rules>
         <fullName>Contact Made</fullName>
         <actions>
@@ -100,6 +117,34 @@
             <field>Treatment__c.Stage__c</field>
             <operation>equals</operation>
             <value>Contact Made</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Interaction Lost</fullName>
+        <actions>
+            <name>Clear_SubStage</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Stage_to_Patient_Lost</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>(2) Interaction</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Treatment Approval Requested</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Sub_Stage__c</field>
+            <operation>equals</operation>
+            <value>No Treatment</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
@@ -134,7 +179,7 @@
     </rules>
     <rules>
         <fullName>Ongoing Relationship</fullName>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
