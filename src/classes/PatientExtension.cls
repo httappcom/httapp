@@ -6,7 +6,7 @@
 public class PatientExtension {
   public Patient__c patient { get; set; }
   public Treatment__c treatment { get; set; }
-  public Payment__c payment { get; set; }      
+  public Payment__c payment { get; set; }       
   public Travel__c travel { get; set; }
   public List<Message__c> messages { get; set; }
   public List<Task> tasks { get; set; }  
@@ -162,8 +162,13 @@ public class PatientExtension {
     Treatment__c tempTreatment;   
     if ( treatment.id ==Null ){
       treatmentName = '' ;     
-      treatment.Patient__c = patient.id;    
-      insert treatment ;
+      treatment.Patient__c = patient.id; 
+      try {   
+      	insert treatment ;
+      }
+      catch (System.Dmlexception e) {
+      	Apexpages.addMessage(new ApexPages.message(Apexpages.severity.error, 'A Patient must be selected for this treatment.'));
+      }
       treatments.add(treatment);
       treatmentTotCount = treatmentTotCount + 1;
       treatmentCurNumber = treatmentCurNumber + 1;         
