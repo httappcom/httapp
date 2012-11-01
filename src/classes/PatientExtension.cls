@@ -163,18 +163,18 @@ public class PatientExtension {
     if ( treatment.id ==Null ){
       treatmentName = '' ;     
       treatment.Patient__c = patient.id; 
-      try {   
+      try {    
       	insert treatment ;
+        treatments.add(treatment);
+      	treatmentTotCount = treatmentTotCount + 1;
+      	treatmentCurNumber = treatmentCurNumber + 1;         
+      	tempTreatment = [select id, Name from  Treatment__c where id = : treatment.id ];
+      	treatmentName =  tempTreatment.Name; 
+      	treatmentNames.add(treatmentName) ;    
       }
       catch (System.Dmlexception e) {
       	Apexpages.addMessage(new ApexPages.message(Apexpages.severity.error, 'A Patient must be selected for this treatment.'));
-      }
-      treatments.add(treatment);
-      treatmentTotCount = treatmentTotCount + 1;
-      treatmentCurNumber = treatmentCurNumber + 1;         
-      tempTreatment = [select id, Name from  Treatment__c where id = : treatment.id ];
-      treatmentName =  tempTreatment.Name; 
-      treatmentNames.add(treatmentName) ;           
+      }       
     }else{     
         update treatment ; 
     }          
