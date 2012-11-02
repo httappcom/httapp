@@ -6,7 +6,7 @@
 public class PatientExtension {
   public Patient__c patient { get; set; }
   public Treatment__c treatment { get; set; }
-  public Payment__c payment { get; set; }       
+  public Payment__c payment { get; set; }      
   public Travel__c travel { get; set; }
   public List<Message__c> messages { get; set; }
   public List<Task> tasks { get; set; }  
@@ -29,7 +29,10 @@ public class PatientExtension {
   public String quoteName{ get; set; }
   public integer paymentCurNumber { get; set; } 
   public Integer paymentTotCount { get; set; }     
-  public String paymentName{ get; set; }      
+  public String paymentName{ get; set; } 
+  public integer incidentCurNumber { get; set; } 
+  public Integer incidentTotCount { get; set; }     
+  public String incidentName{ get; set; }        
   public Boolean inquiryFlag { get; set; }    
   public Boolean interactionFlag { get; set; }    
   public Boolean travelFlag { get; set; }
@@ -67,6 +70,13 @@ public class PatientExtension {
         this.payments.sort();
         this.payment = payments[0] ;        
       }  
+      if ( patient.Incidents__r.size() > 0 ) {
+        incidentCurNumber = 1;
+        this.incidentTotCount = patient.Incidents__r.size() ; 
+        this.incidents= patient.Incidents__r ;  
+        this.incidents.sort();
+        this.incident = incidents[0] ;        
+      }      
       if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
       if ( patient.Incidents__r.size() > 0 ) this.incident = patient.incidents__r[0]; 
       if ( patient.Treatment_Quotes__r.size() > 0 ) {
@@ -98,6 +108,8 @@ public class PatientExtension {
     }
   }  
   private void initiatePatient(){
+    this.firstName = '';
+    this.lastName = '';    
     this.inquiryFlag = true;
     this.interactionFlag = false;
     this.travelFlag = false;
@@ -159,22 +171,23 @@ public class PatientExtension {
     return ApexPages.currentPage();  
   }  
   public PageReference saveTreatment() {
-    Treatment__c tempTreatment;   
+    Treatment__c tempTreatment; 
+    patient.Name  = firstName +' ' + lastName;  
+    if ( patient.id == Null ){ 
+      insert patient;
+    }else{              
+      update patient;  
+    }       
     if ( treatment.id ==Null ){
       treatmentName = '' ;     
-      treatment.Patient__c = patient.id; 
-      try {    
-      	insert treatment ;
-        treatments.add(treatment);
-      	treatmentTotCount = treatmentTotCount + 1;
-      	treatmentCurNumber = treatmentCurNumber + 1;         
-      	tempTreatment = [select id, Name from  Treatment__c where id = : treatment.id ];
-      	treatmentName =  tempTreatment.Name; 
-      	treatmentNames.add(treatmentName) ;    
-      }
-      catch (System.Dmlexception e) {
-      	Apexpages.addMessage(new ApexPages.message(Apexpages.severity.error, 'A Patient must be selected for this treatment.'));
-      }       
+      treatment.Patient__c = patient.id;    
+      insert treatment ;
+      treatments.add(treatment);
+      treatmentTotCount = treatmentTotCount + 1;
+      treatmentCurNumber = treatmentCurNumber + 1;         
+      tempTreatment = [select id, Name from  Treatment__c where id = : treatment.id ];
+      treatmentName =  tempTreatment.Name; 
+      treatmentNames.add(treatmentName) ;           
     }else{     
         update treatment ; 
     }          
@@ -230,7 +243,27 @@ public class PatientExtension {
       }
     }
     set;
-  }  
+  } 
+  public boolean hasNextIncident { 
+    get { 
+      if(incidentCurNumber >= incidents.size()) {
+        return false; 
+      } else {
+        return true; 
+      }
+    }
+    set ;
+  }
+  public boolean hasPreviousIncident { 
+    get{ 
+      if(incidentCurNumber <= 1 ) {
+        return false; 
+      } else {
+        return true; 
+      }
+    }
+    set;
+  }    
   public boolean hasNextPayment { 
     get { 
       if(paymentCurNumber >= payments.size()) {
@@ -304,6 +337,44 @@ public class PatientExtension {
      }  
      return ApexPages.currentPage();
   } 
+  public PageReference nextIncident() {      
+    if ( incidentCurNumber <= incidentTotCount ){ 
+      incidentCurNumber = incidentCurNumber + 1; 
+      incident = incidents[incidentCurNumber - 1];
+      incidentName =  incident.Name;
+    }
+    return ApexPages.currentPage();        
+  }
+  public PageReference previousIncident() {      
+    if ( incidentCurNumber > 1 ){ 
+       incidentCurNumber =incidentCurNumber - 1; 
+       incident = incidents[incidentCurNumber - 1];
+       incidentName =  incident.Name;
+    }
+    return ApexPages.currentPage();       
+  }   
+  public PageReference newIncident() {
+    incident = new Incident__c(); 
+    incident.Patient__c = patient.id;
+    incident.Treatment__c = treatment.id;
+    return ApexPages.currentPage();
+  }   
+  public PageReference saveIncident() { 
+     Incident__c tempIncident;
+     if ( incident.id == Null ){
+        incident.Patient__c = patient.id;     
+        insert incident ;
+        incidents.add(incident);
+        incidentTotCount = incidentTotCount + 1; 
+        incidentCurNumber =  incidentCurNumber +1 ;      
+        tempIncident = [select id, Name from  Incident__c where id = : incident.id ];
+        incidentName =  tempIncident.Name;                          
+     }else{     
+        update incident ; 
+     }  
+     return ApexPages.currentPage();
+  } 
+  
   public PageReference nextPayment() {      
     if ( paymentCurNumber <= paymentTotCount ){ 
       paymentCurNumber = paymentCurNumber + 1; 

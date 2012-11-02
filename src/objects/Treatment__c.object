@@ -250,6 +250,13 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Next_Follow_Up__c</fullName>
+        <externalId>false</externalId>
+        <label>Next Follow Up</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>On_Site_Recovery_Period__c</fullName>
         <externalId>false</externalId>
         <label>On-Site Recovery Period</label>
@@ -272,7 +279,7 @@
         <label>Patient Not Committed Reason</label>
         <picklist>
             <picklistValues>
-                <fullName>Interested but not Responding</fullName>
+                <fullName>Patient Not Committed Reason</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -295,7 +302,6 @@
         <relationshipLabel>Treatments</relationshipLabel>
         <relationshipName>Treatments</relationshipName>
         <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
@@ -401,6 +407,17 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Primary_Campaign__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Primary Campaign</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipLabel>Treatments</relationshipLabel>
+        <relationshipName>Treatments</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Primary_Provider__c</fullName>
         <externalId>false</externalId>
         <label>Primary Provider</label>
@@ -410,12 +427,25 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Probability__c</fullName>
+        <externalId>false</externalId>
+        <label>Probability</label>
+        <precision>7</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
         <fullName>Procedure_Category__c</fullName>
         <externalId>false</externalId>
         <label>Procedure Category</label>
         <picklist>
             <picklistValues>
                 <fullName>Cardiology</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Neurology</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -452,10 +482,6 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Kidney Dialysis</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Neurology</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -1032,6 +1058,25 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Related_Campaign__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Related Campaign</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipLabel>Treatments (Related Campaign)</relationshipLabel>
+        <relationshipName>Treatments1</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Request_Summary__c</fullName>
+        <externalId>false</externalId>
+        <label>Request Summary</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Response_SLA__c</fullName>
         <externalId>false</externalId>
         <formula>IF(TEXT(Stage__c) = &quot;New&quot;, 
@@ -1337,6 +1382,14 @@
         <label>Treatment Date</label>
         <required>false</required>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Treatment_Summary__c</fullName>
+        <externalId>false</externalId>
+        <label>Treatment Summary</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <label>Treatment</label>
     <listViews>
