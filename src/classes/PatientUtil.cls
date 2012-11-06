@@ -138,7 +138,18 @@ public class PatientUtil {
                               Travel_End__c,
                               Travel_Start__c,
                               Visa_Status__c,
-                              Wheel_Chair_Bound__c                                                        
+                              Wheel_Chair_Bound__c,
+                              Additions_Comments__c,
+                              Close_Date__c,
+                              Companion__c,
+                              Event_Diagnosis__c,
+                              Flying__c,
+                              Hotel_Nights_Included__c,
+                              Hotel_Nights_Needed__c,
+                              Insurance_Approval__c,
+                              Special_Hotel_Needs__c,
+                              Total_Added_Cost__c,
+                              Treatment_as_Quoted__c                                                        
                       from Travels__r),
                       (select Id,
                               Name,
@@ -231,7 +242,14 @@ public class PatientUtil {
                               Sub_Total__c, 
                               SystemModstamp, 
                               Total_Price__c, 
-                              Treatment__c 
+                              Treatment__c ,
+                              Ground_Transportation_Included__c,
+                              Hotel_Nights_Included__c,
+                              Hotel_Nights_Needed__c,
+                              Number_of_Hospital_Nights__c,
+                              Arrival_Date__c,
+                              Departure_Date__c,
+                              Tax__c
                         From Treatment_Quotes__r)
                 from Patient__c 
                 where id = :pPatientId];               
