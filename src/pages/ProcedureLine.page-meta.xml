@@ -3,9 +3,4 @@
     <apiVersion>25.0</apiVersion>
     <description>Custom VF page to add Procedures to the Teatment.</description>
     <label>ProcedureLine</label>
-    <packageVersions>
-        <majorNumber>1</majorNumber>
-        <minorNumber>4</minorNumber>
-        <namespace>ERD</namespace>
-    </packageVersions>
 </ApexPage>

@@ -1,0 +1,179 @@
+<apex:page sidebar="false"
+           showHeader="false"
+           standardStylesheets="false"
+           standardController="Treatment__c" 
+           extensions="QuoteController" 
+           renderAs="pdf">
+
+
+<style>
+  body {
+    font-family: Tahoma,Verdana,Segoe,sans-serif;
+    margin: 0 auto;
+    width: 755px;
+  }
+  p, td, div, li {
+    font-family: Tahoma,Verdana,Segoe,sans-serif;
+    font-size: 10pt;
+    line-height: 1.25em;
+  }
+  h1 {
+    text-align: center;
+  }
+</style>
+
+    <h1>Your Treatment Quote</h1>
+    
+    <p>Thank you for contacting Health Travel Guides for a treatment quote.  We are happy to help you with your dental, medical, surgical or homeopathic wellness needs.</p>
+    
+    <p>Your Treatment Quote: {!treatment.amount__c}</p>
+    
+    <p>Health Travel Guides is your guide to the best medical care around the world.  We take the guesswork out of obtaining high quality, affordable and innovative health care abroad.  We ensure a quality experience with a carefully selected network of top health care providers and specialists.  Your Case Manager is available any time with questions toll free 1-866-978-2573.</p>
+    
+    <div id="quoteTopSummary">
+        <p>Health Traveler Name: {{patient.first_name}} {{patient.last_name}}</p>
+        <p>Date of Travel: {{travel.start_date}}-{{travel.end_date}}</p>
+        <p>Treatment Destination: {!treatment.Hospital_Destination__c}</p>
+    </div>
+    
+    <h2>Payment:</h2>
+    
+    <p>A deposit of $250 is required to reserve your procedure date. This deposit is applied to administrative costs for case management, medical team consults, secure compliant electronic medical records coordination, travel concierge, and other services.  <strong>Your deposit is fully refundable, no questions asked, for 72 hours after you sign your quote.</strong>
+    </p>
+    
+    <p>If you have not paid a deposit within one week of receiving your signed quote, your surgery date may not be guaranteed and you will be responsible for any and all airfare and/or hotel change fees associated with changing your reserved date if it is no longer available.</p>
+    
+    <p>
+        <ul id="paymentOptions">
+            <li>If paying with a major credit, debit card, or bank wire, final payment can be accepted up to the date of the procedure.</li>
+            <li>If paying by check, money order, cashier’s check, bank wire or ACH transfer, full payment is required within 14 days prior to the date of your surgery.</li>
+        </ul>
+    </p>
+
+    
+    <h2>Refunds:</h2>
+
+    <p>If you decide to cancel a scheduled procedure for any reason, or if you travel to a provider and are denied surgery for medical reasons, you are entitled to a full refund of your remaining balance less your deposit and any actual costs incurred <strong>(e.g. for medical shuttle transportation, pre-op testing or hospital stay).</strong>
+    </p>
+    <div class="signatureSection">
+        <div class="signatureLine">&#160;</div>
+        <p>Your signature here indicates full understanding and compliance with the HTG payment and refund terms and conditions.</p>
+    </div>
+    
+    <h2>Next Steps:</h2>
+    
+    <p>You may submit your signed Quote in one of the following ways:</p>
+    <ol>
+        <li>Electronically sign and file your acceptance of this Quote and Informed Consent. 
+Health Travel Guides is pleased to feature the secure electronic Echosign® document review and approval service. We will store and make accessible to you at any time, free of charge, an electronic or printed copy of your Quote documentation.</li>
+        
+        <li>Review, review, print and sign, and return to Health Travel Guides using one of the following methods
+
+            <ul>
+                <li>Scan and attach your signed quote to an email to <a href="mailto:SecureQuote@HealthTravelGuides.com">SecureQuote@HealthTravelGuides.com</a>
+                </li>
+                <li>Fax back to our Patient Services department at 1-206-203-0778</li>
+            </ul>
+        </li>
+    </ol>
+    <p>Your Case Manager will contact you to finalize your payment plan and begin the travel planning portion of your medical travel trip.</p>
+    <p><strong>Please Note:</strong>  Payment is required at the time that services are rendered. Failure to provide payment in full will result in a surcharge of 1.5% assessed monthly.  In addition, the patient is responsible for all costs of collection including reasonable attorneys fees incurred in the collection process.</p>
+
+        <p>The Parties hereby agree and stipulate that in the event of a dispute, and regardless of whether or not the dispute matures into formal litigation or any alternative dispute procedure, and further regardless of whether or not a judgment is rendered or the matter is settled, the non-prevailing party will pay the attorneys fees and legal costs of the prevailing party.</p>
+            <div class="quote">
+            <h1>Your Medical Travel Quote</h1>
+            <div class="quoteSummary">
+                <p>Traveler Name: {{patient.first_name}} {{patient.last_name}}</p>
+                <p>Your Health Travel Guide: {{patient.owner}}</p>
+                <p>Doctor: {!treatment.Primary_Provider__c}</p>
+                <p>Traveling To: {!treatment.Hospital_Destination__c}</p>
+                <p>Traveling from: {{travel.origin}}</p>
+             </div>  
+                <h2>Medical Travel Package Inclusions:</h2>
+                <table>
+                    <tr>
+                        <td colspan="2"></td>
+                        <th id="priceLabel">Price</th>
+                    </tr>
+                    <tr>
+                        <td>Procedure</td>
+                        <td>{!treatment.Procedure__c}</td>
+                        <td>{{quotes.total}}</td>
+                    </tr>
+                    <tr>
+                        <td>Hospital Stay</td>
+                        <td>{{travel.hosp_nights_incl}} night(s) included    </td>
+                        <td>INCLUDED</td>
+                    </tr>
+                    <tr>
+                        <td>Hotel Stay  </td>
+                        <td>{{travel.hotel_nights_incl}} night(s) included</td>
+                        <td>INCLUDED</td>
+                    </tr>
+                    <tr>
+                        <td>Surgeon/Hospital Fees</td>
+                        <td></td>
+                        <td>INCLUDED</td>
+                    </tr>
+                    <tr>
+                        <td>Ground Transportation</td>
+                        <td>To/From Airport   </td>
+                        <td>INCLUDED</td>
+                    </tr>
+                    <tr>
+                        <td>Airfare</td>
+                        <td></td>
+                        <td>NOT INCLUDED</td>
+                    </tr>
+                    <tr>
+                        <td>Additional Accommodations</td>
+                        <td>Estimates available upon request.</td>
+                        <td>NOT INCLUDED</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>QUOTE TOTAL:</td>
+                        <td>  {!treatment.Amount__c}</td>
+                    </tr>
+                </table>
+                
+                <p class="disclaimer">*A nonrefundable deposit is required to guarantee surgery date.  All prices quoted in USD.</p>
+                
+                <p>Preferred Airport:   ________________________</p>
+                
+                <p>Traveling Companion: ________________________</p>
+                
+                <p>Accepted By:     ________________________________________________</p>
+                                                       Patient Signature*                                                  Date
+
+                <p class="disclaimer">*In cases where the patient is a minor, we require the signature of a legal guardian.</p>
+                
+                <p>Legal Guardian Acceptance:   _______________________________________________________________         Date:______
+         Relationship to Patient</p>
+                </div>
+                <h2>Terms and Conditions</h2>
+                
+                <p>Congratulations on finding a medical provider and destination to obtain your desired medical procedure as set forth on Exhibit A attached hereto.  These terms and conditions constitute a legally binding agreement (the “Agreement”) between you (“you”) and Health Travel Guides, Inc., a Delaware corporation (“HTG”).</p>
+                <h3>Description of HTG Services.</h3>
+                    <p>HTG is a health travel service firm in the United States specializing in medical treatment programs for patients seeking treatment in locations other than where they reside.  In this role, we research and gather available information and provide this information to you for your personal use in making a more informed decision about your medical treatment options in various locations throughout the world, but we do not recommend, refer, endorse, or approve any healthcare provider, travel agency or other providers about whom you may obtain information from us. You are obtaining your medical procedure set forth on Exhibit A directly from the medical provider listed thereon and have agreed to the charges set forth on Exhibit A.  Your medical provider will require that you execute an agreement or consent regarding your medical procedure, and that document will govern your relationship with your medical provider.</p>
+                    <h3>Not A Medical Provider.</h3>
+                    <p>HTG and its employees are not medical professionals and will not discuss or advise any issues relating to medical treatment.  We facilitate contact with, and provide information about, doctors in various locations throughout the world and provide information about their credentials in order for you to make informed decisions.  We do not recommend, refer, endorse, or approve any healthcare provider, travel agency or other providers about whom you may obtain information from us. We encourage and advise you to discuss all medical issues with your regular medical doctor before making a decision on medical treatment in another location.   We provide information about available medical treatment and recuperation and packages to assist you making an informed decision.  You agree to assume all responsibility in connection with choosing any doctor, hospital or other provider for your desired procedure. We assume no responsibility or liability for any treatment or other services rendered by any doctor or medical provider, or for any malpractice claims and other claims that may arise directly or indirectly from any such advice, treatment or other services.</p>
+                    
+                    <h3>Disclaimers</h3>
+                    
+                    <p>TO THE FULLEST EXTENT PERMISSIBLE PURSUANT TO APPLICABLE LAW HTG ASSUMES NO RESPONSIBILITY NOR DOES HTG GRANT ANY WARRANTIES, EXPRESS OR IMPLIED RELATING TO THE OPERATION, SAFETY, CONDITION OR SERVICE OF ANY PHYSICIAN, HEALTH CARE PROVIDER, HOSPITAL, AIRCRAFT, MOTOR VEHICLE, BOAT, OTHER CONVEYANCE, INN, LODGE, OR HOTEL AND/OR PRODUCTS ASSOCIATED WITH SUCH ENTITIES OR SERVICES THAT ARE USED WHOLLY OR IN PART BY, FOR OR ON BEHALF OF YOU. HTG IS NOT LIABLE FOR THE ACTS, ERRORS, OMISSIONS, REPRESENTATIONS, WARRANTIES, BREACHES OR NEGLIGENCE OF ANY SUCH SUPPLIERS OR FOR ANY PERSONAL INJURIES, DEATH, PROPERTY DAMAGE, OR OTHER DAMAGES OR EXPENSES RESULTING THEREFROM.</p>
+                    
+                    <h3>Limitations of Liability</h3>
+                    
+                    <p>YOU AGREE THAT IN NO EVENT SHALL HTG OR ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, REPRESENTATIVES, AFFILIATES, ATTORNEYS, SUCCESSORS OR ASSIGNS SHALL BE LIABLE FOR ANY DAMAGES IN EXCESS OF THE AMOUNT YOU HAVE PAID RESULTING FROM YOUR USE OF, OR RELIANCE UPON, HTG’S WEB SITE, ANY HTG MATERIALS, OR ANY SERVICES OBTAINED FROM OR THROUGH HTG. IN THE EVENT OF ANY PROBLEM WITH THIS SITE, ANY SITE MATERIALS, OR SERVICES OBTAINED ON OR THROUGH THIS SITE, YOU AGREE THAT YOUR SOLE REMEDY IS TO CEASE USING SUCH ITEMS.</p>
+                    
+                    <p>YOU AGREE THAT UNDER NO CIRCUMSTANCES WILL HTG OR ANY OF OUR DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, REPRESENTATIVES, ATTORNEYS, SUCCESSORS OR ASSIGNS, BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, LOST PROFITS AND DAMAGES THAT RESULT FROM INCONVENIENCE, DELAY, OR LOSS OF USE) ARISING OUT OF USE OF THIS SITE, ANY SITE MATERIALS, ARRANGEMENTS MADE BASED ON INFORMATION OBTAINED ON OR THROUGH THIS SITE, OR PRODUCTS OR SERVICES OBTAINED ON OR THROUGH THIS SITE, EVEN IF WE OR THEY HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+                    
+                    <h3>Indemnity</h3>
+                    
+                    <p>You agree to defend, indemnify, and hold harmless HTG and our directors, officers, employees, agents, representatives, affiliates, attorneys, successors and assigns, from and against any and all claims, proceedings, damages, injuries, liabilities, losses, costs and expenses (including reasonable attorneys' fees and litigation expenses), relating to or arising from (i) your use of any HTG materials, the HTG web site or services obtained from or through HTG, (ii) any arrangements you make based on information obtained from or through HTG, or (iii) any breach by you of our Terms &amp; Conditions.</p>
+                    
+                    <h3>Venue</h3>
+                    
+                    <p>You agree that this Agreement shall be governed by and construed in accordance with the law of the State of California. You further agree that any legal action or proceeding under or with respect to this Agreement only shall be brought in the courts of the State of California or the United States having jurisdiction in San Francisco County; and for the purpose of any such legal action or proceeding, you hereby submit to the jurisdiction of such courts. You hereby agree not to raise and waive any objection to or any defense based upon the venue of such courts and any objection or defense based upon an inconvenient form.  You also agree not to bring any legal action or proceeding under or with respect to this agreement outside San Francisco County, California.</p>
+                </apex:page>

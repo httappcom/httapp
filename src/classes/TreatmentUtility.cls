@@ -82,4 +82,50 @@ public with sharing class TreatmentUtility {
       return null;
     }
   }
+    public static Treatment__c queryTreatmentAll(Id pTreatmentId) { 
+      if(pTreatmentId == null) {          
+        return null;
+      } else {           
+        return [Select id, 
+                        Name,
+                        CreatedBy.Name,
+                        CreatedDate,                                                             
+                        LastModifiedBy.Name,
+                        Additional_Amount__c,
+                        Amount__c,
+                        Best_Time_to_Contact__c, 
+                        Case_Manager_s_Feel__c,
+                        Close_Date__c,
+                        Decision_Timeframe__c,
+                        Deposit_Required__c,
+                        Financial_Reconciliation__c, 
+                        Financing_Reguired__c,
+                        Hospital_Destination__c,
+                        Inquiry_Quality__c,
+                        Inquiry_Source__c, 
+                        On_Site_Recovery_Period__c,
+                        Patient__r.Original_Number_Rank__c,
+                        Patient__c,
+                        Patient_Email__c,
+                        Payment_Type__c, 
+                        Phase__c,
+                        Post_Op_Follow_Up_Program__c,
+                        Preferred_Destination__c,
+                        Preferred_Form_of_Contact__c, 
+                        Preferred_Travel_Date_From__c,
+                        Preferred_Travel_Date_To__c,
+                        Primary_Provider__c,
+                        Procedure__c, 
+                        Procedure_Category__c,
+                        Procedure_Date__c,
+                        Procedure_Treatment_Type__c,
+                        Response_SLA__c, 
+                        Stage__c,
+                        Sub_Stage__c,
+                        Treatment_Date__c,
+                        Patient_Not_Committed_Reason__c
+                    from Treatment__c 
+                    where id = :pTreatmentId];               
+      }  
+   }
 }
