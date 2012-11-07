@@ -105,6 +105,7 @@
     <types>
         <members>avatar</members>
         <members>bkgd</members>
+        <members>KenResources</members>
         <members>paperclip</members>
         <members>sfscript</members>
         <members>sfstyles</members>
