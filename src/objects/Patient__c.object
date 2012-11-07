@@ -163,7 +163,7 @@
         <length>32768</length>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
+        <visibleLines>6</visibleLines>
     </fields>
     <fields>
         <fullName>Mobile__c</fullName>
