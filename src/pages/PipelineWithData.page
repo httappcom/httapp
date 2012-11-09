@@ -177,15 +177,6 @@
                     <td valign="top"><a href="#">Message</a></td>
                     <td valign="top"><a href="#">Invitation</a></td>
                 </tr>
-              <apex:repeat value="{!messages}" var="m">                 
-                <tr class="chartdetailsodd">                
-                    <td valign="top"><a href="#">(Custom Field)</a></td>
-                    <td valign="top"><a href="#">(Custom Field)</a></td>
-                    <td valign="top"><a href="#">(Custom Field)</a></td>
-                    <td valign="top"><a href="#">{!m.Name}</a></td>
-                    <td valign="top"><a href="#">{!m.From_Name__c}</a></td>                    
-                </tr> 
-               </apex:repeat>                                                  
             </table>
     </div>
 

@@ -90,10 +90,6 @@
             </div>
         </div>  
         <div class="sidebardetails">
-            <apex:repeat value="{!messages}" var="msg">
-                <div class="labelnextrow"><apex:inputfield value="{!msg.Name}"></apex:inputfield></div>
-                <div class="item"><a href="#">This will be the summary of the message</a></div>
-            </apex:repeat>
         </div><br /><br />  
         
         <div class="vfButtonBarDark">

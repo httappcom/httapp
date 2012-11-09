@@ -124,6 +124,7 @@
         <relationshipLabel>Payments</relationshipLabel>
         <relationshipName>Payments</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
@@ -171,6 +172,7 @@
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>

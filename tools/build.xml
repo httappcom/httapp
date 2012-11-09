@@ -17,7 +17,8 @@
       <sf:retrieve username="${sf.username}"
                    password="${sf.password}"
                    serverurl="${sf.serverurl}"
-                   retrieveTarget="codepkg"/>
+                   retrieveTarget="${dev.dir}"
+                   unpackaged="${dev.dir}/package.xml" />
     </target>
 
   	<!-- Retrieve the information of all items of a particular metadata type -->

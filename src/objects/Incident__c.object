@@ -35,7 +35,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>issues to manage by the team</description>
     <enableActivities>true</enableActivities>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -138,6 +137,7 @@
         <relationshipLabel>Incidents</relationshipLabel>
         <relationshipName>Incidents</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>

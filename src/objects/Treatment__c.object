@@ -35,7 +35,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>What Treatment is the patient interested in.</description>
     <enableActivities>true</enableActivities>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -290,6 +289,10 @@
                 <fullName>Patient Not Interested</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Interested but not Responding</fullName>
+                <default>false</default>
+            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
@@ -302,6 +305,7 @@
         <relationshipLabel>Treatments</relationshipLabel>
         <relationshipName>Treatments</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>

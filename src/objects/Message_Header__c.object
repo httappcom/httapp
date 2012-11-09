@@ -32,42 +32,29 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <deploymentStatus>Deployed</deploymentStatus>
-    <description>The medical profile of the patient</description>
+    <deploymentStatus>InDevelopment</deploymentStatus>
+    <description>conjunction object that links users to messages</description>
     <enableActivities>false</enableActivities>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
     <fields>
-        <fullName>Patient__c</fullName>
+        <fullName>Users__c</fullName>
+        <description>comma separated list of user ids.</description>
         <externalId>false</externalId>
-        <label>Patient</label>
-        <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Medical Profiles</relationshipLabel>
-        <relationshipName>Medical_Profiles</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
-        <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Treatment</label>
-        <referenceTo>Treatment__c</referenceTo>
-        <relationshipLabel>Medical Profiles</relationshipLabel>
-        <relationshipName>Treatment_Medical_Profiles</relationshipName>
+        <label>Users</label>
+        <length>255</length>
         <required>false</required>
-        <type>Lookup</type>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
-    <label>Medical Profile</label>
+    <label>Message Header</label>
     <nameField>
-        <displayFormat>MQ{0000000000}</displayFormat>
-        <label>Medical Profile</label>
+        <displayFormat>MHN-{00000000}</displayFormat>
+        <label>Message Header Number</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Medical Profiles</pluralLabel>
+    <pluralLabel>Message Headers</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

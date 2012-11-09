@@ -75,16 +75,6 @@ public with sharing class PipelineController {
     taskOptions.add(new SelectOption('My Open', 'My Open'));            
     taskOptions.add(new SelectOption('My Closed', 'My Closed'));
                             
-    this.allMessages = [Select Truncated_Body__c, Body_Rich_Text__c, Body__c, 
-                            CreatedById, CreatedDate,  From_Name__c, From__c, 
-                            LastModifiedById, LastModifiedDate, OwnerId, 
-                            Priority__c, Id, Status__c, Name, To__c, To_Name__c 
-                     From Message__c] ;    
-    System.debug('Messages List'+ allMessages);        
-    mcon = new ApexPages.StandardSetController(allMessages); 
-    mcon.setPageSize(this.curPageSize); 
-    this.messages = mcon.getRecords(); 
-    
     this.tasks = allTasks;      
     searchTask()   ; 
     

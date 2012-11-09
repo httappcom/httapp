@@ -47,6 +47,7 @@
     </fields>
     <fields>
         <fullName>Facility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <description>What Hospital, facility provides this Procedure.</description>
         <externalId>false</externalId>
         <label>Facility</label>

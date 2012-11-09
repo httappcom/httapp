@@ -85,6 +85,35 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Rephase_to_Treatment</fullName>
+        <field>Phase__c</field>
+        <literalValue>(3) Travel</literalValue>
+        <name>Rephase to Treatment</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Restage_to_Travel_Itinerary</fullName>
+        <description>Set stage to Travel Itinerary</description>
+        <field>Stage__c</field>
+        <literalValue>Travel Itinerary</literalValue>
+        <name>Restage to Travel Itinerary</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Stage_to_At_Provider</fullName>
+        <description>Set Stage to &quot;At Provider&quot; and Sub-stage to &quot;Treatment in Progress&quot;</description>
+        <field>Stage__c</field>
+        <literalValue>At Provider</literalValue>
+        <name>Stage to At Provider</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Stage_to_Ongoing_Relationship</fullName>
         <field>Stage__c</field>
         <literalValue>Ongoing Relationship</literalValue>
@@ -98,6 +127,16 @@
         <field>Stage__c</field>
         <literalValue>Patient Lost</literalValue>
         <name>Stage to Patient Lost</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Substage_to_treatment_in_progess</fullName>
+        <description>Set substage to &quot;Treatment in Progress&quot;</description>
+        <field>Sub_Stage__c</field>
+        <literalValue>Treatment In Progress</literalValue>
+        <name>Substage to Treatment in Progress</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
