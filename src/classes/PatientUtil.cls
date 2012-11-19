@@ -34,6 +34,7 @@ public class PatientUtil {
                        Key_Contact__c,
                        Last_Communication__c,
                        Nationality__c,
+                       Age__c,
                        (select id, 
                                Name,
                                CreatedBy.Name,
@@ -149,7 +150,14 @@ public class PatientUtil {
                               Insurance_Approval__c,
                               Special_Hotel_Needs__c,
                               Total_Added_Cost__c,
-                              Treatment_as_Quoted__c                                                        
+                              Treatment_as_Quoted__c ,
+                              Arrival_Airline__c,
+                              Arrival_Airport_Code__c,
+                              Arrival_Flight_No__c,
+                              Departure_Airline__c,
+                              Departure_Airport_Code__c,
+                              Departure_Flight_No__c,                              
+                              Notes__c                                
                       from Travels__r),
                       (select Id,
                               Name,
@@ -249,7 +257,8 @@ public class PatientUtil {
                               Number_of_Hospital_Nights__c,
                               Arrival_Date__c,
                               Departure_Date__c,
-                              Tax__c
+                              Tax__c,
+                              Syncing__c
                         From Treatment_Quotes__r)
                 from Patient__c 
                 where id = :pPatientId];               

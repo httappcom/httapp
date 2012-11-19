@@ -55,11 +55,46 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Arrival_Airline__c</fullName>
+        <externalId>false</externalId>
+        <label>Arrival Airline</label>
+        <picklist>
+            <picklistValues>
+                <fullName>United</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Arrival_Airport_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Arrival Airport  Code</label>
+        <picklist>
+            <picklistValues>
+                <fullName>SFO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Arrival_Date__c</fullName>
         <externalId>false</externalId>
         <label>Arrival Date</label>
         <required>false</required>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Arrival_Flight_No__c</fullName>
+        <externalId>false</externalId>
+        <label>Arrival Flight No</label>
+        <length>20</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Arrived__c</fullName>
@@ -113,11 +148,46 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Departure_Airline__c</fullName>
+        <externalId>false</externalId>
+        <label>Departure Airline</label>
+        <picklist>
+            <picklistValues>
+                <fullName>United</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Departure_Airport_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Departure Airport Code</label>
+        <picklist>
+            <picklistValues>
+                <fullName>SFO</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Departure_Date__c</fullName>
         <externalId>false</externalId>
         <label>Departure Date</label>
         <required>false</required>
         <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Departure_Flight_No__c</fullName>
+        <externalId>false</externalId>
+        <label>Departure Flight No</label>
+        <length>20</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Event_Diagnosis__c</fullName>
@@ -204,6 +274,14 @@
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Notes</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>6</visibleLines>
+    </fields>
+    <fields>
         <fullName>Number_of_Hospital_Nights__c</fullName>
         <externalId>false</externalId>
         <label>Number of Hospital Nights</label>
@@ -246,7 +324,6 @@
         <relationshipLabel>Travels</relationshipLabel>
         <relationshipName>Travels</relationshipName>
         <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
