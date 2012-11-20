@@ -2,5 +2,5 @@
 <StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
     <cacheControl>Public</cacheControl>
     <contentType>application/x-javascript</contentType>
-    <description>jQuery Library</description>
+    <description>jQuery Library to use</description>
 </StaticResource>

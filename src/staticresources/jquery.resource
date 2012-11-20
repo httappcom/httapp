@@ -2,7 +2,7 @@
  * jQuery JavaScript Library v1.4
  * http://jquery.com/
  *
- * Copyright 2010, John Resig
+ * Copyright 2010, John Resig yes
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://docs.jquery.com/License
  *
