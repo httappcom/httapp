@@ -2,6 +2,7 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
   <types>
         <members>Message</members>
+        <members>Message_Test</members>
         <members>PatientExtension</members>
         <members>PatientRank</members>
         <members>PatientTest</members>
@@ -51,6 +52,7 @@
         <members>Knowledge_Base__c</members>
         <members>Medical_Profile__c</members>
         <members>Message_Header__c</members>
+        <members>Message_User__c</members>
         <members>Message__c</members>
         <members>My_Message_Settings__c</members>
         <members>Patient__c</members>
@@ -94,6 +96,7 @@
         <members>Knowledge_Base__c-Knowledge Base Layout</members>
         <members>Medical_Profile__c-Medical Profile Layout</members>
         <members>Message_Header__c-Message Header Layout</members>
+        <members>Message_User__c-Message User Layout</members>
         <members>Message__c-Message Layout</members>
         <members>Patient__c-Patient Layout</members>
         <members>Payment__c-Payment Layout</members>

@@ -32,22 +32,12 @@
         <actionName>View</actionName>
         <type>Default</type>
     </actionOverrides>
-    <deploymentStatus>InDevelopment</deploymentStatus>
+    <deploymentStatus>Deployed</deploymentStatus>
     <description>conjunction object that links users to messages</description>
     <enableActivities>false</enableActivities>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
-    <fields>
-        <fullName>Users__c</fullName>
-        <description>comma separated list of user ids.</description>
-        <externalId>false</externalId>
-        <label>Users</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
     <label>Message Header</label>
     <nameField>
         <displayFormat>MHN-{00000000}</displayFormat>
