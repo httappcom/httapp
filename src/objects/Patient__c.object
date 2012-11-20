@@ -22,9 +22,7 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <content>PatientTabWithData</content>
-        <skipRecordTypeSelect>false</skipRecordTypeSelect>
-        <type>Visualforce</type>
+        <type>Default</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>Tab</actionName>
@@ -70,25 +68,6 @@
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
-    </fields>
-    <fields>
-        <fullName>Age__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF(
-  MONTH(TODAY())&gt;MONTH(Date_of_Birth__c),
-    YEAR(TODAY())-YEAR(Date_of_Birth__c),  
-    IF(AND(MONTH(TODAY()) = MONTH(Date_of_Birth__c), DAY(TODAY()) &gt;= DAY(Date_of_Birth__c)), 
-      YEAR(TODAY())-YEAR(Date_of_Birth__c), 
-      (YEAR(TODAY())-YEAR(Date_of_Birth__c))-1)
-)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Age</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Alternate_Email__c</fullName>
@@ -182,7 +161,7 @@
         <length>32768</length>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
-        <visibleLines>6</visibleLines>
+        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Mobile__c</fullName>
@@ -268,6 +247,17 @@
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Portal_User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Portal User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Patients</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Postal_Code__c</fullName>
