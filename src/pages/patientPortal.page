@@ -1,0 +1,177 @@
+<apex:page controller="patientPortalController" showheader="false" sidebar="false" standardstylesheets="true">
+	<style>
+		.detailslbox{
+				background-color: white;
+				border-style: solid;
+				border-width: 2px;
+				border-color: #000;
+				left: 50%;
+				padding:10px;
+				position: absolute;
+				z-index: 9999;
+				width: 500px;
+				margin-left: -250px;
+				top:130px;
+				//top:50px;
+			}
+			 
+			.detailbox{
+				/*display: none;*/ 
+				position: absolute;
+				top: 0;/* must be 0 ideally*/
+				left: 0;/* must be 0 ideally */
+				width: 100%;
+				height: 100%;
+				background-color: #000;
+				z-index:1001;
+				-moz-opacity: 0.5;
+				opacity:.50;
+				filter: alpha(opacity=50);
+				/*zoom: 1;*/
+			}
+	</style>
+	
+	<body style="width:600px;">
+		<apex:form >
+			<div style="width:600px;padding-top:10px;">
+				<table style="width:599px; cell-padding:5px;">
+					<tr>
+						<td style="padding-left:25px;"><apex:commandlink value="Home" action="{!goToHome}"/></td>
+						<td><apex:commandlink value="Medical Records" action="{!goToMedicalRecords}"/></td>
+						<td><apex:commandlink value="Your Travel" action="{!goToYourTravel}"/></td>
+						<td><apex:commandlink value="Have a Question?" action="{!goToHaveAQuestion}"/></td>
+						<td><apex:commandlink value="Your Treatment" action="{!goToYourTreatment}"/></td>
+					</tr>
+				</table>
+			</div><Br/>
+			<apex:pageblock title="{!currentPage}">
+				<apex:outputpanel rendered="{!currentpage == 'Home'}">
+					Welcome to your personal health hub! Your health hub is a portal in the cloud, and you can log in from any browser.<br/><br/>
+	
+					It sounds futuristic, but your portal is just a private website constructed just for your medical travel health and benefits management.<Br/><br/>
+	
+					It's a simple way to keep track of your questions about the medical travel process, medical records, travel information, treatment details, payments, 
+					conversations with and instructions from your doctor, and more.<br/><Br/>
+	
+					Keep all your important information related to your medical travel treatments in one place, whenever you need the information, it's here.<Br/><br/>
+					
+					<a href="#">Account Settings</a><br/><br/>		
+					
+					Recent Activity<Br/>
+					Recent Activity in your Hub<br/><br/>
+					<apex:pageblocktable value="{!patient.incidents__r}" var="a">
+						<apex:column > 
+							<apex:facet name="header">Subject</apex:facet>
+							<apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
+								<apex:outputfield value="{!a.Subject__c}"/>
+								<apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!a.id}"/>
+							</apex:commandlink>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Reference #</apex:facet>
+							
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Status</apex:facet>
+							<apex:outputfield value="{!a.Status__c}"/>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Date Created</apex:facet>
+							<apex:outputfield value="{!a.Date_Time_Opened__c}"/>
+						</apex:column>
+					</apex:pageblocktable>
+					<br/><br/><br/>
+					<apex:pageblocksection columns="1">
+						<apex:outputtext value="Comments on the HTG Patient Portal? Tell us what you think!"/>
+						<apex:inputtextarea value="{!tempstring}" rows="4" cols="60"/>
+						<apex:commandbutton value="Submit" action="{!null}"/>
+					</apex:pageblocksection>
+				</apex:outputpanel>
+				
+				<apex:outputpanel rendered="{!currentpage == 'Medical Records'}">
+					[medical records here]<br/><br/><br/><br/>
+					
+					submit file<br/><br/><br/>
+					 
+					No medical history on file? Submit one now.<br/>
+					<ul>
+						<li><a href="http://www.clicktools.com/survey?iv=fmmbu0f12racg" target="_Blank">General (working)</a></li>
+						<li>Weight loss surgery</li>
+						<li>Cardiology</li>
+						<li>ccsvi</li>
+						<li>Stem cell</li>
+					</ul>
+					<br/>
+				</apex:outputpanel>
+				
+				<apex:outputpanel rendered="{!currentpage == 'Your Travel'}">
+					If your medical treatment program involves travel, a Travel Concierge will plan your trip itinerary.<Br/><br/>
+	
+					Ask a question, make special requests for your air travel, share your itinerary with friends and families-- <br/><br/><br/>
+					
+					[messages]
+					<br/><Br/><br/>
+					[itinerary list]
+					<br/>
+				</apex:outputpanel>
+				
+				<apex:outputpanel rendered="{!currentpage == 'Have a Question?'}">
+				<strong>Type your question below:</strong><br/><br/>
+				<apex:pageblocksection columns="1">
+					<apex:pageblocksectionitem >
+						<apex:outputlabel value="Subject"/>
+						<apex:inputtext value="{!tempstring}"/>
+					</apex:pageblocksectionitem>
+					<apex:pageblocksectionitem >
+						<apex:outputlabel value="Question"/>
+						<apex:inputtextarea value="{!tempstring}" rows="5" cols="50"/>
+					</apex:pageblocksectionitem>
+					<apex:pageblocksectionitem >
+						<apex:outputlabel value="Attach Documents"/>
+						<apex:inputfile value="{!tempfile.body}" filename="{!tempfile.name}"/>
+					</apex:pageblocksectionitem>
+				</apex:pageblocksection>
+				<br/><Br/>
+				<div style="align:center; text-align:center;"><apex:commandbutton value="Continue" action="{!null}"/></div><br/><Br/>
+				The answer will appear here; it will also appear on the home page of your portal in the 
+				"Recent Activity" window. You can respond in either place. <br/><br/>
+				
+				You will also receive an email notification of the answer, and will be able to click a link
+				from your computer or smart phone to read it!<br/><br/>
+				
+				<strong>Questions:</strong><br/><br/>
+				Your recently submitted questions:<br/>
+				[questions list]<br/><br/>
+				<a href="#">See all questions</a> 
+				</apex:outputpanel>
+				
+				<apex:outputpanel rendered="{!currentpage == 'Your Treatment'}">
+					Your Treatment file will contain all of the essential information related to your treatment,
+					including an introduction to your treatment team and specialists, information about the hospital,
+					pre-surgical instructions, and details about your procedure, any medical devices involved and more.<br/><br/><br/>
+					
+					From your patient care coordinator:<br/>
+					[list]<Br/><Br/><Br/>
+					
+					Treatment:<br/>
+					[list]<br/><br/><br/>
+					
+					Treatment Team:<br/>
+					[list]<br/><br/><br/>
+				</apex:outputpanel>
+				
+			</apex:pageblock>
+		</apex:form>
+		<apex:outputPanel layout="block" id="outerdetails" >
+			<apex:outputPanel layout="block" styleClass="detailbox" rendered="{!showDetailBox == true}"/>
+			<apex:outputpanel styleClass="detailslbox" layout="block" rendered="{!showDetailBox == true}">
+				<div align="center">
+					details<br/><br/>
+					<apex:form >
+						<apex:commandlink style="color:#000;" value="Close" action="{!showDetails}" rerender="outerdetails"/>
+					</apex:form>
+				</div>
+			</apex:outputpanel>
+		</apex:outputpanel>	
+	</body>
+</apex:page>
