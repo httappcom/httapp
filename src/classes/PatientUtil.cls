@@ -505,7 +505,8 @@ public class PatientUtil {
     public static void createPatientPortalUser (string patientID) {
     	
     	// query patient for data
-    	Patient__c patient = [select 	id, 
+    	Patient__c patient = [select 	id,
+    									Name, 
     									Patient_First_Name__c, 
     									Patient_Last_Name__c, 
     									email__c, 
