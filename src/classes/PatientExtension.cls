@@ -156,6 +156,7 @@ public class PatientExtension {
   public PageReference savePatient() {
     patient.Name  = firstName +' ' + lastName;  
     patient.Patient_First_Name__c = firstname;
+    patient.Patient_last_Name__c = lastname;
     if ( patient.id == Null ){ 
       insert patient;
     }else{              
@@ -175,6 +176,7 @@ public class PatientExtension {
     Treatment__c tempTreatment; 
     patient.Name  = firstName +' ' + lastName;  
     patient.Patient_First_Name__c = firstname;
+    patient.Patient_last_Name__c = lastname;
     if ( patient.id == Null ){ 
       insert patient;
     }else{              

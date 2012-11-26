@@ -222,6 +222,16 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Patient_Last_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Last Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Patient_Quality__c</fullName>
         <externalId>false</externalId>
         <label>Patient Quality</label>

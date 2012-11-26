@@ -493,5 +493,72 @@ public class PatientUtil {
                         From Treatment_Quotes__r)
                 from Patient__c];
                              
-    }   
+    }
+    
+    /**
+     * mWicherski@mkpartners.com
+     * createPatientPortalUser
+     * Creates a portal user and contact for a patient and associates 
+     * the patient record with them.
+     * @param string patientID
+     */
+    public static void createPatientPortalUser (string patientID) {
+    	
+    	// query patient for data
+    	Patient__c patient = [select 	id, 
+    									Patient_First_Name__c, 
+    									Patient_Last_Name__c, 
+    									email__c, 
+    									Date_of_Birth__c 
+    								from Patient__c 
+    								where id = :patientID];
+    	
+    	User u = new User();
+    	string username = patient.Patient_First_Name__c.substring(0,1);
+    	username+=patient.patient_last_name__c;
+    	username+=string.valueof(patient.Date_of_Birth__c.year()).substring(2,3); 
+    	username.replace(' ','_');
+    	
+    	
+        u.Username = username+='@patient.htt.com';
+        u.Email = patient.email__c;
+        u.CommunityNickname = username;
+    		
+    	// create portal user
+    	String userId;
+    	try {
+    		string accountId = [select id 
+    							from Account 
+    							where name = 'Patient Portal' 
+    							limit 1].id;
+    		userId = Site.createPortalUser(u, accountId, null);
+    	}
+    	catch (exception e){
+    		string errormsg = 'ERROR: No account named \'Patient Portal\'';
+    		errormsg+= ' exists to attach user to';
+    		system.debug(errormsg);
+    	}
+    	
+    	// assign contact to patient
+		if (userid != null && userid.trim().length()>0) {
+			associateContactWithPatient(patientid, u.contactid);
+		}    	
+    	
+    }
+    
+    /**
+     * mWicherski@mkpartners.com
+     * associateContactWithPatient
+     * Utility method that associates a patient with its portal user contact
+     * Done in @future due to limitation of DML calls in same thread as portal
+     * user creation.
+     * @param string patientID
+     * @param string contactID
+     */   
+    @future
+    public static void associateContactWithPatient(	string patientid, 
+    												string contactid) {
+    	Patient__c p = new patient__c(id=patientid, Key_Contact__c=contactid);
+    	upsert p;
+    }
 }
