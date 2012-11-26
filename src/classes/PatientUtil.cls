@@ -498,8 +498,8 @@ public class PatientUtil {
     /**
      * mWicherski@mkpartners.com
      * createPatientPortalUser
-     * Creates a portal user and contact for a patient and associates 
-     * the patient record with them.
+     * Creates an account and contact for the patient and calls a future method
+     * to create the portal user.
      * @param string patientID
      */
     public static void createPatientPortalUser (string patientID) {
@@ -509,16 +509,56 @@ public class PatientUtil {
     									Patient_First_Name__c, 
     									Patient_Last_Name__c, 
     									email__c, 
-    									Date_of_Birth__c 
+    									Date_of_Birth__c,
+    									key_contact__c 
     								from Patient__c 
     								where id = :patientID];
     	
-    	User u = new User();
+    	Account a = new Account();
+    	a.name = patient.Name;
+    	insert a;
+    	
+    	Contact c = new Contact();
+    	c.firstname = patient.patient_first_name__c;
+    	c.lastname = patient.patient_last_name__c;
+    	c.email = patient.email__c;
+    	c.birthdate = patient.date_of_birth__c;
+    	c.accountid = a.id;
+    	
+    	insert c;
+    	
+    	patient.Key_Contact__c = c.id;
+    	update patient;
+    	
+    	futureCreatePortalUser(patient.id);
+    }
+    
+    /**
+     * mWicherski@mkpartners.com
+     * futureCreatePortalUser
+     * facilitates actual portal user creation.
+     * @param string patientID
+     */   
+    @future
+    public static void futureCreatePortalUser(string patientid) { 
+		
+		// query patient for data
+    	Patient__c patient = [select 	id, 
+    									Patient_First_Name__c, 
+    									Patient_Last_Name__c, 
+    									email__c, 
+    									Date_of_Birth__c,
+    									key_contact__c,
+    									key_contact__r.accountid 
+    								from Patient__c 
+    								where id = :patientID];
+		
+		
+		User u = new User();
     	string username = patient.Patient_First_Name__c.substring(0,1);
     	username+=patient.patient_last_name__c;
     	username+=string.valueof(patient.Date_of_Birth__c.year()).substring(2,3); 
     	username.replace(' ','_');
-    	
     	
         u.Username = username+='@patient.htt.com';
         u.Email = patient.email__c;
@@ -526,39 +566,8 @@ public class PatientUtil {
     		
     	// create portal user
     	String userId;
-    	try {
-    		string accountId = [select id 
-    							from Account 
-    							where name = 'Patient Portal' 
-    							limit 1].id;
-    		userId = Site.createPortalUser(u, accountId, null);
-    	}
-    	catch (exception e){
-    		string errormsg = 'ERROR: No account named \'Patient Portal\'';
-    		errormsg+= ' exists to attach user to';
-    		system.debug(errormsg);
-    	}
-    	
-    	// assign contact to patient
-		if (userid != null && userid.trim().length()>0) {
-			associateContactWithPatient(patientid, u.contactid);
-		}    	
-    	
-    }
-    
-    /**
-     * mWicherski@mkpartners.com
-     * associateContactWithPatient
-     * Utility method that associates a patient with its portal user contact
-     * Done in @future due to limitation of DML calls in same thread as portal
-     * user creation.
-     * @param string patientID
-     * @param string contactID
-     */   
-    @future
-    public static void associateContactWithPatient(	string patientid, 
-    												string contactid) {
-    	Patient__c p = new patient__c(id=patientid, Key_Contact__c=contactid);
-    	upsert p;
+   		userId = Site.createPortalUser(	u, 
+   										patient.key_contact__r.accountid,
+   										null);    											
     }
 }
