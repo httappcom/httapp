@@ -9,9 +9,10 @@ public  without sharing class patientPortalController {
 	public Attachment tempfile {get;set;} // placeholder file to be deleted once portal built out more
 	
 	public patientPortalController () {
+		User u = [select id, contactid from User where id = :userinfo.getUserId()];
 		string patientid = [select id 
 							from Patient__c 
-							where portal_user__c = :userinfo.getUserId() 
+							where key_contact__c = :u.contactid
 							limit 1].id;
 		patient = patientUtil.queryPatientAll(patientid);
 		
