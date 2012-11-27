@@ -324,6 +324,7 @@
         <relationshipLabel>Travels</relationshipLabel>
         <relationshipName>Travels</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>

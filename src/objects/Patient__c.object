@@ -22,7 +22,9 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <type>Default</type>
+        <content>PatientTabWithData</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>Tab</actionName>
@@ -73,11 +75,11 @@
         <fullName>Age__c</fullName>
         <externalId>false</externalId>
         <formula>IF(
-MONTH(TODAY())&gt;MONTH(Date_of_Birth__c),
-YEAR(TODAY())-YEAR(Date_of_Birth__c), 
-IF(AND(MONTH(TODAY()) = MONTH(Date_of_Birth__c), DAY(TODAY()) &gt;= DAY(Date_of_Birth__c)), 
-YEAR(TODAY())-YEAR(Date_of_Birth__c), 
-(YEAR(TODAY())-YEAR(Date_of_Birth__c))-1)
+  MONTH(TODAY())&gt;MONTH(Date_of_Birth__c),
+    YEAR(TODAY())-YEAR(Date_of_Birth__c),  
+    IF(AND(MONTH(TODAY()) = MONTH(Date_of_Birth__c), DAY(TODAY()) &gt;= DAY(Date_of_Birth__c)), 
+      YEAR(TODAY())-YEAR(Date_of_Birth__c), 
+      (YEAR(TODAY())-YEAR(Date_of_Birth__c))-1)
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Age</label>
@@ -180,7 +182,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <length>32768</length>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
+        <visibleLines>6</visibleLines>
     </fields>
     <fields>
         <fullName>Mobile__c</fullName>
@@ -209,26 +211,6 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <scale>0</scale>
         <trackHistory>false</trackHistory>
         <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Patient_First_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Patient First Name</label>
-        <length>50</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Patient_Last_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Patient Last Name</label>
-        <length>50</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -286,17 +268,6 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
-    </fields>
-    <fields>
-        <fullName>Portal_User__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Portal User</label>
-        <referenceTo>User</referenceTo>
-        <relationshipName>Patients</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Postal_Code__c</fullName>
