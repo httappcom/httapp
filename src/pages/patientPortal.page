@@ -45,8 +45,13 @@
 				</table>
 			</div><Br/>
 			<apex:pageblock title="{!currentPage}">
+				<apex:outputpanel rendered="{!currentpage == 'Portal User Error'}">
+					Your user has not been set up properly for the patient portal.<br/><br/>
+					Please contact Health Travel Guides for assistance. 
+				</apex:outputpanel>
+				
 				<apex:outputpanel rendered="{!currentpage == 'Home'}">
-					Welcome to your personal health hub! Your health hub is a portal in the cloud, and you can log in from any browser.<br/><br/>
+					{!patient.Patient_First_Name__c},<br/><br/>Welcome to your personal health hub! Your health hub is a portal in the cloud, and you can log in from any browser.<br/><br/>
 	
 					It sounds futuristic, but your portal is just a private website constructed just for your medical travel health and benefits management.<Br/><br/>
 	
@@ -59,25 +64,25 @@
 					
 					Recent Activity<Br/>
 					Recent Activity in your Hub<br/><br/>
-					<apex:pageblocktable value="{!patient.incidents__r}" var="a">
+					<apex:pageblocktable value="{!recentActivities}" var="a">
 						<apex:column > 
 							<apex:facet name="header">Subject</apex:facet>
 							<apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
-								<apex:outputfield value="{!a.Subject__c}"/>
-								<apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!a.id}"/>
+								<apex:outputtext value="{!a.Subject}"/>
+								<!-- <apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!a.id}"/> -->
 							</apex:commandlink>
 						</apex:column>
 						<apex:column >
 							<apex:facet name="header">Reference #</apex:facet>
-							
+							test
 						</apex:column>
 						<apex:column >
 							<apex:facet name="header">Status</apex:facet>
-							<apex:outputfield value="{!a.Status__c}"/>
+							<apex:outputtext value="{!a.Status}"/>
 						</apex:column>
 						<apex:column >
 							<apex:facet name="header">Date Created</apex:facet>
-							<apex:outputfield value="{!a.Date_Time_Opened__c}"/>
+							<apex:outputtext value="{!a.datecreated}"/>
 						</apex:column>
 					</apex:pageblocktable>
 					<br/><br/><br/>
