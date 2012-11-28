@@ -35,6 +35,7 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>What Treatment is the patient interested in.</description>
     <enableActivities>true</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -875,7 +876,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Restoration</fullName>
+                <fullName>Hair Restoration</fullName>
                 <controllingFieldValues>Cosmetic/Plastic</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
@@ -991,10 +992,6 @@
             <picklistValues>
                 <fullName>Radiation</fullName>
                 <controllingFieldValues>Oncology</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Reconstructive</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>

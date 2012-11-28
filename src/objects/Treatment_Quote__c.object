@@ -211,6 +211,7 @@
         <relationshipLabel>Treatment Quotes</relationshipLabel>
         <relationshipName>Treatment_Quotes</relationshipName>
         <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
