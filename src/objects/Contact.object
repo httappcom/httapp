@@ -27,19 +27,7 @@
         <picklistValues>
             <picklist>LeadSource</picklist>
             <values>
-                <fullName>Partner Referral</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Phone Inquiry</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Purchased List</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Web</fullName>
+                <fullName>Other</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
