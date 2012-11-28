@@ -33,41 +33,50 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>The medical profile of the patient</description>
+    <description>The price that goes with this procedure</description>
     <enableActivities>false</enableActivities>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
-    <enableReports>true</enableReports>
+    <enableReports>false</enableReports>
     <fields>
-        <fullName>Patient__c</fullName>
+        <fullName>List_Price__c</fullName>
+        <description>The list for this currency of the Procedure</description>
         <externalId>false</externalId>
-        <label>Patient</label>
-        <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Medical Profiles</relationshipLabel>
-        <relationshipName>Medical_Profiles</relationshipName>
+        <label>List Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Procedure_Catalog__c</fullName>
+        <externalId>false</externalId>
+        <label>Procedure Catalog</label>
+        <referenceTo>Procedure_Catalog__c</referenceTo>
+        <relationshipLabel>Procedure Catalog Price</relationshipLabel>
+        <relationshipName>Procedure_Catalogs</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
-        <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <fullName>Sale_Price__c</fullName>
         <externalId>false</externalId>
-        <label>Treatment</label>
-        <referenceTo>Treatment__c</referenceTo>
-        <relationshipLabel>Medical Profiles</relationshipLabel>
-        <relationshipName>Treatment_Medical_Profiles</relationshipName>
+        <label>Sale Price</label>
+        <precision>18</precision>
         <required>false</required>
-        <type>Lookup</type>
+        <scale>2</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
-    <label>Medical Profile</label>
+    <label>Procedure Catalog Price</label>
     <nameField>
-        <displayFormat>MQ{0000000000}</displayFormat>
-        <label>Medical Profile</label>
+        <displayFormat>PCP{000000000}</displayFormat>
+        <label>Procedure Catalog Price</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Medical Profiles</pluralLabel>
+    <pluralLabel>Procedure Catalog Price</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

@@ -35,7 +35,6 @@
     <deploymentStatus>Deployed</deploymentStatus>
     <description>Conjunction object to link Procedures to Interactions.</description>
     <enableActivities>false</enableActivities>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
@@ -78,7 +77,7 @@
         <description>What procedure are you adding to the Interaction</description>
         <externalId>false</externalId>
         <label>Procedure</label>
-        <referenceTo>Procedure__c</referenceTo>
+        <referenceTo>Procedure_Catalog__c</referenceTo>
         <relationshipLabel>Interactions</relationshipLabel>
         <relationshipName>Procedures</relationshipName>
         <required>false</required>

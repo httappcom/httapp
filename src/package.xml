@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>Message</members>
@@ -40,6 +40,11 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>User.Receive_Portal_Messages__c</members>
+        <members>User.Receive_Staff_Messages__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>CustomLabels</members>
         <name>CustomLabels</name>
     </types>
@@ -56,14 +61,20 @@
         <members>Payment__c</members>
         <members>Procedure_Catalog_Price__c</members>
         <members>Procedure_Catalog__c</members>
-        <members>Procedure_Category__c</members>
         <members>Procedure_Line_Item__c</members>
-        <members>Procedure_Price__c</members>
-        <members>Procedure__c</members>
         <members>Travel__c</members>
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Incident__c</members>
+        <members>Knowledge_Base__c</members>
+        <members>Patient__c</members>
+        <members>Pipeline</members>
+        <members>Procedure_Catalog__c</members>
+        <members>Treatment__c</members>
+        <name>CustomTab</name>
     </types>
     <types>
         <members>PRM_Documents</members>
@@ -117,20 +128,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>*</members>
-        <name>CustomTab</name>
-    </types>
-    <types>
-        <members>Account.Medical_Facilities</members>
-        <members>Contact.Medical_Professionals</members>
-        <name>ListView</name>
-    </types>
-    <types>
-        <members>Account.Medical_Facility</members>
-        <members>Contact.Medical_Professional</members>
-        <name>RecordType</name>
-    </types>
-    <version>26.0</version>
+    <version>25.0</version>
 </Package>
-
