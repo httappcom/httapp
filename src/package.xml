@@ -121,6 +121,16 @@
         <members>*</members>
         <name>CustomTab</name>
     </types>
+    <types>
+        <members>Account.Medical_Facilities</members>
+        <members>Contact.Medical_Professionals</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>Account.Medical_Facility</members>
+        <members>Contact.Medical_Professional</members>
+        <name>RecordType</name>
+    </types>
     <version>26.0</version>
 </Package>
 
