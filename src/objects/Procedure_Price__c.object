@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>The price that goes with this procedure</description>
+    <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>Doctor__c</fullName>
+        <externalId>false</externalId>
+        <formula>Procedure__r.Doctor__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Doctor</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Facility__c</fullName>
+        <externalId>false</externalId>
+        <formula>Procedure__r.Facility__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Facility</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>List_Price__c</fullName>
+        <description>The list for this currency of the Procedure</description>
+        <externalId>false</externalId>
+        <label>List Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Price_with_CC_Surcharge__c</fullName>
+        <description>Pirce adjusted to include the credit card surcharge.</description>
+        <externalId>false</externalId>
+        <label>Price with CC Surcharge</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Procedure_Code__c</fullName>
+        <externalId>false</externalId>
+        <formula>Procedure__r.Procedure_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Procedure Code</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Procedure__c</fullName>
+        <externalId>false</externalId>
+        <label>Procedure</label>
+        <referenceTo>Procedure__c</referenceTo>
+        <relationshipLabel>Procedure Prices</relationshipLabel>
+        <relationshipName>Procedure_Prices</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Sale_Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Sale Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <label>Procedure Price</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>Price_List</fullName>
+        <columns>NAME</columns>
+        <columns>Procedure_Code__c</columns>
+        <columns>Procedure__c</columns>
+        <columns>Doctor__c</columns>
+        <columns>Facility__c</columns>
+        <columns>List_Price__c</columns>
+        <columns>Price_with_CC_Surcharge__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Price List</label>
+    </listViews>
+    <nameField>
+        <displayFormat>PCP{000000000}</displayFormat>
+        <label>Procedure Price</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Procedure Prices</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>

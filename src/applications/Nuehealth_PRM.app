@@ -9,7 +9,8 @@
     <tab>Knowledge_Base__c</tab>
     <tab>Incident__c</tab>
     <tab>standard-report</tab>
-    <tab>Procedure_Catalog__c</tab>
+    <tab>Procedure_Catalog</tab>
+    <tab>Procedure_Price__c</tab>
     <tab>standard-Dashboard</tab>
     <tab>standard-Document</tab>
 </CustomApplication>

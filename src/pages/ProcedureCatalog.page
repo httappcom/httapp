@@ -1,0 +1,3 @@
+<apex:page showHeader="true" readOnly="false" >
+    <apex:enhancedList type="Procedure__c" customizable="true" height="700" />
+</apex:page>

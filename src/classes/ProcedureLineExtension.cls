@@ -28,8 +28,7 @@ public class ProcedureLineExtension {
 
       this.procedure = [select Id,
                                Name,
-                               Procedure_Code__c,
-                               Procedure_Description__c,
+                               Details__c,
                                Facility__r.Name,
                                (select Id,
                                        List_Price__c,
