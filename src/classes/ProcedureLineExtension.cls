@@ -8,7 +8,7 @@ public class ProcedureLineExtension {
   public Procedure_Line_Item__c line { get; set; }
   public Treatment__c treatment { get; private set; }
   public Boolean showLine { get; private set; }
-  public Procedure_Catalog__c procedure { get; set; }
+  public Procedure__c procedure { get; set; }
   
   public String testURL {get;set;} //delete for prod.
   
@@ -33,13 +33,13 @@ public class ProcedureLineExtension {
                                (select Id,
                                        List_Price__c,
                                        Sale_Price__c
-                               from Procedure_Catalogs__r)
-                        from Procedure_Catalog__c
+                               from Procedures__r)
+                        from Procedure__c
                         where Id = :this.line.Procedure__c
                         and Active__c = true];
       
-      this.line.List_Price__c = this.procedure.Procedure_Catalogs__r[0].List_Price__c;
-      this.line.Sale_Price__c = this.procedure.Procedure_Catalogs__r[0].Sale_Price__c;
+      this.line.List_Price__c = this.procedure.Procedures__r[0].List_Price__c;
+      this.line.Sale_Price__c = this.procedure.Procedures__r[0].Sale_Price__c;
                    
       this.showLine = true;
             
