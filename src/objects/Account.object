@@ -23,10 +23,6 @@
         <picklistValues>
             <picklist>AccountSource</picklist>
             <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Partner Referral</fullName>
                 <default>false</default>
             </values>
