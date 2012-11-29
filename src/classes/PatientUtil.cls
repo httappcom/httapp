@@ -261,7 +261,7 @@ public class PatientUtil {
                               Sub_Total__c, 
                               SystemModstamp, 
                               Total_Price__c, 
-                              Treatment__c ,
+                              Treatment__c,
                               Ground_Transportation_Included__c,
                               Hotel_Nights_Included__c,
                               Hotel_Nights_Needed__c,
@@ -269,7 +269,17 @@ public class PatientUtil {
                               Arrival_Date__c,
                               Departure_Date__c,
                               Tax__c,
-                              Syncing__c
+                              Syncing__c,
+                              Procedure__r.Comments__c,
+  		                      Procedure__r.Details__c,
+  		                      Procedure__r.Doctor__c,
+  		                      Procedure__r.Facility__c,
+  		                      Procedure__r.Hospital_Nights_Required__c,
+  		                      Procedure__r.Hotel_Included__c,
+  		                      Procedure__r.Procedure_Category__c,
+  		                      Procedure__r.Procedure_Code__c,
+  		                      Procedure__r.Recovery_Nights_Required__c,
+  		                      Procedure__r.Transportation_Included__c 
                         From Treatment_Quotes__r)
                 from Patient__c 
                 where id = :pPatientId];               
