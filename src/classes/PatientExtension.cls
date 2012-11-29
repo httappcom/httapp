@@ -518,12 +518,23 @@ public class PatientExtension {
       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
     }
   }
+  public PageReference changeProcedureSubCategory() {
+	loadProcedureList();
+	if (treatmentQuote.id == null) {
+		treatmentQuote.Procedure__c = null;
+		procedure = null;
+	}
+	return null;
+  }
   public PageReference setProcedure() {
   	loadProcedure( treatmentQuote.Procedure__c);
   	return null;
   }
   private void loadProcedure(ID procedureId) {
-  	if (procedureId == null) return;
+  	if (procedureId == null) {
+  		procedure = null;
+  		return;
+  	}
   	Procedure__c[] procedures = [SELECT 
   		Comments__c,
   		Details__c,
