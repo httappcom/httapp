@@ -16,10 +16,6 @@
                 <field>Procedure__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Price_with_CC_Surcharge__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Procedure_Code__c</field>
             </layoutItems>

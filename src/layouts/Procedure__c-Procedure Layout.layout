@@ -119,18 +119,20 @@
         <fields>Facility__c</fields>
         <relatedLists>
             <fields>List_Price__c</fields>
-            <fields>Price_with_CC_Surcharge__c</fields>
             <relatedList>Procedure_Price__c.Procedure__c</relatedList>
         </relatedLists>
     </miniLayout>
     <relatedLists>
         <fields>List_Price__c</fields>
-        <fields>Price_with_CC_Surcharge__c</fields>
         <fields>Sale_Price__c</fields>
         <relatedList>Procedure_Price__c.Procedure__c</relatedList>
     </relatedLists>
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Treatment_Quote__c.Procedure__c</relatedList>
     </relatedLists>
     <relatedObjects>Facility__c</relatedObjects>
     <relatedObjects>Doctor__c</relatedObjects>

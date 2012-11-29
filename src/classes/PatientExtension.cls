@@ -90,7 +90,7 @@ public class PatientExtension {
         this.quoteTotCount = patient.Treatment_Quotes__r.size() ; 
         this.treatmentQuotes = patient.Treatment_Quotes__r ;  
         this.treatmentQuotes.sort();
-        this.treatmentQuote = treatmentQuotes[0] ;        
+        setQuoteInfo(1);        
       }      
 
       System.debug('Patient Name'+ this.patient); 
@@ -148,6 +148,7 @@ public class PatientExtension {
     this.medProfiles = new List<Medical_Profile__c>  ();
     this.medProfile = new Medical_Profile__c (); 
     this.treatmentQuote = new Treatment_Quote__c ();
+    this.procedure = null;
     this.treatmentQuotes = new List<Treatment_Quote__c> (); 
     this.incidents = new List<Incident__c> ();
     this.incident = new Incident__c();      
