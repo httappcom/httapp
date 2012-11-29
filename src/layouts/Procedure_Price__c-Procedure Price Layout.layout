@@ -13,7 +13,23 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Procedure_Catalog__c</field>
+                <field>Procedure__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Price_with_CC_Surcharge__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Procedure_Code__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Doctor__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Facility__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -63,7 +79,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hd000000MOsm2</masterLabel>
+        <masterLabel>00hd000000N3ja4</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

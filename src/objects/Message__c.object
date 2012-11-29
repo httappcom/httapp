@@ -110,15 +110,6 @@
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
-    <listViews>
-        <fullName>Mine</fullName>
-        <columns>NAME</columns>
-        <columns>Priority__c</columns>
-        <columns>IsRead__c</columns>
-        <columns>CREATED_DATE</columns>
-        <filterScope>Mine</filterScope>
-        <label>My Messages</label>
-    </listViews>
     <nameField>
         <label>Subject</label>
         <type>Text</type>
@@ -126,8 +117,8 @@
     <pluralLabel>Messages</pluralLabel>
     <searchLayouts>
         <customTabListAdditionalFields>Priority__c</customTabListAdditionalFields>
-        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <excludedStandardButtons>Accept</excludedStandardButtons>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
         <lookupDialogsAdditionalFields>Priority__c</lookupDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>Priority__c</lookupPhoneDialogsAdditionalFields>
         <searchFilterFields>NAME</searchFilterFields>

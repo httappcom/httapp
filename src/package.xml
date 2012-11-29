@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>Message</members>
@@ -17,16 +17,7 @@
         <name>ApexClass</name>
     </types>
     <types>
-        <members>Inquiry</members>
-        <members>Interaction</members>
-        <members>PatientTabWithData</members>
-        <members>Pipeline</members>
-        <members>PipelineWithData</members>
-        <members>Postop</members>
-        <members>ProcedureLine</members>
-        <members>Quote</members>
-        <members>Travel</members>
-        <members>patientPortal</members>
+        <members>*</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -40,16 +31,15 @@
         <name>CustomApplication</name>
     </types>
     <types>
+        <members>Procedure_Price__c.Doctor__c</members>
+        <members>Procedure_Price__c.Facility__c</members>
+        <members>Procedure_Price__c.List_Price__c</members>
+        <members>Procedure_Price__c.Price_with_CC_Surcharge__c</members>
+        <members>Procedure_Price__c.Procedure_Code__c</members>
+        <members>Procedure_Price__c.Procedure__c</members>
+        <members>Procedure_Price__c.Sale_Price__c</members>
         <members>User.Receive_Portal_Messages__c</members>
         <members>User.Receive_Staff_Messages__c</members>
-        <members>Account.External_Id__c</members>
-        <members>Account.Comments__c</members>
-        <members>Account.Slogan__c</members>
-        <members>Contact.Bio__c</members>
-        <members>Contact.Comments__c</members>
-        <members>Contact.External_Id__c</members>
-        <members>Contact.Middle_Name__c</members>
-        <members>Contact.Specialty__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -70,6 +60,7 @@
         <members>Procedure_Catalog_Price__c</members>
         <members>Procedure_Catalog__c</members>
         <members>Procedure_Line_Item__c</members>
+        <members>Procedure__c</members>
         <members>Travel__c</members>
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
@@ -77,10 +68,13 @@
     </types>
     <types>
         <members>Incident__c</members>
+        <members>Inquiry_Mockup</members>
         <members>Knowledge_Base__c</members>
         <members>Patient__c</members>
         <members>Pipeline</members>
+        <members>Procedure_Catalog</members>
         <members>Procedure_Catalog__c</members>
+        <members>Procedure_Price__c</members>
         <members>Treatment__c</members>
         <name>CustomTab</name>
     </types>
@@ -101,6 +95,8 @@
         <name>HomePageLayout</name>
     </types>
     <types>
+        <members>Account-Medical Facility</members>
+        <members>Contact-Medical Professional</members>
         <members>Incident__c-Incident Layout</members>
         <members>Instruction__c-Instruction Layout</members>
         <members>Knowledge_Base__c-Knowledge Base Layout</members>
@@ -113,17 +109,37 @@
         <members>Procedure_Catalog_Price__c-Procedure Catalog Price Layout</members>
         <members>Procedure_Catalog__c-Procedure Catalog Layout</members>
         <members>Procedure_Line_Item__c-Procedure Line Item Layout</members>
+        <members>Procedure_Price__c-Procedure Price Layout</members>
+        <members>Procedure__c-Procedure Layout</members>
         <members>Travel__c-Travel Layout</members>
         <members>Treatment_Quote__c-Interaction Quote Layout</members>
         <members>Treatment__c-Treatment Layout</members>
         <name>Layout</name>
     </types>
     <types>
+        <members>Account.Medical_Facilities</members>
+        <members>Contact.Medical_Professionals</members>
+        <members>Procedure_Price__c.All</members>
+        <members>Procedure_Price__c.Price_List</members>
+        <name>ListView</name>
+    </types>
+    <types>
+        <members>Account.Medical_Facility</members>
+        <members>Contact.Medical_Professional</members>
+        <name>RecordType</name>
+    </types>
+    <types>
+        <members>EHRApplicationStyle</members>
         <members>KenResources</members>
         <members>avatar</members>
         <members>bkgd</members>
+        <members>collaboration</members>
         <members>jQuery</members>
         <members>jQueryTwisty</members>
+        <members>jquery</members>
+        <members>jquery_custom_css</members>
+        <members>jsonSuggest</members>
+        <members>jsonSuggestJS</members>
         <members>paperclip</members>
         <members>sfscript</members>
         <members>sfstyles</members>
@@ -132,20 +148,11 @@
         <name>StaticResource</name>
     </types>
     <types>
+        <members>Patient__c</members>
+        <members>Task</members>
         <members>Travel__c</members>
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>Account.Medical_Facilities</members>
-        <members>Contact.Medical_Professionals</members>
-        <name>ListView</name>
-    </types>
-    <types>
-        <members>Account.Medical_Facility</members>
-        <members>Contact.Medical_Professional</members>
-        <name>RecordType</name>
-    </types>
     <version>26.0</version>
 </Package>
-
