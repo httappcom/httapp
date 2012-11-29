@@ -240,6 +240,17 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Procedure__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Procedure</label>
+        <referenceTo>Procedure__c</referenceTo>
+        <relationshipLabel>Treatment Quotes</relationshipLabel>
+        <relationshipName>Treatment_Quotes</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Province__c</fullName>
         <description>Bill To Province</description>
         <externalId>false</externalId>

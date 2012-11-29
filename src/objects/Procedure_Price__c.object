@@ -31,16 +31,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Price_with_CC_Surcharge__c</fullName>
-        <description>Pirce adjusted to include the credit card surcharge.</description>
-        <externalId>false</externalId>
-        <label>Price with CC Surcharge</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Currency</type>
-    </fields>
-    <fields>
         <fullName>Procedure_Code__c</fullName>
         <externalId>false</externalId>
         <formula>Procedure__r.Procedure_Code__c</formula>
@@ -84,7 +74,6 @@
         <columns>Doctor__c</columns>
         <columns>Facility__c</columns>
         <columns>List_Price__c</columns>
-        <columns>Price_with_CC_Surcharge__c</columns>
         <filterScope>Everything</filterScope>
         <label>Price List</label>
     </listViews>
