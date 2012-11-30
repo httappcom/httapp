@@ -7,7 +7,7 @@ public class PatientUtil {
   public static Patient__c queryPatientAll(Id pPatientId) { 
       if(pPatientId == null) {          
         return null;
-      } else {           
+      } else {
         return [Select id, 
                        Name,
                        CreatedBy.Name,
@@ -282,9 +282,29 @@ public class PatientUtil {
   		                      Procedure__r.Transportation_Included__c 
                         From Treatment_Quotes__r)
                 from Patient__c 
-                where id = :pPatientId];               
+                where id = :pPatientId];
       }  
    }
+   
+  public static Map<Id, Procedure__c> procedurePriceMap = null;
+   
+  public static void loadProcedurePrices( Patient__c patient ) {
+  	if (procedurePriceMap != null) return;
+  	List<ID> procedureIds = new List<ID>();
+   	for (Treatment_Quote__c tr : patient.Treatment_Quotes__r) {
+    	if (tr.Procedure__c != null) {
+	        procedureIds.add(tr.Procedure__c);
+        }
+    }
+    procedurePriceMap = new Map<ID, Procedure__c>(
+        [SELECT Id, (SELECT List_Price__c FROM Procedure_Prices__r) 
+        			FROM Procedure__c
+        			WHERE id in :procedureIds]);
+  }
+  public static Decimal getProcedurePrice( ID procedureId ) {
+  	Procedure__c p = procedurePriceMap.get( procedureId );
+  	return p==null?null:(p.Procedure_Prices__r.size()>0?p.Procedure_Prices__r[0].List_Price__c:null);
+  }
   public static List<Patient__c> queryPatientListAll() {    
       
         return [Select id, 
@@ -524,7 +544,6 @@ public class PatientUtil {
                               Treatment__c 
                         From Treatment_Quotes__r)
                 from Patient__c];
-                             
     }
     
     /**

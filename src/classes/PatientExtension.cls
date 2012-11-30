@@ -54,10 +54,6 @@ public class PatientExtension {
       if  (sc.getId() !=null  ) { 
       //this.patient = (Patient__c)sc.getRecord();          
       this.patient = PatientUtil.queryPatientAll(sc.getId());
-  Integer i=0;
-      for (Treatment_Quote__c tr: patient.Treatment_Quotes__r) {
-  Logger.info((i++)+':patient tr proc='+tr.Procedure__r);
-      }
       if (this.patient != null){                
       if ( patient.Treatments__r.size() > 0 ){         
         treatmentCurNumber = 1;  
@@ -313,9 +309,7 @@ public class PatientExtension {
   }
   private void setQuoteInfo( Integer idx ) {
       treatmentQuote = treatmentQuotes[idx - 1];
-  Logger.info('tq'+idx+'='+treatmentQuote);
       procedure = treatmentQuote.Procedure__r;
-  Logger.info('proc='+procedure);
   	  if (procedure != null) {
 	      loadProcedure(procedure.Id);
   	  }
@@ -529,6 +523,14 @@ public class PatientExtension {
   }
   public PageReference setProcedure() {
   	loadProcedure( treatmentQuote.Procedure__c);
+	if (procedure != null) {
+	    treatmentQuote.Number_of_Hospital_Nights__c = procedure.Hospital_Nights_Required__c;
+        treatmentQuote.Hotel_Nights_Included__c = procedure.Hotel_Included__c;
+        treatmentQuote.Hotel_Nights_Needed__c = procedure.Recovery_Nights_Required__c;
+        treatmentQuote.Ground_Transportation_Included__c = procedure.Transportation_Included__c;
+		PatientUtil.loadProcedurePrices( patient );
+        treatmentQuote.Sub_Total__c = PatientUtil.getProcedurePrice( procedure.id );
+	}
   	return null;
   }
   private void loadProcedure(ID procedureId) {
@@ -556,12 +558,10 @@ public class PatientExtension {
   }
   
   private void loadProcedureList() {
- Logger.info('Cat='+treatment.Procedure_Category__c+', sub='+treatment.Procedure__c);
   	procedureList = new List<SelectOption>();
   	Procedure_Price__c[] prices = [SELECT Procedure__c, Doctor__c, Facility__c, List_Price__c FROM Procedure_Price__c 
   		where Procedure__r.Procedure_Category__c = :treatment.Procedure_Category__c and Procedure__r.Name = :treatment.Procedure__c
   		order by Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name];
- Logger.info('prices='+prices);
   	procedureList.add(new SelectOption('', ''));
   	for (Procedure_Price__c price : prices) {
   		procedureList.add(new SelectOption(price.Procedure__c, price.Doctor__c + ' / ' + price.Facility__c + ' / ' + price.List_Price__c));
