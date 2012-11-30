@@ -5,6 +5,17 @@ public  without sharing class patientPortalController {
 	public boolean showDetailBox {get;set;}
 	public string showDetailID {get;set;}
 	public string patientid {get;set;}
+	public map<id,sObject> detailMap {get;set;}
+	public sObject showDetailRecord{get;set;}
+	public string showDetailRecordType{get;set;}
+
+	public Treatment__c detailTreatment {get;set;}
+	public Task detailTask {get;set;}
+	public Travel__c detailTravel {get;set;}
+	public Payment__c detailPayment {get;set;}
+	public Medical_Profile__c detailMedicalRecord {get;set;}
+	public Incident__c detailIncident {get;set;}
+	public Treatment_Quote__c detailTreatmentQuote {get;set;}
 
 	public string tempstring {get;set;} // placeholder string to be deleted once portal built out more
 	public Attachment tempfile {get;set;} // placeholder file to be deleted once portal built out more
@@ -20,7 +31,7 @@ public  without sharing class patientPortalController {
 		public string status {get;set;}
 		public string dateCreated {get;set;}
 		public datetime lastModified {get;set;}
-		public integer index {get;set;}
+		public string index {get;set;}
 		
 		public recentActivity () {}
 	}
@@ -47,6 +58,7 @@ public  without sharing class patientPortalController {
 	
 	public pagereference load() {
 		patient = patientUtil.queryPatientAll(patientid);
+		detailMap = new map<id,sobject>();
 		buildRecentActivity();
 		buildRelatedLists();
 		currentPage='Home';
@@ -59,81 +71,86 @@ public  without sharing class patientPortalController {
 			recentActivity r = new recentActivity();
 			r.lastModified = t.LastModifiedDate;
 			r.subject = 'Treatment';
-			r.reference = '';
+			r.reference = t.name;
 			r.status = '';
 			r.dateCreated = string.valueof(t.CreatedDate);
 			sortInsertRecentActivity(r);
+			r.index = t.id;
+			detailMap.put(t.id,t);
 		}
 		
 		for (Task t : patient.tasks) {
 			recentActivity r = new recentActivity();
 			r.lastModified = t.LastModifiedDate;
 			r.subject = 'Task';
-			r.reference = '';
+			r.reference = t.subject;
 			r.status = '';
 			r.dateCreated = string.valueof(t.CreatedDate);			
 			sortInsertRecentActivity(r);
+			r.index = t.id;
+			detailMap.put(t.id,t);
 		}
 		
 		for (Travel__c t : patient.travels__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = t.LastModifiedDate;
 			r.subject = 'Travel';
-			r.reference = '';
+			r.reference = t.name;
 			r.status = '';
 			r.dateCreated = string.valueof(t.CreatedDate);
 			sortInsertRecentActivity(r);
+			r.index = t.id;
+			detailMap.put(t.id,t);
 		}
 		
 		for (Payment__c p : patient.payments__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = p.LastModifiedDate;
 			r.subject = 'Payment';
-			r.reference = '';
+			r.reference = p.name;
 			r.status = '';
 			r.dateCreated = string.valueof(p.CreatedDate);
 			sortInsertRecentActivity(r);
+			r.index = p.id;
+			detailMap.put(p.id,p);
 		}
 		
 		for (Medical_Profile__c mp : patient.Medical_Profiles__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = mp.LastModifiedDate;
 			r.subject = 'Medical Profile';
-			r.reference = '';
+			r.reference = mp.name;
 			r.status = '';
 			r.dateCreated = string.valueof(mp.CreatedDate);
 			sortInsertRecentActivity(r);
+			r.index = mp.id;
+			detailMap.put(mp.id,mp);
 		}
 		
 		for (Incident__c i : patient.Incidents__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = i.LastModifiedDate;
 			r.subject = 'Incident'+patient.incidents__r.size();
-			r.reference = '';
+			r.reference = i.name;
 			r.status = '';
 			r.dateCreated = string.valueof(i.CreatedDate);
 			sortInsertRecentActivity(r);
+			r.index = i.id;
+			detailMap.put(i.id,i);
 		}
 		
 		for (Treatment_Quote__c tq : patient.Treatment_Quotes__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = tq.LastModifiedDate;
 			r.subject = 'Treatment Quote';
-			r.reference = '';
+			r.reference = tq.name;
 			r.status = '';
 			r.dateCreated = string.valueof(tq.CreatedDate);
 			sortInsertRecentActivity(r);
+			r.index = tq.id;
+			detailMap.put(tq.id,tq);
 		}
 		
-		assignIndecesToRecentActivities();
-		
-		return null;
-	}
-	
-	public pagereference assignIndecesToRecentActivities() {
-		for (integer i =0; i < recentActivities.size();i++) {
-			recentActivities[i].index = i;
-		}		
 		return null;
 	}
 	
@@ -188,9 +205,47 @@ public  without sharing class patientPortalController {
 		currentPage = 'Your Treatment'; 
 		return null;
 	}
-	
+
 	public pagereference showDetails(){
-		showDetailBox = (showDetailBox==false)?true:false;
+		if (showDetailBox==false) {
+			if (apexpages.currentpage().getparameters().get('showDetailID')!= null){
+				showDetailID = apexpages.currentpage().getparameters().get('showDetailID');
+			}
+			showDetailRecord = detailMap.get(showDetailId);
+
+			if (showDetailRecord instanceof Treatment__c){
+				showDetailRecordType = 'Treatment';
+				detailTreatment = (Treatment__c)showDetailRecord;
+			}	
+			else if (showDetailRecord instanceof Task){
+				showDetailRecordType = 'Task';
+				detailTask = (Task)showDetailRecord;
+			}
+			else if (showDetailRecord instanceof Travel__c){
+				showDetailRecordType = 'Travel';
+				detailTravel = (Travel__c)showDetailRecord;
+			}
+			else if (showDetailRecord instanceof Payment__c){
+				showDetailRecordType = 'Payment';
+				detailPayment = (Payment__c)showDetailRecord;
+			}
+			else if (showDetailRecord instanceof Medical_Profile__c){
+				showDetailRecordType = 'Medical Record';
+				detailMedicalRecord = (Medical_Profile__c)showDetailRecord;
+			}
+			else if (showDetailRecord instanceof Incident__c){
+				showDetailRecordType = 'Incident';
+				detailIncident = (Incident__c)showDetailRecord;
+			}
+			else if (showDetailRecord instanceof Treatment_Quote__c){
+				showDetailRecordType = 'Treatment Quote';
+				detailTreatmentQuote = (Treatment_Quote__c)showDetailRecord;
+			}
+			else showDetailRecordType = 'Undefined';
+			
+			showDetailBox = true;
+		}
+		else showDetailBox = false;
 		return null;
 	}
 	
