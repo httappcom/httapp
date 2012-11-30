@@ -14,11 +14,33 @@
         <members>TravelUtility</members>
         <members>TreatmentTests</members>
         <members>TreatmentUtility</members>
+        <members>ChangePasswordController</members>
+        <members>ForgotPasswordController</members>
+        <members>MyProfilePageController</members>
         <members>patientPortalController</members>
+        <members>SiteLoginController</members>
+        <members>SiteRegisterController</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
+        <members>patientPortal</members>
+        <members>AnswersHome</members>
+        <members>BandwidthExceeded</members>
+        <members>ChangePassword</members>
+        <members>Exception</members>
+        <members>FileNotFound</members>
+        <members>ForgotPassword</members>
+        <members>ForgotPasswordConfirm</members>
+        <members>IdeasHome</members>
+        <members>InMaintenance</members>
+        <members>MyProfilePage</members>
+        <members>SiteLogin</members>
+        <members>SiteRegister</members>
+        <members>SiteRegisterConfirm</members>
+        <members>SiteTemplate</members>
+        <members>StdExceptionTemplate</members>
+        <members>Unauthorized</members>
+        <members>UnderConstruction</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -35,12 +57,19 @@
         <members>Procedure_Price__c.Doctor__c</members>
         <members>Procedure_Price__c.Facility__c</members>
         <members>Procedure_Price__c.List_Price__c</members>
-        <members>Procedure_Price__c.Price_with_CC_Surcharge__c</members>
         <members>Procedure_Price__c.Procedure_Code__c</members>
         <members>Procedure_Price__c.Procedure__c</members>
         <members>Procedure_Price__c.Sale_Price__c</members>
         <members>User.Receive_Portal_Messages__c</members>
         <members>User.Receive_Staff_Messages__c</members>
+        <members>Account.Comments__c</members>
+        <members>Account.External_Id__c</members>
+        <members>Account.Slogan__c</members>
+        <members>Contact.Bio__c</members>
+        <members>Contact.Comments__c</members>
+        <members>Contact.External_Id__c</members>
+        <members>Contact.Middle_Name__c</members>
+        <members>Contact.Specialty__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -58,10 +87,9 @@
         <members>My_Message_Settings__c</members>
         <members>Patient__c</members>
         <members>Payment__c</members>
-        <members>Procedure_Catalog_Price__c</members>
-        <members>Procedure_Catalog__c</members>
         <members>Procedure_Line_Item__c</members>
         <members>Procedure__c</members>
+        <members>Procedure_Price__c</members>
         <members>Travel__c</members>
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
@@ -74,7 +102,6 @@
         <members>Patient__c</members>
         <members>Pipeline</members>
         <members>Procedure_Catalog</members>
-        <members>Procedure_Catalog__c</members>
         <members>Procedure_Price__c</members>
         <members>Treatment__c</members>
         <name>CustomTab</name>
@@ -107,8 +134,6 @@
         <members>Message__c-Message Layout</members>
         <members>Patient__c-Patient Layout</members>
         <members>Payment__c-Payment Layout</members>
-        <members>Procedure_Catalog_Price__c-Procedure Catalog Price Layout</members>
-        <members>Procedure_Catalog__c-Procedure Catalog Layout</members>
         <members>Procedure_Line_Item__c-Procedure Line Item Layout</members>
         <members>Procedure_Price__c-Procedure Price Layout</members>
         <members>Procedure__c-Procedure Layout</members>
@@ -154,6 +179,10 @@
         <members>Travel__c</members>
         <members>Treatment__c</members>
         <name>Workflow</name>
+    </types>
+    <types>
+        <members>patientPortal</members>
+        <name>Profile</name>
     </types>
     <version>26.0</version>
 </Package>

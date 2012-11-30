@@ -47,6 +47,7 @@ public class PatientExtension {
   private List<Payment__c> payments ;    
   private List<Incident__c> incidents ;
   private List<Treatment_Quote__c> treatmentQuotes ;
+  private List<Treatment_Quote__c> treatmentQuotesCache;
             
   public PatientExtension(ApexPages.StandardController sc) {
     this.initiatePatient();     
@@ -59,9 +60,14 @@ public class PatientExtension {
         treatmentCurNumber = 1;  
         this.treatmentTotCount = patient.Treatments__r.size() ; 
         this.treatments = patient.Treatments__r;
-        this.treatments.sort() ;  
-        for (Treatment__c t : this.treatments) this.treatmentNames.add(t.name);                   
-        this.treatment = treatments[0]; 
+        this.treatments.sort() ;
+  Logger.info('treatments='+treatments);
+        for (Treatment__c t : this.treatments) {
+        	this.treatmentNames.add(t.name);
+  Logger.info('tName='+t.name);
+        }
+        setTreatmentInfo( 1 );
+        
       }     
       if ( patient.Travels__r.size() > 0 ) this.travel = patient.Travels__r[0] ;  
       if ( patient.Medical_Profiles__r.size() > 0 ) this.medprofile     = patient.Medical_Profiles__r[0];
@@ -84,8 +90,8 @@ public class PatientExtension {
       if ( patient.Treatment_Quotes__r.size() > 0 ) {
         this.quoteCurNumber = 1;
         this.quoteTotCount = patient.Treatment_Quotes__r.size() ; 
-        this.treatmentQuotes = patient.Treatment_Quotes__r ;  
-        this.treatmentQuotes.sort();
+        this.treatmentQuotesCache = patient.Treatment_Quotes__r ;  
+        this.treatmentQuotesCache.sort();
         setQuoteInfo(1);        
       }      
 
@@ -106,7 +112,9 @@ public class PatientExtension {
       }else {       
       }        
     }catch(Exception e){
+   Logger.info(e.getStackTraceString());
       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
+      throw e;
     }
   }  
   private void initiatePatient(){
@@ -290,30 +298,57 @@ public class PatientExtension {
       }
     }
     set;
-  }    
+  }
+  private void setTreatmentInfo( Integer idx ) {
+    this.quoteCurNumber = 1;
+  	if (idx<1 || idx > treatments.size()) {
+  		treatment = null;
+  		treatmentName = null;
+  		return;
+  	}
+      treatment = treatments[ idx-1 ];
+      treatmentName =  treatmentNames[idx-1];
+  }
   public PageReference nextTreatments() {      
     if ( treatmentCurNumber <= treatmentTotCount ){ 
-      treatmentCurNumber = treatmentCurNumber + 1; 
-      treatment = treatments[treatmentCurNumber -1];
-      treatmentName =  treatmentNames[treatmentCurNumber - 1];
+      treatmentCurNumber = treatmentCurNumber + 1;
+      setTreatmentInfo( treatmentCurNumber -1 );
     }
     return ApexPages.currentPage();        
   }
   public PageReference previousTreatments() {      
     if ( treatmentCurNumber > 1 ){ 
        treatmentCurNumber = treatmentCurNumber - 1; 
-       treatment = treatments[treatmentCurNumber - 1];
-       treatmentName =  treatmentNames[treatmentCurNumber - 1];
+      setTreatmentInfo( treatmentCurNumber -1 );
     }
     return ApexPages.currentPage();        
   }
   private void setQuoteInfo( Integer idx ) {
+  	if (treatmentQuotes.size()==0) {
+  		treatmentQuote = null;
+  		procedure = null;
+  		quoteName = null;
+  		return;
+  	}
       treatmentQuote = treatmentQuotes[idx - 1];
       procedure = treatmentQuote.Procedure__r;
   	  if (procedure != null) {
 	      loadProcedure(procedure.Id);
   	  }
       quoteName =  treatmentQuote.Name;
+  }
+  private void getQuotesforTreatment() {
+ Logger.info('getQuotesforTreatment');
+  	treatmentQuotes = new list<Treatment_Quote__c>();
+  	if (treatment == null) return;
+ Logger.info('cache='+this.treatmentQuotesCache);
+  	for (Treatment_Quote__c tq : this.treatmentQuotesCache) {
+  	Logger.info('tq.Treatment__c='+tq.Treatment__c+', id='+treatment.id);
+  		if (tq.Treatment__c == treatment.id) {
+  			treatmentQuotes.add(tq);
+  		}
+  	}
+  Logger.info('tqs='+treatmentQuotes);
   }
   public PageReference nextQuote() {      
     if ( quoteCurNumber <= quoteTotCount ){ 
@@ -342,6 +377,7 @@ public class PatientExtension {
         treatmentQuote.Patient__c = patient.id;     
         insert treatmentQuote ;
         treatmentQuotes.add(treatmentQuote);
+        treatmentQuotesCache.add(treatmentQuote);
         quoteTotCount = quoteTotCount + 1; 
         quoteCurNumber =  quoteCurNumber +1 ;      
         tempQuote = [select id, Name from  Treatment_Quote__c where id = : treatmentQuote.id ];
@@ -469,7 +505,9 @@ public class PatientExtension {
     FeaturesFlag = false;
     QuoteFlag = true;
     PaymentFlag = false;
+    getQuotesforTreatment();
     loadProcedureList();
+    setQuoteInfo( quoteCurNumber );
   }    
   public void displayPayments(){
     IncidentFlag = false;
