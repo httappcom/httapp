@@ -67,7 +67,7 @@
         <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Doctor</label>
-        <referenceTo>Contact</referenceTo>
+        <referenceTo>Medical_Professional__c</referenceTo>
         <relationshipLabel>Procedures</relationshipLabel>
         <relationshipName>Procedures</relationshipName>
         <required>true</required>
@@ -79,7 +79,7 @@
         <description>What Hospital, facility provides this Procedure.</description>
         <externalId>false</externalId>
         <label>Facility</label>
-        <referenceTo>Account</referenceTo>
+        <referenceTo>Medical_Facility__c</referenceTo>
         <relationshipLabel>Procedures</relationshipLabel>
         <relationshipName>Procedures</relationshipName>
         <required>true</required>

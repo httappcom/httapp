@@ -117,8 +117,8 @@
     <pluralLabel>Messages</pluralLabel>
     <searchLayouts>
         <customTabListAdditionalFields>Priority__c</customTabListAdditionalFields>
-        <excludedStandardButtons>Accept</excludedStandardButtons>
         <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <excludedStandardButtons>Accept</excludedStandardButtons>
         <lookupDialogsAdditionalFields>Priority__c</lookupDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>Priority__c</lookupPhoneDialogsAdditionalFields>
         <searchFilterFields>NAME</searchFilterFields>

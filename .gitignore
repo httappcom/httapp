@@ -1,6 +1,8 @@
+.settings/com.salesforce.ide.core.prefs
 .DS_Store
 .settings
 .project
 salesforce.schema
 tools/build.properties
 build.properties
+.settings/

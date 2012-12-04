@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>ChangePasswordController</members>
+        <members>ForgotPasswordController</members>
         <members>Logger</members>
         <members>Message</members>
         <members>Message_Test</members>
+        <members>MyProfilePageController</members>
         <members>PatientExtension</members>
         <members>PatientRank</members>
         <members>PatientTest</members>
@@ -11,19 +14,15 @@
         <members>PipelineController</members>
         <members>ProcedureLineExtension</members>
         <members>QuoteController</members>
+        <members>SiteLoginController</members>
+        <members>SiteRegisterController</members>
         <members>TravelUtility</members>
         <members>TreatmentTests</members>
         <members>TreatmentUtility</members>
-        <members>ChangePasswordController</members>
-        <members>ForgotPasswordController</members>
-        <members>MyProfilePageController</members>
         <members>patientPortalController</members>
-        <members>SiteLoginController</members>
-        <members>SiteRegisterController</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>patientPortal</members>
         <members>AnswersHome</members>
         <members>BandwidthExceeded</members>
         <members>ChangePassword</members>
@@ -33,24 +32,25 @@
         <members>ForgotPasswordConfirm</members>
         <members>IdeasHome</members>
         <members>InMaintenance</members>
-        <members>MyProfilePage</members>
-        <members>SiteLogin</members>
-        <members>SiteRegister</members>
-        <members>SiteRegisterConfirm</members>
-        <members>SiteTemplate</members>
-        <members>StdExceptionTemplate</members>
-        <members>Unauthorized</members>
-        <members>UnderConstruction</members>
         <members>Inquiry</members>
         <members>Interaction</members>
+        <members>MyProfilePage</members>
         <members>PatientTabWithData</members>
         <members>Pipeline</members>
         <members>PipelineWithData</members>
         <members>Postop</members>
         <members>ProcedureCatalog</members>
         <members>ProcedureLine</members>
-        <members>Travel</members>
         <members>Quote</members>
+        <members>SiteLogin</members>
+        <members>SiteRegister</members>
+        <members>SiteRegisterConfirm</members>
+        <members>SiteTemplate</members>
+        <members>StdExceptionTemplate</members>
+        <members>Travel</members>
+        <members>Unauthorized</members>
+        <members>UnderConstruction</members>
+        <members>patientPortal</members>
         <name>ApexPage</name>
     </types>
     <types>
@@ -64,22 +64,9 @@
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>Procedure_Price__c.Doctor__c</members>
-        <members>Procedure_Price__c.Facility__c</members>
-        <members>Procedure_Price__c.List_Price__c</members>
-        <members>Procedure_Price__c.Procedure_Code__c</members>
-        <members>Procedure_Price__c.Procedure__c</members>
-        <members>Procedure_Price__c.Sale_Price__c</members>
+        <members>My_Message_Settings__c.Show_Info_Header__c</members>
         <members>User.Receive_Portal_Messages__c</members>
         <members>User.Receive_Staff_Messages__c</members>
-        <members>Account.Comments__c</members>
-        <members>Account.External_Id__c</members>
-        <members>Account.Slogan__c</members>
-        <members>Contact.Bio__c</members>
-        <members>Contact.Comments__c</members>
-        <members>Contact.External_Id__c</members>
-        <members>Contact.Middle_Name__c</members>
-        <members>Contact.Specialty__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -94,12 +81,11 @@
         <members>Message_Header__c</members>
         <members>Message_User__c</members>
         <members>Message__c</members>
-        <members>My_Message_Settings__c</members>
         <members>Patient__c</members>
         <members>Payment__c</members>
         <members>Procedure_Line_Item__c</members>
-        <members>Procedure__c</members>
         <members>Procedure_Price__c</members>
+        <members>Procedure__c</members>
         <members>Travel__c</members>
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
@@ -138,6 +124,8 @@
         <members>Incident__c-Incident Layout</members>
         <members>Instruction__c-Instruction Layout</members>
         <members>Knowledge_Base__c-Knowledge Base Layout</members>
+        <members>Medical_Facility__c-Medical Facility Layout</members>
+        <members>Medical_Professional__c-Medical Professional Layout</members>
         <members>Medical_Profile__c-Medical Profile Layout</members>
         <members>Message_Header__c-Message Header Layout</members>
         <members>Message_User__c-Message User Layout</members>
@@ -153,16 +141,8 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>Account.Medical_Facilities</members>
-        <members>Contact.Medical_Professionals</members>
-        <members>Procedure_Price__c.All</members>
-        <members>Procedure_Price__c.Price_List</members>
-        <name>ListView</name>
-    </types>
-    <types>
-        <members>Account.Medical_Facility</members>
-        <members>Contact.Medical_Professional</members>
-        <name>RecordType</name>
+        <members>patientPortal</members>
+        <name>Profile</name>
     </types>
     <types>
         <members>EHRApplicationStyle</members>
@@ -190,10 +170,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>patientPortal</members>
-        <name>Profile</name>
-    </types>
     <version>26.0</version>
 </Package>
-
