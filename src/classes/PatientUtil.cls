@@ -323,15 +323,15 @@ public class PatientUtil {
                               Tax__c,
                               Syncing__c,
                               Procedure__r.Comments__c,
-  		                      Procedure__r.Details__c,
-  		                      Procedure__r.Doctor__c,
-  		                      Procedure__r.Facility__c,
-  		                      Procedure__r.Hospital_Nights_Required__c,
-  		                      Procedure__r.Hotel_Included__c,
-  		                      Procedure__r.Procedure_Category__c,
-  		                      Procedure__r.Procedure_Code__c,
-  		                      Procedure__r.Recovery_Nights_Required__c,
-  		                      Procedure__r.Transportation_Included__c 
+                              Procedure__r.Details__c,
+                              Procedure__r.Doctor__c,
+                              Procedure__r.Facility__c,
+                              Procedure__r.Hospital_Nights_Required__c,
+                              Procedure__r.Hotel_Included__c,
+                              Procedure__r.Procedure_Category__c,
+                              Procedure__r.Procedure_Code__c,
+                              Procedure__r.Recovery_Nights_Required__c,
+                              Procedure__r.Transportation_Included__c 
                         From Treatment_Quotes__r)
                 from Treatment__c 
                 where id = :treatmentId];
@@ -341,21 +341,21 @@ public class PatientUtil {
   public static Map<Id, Procedure__c> procedurePriceMap = null;
    
   public static void loadProcedurePrices( Treatment__c treatment ) {
-  	if (procedurePriceMap != null) return;
-  	List<ID> procedureIds = new List<ID>();
-   	for (Treatment_Quote__c tr : treatment.Treatment_Quotes__r) {
-    	if (tr.Procedure__c != null) {
-	        procedureIds.add(tr.Procedure__c);
+    if (procedurePriceMap != null) return;
+    List<ID> procedureIds = new List<ID>();
+    for (Treatment_Quote__c tr : treatment.Treatment_Quotes__r) {
+        if (tr.Procedure__c != null) {
+            procedureIds.add(tr.Procedure__c);
         }
     }
     procedurePriceMap = new Map<ID, Procedure__c>(
         [SELECT Id, (SELECT List_Price__c FROM Procedure_Prices__r) 
-        			FROM Procedure__c
-        			WHERE id in :procedureIds]);
+                    FROM Procedure__c
+                    WHERE id in :procedureIds]);
   }
   public static Decimal getProcedurePrice( ID procedureId ) {
-  	Procedure__c p = procedurePriceMap.get( procedureId );
-  	return p==null?null:(p.Procedure_Prices__r.size()>0?p.Procedure_Prices__r[0].List_Price__c:null);
+    Procedure__c p = procedurePriceMap.get( procedureId );
+    return p==null?null:(p.Procedure_Prices__r.size()>0?p.Procedure_Prices__r[0].List_Price__c:null);
   }
   public static List<Patient__c> queryPatientListAll() {    
       
@@ -518,29 +518,29 @@ public class PatientUtil {
     }
     
     public static void verifyPortalAccessAtInteractionPhase(
-    												list<Treatment__c> newlist, 
-    												list<Treatment__c> oldlist) {
-    	set<id> patientIds = new set<id>();
-    	for (integer i=0;i<newlist.size();i++){
-    		patientIds.add(newlist[i].patient__c);
-    	}
-    	
-    	map<id,id> patientKeyContactMap = new map<id,id>();
-    	for (Patient__c p : [select id, 
-							key_contact__c 
-							from Patient__c 
-							where id 
-							IN :patientIds]) {
-    		patientKeyContactMap.put(p.id,p.key_contact__c);
-    	}
-    	
-    	
-    	for(integer i=0; i<newlist.size(); i++) {
-    		if (newlist[i].Phase__c == '(2) Interaction' 
-    				&& patientKeyContactMap.get(newlist[i].Patient__c) == null) {
-    			createPatientPortalUser(newlist[i].patient__c);
-    		}
-    	}
+                                                    list<Treatment__c> newlist, 
+                                                    list<Treatment__c> oldlist) {
+        set<id> patientIds = new set<id>();
+        for (integer i=0;i<newlist.size();i++){
+            patientIds.add(newlist[i].patient__c);
+        }
+        
+        map<id,id> patientKeyContactMap = new map<id,id>();
+        for (Patient__c p : [select id, 
+                            key_contact__c 
+                            from Patient__c 
+                            where id 
+                            IN :patientIds]) {
+            patientKeyContactMap.put(p.id,p.key_contact__c);
+        }
+        
+        
+        for(integer i=0; i<newlist.size(); i++) {
+            if (newlist[i].Phase__c == '(2) Interaction' 
+                    && patientKeyContactMap.get(newlist[i].Patient__c) == null) {
+                createPatientPortalUser(newlist[i].patient__c);
+            }
+        }
     }
     
     /**
@@ -551,35 +551,35 @@ public class PatientUtil {
      * @param string patientID
      */
     public static void createPatientPortalUser (string patientID) {
-    	
-    	// query patient for data
-    	Patient__c patient = [select 	id,
-    									Name, 
-    									Patient_First_Name__c, 
-    									Patient_Last_Name__c, 
-    									email__c, 
-    									Date_of_Birth__c,
-    									key_contact__c 
-    								from Patient__c 
-    								where id = :patientID];
-    	
-    	Account a = new Account();
-    	a.name = patient.Name;
-    	insert a;
-    	
-    	Contact c = new Contact();
-    	c.firstname = patient.patient_first_name__c;
-    	c.lastname = patient.patient_last_name__c;
-    	c.email = patient.email__c;
-    	c.birthdate = patient.date_of_birth__c;
-    	c.accountid = a.id;
-    	
-    	insert c;
-    	
-    	patient.Key_Contact__c = c.id;
-    	update patient;
-    	
-    	futureCreatePortalUser(patient.id);
+        
+        // query patient for data
+        Patient__c patient = [select    id,
+                                        Name, 
+                                        Patient_First_Name__c, 
+                                        Patient_Last_Name__c, 
+                                        email__c, 
+                                        Date_of_Birth__c,
+                                        key_contact__c 
+                                    from Patient__c 
+                                    where id = :patientID];
+        
+        Account a = new Account();
+        a.name = patient.Name;
+        insert a;
+        
+        Contact c = new Contact();
+        c.firstname = patient.patient_first_name__c;
+        c.lastname = patient.patient_last_name__c;
+        c.email = patient.email__c;
+        c.birthdate = patient.date_of_birth__c;
+        c.accountid = a.id;
+        
+        insert c;
+        
+        patient.Key_Contact__c = c.id;
+        update patient;
+        
+        futureCreatePortalUser(patient.id);
     }
     
     /**
@@ -590,66 +590,66 @@ public class PatientUtil {
      */   
     @future
     public static void futureCreatePortalUser(string patientid) { 
-		
-		// query patient for data
-    	Patient__c patient = [select 	id, 
-    									Patient_First_Name__c, 
-    									Patient_Last_Name__c, 
-    									email__c, 
-    									Date_of_Birth__c,
-    									key_contact__c,
-    									key_contact__r.accountid 
-    								from Patient__c 
-    								where id = :patientID];
-		
-		
-		User u = new User();
-    	string username = patient.Patient_First_Name__c.substring(0,1);
-    	username+=patient.patient_last_name__c;
-    	username+= (patient.date_of_birth__c.year() != null)?string.valueof(patient.Date_of_Birth__c.year()).substring(2,3):'00'; 
-    	username.replace(' ','_');
-    	
-    	u.firstname = patient.patient_First_name__c;
-    	u.lastname = patient.patient_last_name__c;
-    	u.Alias = username.substring(0,5)+username.substring(username.length()-2,username.length());
+        
+        // query patient for data
+        Patient__c patient = [select    id, 
+                                        Patient_First_Name__c, 
+                                        Patient_Last_Name__c, 
+                                        email__c, 
+                                        Date_of_Birth__c,
+                                        key_contact__c,
+                                        key_contact__r.accountid 
+                                    from Patient__c 
+                                    where id = :patientID];
+        
+        
+        User u = new User();
+        string username = patient.Patient_First_Name__c.substring(0,1);
+        username+=patient.patient_last_name__c;
+        username+= (patient.date_of_birth__c.year() != null)?string.valueof(patient.Date_of_Birth__c.year()).substring(2,3):'00'; 
+        username.replace(' ','_');
+        
+        u.firstname = patient.patient_First_name__c;
+        u.lastname = patient.patient_last_name__c;
+        u.Alias = username.substring(0,5)+username.substring(username.length()-2,username.length());
         u.Username = username+='@patient.htt.com';
         u.Email = patient.email__c;
         u.CommunityNickname = username;
-    	u.TimeZoneSidKey = 'America/Tijuana';
-    	u.LocaleSidKey = 'en_US';
-    	u.EmailEncodingKey ='UTF-8';
-    	u.LanguageLocaleKey ='en_US';
-    	
-    	// create portal user
-    	String userId;
-   		//userId = Site.createPortalUser(	u, 
-   		//								patient.key_contact__r.accountid,
-   		//								null);    			
-   		//u.AccountId = patient.Key_Contact__r.accountid;
-   		u.ContactId = patient.key_contact__c;
-   		u.ProfileId = [select id from Profile where name = 'patientPortal'].id;
-   		Database.SaveResult result = Database.Insert(u);	
-   		if (result.isSuccess()) {
-   			//send email to patient
-   			messaging.Singleemailmessage msg = new messaging.singleEmailMessage();
-   			msg.setToAddresses(new list<string>{patient.email__c});
-   			msg.setSubject('Welcome to your Health Travel Guides Portal Account');
-   			msg.setSenderDisplayName('Health Travel Guides');
-   			string plainbody;
-   			plainbody='Hello '+patient.patient_first_name__c+',\n\n';
-   			plainbody+='Welcome to the Health Travel Guides Portal Account.';
-   			plainbody+=' You will receive your login information shortly.';
-   			plainbody+='\n\nYou may login at the following page:\n\n';
-   			plainbody+='Login page: http:\\\\htt.force.com\n\n';
-   			plainbody+=' After your first login, you will be required to change your password.\n\n';
-   			msg.setPlainTextBody(plainbody);
-   			msg.setHtmlBody(plainbody.replace('\n','<br/>'));
-   			
-   			messaging.sendemail(new list<Messaging.email>{msg});
-   			system.resetPassword(u.id, true);   			
-   		}							
-   		else {
-   			//notify an admin of failure
-   		}
+        u.TimeZoneSidKey = 'America/Tijuana';
+        u.LocaleSidKey = 'en_US';
+        u.EmailEncodingKey ='UTF-8';
+        u.LanguageLocaleKey ='en_US';
+        
+        // create portal user
+        String userId;
+        //userId = Site.createPortalUser(   u, 
+        //                              patient.key_contact__r.accountid,
+        //                              null);              
+        //u.AccountId = patient.Key_Contact__r.accountid;
+        u.ContactId = patient.key_contact__c;
+        u.ProfileId = [select id from Profile where name = 'patientPortal'].id;
+        Database.SaveResult result = Database.Insert(u);    
+        if (result.isSuccess()) {
+            //send email to patient
+            messaging.Singleemailmessage msg = new messaging.singleEmailMessage();
+            msg.setToAddresses(new list<string>{patient.email__c});
+            msg.setSubject('Welcome to your Health Travel Guides Portal Account');
+            msg.setSenderDisplayName('Health Travel Guides');
+            string plainbody;
+            plainbody='Hello '+patient.patient_first_name__c+',\n\n';
+            plainbody+='Welcome to the Health Travel Guides Portal Account.';
+            plainbody+=' You will receive your login information shortly.';
+            plainbody+='\n\nYou may login at the following page:\n\n';
+            plainbody+='Login page: http:\\\\htt.force.com\n\n';
+            plainbody+=' After your first login, you will be required to change your password.\n\n';
+            msg.setPlainTextBody(plainbody);
+            msg.setHtmlBody(plainbody.replace('\n','<br/>'));
+            
+            messaging.sendemail(new list<Messaging.email>{msg});
+            system.resetPassword(u.id, true);               
+        }                           
+        else {
+            //notify an admin of failure
+        }
     }
 }

@@ -234,7 +234,6 @@
         <fields>NAME</fields>
         <fields>Expiration_Date__c</fields>
         <fields>Grand_Total__c</fields>
-        <fields>Patient__c</fields>
         <fields>Procedure_Date__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Treatment_Quote__c.Treatment__c</relatedList>
@@ -253,7 +252,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Patient__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Travel__c.Treatment__c</relatedList>
         <sortField>CREATED_DATE</sortField>
@@ -269,7 +267,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Patient__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Incident__c.Treatment__c</relatedList>
         <sortField>CREATED_DATE</sortField>

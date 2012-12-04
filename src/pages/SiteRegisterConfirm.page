@@ -15,7 +15,7 @@
                   <apex:outputText styleClass="title" value="{!$Label.site.thank_you_for_registering}"/>
                   <br/>
                   <br/>
-                  <apex:outputLink value="{!$Page.SiteLogin}" rendered="{!$Site.LoginEnabled}">{!$Label.site.go_to_login_page}</apex:outputLink>
+                  <apex:outputLink value="{!$Page.PortalSiteLogin}" rendered="{!$Site.LoginEnabled}">{!$Label.site.go_to_login_page}</apex:outputLink>
                   <br/>
                 </apex:panelGroup>
               </apex:panelGrid> 

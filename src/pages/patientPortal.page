@@ -29,6 +29,13 @@
 				filter: alpha(opacity=50);
 				/*zoom: 1;*/
 			}
+			
+			.link {
+				text-decoration:underline;
+			}
+			.link:hover {
+				text-decoration:none;
+			}
 	</style>
 	
 	<body style="width:600px;">
@@ -65,16 +72,16 @@
 					Recent Activity<Br/>
 					Recent Activity in your Hub<br/><br/>
 					<apex:pageblocktable value="{!recentActivities}" var="a">
-						<apex:column > 
-							<apex:facet name="header">Subject</apex:facet>
-							<apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
-								<apex:outputtext value="{!a.Subject}"/>
-								<!-- <apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!a.id}"/> -->
-							</apex:commandlink>
-						</apex:column>
 						<apex:column >
 							<apex:facet name="header">Reference #</apex:facet>
-							test
+							<apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
+								<apex:outputtext value="{!a.reference}"/>
+								<apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!a.index}"/>
+							</apex:commandlink>
+						</apex:column>
+						<apex:column > 
+							<apex:facet name="header">Subject</apex:facet>
+							<apex:outputtext value="{!a.Subject}"/>
 						</apex:column>
 						<apex:column >
 							<apex:facet name="header">Status</apex:facet>
@@ -159,7 +166,27 @@
 					[list]<Br/><Br/><Br/>
 					
 					Treatment:<br/>
-					[list]<br/><br/><br/>
+					<apex:pageblocktable value="{!treatmentList}" var="t">
+						<apex:column >
+							<apex:facet name="header">Reference</apex:facet>
+								<apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
+									<apex:outputtext value="{!t.name}"/>
+									<apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!t.id}"/>
+								</apex:commandlink>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Treatment Date</apex:facet>
+							<apex:outputfield value="{!t.Treatment_Date__c}"/>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Primary Provider</apex:facet>
+							<apex:outputfield value="{!t.Primary_Provider__c}"/>
+						</apex:column>
+						<apex:column >
+							<apex:facet name="header">Phase</apex:facet>
+							<apex:outputfield value="{!t.Phase__c}"/>
+						</apex:column>
+					</apex:pageblocktable><br/><br/><br/>
 					
 					Treatment Team:<br/>
 					[list]<br/><br/><br/>
@@ -171,12 +198,83 @@
 			<apex:outputPanel layout="block" styleClass="detailbox" rendered="{!showDetailBox == true}"/>
 			<apex:outputpanel styleClass="detailslbox" layout="block" rendered="{!showDetailBox == true}">
 				<div align="center">
-					details<br/><br/>
+					<apex:outputtext style="font-weight:bold;" value="{!showDetailRecordType} Details"/><br/>
+				</div>
+				<div>
+					<br/>
+					<apex:outputpanel rendered="{!showDetailRecordType=='Treatment'}">
+						<table>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Reference:</td>
+								<td>{!detailTreatment.name}</td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Treatment Phase:</td>
+								<td>{!detailTreatment.Phase__c}</td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Stage:</td>
+								<td>{!detailTreatment.Stage__c}</td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">SubStage:</td>
+								<td>{!detailTreatment.Sub_Stage__c}</td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Procedure:</td>
+								<td>{!detailTreatment.Procedure__c}</td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Procedure Category:</td>
+								<td>{!detailTreatment.Procedure_Category__c}</td>
+							</tr>	 
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Procedure Treatment Type:</td>
+								<td>{!detailTreatment.Procedure_Treatment_Type__c}</td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Procedure Date:</td>
+								<td><apex:outputfield value="{!detailTreatment.Procedure_Date__c}"/></td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Treatment Date:</td>
+								<td><apex:outputfield value="{!detailTreatment.Treatment_Date__c}"/></td>
+							</tr>
+							<tr>
+								<td style="padding-right:20px; font-weight:bold;" align="right">Next Follow-up:</td>
+								<td><apex:outputfield value="{!detailTreatment.Next_Follow_Up__c}"/></td>
+							</tr>
+						</table>
+					</apex:outputpanel>
+					<apex:outputpanel rendered="{!showDetailRecordType=='Task'}">
+						Task information ...
+					</apex:outputpanel>			
+					<apex:outputpanel rendered="{!showDetailRecordType=='Travel'}">
+						Travel information ...
+					</apex:outputpanel>					
+					<apex:outputpanel rendered="{!showDetailRecordType=='Payment'}">
+						Payment information ...
+					</apex:outputpanel>				
+					<apex:outputpanel rendered="{!showDetailRecordType=='Medical Record'}">
+						Medical Record information ...
+					</apex:outputpanel>
+					<apex:outputpanel rendered="{!showDetailRecordType=='Incident'}">
+						Incident information ...
+					</apex:outputpanel>
+					<apex:outputpanel rendered="{!showDetailRecordType=='Treatment Quote'}">
+						Treatment Quote information ...
+					</apex:outputpanel>
+					<apex:outputpanel rendered="{!showDetailRecordType=='Undefined'}">
+						Undefined information ...
+					</apex:outputpanel>
+					<br/><br/>
+				</div>
+				<div align="center">
 					<apex:form >
-						<apex:commandlink style="color:#000;" value="Close" action="{!showDetails}" rerender="outerdetails"/>
+						<apex:commandlink styleClass="link" style="color:#000;" value="Close" action="{!showDetails}" rerender="outerdetails"/>
 					</apex:form>
 				</div>
 			</apex:outputpanel>
-		</apex:outputpanel>	
+		</apex:outputpanel>
 	</body>
 </apex:page>

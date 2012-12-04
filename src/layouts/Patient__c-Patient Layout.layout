@@ -170,10 +170,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Treatment_Quote__c.Patient__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <fields>Payment_Type__c</fields>
         <fields>Treatment__c</fields>
         <fields>CREATED_DATE</fields>
@@ -185,23 +181,7 @@
         <fields>NAME</fields>
         <fields>Treatment__c</fields>
         <fields>CREATED_DATE</fields>
-        <relatedList>Travel__c.Patient__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Treatment__c</fields>
-        <fields>CREATED_DATE</fields>
         <relatedList>Medical_Profile__c.Patient__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>Treatment__c</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>Incident__c.Patient__c</relatedList>
         <sortField>CREATED_DATE</sortField>
         <sortOrder>Desc</sortOrder>
     </relatedLists>
