@@ -91,7 +91,7 @@ public  without sharing class patientPortalController {
 			detailMap.put(t.id,t);
 		}
 		
-		for (Travel__c t : patient.travels__r) {
+/*FIXME		for (Travel__c t : patient.travels__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = t.LastModifiedDate;
 			r.subject = 'Travel';
@@ -101,7 +101,7 @@ public  without sharing class patientPortalController {
 			sortInsertRecentActivity(r);
 			r.index = t.id;
 			detailMap.put(t.id,t);
-		}
+		}*/
 		
 		for (Payment__c p : patient.payments__r) {
 			recentActivity r = new recentActivity();
@@ -127,7 +127,7 @@ public  without sharing class patientPortalController {
 			detailMap.put(mp.id,mp);
 		}
 		
-		for (Incident__c i : patient.Incidents__r) {
+/*		for (Incident__c i : patient.Incidents__r) {
 			recentActivity r = new recentActivity();
 			r.lastModified = i.LastModifiedDate;
 			r.subject = 'Incident'+patient.incidents__r.size();
@@ -149,7 +149,7 @@ public  without sharing class patientPortalController {
 			sortInsertRecentActivity(r);
 			r.index = tq.id;
 			detailMap.put(tq.id,tq);
-		}
+		}*/
 		
 		return null;
 	}
@@ -176,7 +176,7 @@ public  without sharing class patientPortalController {
 	
 	public pagereference buildRelatedLists () {
 		medicalRecords = patient.medical_profiles__r;
-		travelList = patient.travels__r;
+//		travelList = patient.travels__r;
 		treatmentList = patient.treatments__r;
 		return null;
 	}
@@ -279,7 +279,6 @@ public  without sharing class patientPortalController {
 		insert taskTest;
 		
 		Travel__c testTravel = new Travel__c();
-		testTravel.Patient__c = p.id;
 		testTravel.Treatment__c = treatmentTest.id;
 		insert testTravel;
 		
@@ -294,12 +293,10 @@ public  without sharing class patientPortalController {
 		insert MRTest;
 		
 		Incident__c incidentTest = new Incident__c();
-		incidentTest.Patient__c = p.id;
 		incidentTest.Treatment__c = treatmentTest.id;
 		insert incidentTest;
 				
 		Treatment_Quote__c quoteTest = new Treatment_Quote__c();
-		quoteTest.Patient__c = p.id;
 		quoteTest.Treatment__c = treatmentTest.id;
 		insert quoteTest;
 				

@@ -69,7 +69,7 @@ public class PatientExtension {
         setTreatmentInfo( 1 );
         
       }     
-      if ( patient.Travels__r.size() > 0 ) this.travel = patient.Travels__r[0] ;  
+      if ( treatment.Travels__r.size() > 0 ) this.travel = treatment.Travels__r[0] ;  
       if ( patient.Medical_Profiles__r.size() > 0 ) this.medprofile     = patient.Medical_Profiles__r[0];
       if ( patient.Payments__r.size() > 0 ) {
         paymentCurNumber = 1;
@@ -78,19 +78,19 @@ public class PatientExtension {
         this.payments.sort();
         this.payment = payments[0] ;        
       }  
-      if ( patient.Incidents__r.size() > 0 ) {
+      if ( treatment.Incidents__r.size() > 0 ) {
         incidentCurNumber = 1;
-        this.incidentTotCount = patient.Incidents__r.size() ; 
-        this.incidents= patient.Incidents__r ;  
+        this.incidentTotCount = treatment.Incidents__r.size() ; 
+        this.incidents= treatment.Incidents__r ;  
         this.incidents.sort();
         this.incident = incidents[0] ;        
       }      
       if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
-      if ( patient.Incidents__r.size() > 0 ) this.incident = patient.incidents__r[0]; 
-      if ( patient.Treatment_Quotes__r.size() > 0 ) {
+      if ( treatment.Incidents__r.size() > 0 ) this.incident = treatment.incidents__r[0]; 
+      if ( treatment.Treatment_Quotes__r.size() > 0 ) {
         this.quoteCurNumber = 1;
-        this.quoteTotCount = patient.Treatment_Quotes__r.size() ; 
-        this.treatmentQuotesCache = patient.Treatment_Quotes__r ;  
+        this.quoteTotCount = treatment.Treatment_Quotes__r.size() ; 
+        this.treatmentQuotesCache = treatment.Treatment_Quotes__r ;  
         this.treatmentQuotesCache.sort();
         setQuoteInfo(1);        
       }      
@@ -366,7 +366,6 @@ public class PatientExtension {
   }   
   public PageReference newQuote() {
     treatmentQuote = new Treatment_Quote__c(); 
-    treatmentQuote.Patient__c = patient.id;
     treatmentQuote.Treatment__c = treatment.id;
     procedure = null;
     return null;
@@ -374,7 +373,7 @@ public class PatientExtension {
   public PageReference saveQuote() { 
      Treatment_Quote__c tempQuote;
      if ( treatmentQuote.id == Null ){
-        treatmentQuote.Patient__c = patient.id;     
+        treatmentQuote.Treatment__c = treatment.id;     
         insert treatmentQuote ;
         treatmentQuotes.add(treatmentQuote);
         treatmentQuotesCache.add(treatmentQuote);
@@ -405,14 +404,13 @@ public class PatientExtension {
   }   
   public PageReference newIncident() {
     incident = new Incident__c(); 
-    incident.Patient__c = patient.id;
     incident.Treatment__c = treatment.id;
     return ApexPages.currentPage();
   }   
   public PageReference saveIncident() { 
      Incident__c tempIncident;
      if ( incident.id == Null ){
-        incident.Patient__c = patient.id;     
+        incident.Treatment__c = treatment.id;     
         insert incident ;
         incidents.add(incident);
         incidentTotCount = incidentTotCount + 1; 
@@ -566,7 +564,7 @@ public class PatientExtension {
         treatmentQuote.Hotel_Nights_Included__c = procedure.Hotel_Included__c;
         treatmentQuote.Hotel_Nights_Needed__c = procedure.Recovery_Nights_Required__c;
         treatmentQuote.Ground_Transportation_Included__c = procedure.Transportation_Included__c;
-		PatientUtil.loadProcedurePrices( patient );
+		PatientUtil.loadProcedurePrices( treatment );
         treatmentQuote.Sub_Total__c = PatientUtil.getProcedurePrice( procedure.id );
 	}
   	return null;

@@ -44,7 +44,7 @@ public with sharing class PipelineController {
     for (Patient__c p : patients) {
       if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
       if(p.Payments__r.size()>0)   for (Payment__c pay : p.Payments__r) allPayments.add(pay); 
-      if(p.Incidents__r.size()>0)  for (Incident__c i : p.Incidents__r) allIncidents.add(i); 
+//      if(p.Incidents__r.size()>0)  for (Incident__c i : p.Incidents__r) allIncidents.add(i); 
       if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);       
     }                 
     System.debug('treatments list '+alltreatments);  

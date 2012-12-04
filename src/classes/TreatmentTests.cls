@@ -475,7 +475,6 @@ private class TreatmentTests {
 	 */	
 	static Travel__c newTravel(Patient__c p, Treatment__c t) {
 		Travel__c testrecord = new Travel__c();
-		testrecord.patient__c = p.id;
 		testrecord.treatment__c = t.id;
 		testrecord.Arrival_Date__c = system.today().adddays(5);
 		testrecord.Departure_Date__c = system.today().adddays(4);
