@@ -132,15 +132,14 @@
     </fields>
     <fields>
         <fullName>Patient__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Patient</label>
         <referenceTo>Patient__c</referenceTo>
         <relationshipLabel>Incidents</relationshipLabel>
         <relationshipName>Incidents</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Status__c</fullName>
@@ -255,14 +254,15 @@
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>
         <relationshipLabel>Incidents</relationshipLabel>
         <relationshipName>Treatment_Incidents</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Type__c</fullName>

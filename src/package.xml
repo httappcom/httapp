@@ -77,6 +77,8 @@
         <members>Incident__c</members>
         <members>Instruction__c</members>
         <members>Knowledge_Base__c</members>
+        <members>Medical_Facility__c</members>
+        <members>Medical_Professional__c</members>
         <members>Medical_Profile__c</members>
         <members>Message_Header__c</members>
         <members>Message_User__c</members>

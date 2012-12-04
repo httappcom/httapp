@@ -318,15 +318,14 @@
     </fields>
     <fields>
         <fullName>Patient__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Patient</label>
         <referenceTo>Patient__c</referenceTo>
         <relationshipLabel>Travels</relationshipLabel>
         <relationshipName>Travels</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Pre_Op_Instructions__c</fullName>
@@ -407,14 +406,15 @@
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>
         <relationshipLabel>Travels</relationshipLabel>
         <relationshipName>Treatment_Travels</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Treatment_as_Quoted__c</fullName>

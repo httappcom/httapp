@@ -205,15 +205,14 @@
     </fields>
     <fields>
         <fullName>Patient__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Patient</label>
         <referenceTo>Patient__c</referenceTo>
         <relationshipLabel>Treatment Quotes</relationshipLabel>
         <relationshipName>Treatment_Quotes</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Phone__c</fullName>
@@ -332,14 +331,15 @@
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>
         <relationshipLabel>Treatment Quotes</relationshipLabel>
         <relationshipName>Treatment_Treatment_Quotes</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <label>Treatment Quote</label>
     <nameField>
