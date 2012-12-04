@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>ChangePasswordController</members>
@@ -21,37 +21,6 @@
         <members>TreatmentUtility</members>
         <members>patientPortalController</members>
         <name>ApexClass</name>
-    </types>
-    <types>
-        <members>AnswersHome</members>
-        <members>BandwidthExceeded</members>
-        <members>ChangePassword</members>
-        <members>Exception</members>
-        <members>FileNotFound</members>
-        <members>ForgotPassword</members>
-        <members>ForgotPasswordConfirm</members>
-        <members>IdeasHome</members>
-        <members>InMaintenance</members>
-        <members>Inquiry</members>
-        <members>Interaction</members>
-        <members>MyProfilePage</members>
-        <members>PatientTabWithData</members>
-        <members>Pipeline</members>
-        <members>PipelineWithData</members>
-        <members>Postop</members>
-        <members>ProcedureCatalog</members>
-        <members>ProcedureLine</members>
-        <members>Quote</members>
-        <members>SiteLogin</members>
-        <members>SiteRegister</members>
-        <members>SiteRegisterConfirm</members>
-        <members>SiteTemplate</members>
-        <members>StdExceptionTemplate</members>
-        <members>Travel</members>
-        <members>Unauthorized</members>
-        <members>UnderConstruction</members>
-        <members>patientPortal</members>
-        <name>ApexPage</name>
     </types>
     <types>
         <members>PatientTrigger</members>
@@ -172,5 +141,10 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>ApexPage</name>
+    </types>
     <version>26.0</version>
 </Package>
+
