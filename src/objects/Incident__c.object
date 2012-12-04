@@ -131,17 +131,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>Patient__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Patient</label>
-        <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Incidents</relationshipLabel>
-        <relationshipName>Incidents</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Status__c</fullName>
         <externalId>false</externalId>
         <label>Status</label>
@@ -258,7 +247,7 @@
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>
         <relationshipLabel>Incidents</relationshipLabel>
-        <relationshipName>Treatment_Incidents</relationshipName>
+        <relationshipName>Incidents</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
