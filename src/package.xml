@@ -145,6 +145,10 @@
         <members>*</members>
         <name>ApexPage</name>
     </types>
+    <types>
+        <members>*</members>
+        <name>CustomSite</name>
+    </types>
     <version>26.0</version>
 </Package>
 
