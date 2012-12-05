@@ -128,21 +128,20 @@ public  without sharing class patientPortalController {
 		}
 		
 		for (string s : treatmentMap.keySet()) {
-			for (Travel__c t : treatmentMap.get(s).travels__r) {
-				recentActivity r = new recentActivity();
-				r.lastModified = t.LastModifiedDate;
-				r.subject = 'Travel';
-				r.reference = t.name;
-				r.status = '';
-				r.dateCreated = string.valueof(t.CreatedDate);
-				sortInsertRecentActivity(r);
-				r.index = t.id;
-				r.relatedTreatment = t.name;
-				detailMap.put(t.id,t);
-			}
+			Travel__c t = (Travel__c)treatmentMap.get(s).travel__r;
+			recentActivity r = new recentActivity();
+			r.lastModified = t.LastModifiedDate;
+			r.subject = 'Travel';
+			r.reference = t.name;
+			r.status = '';
+			r.dateCreated = string.valueof(t.CreatedDate);
+			sortInsertRecentActivity(r);
+			r.index = t.id;
+			r.relatedTreatment = t.name;
+			detailMap.put(t.id,t);
 			
 			for (Incident__c i : treatmentMap.get(s).Incidents__r) {
-				recentActivity r = new recentActivity();
+				r = new recentActivity();
 				r.lastModified = i.LastModifiedDate;
 				r.subject = 'Incident';
 				r.reference = i.name;
@@ -155,7 +154,7 @@ public  without sharing class patientPortalController {
 			}
 			
 			for (Treatment_Quote__c tq : treatmentMap.get(s).Treatment_Quotes__r) {
-				recentActivity r = new recentActivity();
+				r = new recentActivity();
 				r.lastModified = tq.LastModifiedDate;
 				r.subject = 'Treatment Quote';
 				r.reference = tq.name;
@@ -286,8 +285,12 @@ public  without sharing class patientPortalController {
 		Patient__c p = new Patient__c(name='testp');
 		insert p;
 		
+		Travel__c testTravel = new Travel__c();
+		testTravel.Patient__c = p.id;
+		insert testTravel;
+
 		Treatment__c treatmentTest = new treatment__c();
-		treatmentTest.Patient__c = p.id;
+		treatmentTest.Travel__c = testTravel.Id;
 		insert treatmentTest;
 		
 		Task taskTest = new Task();
@@ -296,9 +299,6 @@ public  without sharing class patientPortalController {
 		taskTest.WhatId = p.id;
 		insert taskTest;
 		
-		Travel__c testTravel = new Travel__c();
-		testTravel.Treatment__c = treatmentTest.id;
-		insert testTravel;
 		
 		Payment__c paymentTest = new Payment__c();
 		paymentTest.Patient__c = p.id;

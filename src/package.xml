@@ -47,6 +47,7 @@
         <name>CustomLabels</name>
     </types>
     <types>
+        <members>Hotel__c</members>
         <members>Incident__c</members>
         <members>Instruction__c</members>
         <members>Knowledge_Base__c</members>
@@ -65,10 +66,6 @@
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
         <name>CustomObject</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>CustomSite</name>
     </types>
     <types>
         <members>Incident__c</members>

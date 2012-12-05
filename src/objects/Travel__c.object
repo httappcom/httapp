@@ -204,6 +204,14 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Flight_Information__c</fullName>
+        <externalId>false</externalId>
+        <label>Flight Information</label>
+        <length>32768</length>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
         <fullName>Flying__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -223,6 +231,14 @@
         <externalId>false</externalId>
         <label>Hotel Coordination Needed</label>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Hotel_Information__c</fullName>
+        <externalId>false</externalId>
+        <label>Hotel_Information</label>
+        <length>32768</length>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
     </fields>
     <fields>
         <fullName>Hotel_Nights_Included__c</fullName>
@@ -317,6 +333,18 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Patient__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient</label>
+        <referenceTo>Patient__c</referenceTo>
+        <relationshipLabel>Travels</relationshipLabel>
+        <relationshipName>Travels</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
         <fullName>Pre_Op_Instructions__c</fullName>
         <externalId>false</externalId>
         <label>Pre-Op Instructions</label>
@@ -392,18 +420,6 @@
         <label>Travel Start</label>
         <required>false</required>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>Treatment__c</fullName>
-        <externalId>false</externalId>
-        <label>Treatment</label>
-        <referenceTo>Treatment__c</referenceTo>
-        <relationshipLabel>Travels</relationshipLabel>
-        <relationshipName>Travels</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Treatment_as_Quoted__c</fullName>

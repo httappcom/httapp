@@ -1378,6 +1378,17 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Travel__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Travel</label>
+        <referenceTo>Travel__c</referenceTo>
+        <relationshipLabel>Treatments</relationshipLabel>
+        <relationshipName>Treatments</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Treatment_Date__c</fullName>
         <externalId>false</externalId>
         <label>Treatment Date</label>

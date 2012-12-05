@@ -23,12 +23,13 @@ private class TreatmentTests {
         insert patient;
         
         //treatment for patient
+		travel = newTravel(patient);
+		insert travel;
         treatment = newTreatment(patient);
+        treatment.Travel__c = travel.id;
         insert treatment;
 		
 		//travel for patient for treatment
-		travel = newTravel(patient,treatment);
-		insert travel;
 		
 		/* Tests */
 		verifySyncPatientEmail (); 
@@ -473,9 +474,8 @@ private class TreatmentTests {
 	 * @param Treatment__c t
 	 * @return new Travel__c record for specified Patient__c, Treatment__c
 	 */	
-	static Travel__c newTravel(Patient__c p, Treatment__c t) {
+	static Travel__c newTravel(Patient__c p) {
 		Travel__c testrecord = new Travel__c();
-		testrecord.treatment__c = t.id;
 		testrecord.Arrival_Date__c = system.today().adddays(5);
 		testrecord.Departure_Date__c = system.today().adddays(4);
 		return testrecord;

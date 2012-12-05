@@ -12,8 +12,16 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Flight_Information__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Hotel_Information__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Required</behavior>
-                <field>Treatment__c</field>
+                <field>Patient__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns/>
@@ -73,6 +81,10 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Instruction__c.Travel__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Treatment__c.Travel__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

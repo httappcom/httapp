@@ -143,7 +143,6 @@
                <apex:commandbutton action="{!newPatient}" value="New Patient "></apex:commandbutton>            
                <apex:commandbutton action="{!savePatient}" value="Save Patient "></apex:commandbutton>              
                <apex:pageMessages />
-            <apex:pageBo
             <div class="fieldwrapper">            
                 <div class="fieldwrap">
                     <div class="label">Suffix: </div> 

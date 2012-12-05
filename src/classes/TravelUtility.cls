@@ -61,7 +61,7 @@ public with sharing class TravelUtility {
 	 * @param list<Travel__c> newlist
 	 */
 	public static void updateTreatmentLastDepartureDate(list<Travel__c> newlist){
-		map<id,list<Travel__c>> treatmentTravelsMap = new map<id,list<Travel__c>>();
+/*		map<id,list<Travel__c>> treatmentTravelsMap = new map<id,list<Travel__c>>();
 		list<Travel__c> templist = new list<Travel__c>();
 		for (integer i=0; i<newlist.size(); i++) {
 			if (treatmentTravelsMap.containsKey(newlist[i].treatment__c)) {
@@ -88,7 +88,7 @@ public with sharing class TravelUtility {
 			}
 		}
 		
-		update treatmentMap.values();	
+		update treatmentMap.values();*/	
 	}
 	
 	/**
@@ -96,7 +96,7 @@ public with sharing class TravelUtility {
 	 * @param list<Travel__c> arrivals
 	 */
 	public static void updateTreatmentAtProvider (list<Travel__c> arrivals) {
-		set<id> arrivalsTreatments = new set<id>();
+/*FIXME		set<id> arrivalsTreatments = new set<id>();
 		for (Travel__c t : arrivals) {
 			arrivalsTreatments.add(t.treatment__c);
 		}
@@ -108,7 +108,7 @@ public with sharing class TravelUtility {
 			t.Sub_Stage__c = 'Treatment In Progress';
 		}
 		
-		update treatments;
+		update treatments;*/
 	}
 	
 	/**

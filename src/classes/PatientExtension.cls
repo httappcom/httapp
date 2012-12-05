@@ -69,7 +69,7 @@ public class PatientExtension {
         setTreatmentInfo( 1 );
         
       }     
-      if ( treatment.Travels__r.size() > 0 ) this.travel = treatment.Travels__r[0] ;  
+      this.travel = treatment.Travel__r;  
       if ( patient.Medical_Profiles__r.size() > 0 ) this.medprofile     = patient.Medical_Profiles__r[0];
       if ( patient.Payments__r.size() > 0 ) {
         paymentCurNumber = 1;

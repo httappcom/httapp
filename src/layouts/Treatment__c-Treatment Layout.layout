@@ -19,6 +19,10 @@
                 <behavior>Edit</behavior>
                 <field>Sub_Stage__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Travel__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -247,13 +251,6 @@
         <fields>Payment_Type__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Payment__c.Treatment__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>Travel__c.Treatment__c</relatedList>
         <sortField>CREATED_DATE</sortField>
         <sortOrder>Desc</sortOrder>
     </relatedLists>
