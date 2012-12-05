@@ -150,6 +150,8 @@
     <fields>
         <fullName>Final_Departure_Date__c</fullName>
         <externalId>false</externalId>
+        <formula>Travel__r.Travel_End__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Final Departure Date</label>
         <required>false</required>
         <type>Date</type>
@@ -164,10 +166,10 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Financing_Reguired__c</fullName>
+        <fullName>Financing_Required__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Financing Reguired</label>
+        <label>Financing Required</label>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -261,6 +263,16 @@
         <externalId>false</externalId>
         <label>On-Site Recovery Period</label>
         <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Patient_Email2_Formula__c</fullName>
+        <externalId>false</externalId>
+        <formula>Patient__r.Email__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Patient Email Formula</label>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
