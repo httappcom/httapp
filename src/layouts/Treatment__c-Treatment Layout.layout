@@ -23,6 +23,14 @@
                 <behavior>Edit</behavior>
                 <field>Travel__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Final_Departure_Date__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Patient_Email_Formula__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -101,7 +109,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Financing_Reguired__c</field>
+                <field>Financing_Required__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -122,10 +130,6 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Primary_Provider__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>Procedure_Date__c</field>
             </layoutItems>
         </layoutColumns>
@@ -138,10 +142,6 @@
                 <behavior>Edit</behavior>
                 <field>Procedure__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Hospital_Destination__c</field>
-            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -151,10 +151,6 @@
         <editHeading>true</editHeading>
         <label>Post-Op Information</label>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Treatment_Date__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>On_Site_Recovery_Period__c</field>
@@ -237,8 +233,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Expiration_Date__c</fields>
-        <fields>Grand_Total__c</fields>
-        <fields>Procedure_Date__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Treatment_Quote__c.Treatment__c</relatedList>
         <sortField>CREATED_DATE</sortField>

@@ -4,16 +4,16 @@ public with sharing class TreatmentUtility {
   private static Map<Id, Patient__c> patientMap;
   
   public static void beforeInsert (List<Treatment__c> treatments) {
-  	for (Treatment__c treatment : treatments ) {
-  		treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
-  	}
+    for (Treatment__c treatment : treatments ) {
+        treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
+    }
   }
     
   public static void beforeUpdate(List<Treatment__c> treatments,
     Map<Id, Treatment__c> oldTreatmentMap) {
-  	for (Treatment__c treatment : treatments ) {
-  		treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
-  	}
+    for (Treatment__c treatment : treatments ) {
+        treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
+    }
   }
     
   private static Map<Id, Patient__c> populatePatientMap(Set<Id> pPatientIds) {
@@ -78,20 +78,16 @@ public with sharing class TreatmentUtility {
                         Patient_Email__c,
                         Payment_Type__c, 
                         Phase__c,
-                        Post_Op_Follow_Up_Program__c,
                         Preferred_Destination__c,
                         Preferred_Form_of_Contact__c, 
                         Preferred_Travel_Date_From__c,
                         Preferred_Travel_Date_To__c,
-                        Primary_Provider__c,
                         Procedure__c, 
                         Procedure_Category__c,
                         Procedure_Date__c,
-                        Procedure_Treatment_Type__c,
                         Response_SLA__c, 
                         Stage__c,
                         Sub_Stage__c,
-                        Treatment_Date__c,
                         Patient_Not_Committed_Reason__c
                     from Treatment__c 
                     where id = :pTreatmentId];               
@@ -123,20 +119,16 @@ public with sharing class TreatmentUtility {
                         Patient_Email__c,
                         Payment_Type__c, 
                         Phase__c,
-                        Post_Op_Follow_Up_Program__c,
                         Preferred_Destination__c,
                         Preferred_Form_of_Contact__c, 
                         Preferred_Travel_Date_From__c,
                         Preferred_Travel_Date_To__c,*/
-                        Primary_Provider__c,                        
                         Procedure__c, 
                         /* Procedure_Category__c,
                         Procedure_Date__c,
-                        Procedure_Treatment_Type__c,
                         Response_SLA__c, 
                         Stage__c,
                         Sub_Stage__c,
-                        Treatment_Date__c,
                         Patient_Not_Committed_Reason__c */
                         Patient__r.Name,
                         Patient__r.Owner.Name,

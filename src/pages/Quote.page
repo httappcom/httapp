@@ -33,7 +33,7 @@
     <div id="quoteTopSummary">
         <p>Health Traveler Name: {{patient.first_name}} {{patient.last_name}}</p>
         <p>Date of Travel: {{travel.start_date}}-{{travel.end_date}}</p>
-        <p>Treatment Destination: {!treatment.Hospital_Destination__c}</p>
+        <p>Treatment Destination: FIX ME</p>
     </div>
     
     <h2>Payment:</h2>
@@ -85,8 +85,8 @@ Health Travel Guides is pleased to feature the secure electronic Echosign� doc
             <div class="quoteSummary">
                 <p>Traveler Name: {{patient.first_name}} {{patient.last_name}}</p>
                 <p>Your Health Travel Guide: {{patient.owner}}</p>
-                <p>Doctor: {!treatment.Primary_Provider__c}</p>
-                <p>Traveling To: {!treatment.Hospital_Destination__c}</p>
+                <p>Doctor: FIX ME - should come from procedure record</p>
+                <p>Traveling To: FIX ME</p>
                 <p>Traveling from: {{travel.origin}}</p>
              </div>  
                 <h2>Medical Travel Package Inclusions:</h2>

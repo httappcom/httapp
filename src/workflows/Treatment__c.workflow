@@ -218,7 +218,7 @@
     </rules>
     <rules>
         <fullName>Ongoing Relationship</fullName>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>

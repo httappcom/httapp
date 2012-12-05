@@ -47,26 +47,6 @@
         <type>Date</type>
     </fields>
     <fields>
-        <fullName>City__c</fullName>
-        <description>Bill To City</description>
-        <externalId>false</externalId>
-        <label>City</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Country__c</fullName>
-        <description>Bill To Country</description>
-        <externalId>false</externalId>
-        <label>Country</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Departure_Date__c</fullName>
         <externalId>false</externalId>
         <label>Departure Date</label>
@@ -100,54 +80,12 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Email__c</fullName>
-        <externalId>false</externalId>
-        <label>Email</label>
-        <required>false</required>
-        <type>Email</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Expiration_Date__c</fullName>
         <description>when will this quote expire</description>
         <externalId>false</externalId>
         <label>Expiration Date</label>
         <required>false</required>
         <type>Date</type>
-    </fields>
-    <fields>
-        <fullName>Facility_Location__c</fullName>
-        <externalId>false</externalId>
-        <label>Facility Location</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Facility_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Facility Name</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Fax__c</fullName>
-        <externalId>false</externalId>
-        <label>Fax</label>
-        <required>false</required>
-        <type>Phone</type>
-    </fields>
-    <fields>
-        <fullName>Grand_Total__c</fullName>
-        <externalId>false</externalId>
-        <label>Grand Total</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Ground_Transportation_Included__c</fullName>
@@ -175,16 +113,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Name__c</fullName>
-        <description>Bill To Name</description>
-        <externalId>false</externalId>
-        <label>Name</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Number_of_Hospital_Nights__c</fullName>
         <externalId>false</externalId>
         <label>Number of Hospital Nights</label>
@@ -193,39 +121,6 @@
         <scale>0</scale>
         <type>Number</type>
         <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Patient_Name__c</fullName>
-        <externalId>false</externalId>
-        <label>Patient Name</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Phone__c</fullName>
-        <externalId>false</externalId>
-        <label>Phone</label>
-        <required>false</required>
-        <type>Phone</type>
-    </fields>
-    <fields>
-        <fullName>Postal__c</fullName>
-        <description>Bill To Postal</description>
-        <externalId>false</externalId>
-        <label>Postal</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Procedure_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Procedure Date</label>
-        <required>false</required>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Procedure__c</fullName>
@@ -237,16 +132,6 @@
         <relationshipName>Treatment_Quotes</relationshipName>
         <required>false</required>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Province__c</fullName>
-        <description>Bill To Province</description>
-        <externalId>false</externalId>
-        <label>Province</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Status__c</fullName>
@@ -274,16 +159,6 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Street__c</fullName>
-        <description>Bill to Street</description>
-        <externalId>false</externalId>
-        <label>Street</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Sub_Total__c</fullName>
         <externalId>false</externalId>
         <label>Sub-Total</label>
@@ -299,15 +174,6 @@
         <externalId>false</externalId>
         <label>Syncing</label>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Tax__c</fullName>
-        <externalId>false</externalId>
-        <label>Tax</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>4</scale>
-        <type>Currency</type>
     </fields>
     <fields>
         <fullName>Total_Price__c</fullName>

@@ -22,7 +22,7 @@
         <fullName>At Provider</fullName>
         <active>false</active>
         <criteriaItems>
-            <field>Travel__c.Arrival_Date__c</field>
+            <field>Travel__c.Travel_Start__c</field>
             <operation>greaterThan</operation>
             <value>TODAY</value>
         </criteriaItems>
@@ -37,7 +37,7 @@
                 <name>Arrived</name>
                 <type>FieldUpdate</type>
             </actions>
-            <offsetFromField>Travel__c.Arrival_Date__c</offsetFromField>
+            <offsetFromField>Travel__c.Travel_Start__c</offsetFromField>
             <timeLength>0</timeLength>
             <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
@@ -50,7 +50,7 @@
         </actions>
         <active>true</active>
         <criteriaItems>
-            <field>Travel__c.Arrival_Date__c</field>
+            <field>Travel__c.Travel_Start__c</field>
             <operation>equals</operation>
             <value>TODAY</value>
         </criteriaItems>

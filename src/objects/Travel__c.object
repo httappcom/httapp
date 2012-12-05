@@ -56,36 +56,25 @@
     </fields>
     <fields>
         <fullName>Arrival_Airline__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Arrival Airline</label>
-        <picklist>
-            <picklistValues>
-                <fullName>United</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
+        <referenceTo>Airline__c</referenceTo>
+        <relationshipLabel>Arrival Airline Travels</relationshipLabel>
+        <relationshipName>Travels</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Arrival_Airport_Code__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Arrival Airport  Code</label>
-        <picklist>
-            <picklistValues>
-                <fullName>SFO</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Arrival_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Arrival Date</label>
+        <label>Arrival Airport Code</label>
+        <referenceTo>Airport__c</referenceTo>
+        <relationshipLabel>Travels</relationshipLabel>
+        <relationshipName>Arrival_Airport_Code_Travels</relationshipName>
         <required>false</required>
-        <type>Date</type>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Arrival_Flight_No__c</fullName>
@@ -104,34 +93,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Booking_Status__c</fullName>
-        <externalId>false</externalId>
-        <label>Booking Status</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Not Booked</fullName>
-                <default>true</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Booked</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Re-Booked</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Close_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Close Date</label>
-        <required>false</required>
-        <type>DateTime</type>
-    </fields>
-    <fields>
         <fullName>Companion__c</fullName>
         <externalId>false</externalId>
         <label>Companion</label>
@@ -141,44 +102,26 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Date_Of_Birth__c</fullName>
-        <externalId>false</externalId>
-        <label>Date Of Birth</label>
-        <required>false</required>
-        <type>Date</type>
-    </fields>
-    <fields>
         <fullName>Departure_Airline__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Departure Airline</label>
-        <picklist>
-            <picklistValues>
-                <fullName>United</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
+        <referenceTo>Airline__c</referenceTo>
+        <relationshipLabel>Travels (Departure Airline)</relationshipLabel>
+        <relationshipName>Departure_Airline_Travels</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Departure_Airport_Code__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Departure Airport Code</label>
-        <picklist>
-            <picklistValues>
-                <fullName>SFO</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Departure_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Departure Date</label>
+        <referenceTo>Airport__c</referenceTo>
+        <relationshipLabel>Travels (Departure Airport Code)</relationshipLabel>
+        <relationshipName>Departure_Airport_Code_Travels</relationshipName>
         <required>false</required>
-        <type>Date</type>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Departure_Flight_No__c</fullName>
@@ -212,13 +155,6 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
-        <fullName>Flying__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Flying</label>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
         <fullName>Ground_Transportation_Needed__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -231,14 +167,6 @@
         <externalId>false</externalId>
         <label>Hotel Coordination Needed</label>
         <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Hotel_Information__c</fullName>
-        <externalId>false</externalId>
-        <label>Hotel_Information</label>
-        <length>32768</length>
-        <type>Html</type>
-        <visibleLines>25</visibleLines>
     </fields>
     <fields>
         <fullName>Hotel_Nights_Included__c</fullName>
@@ -256,6 +184,17 @@
         <scale>0</scale>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Hotel__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Hotel</label>
+        <referenceTo>Hotel__c</referenceTo>
+        <relationshipLabel>Travels</relationshipLabel>
+        <relationshipName>Travels</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Insurance_Approval__c</fullName>
@@ -281,13 +220,6 @@
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Itinerary_Summary__c</fullName>
-        <externalId>false</externalId>
-        <label>Itinerary Summary</label>
-        <required>false</required>
-        <type>TextArea</type>
     </fields>
     <fields>
         <fullName>Notes__c</fullName>
@@ -352,23 +284,6 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Pre_Op__c</fullName>
-        <externalId>false</externalId>
-        <label>Pre-Op</label>
-        <picklist>
-            <picklistValues>
-                <fullName>No</fullName>
-                <default>true</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Yes</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
         <fullName>Procedure_Date__c</fullName>
         <externalId>false</externalId>
         <label>Procedure Date</label>
@@ -399,13 +314,6 @@
         <required>false</required>
         <scale>4</scale>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>Travel_Alert__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>Travel Alert</label>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Travel_End__c</fullName>

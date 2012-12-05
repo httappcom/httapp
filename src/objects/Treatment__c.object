@@ -173,15 +173,6 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Hospital_Destination__c</fullName>
-        <externalId>false</externalId>
-        <label>Hospital Destination</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Inquiry_Quality__c</fullName>
         <externalId>false</externalId>
         <label>Inquiry Quality</label>
@@ -268,7 +259,7 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Patient_Email2_Formula__c</fullName>
+        <fullName>Patient_Email_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>Patient__r.Email__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
@@ -365,13 +356,6 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Post_Op_Follow_Up_Program__c</fullName>
-        <externalId>false</externalId>
-        <label>Post-Op Follow Up Program</label>
-        <required>false</required>
-        <type>TextArea</type>
-    </fields>
-    <fields>
         <fullName>Preferred_Destination__c</fullName>
         <externalId>false</externalId>
         <label>Preferred Destination</label>
@@ -433,15 +417,6 @@
         <relationshipName>Treatments</relationshipName>
         <required>false</required>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Primary_Provider__c</fullName>
-        <externalId>false</externalId>
-        <label>Primary Provider</label>
-        <length>255</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Probability__c</fullName>
@@ -1399,13 +1374,6 @@
         <relationshipName>Treatments</relationshipName>
         <required>false</required>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Treatment_Date__c</fullName>
-        <externalId>false</externalId>
-        <label>Treatment Date</label>
-        <required>false</required>
-        <type>Date</type>
     </fields>
     <fields>
         <fullName>Treatment_Summary__c</fullName>
