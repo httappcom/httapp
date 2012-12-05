@@ -35,7 +35,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Hotel_Included__c</field>
+                <field>Hotel_Nights_Included__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

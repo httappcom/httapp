@@ -63,7 +63,7 @@ public class PatientExtension {
         this.treatments.sort() ;
   Logger.info('treatments='+treatments);
         for (Treatment__c t : this.treatments) {
-        	this.treatmentNames.add(t.name);
+            this.treatmentNames.add(t.name);
   Logger.info('tName='+t.name);
         }
         setTreatmentInfo( 1 );
@@ -170,12 +170,12 @@ public class PatientExtension {
     patient.Patient_First_Name__c = firstname;
     patient.Patient_last_Name__c = lastname;
     if ( patient.id == Null ){
-    	try { 
+        try { 
       insert patient;
-    	} catch (Exception e) {
-    		Logger.info('exception:'+e.getStackTraceString());
-    		throw e;
-    	}
+        } catch (Exception e) {
+            Logger.info('exception:'+e.getStackTraceString());
+            throw e;
+        }
     }else{              
       update patient;  
     }      
@@ -307,11 +307,11 @@ public class PatientExtension {
   }
   private void setTreatmentInfo( Integer idx ) {
     this.quoteCurNumber = 1;
-  	if (idx<1 || idx > treatments.size()) {
-  		treatment = null;
-  		treatmentName = null;
-  		return;
-  	}
+    if (idx<1 || idx > treatments.size()) {
+        treatment = null;
+        treatmentName = null;
+        return;
+    }
       treatment = treatments[ idx-1 ];
       treatmentName =  treatmentNames[idx-1];
   }
@@ -330,30 +330,30 @@ public class PatientExtension {
     return ApexPages.currentPage();        
   }
   private void setQuoteInfo( Integer idx ) {
-  	if (treatmentQuotes.size()==0) {
-  		treatmentQuote = null;
-  		procedure = null;
-  		quoteName = null;
-  		return;
-  	}
+    if (treatmentQuotes.size()==0) {
+        treatmentQuote = null;
+        procedure = null;
+        quoteName = null;
+        return;
+    }
       treatmentQuote = treatmentQuotes[idx - 1];
       procedure = treatmentQuote.Procedure__r;
-  	  if (procedure != null) {
-	      loadProcedure(procedure.Id);
-  	  }
+      if (procedure != null) {
+          loadProcedure(procedure.Id);
+      }
       quoteName =  treatmentQuote.Name;
   }
   private void getQuotesforTreatment() {
  Logger.info('getQuotesforTreatment');
-  	treatmentQuotes = new list<Treatment_Quote__c>();
-  	if (treatment == null) return;
+    treatmentQuotes = new list<Treatment_Quote__c>();
+    if (treatment == null) return;
  Logger.info('cache='+this.treatmentQuotesCache);
-  	for (Treatment_Quote__c tq : this.treatmentQuotesCache) {
-  	Logger.info('tq.Treatment__c='+tq.Treatment__c+', id='+treatment.id);
-  		if (tq.Treatment__c == treatment.id) {
-  			treatmentQuotes.add(tq);
-  		}
-  	}
+    for (Treatment_Quote__c tq : this.treatmentQuotesCache) {
+    Logger.info('tq.Treatment__c='+tq.Treatment__c+', id='+treatment.id);
+        if (tq.Treatment__c == treatment.id) {
+            treatmentQuotes.add(tq);
+        }
+    }
   Logger.info('tqs='+treatmentQuotes);
   }
   public PageReference nextQuote() {      
@@ -365,8 +365,8 @@ public class PatientExtension {
   }
   public PageReference previousQuote() {      
     if ( quoteCurNumber > 1 ){ 
-    	quoteCurNumber =quoteCurNumber - 1; 
-      	setQuoteInfo( quoteCurNumber );
+        quoteCurNumber =quoteCurNumber - 1; 
+        setQuoteInfo( quoteCurNumber );
     }
     return null;       
   }   
@@ -556,58 +556,58 @@ public class PatientExtension {
     }
   }
   public PageReference changeProcedureSubCategory() {
-	loadProcedureList();
-	if (treatmentQuote.id == null) {
-		treatmentQuote.Procedure__c = null;
-		procedure = null;
-	}
-	return null;
+    loadProcedureList();
+    if (treatmentQuote.id == null) {
+        treatmentQuote.Procedure__c = null;
+        procedure = null;
+    }
+    return null;
   }
   public PageReference setProcedure() {
-  	loadProcedure( treatmentQuote.Procedure__c);
-	if (procedure != null) {
-	    treatmentQuote.Number_of_Hospital_Nights__c = procedure.Hospital_Nights_Required__c;
-        treatmentQuote.Hotel_Nights_Included__c = procedure.Hotel_Included__c;
+    loadProcedure( treatmentQuote.Procedure__c);
+    if (procedure != null) {
+        treatmentQuote.Number_of_Hospital_Nights__c = procedure.Hospital_Nights_Required__c;
+        treatmentQuote.Hotel_Nights_Included__c = procedure.Hotel_Nights_Included__c;
         treatmentQuote.Hotel_Nights_Needed__c = procedure.Recovery_Nights_Required__c;
         treatmentQuote.Ground_Transportation_Included__c = procedure.Transportation_Included__c;
-		PatientUtil.loadProcedurePrices( treatment );
+        PatientUtil.loadProcedurePrices( treatment );
         treatmentQuote.Sub_Total__c = PatientUtil.getProcedurePrice( procedure.id );
-	}
-  	return null;
+    }
+    return null;
   }
   private void loadProcedure(ID procedureId) {
-  	if (procedureId == null) {
-  		procedure = null;
-  		return;
-  	}
-  	Procedure__c[] procedures = [SELECT 
-  		Comments__c,
-  		Details__c,
-  		Doctor__c,
-  		Facility__c,
-  		Hospital_Nights_Required__c,
-  		Hotel_Included__c,
-  		Procedure_Category__c,
-  		Procedure_Code__c,
-  		Recovery_Nights_Required__c,
-  		Transportation_Included__c
-  		FROM Procedure__c where id = :procedureId];
-  	if (procedures.size()>0) {
-  		procedure = procedures[0];
-  	} else {
-  		procedure = null;
-  	}
+    if (procedureId == null) {
+        procedure = null;
+        return;
+    }
+    Procedure__c[] procedures = [SELECT 
+        Comments__c,
+        Details__c,
+        Doctor__c,
+        Facility__c,
+        Hospital_Nights_Required__c,
+        Hotel_Nights_Included__c,
+        Procedure_Category__c,
+        Procedure_Code__c,
+        Recovery_Nights_Required__c,
+        Transportation_Included__c
+        FROM Procedure__c where id = :procedureId];
+    if (procedures.size()>0) {
+        procedure = procedures[0];
+    } else {
+        procedure = null;
+    }
   }
   
   private void loadProcedureList() {
-  	procedureList = new List<SelectOption>();
-  	Procedure_Price__c[] prices = [SELECT Procedure__c, Doctor__c, Facility__c, List_Price__c FROM Procedure_Price__c 
-  		where Procedure__r.Procedure_Category__c = :treatment.Procedure_Category__c and Procedure__r.Name = :treatment.Procedure__c
-  		order by Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name];
-  	procedureList.add(new SelectOption('', ''));
-  	for (Procedure_Price__c price : prices) {
-  		procedureList.add(new SelectOption(price.Procedure__c, price.Doctor__c + ' / ' + price.Facility__c + ' / ' + price.List_Price__c));
-  	}
+    procedureList = new List<SelectOption>();
+    Procedure_Price__c[] prices = [SELECT Procedure__c, Doctor__c, Facility__c, List_Price__c FROM Procedure_Price__c 
+        where Procedure__r.Procedure_Category__c = :treatment.Procedure_Category__c and Procedure__r.Name = :treatment.Procedure__c
+        order by Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name];
+    procedureList.add(new SelectOption('', ''));
+    for (Procedure_Price__c price : prices) {
+        procedureList.add(new SelectOption(price.Procedure__c, price.Doctor__c + ' / ' + price.Facility__c + ' / ' + price.List_Price__c));
+    }
   }
      
   static testMethod void testPatientExtension(){

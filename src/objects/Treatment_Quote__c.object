@@ -96,10 +96,14 @@
     </fields>
     <fields>
         <fullName>Hotel_Nights_Included__c</fullName>
-        <defaultValue>false</defaultValue>
+        <defaultValue>0</defaultValue>
         <externalId>false</externalId>
         <label>Hotel Nights Included</label>
-        <type>Checkbox</type>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Hotel_Nights_Needed__c</fullName>

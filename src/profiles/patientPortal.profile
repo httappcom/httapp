@@ -638,7 +638,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Procedure__c.Hotel_Included__c</field>
+        <field>Procedure__c.Hotel_Nights_Included__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
