@@ -1,4 +1,4 @@
-<apex:page standardController="Patient__c" extensions="PatientExtension" >
+<apex:page standardController="Patient__c" extensions="PatientExtension">
 
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
 <head profile="http://gmpg.org/xfn/11">
@@ -143,6 +143,7 @@
                <apex:commandbutton action="{!newPatient}" value="New Patient "></apex:commandbutton>            
                <apex:commandbutton action="{!savePatient}" value="Save Patient "></apex:commandbutton>              
                <apex:pageMessages />
+            <apex:pageBo
             <div class="fieldwrapper">            
                 <div class="fieldwrap">
                     <div class="label">Suffix: </div> 
@@ -231,15 +232,26 @@
                     <div class="fieldwrap"><div class="label">Procedure Date</div> <div class="item"><apex:inputField value="{!treatment.Procedure_Date__c}"/></div></div>
                     <div class="fieldwrap"><div class="label">Procedure Category</div> <div class="item"><apex:inputfield value="{!treatment.Procedure_Category__c}"></apex:inputfield></div></div>
                     <div class="fieldwrapfull"><div class="labellong">Procedure</div> <div class="item">
-                    	<apex:actionregion >
-                    	<apex:inputfield value="{!treatment.Procedure__c}">
-		    		        <apex:actionSupport event="onchange" rerender="innerQuotePanel" action="{!changeProcedureSubCategory}"/>
-                    	</apex:inputfield>
-                    	</apex:actionregion>
+                        <apex:actionregion >
+                        <apex:inputfield value="{!treatment.Procedure__c}">
+                            <apex:actionSupport event="onchange" rerender="innerQuotePanel" action="{!changeProcedureSubCategory}"/>
+                        </apex:inputfield>
+                        </apex:actionregion>
                     </div></div>
                     <div class="fieldwrap"><div class="label">Request Summary</div> <div class="item"><apex:inputfield value="{!treatment.Request_Summary__c}"></apex:inputfield></div></div>                    
                 </div>
             </div>
+                <div class="fieldheading">Complications</div>
+                <div class="treatmentform">
+                    <div class="fieldwrapper">
+                        <div class="fieldwrap"><div class="label">Treatment as Quoted</div> <div class="item"><apex:inputfield value="{!travel.Treatment_as_Quoted__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Total Added Cost</div> <div class="item"><apex:inputfield value="{!travel.Total_Added_Cost__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Insurance Approval</div> <div class="item"><apex:inputfield value="{!travel.Insurance_Approval__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Additions - Comments</div> <div class="item"><apex:inputfield value="{!travel.Additions_Comments__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Event Diagnosis</div> <div class="item"><apex:inputfield value="{!travel.Event_Diagnosis__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Incident Toolbar</div> <div class="item"></div></div>               
+                    </div>
+                </div>                 
         </div>
         
             <div class="mainNav">
@@ -449,11 +461,11 @@
                         <apex:outputPanel id="innerQuotePanel" styleClass="treatmentformwhite" layout="block">
                             <div class="fieldwrapper">
                                 <div class="fieldwrap"><div class="label">Procedure Package</div><div  class="item">
-                                	<apex:selectList value="{!treatmentQuote.Procedure__c}" multiselect="false" size="1">
-        					    		<apex:selectOptions value="{!procedureList}"/>
-   					    		        <apex:actionSupport event="onchange" rerender="innerQuotePanel,quoteTotalsPanel" action="{!setProcedure}"/>
-        							</apex:selectList>
-        						</div></div>
+                                    <apex:selectList value="{!treatmentQuote.Procedure__c}" multiselect="false" size="1">
+                                        <apex:selectOptions value="{!procedureList}"/>
+                                        <apex:actionSupport event="onchange" rerender="innerQuotePanel,quoteTotalsPanel" action="{!setProcedure}"/>
+                                    </apex:selectList>
+                                </div></div>
                                 <div class="fieldwrap"><div class="label">Expiration Date</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Expiration_Date__c}"></apex:inputfield></div></div>
                                 <div class="fieldwrap"><div class="label">Syncing</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Syncing__c}"></apex:inputfield></div></div>
                                 <div class="fieldwrap"><div class="label">Status</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Status__c}"></apex:inputfield></div></div>
@@ -478,9 +490,7 @@
                             <div class="fieldwrapper">
                                 <div class="fieldwrap"><div class="label">Sub-total</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Sub_Total__c}"></apex:inputfield></div></div>
                                 <div class="fieldwrap"><div class="label">Discount</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Discount_Amount__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Total Price</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Total_Price__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Tax</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Tax__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Grand Total</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Grand_Total__c}"></apex:inputfield></div></div>                    
+                                <div class="fieldwrap"><div class="label">Total Price</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Total_Price__c}"></apex:inputfield></div></div>                    
                             </div>
                         </apex:outputPanel>
                     </div>
@@ -646,17 +656,6 @@
                         <div class="fieldwrap"><div class="label">Special Hotel Needs</div> <div class="item"><apex:inputfield value="{!travel.Special_Hotel_Needs__c}"></apex:inputfield></div></div>
                     </div>
                 </div>              
-                <div class="fieldheading">Complications</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Treatment as Quoted</div> <div class="item"><apex:inputfield value="{!travel.Treatment_as_Quoted__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Total Added Cost</div> <div class="item"><apex:inputfield value="{!travel.Total_Added_Cost__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Insurance Approval</div> <div class="item"><apex:inputfield value="{!travel.Insurance_Approval__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Additions - Comments</div> <div class="item"><apex:inputfield value="{!travel.Additions_Comments__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Event Diagnosis</div> <div class="item"><apex:inputfield value="{!travel.Event_Diagnosis__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Incident Toolbar</div> <div class="item"></div></div>               
-                    </div>
-                </div>                 
             </div>
         </div>
         <div class="tabs">
@@ -728,7 +727,7 @@
                 <div class="fieldheading">Post Treatment Information</div>
                 <div class="treatmentform">
                     <div class="fieldwrapper">                  
-                        <div class="fieldwrap"><div class="label">Treatment Date (Completed)</div> <div class="item"><apex:inputField value="{!treatment.Close_Date__c}"></apex:inputField></div></div>
+                        <div class="fieldwrap"><div class="label">Treatment Date (Completed)</div> <div class="item"><apex:inputField value="{!treatment.Procedure_Date__c}"></apex:inputField></div></div>
                         <div class="fieldwrap"><div class="label">On-Site Recovery Period</div> <div class="item"><apex:inputfield value="{!treatment.On_Site_Recovery_Period__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Post-Op Follow Up Program</div> <div class="item"><apex:inputfield value="{!treatment.On_Site_Recovery_Period__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Financial Reconciliation</div> <div class="item"><apex:inputfield value="{!treatment.Financial_Reconciliation__c}"></apex:inputfield></div></div>

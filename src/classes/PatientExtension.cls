@@ -165,11 +165,17 @@ public class PatientExtension {
     this.quoteName = ''  ; 
   }      
   public PageReference savePatient() {
+  Logger.info('Save Patient');
     patient.Name  = firstName +' ' + lastName;  
     patient.Patient_First_Name__c = firstname;
     patient.Patient_last_Name__c = lastname;
-    if ( patient.id == Null ){ 
+    if ( patient.id == Null ){
+    	try { 
       insert patient;
+    	} catch (Exception e) {
+    		Logger.info('exception:'+e.getStackTraceString());
+    		throw e;
+    	}
     }else{              
       update patient;  
     }      

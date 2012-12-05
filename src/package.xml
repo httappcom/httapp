@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>ChangePasswordController</members>
@@ -21,6 +21,10 @@
         <members>TreatmentUtility</members>
         <members>patientPortalController</members>
         <name>ApexClass</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ApexPage</name>
     </types>
     <types>
         <members>PatientTrigger</members>
@@ -61,6 +65,10 @@
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomSite</name>
     </types>
     <types>
         <members>Incident__c</members>
@@ -141,14 +149,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>*</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>CustomSite</name>
-    </types>
     <version>26.0</version>
 </Package>
-
