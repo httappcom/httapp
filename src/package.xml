@@ -37,34 +37,11 @@
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>My_Message_Settings__c.Show_Info_Header__c</members>
-        <members>User.Receive_Portal_Messages__c</members>
-        <members>User.Receive_Staff_Messages__c</members>
-        <name>CustomField</name>
-    </types>
-    <types>
         <members>CustomLabels</members>
         <name>CustomLabels</name>
     </types>
     <types>
-        <members>Hotel__c</members>
-        <members>Incident__c</members>
-        <members>Instruction__c</members>
-        <members>Knowledge_Base__c</members>
-        <members>Medical_Facility__c</members>
-        <members>Medical_Professional__c</members>
-        <members>Medical_Profile__c</members>
-        <members>Message_Header__c</members>
-        <members>Message_User__c</members>
-        <members>Message__c</members>
-        <members>Patient__c</members>
-        <members>Payment__c</members>
-        <members>Procedure_Line_Item__c</members>
-        <members>Procedure_Price__c</members>
-        <members>Procedure__c</members>
-        <members>Travel__c</members>
-        <members>Treatment_Quote__c</members>
-        <members>Treatment__c</members>
+        <members>*</members>
         <name>CustomObject</name>
     </types>
     <types>
