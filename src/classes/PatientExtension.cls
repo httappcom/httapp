@@ -18,8 +18,6 @@ public class PatientExtension {
     
   public List<SelectOption> taskOptions { get; set; }
   public String selectedTaskOption { get; set; }
-  public String firstName { get; set; }
-  public String lastName { get; set; } 
   public integer treatmentCurNumber { get; set; } 
   public Integer treatmentTotCount { get; set; } 
   public String treatmentName{ get; set; } 
@@ -100,8 +98,6 @@ public class PatientExtension {
       System.debug('Incident Name'+ this.incident); 
       System.debug('treatmentQuote Name'+ this.treatmentQuote );              
                    
-      this.firstName = this.patient.Name.split(' ')[0];   
-      this.lastName = this.patient.Name.split(' ')[1]; 
       this.treatmentName = this.treatment.Name;                                                       
       searchTask();                                                   
       } 
@@ -113,9 +109,7 @@ public class PatientExtension {
       throw e;
     }
   }  
-  private void initiatePatient(){
-    this.firstName = '';
-    this.lastName = '';    
+  private void initiatePatient() {
     this.inquiryFlag = true;
     this.interactionFlag = false;
     this.travelFlag = false;
@@ -162,9 +156,6 @@ public class PatientExtension {
   }      
   public PageReference savePatient() {
   Logger.info('Save Patient');
-    patient.Name  = firstName +' ' + lastName;  
-    patient.Patient_First_Name__c = firstname;
-    patient.Patient_last_Name__c = lastname;
     if ( patient.id == Null ){
       insert patient;
     } else {              
@@ -182,9 +173,6 @@ public class PatientExtension {
   }  
   public PageReference saveTreatment() {
     Treatment__c tempTreatment; 
-    patient.Name  = firstName +' ' + lastName;  
-    patient.Patient_First_Name__c = firstname;
-    patient.Patient_last_Name__c = lastname;
     if ( patient.id == Null ){ 
       insert patient;
     }else{              
