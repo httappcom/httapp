@@ -83,6 +83,10 @@
         <fields>NAME</fields>
         <relatedList>Procedure__c.Doctor__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Procedure_Add_on__c.Medical_Professional__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>
