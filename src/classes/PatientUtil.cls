@@ -80,7 +80,7 @@ public class PatientUtil {
                                Primary_Campaign__c,
                                Related_Campaign__c,
                                Treatment_Summary__c,
-
+							  Travel__r.Id,
                               Travel__r.Name,
                               Travel__r.CreatedBy.Name,
                               Travel__r.CreatedDate,

@@ -49,38 +49,38 @@
 <apex:form >
 <body class='no-js'>
 <div class="wrapper">
-<div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
-    <apex:image id="collaboration" url="{!URLFOR($Resource.KenResources, '/img/collaboration.png')}" width="26" height="246" alt=""  />
-</div>
-<div id="rightPanel">
-    <div id="rightPanelcontent">
-            <div class="vfButtonBarDark">
-            <div>
-                <span class="vfButtonBarDarkheader">Tasks</span> 
+	<div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
+    	<apex:image id="collaboration" url="{!URLFOR($Resource.KenResources, '/img/collaboration.png')}" width="26" height="246" alt=""  />
+	</div>
+	<div id="rightPanel">
+    	<div id="rightPanelcontent">
+        	<div class="vfButtonBarDark">
+            	<div>
+                	<span class="vfButtonBarDarkheader">Tasks</span> 
                
-                <apex:selectList value="{!selectedTaskOption}" size="1" id="sidebardropdown" styleClass="sidebardropdown" onChange="onChangeCC(this.options[this.selectedIndex].value);">
-                    <apex:selectOptions value="{!taskOptions}" />
-                    <apex:actionfunction action="{!searchTask}" name="onChangeCCact" reRender="taskResult"/>
-               </apex:selectList>
-                <!--<select name="dropdown" size="1" >
-                    <option value="allopen">All Open</option>
-                    <option value="allclosed">All Closed</option>
-                    <option value="myopen" selected="selected">My Open</option>
-                    <option value="myclosed">My Closed</option>
-                 </select>-->
-            </div>
-        </div>
-        <apex:outputPanel id="taskResult">        
-        <div class="sidebardetails">
-           <apex:repeat value="{!tasks}" var="t">        
-            <div class="item"><a href="#"><apex:inputfield value="{!t.Subject}"></apex:inputfield></a> <apex:inputfield value="{!t.Status}"></apex:inputfield></div>
-            <div class="optionindent">      
-                <div class="label">Owner:</div>
-                <div class="itemsmall"><a href="#"><apex:inputfield value="{!t.Ownerid}"></apex:inputfield></a></div> 
-                <div class="label">Due:</div>
-                <div class="itemsmall"><a href="#"><apex:inputfield value="{!t.ActivityDate}"></apex:inputfield></a></div>
-            </div>
-            </apex:repeat>
+                	<apex:selectList value="{!selectedTaskOption}" size="1" id="sidebardropdown" styleClass="sidebardropdown" onChange="onChangeCC(this.options[this.selectedIndex].value);">
+                    	<apex:selectOptions value="{!taskOptions}" />
+                    	<apex:actionfunction action="{!searchTask}" name="onChangeCCact" reRender="taskResult"/>
+               		</apex:selectList>
+	                <!--<select name="dropdown" size="1" >
+    	                <option value="allopen">All Open</option>
+        	            <option value="allclosed">All Closed</option>
+            	        <option value="myopen" selected="selected">My Open</option>
+                	    <option value="myclosed">My Closed</option>
+	                 </select>-->
+    	        </div>
+        	</div>
+        	<apex:outputPanel id="taskResult">        
+        	<div class="sidebardetails">
+           		<apex:repeat value="{!tasks}" var="t">        
+            		<div class="item"><a href="#"><apex:inputfield value="{!t.Subject}"></apex:inputfield></a> <apex:inputfield value="{!t.Status}"></apex:inputfield></div>
+           			<div class="optionindent">      
+		                <div class="label">Owner:</div>
+        		        <div class="itemsmall"><a href="#"><apex:inputfield value="{!t.Ownerid}"></apex:inputfield></a></div> 
+                		<div class="label">Due:</div>
+		                <div class="itemsmall"><a href="#"><apex:inputfield value="{!t.ActivityDate}"></apex:inputfield></a></div>
+        		    </div>
+            	</apex:repeat>
             <div style="clear:both"></div>
         </div>
         </apex:outputPanel>
@@ -113,144 +113,184 @@
                 <div class="item"><a href="#">Assign Task</a></div>
             </div>
             
-        </div><br /><br />      
-      </div>        
-    </div>
+    	</div><br /><br />      
+	</div>        
+</div>
 <div class="content" id="content">    
 
-        <div class="twisty open">   
-            <div class="orangeheader"> 
-                <span class="orangeheadertitle">{!patient.Name}</span>
+	<!-- div class="twisty open">   
+    	<div class="orangeheader"> 
+            <span class="orangeheadertitle">{!patient.Name}</span>
 
-                <span class="treatmentwrapper">
-                    <span class="treatmenttitle"> {!treatmentCurNumber} of {!treatmentTotCount} Treatments</span>
-                    <span class="treatmentboxeswrapper">
-                        <span class="treatmentboxon"> </span>
-                        <span class="treatmentbox"> </span>
-                        <span class="treatmentbox"> </span>
-                        <span class="treatmentbox"> </span>
-                    </span>
-                    <span class="treatmenttitle">{!phaseCount } of 4 Phases</span>
-                    <span class="treatmentboxeswrapper">
-                        <span class="treatmentboxon"> </span>
-                        <span class="treatmentbox"> </span>
-                        <span class="treatmentbox"> </span>
-                        <span class="treatmentbox"> </span>         
-                    </span>
+            <span class="treatmentwrapper">
+                <span class="treatmenttitle"> {!treatmentCurNumber} of {!treatmentTotCount} Treatments</span>
+                <span class="treatmentboxeswrapper">
+                    <span class="treatmentboxon"> </span>
+                    <span class="treatmentbox"> </span>
+                    <span class="treatmentbox"> </span>
+                    <span class="treatmentbox"> </span>
                 </span>
-            </div><br />
-            <div class="fieldwrapper">
+                <span class="treatmenttitle">{!phaseCount } of 4 Phases</span>
+                <span class="treatmentboxeswrapper">
+                    <span class="treatmentboxon"> </span>
+                    <span class="treatmentbox"> </span>
+                    <span class="treatmentbox"> </span>
+                    <span class="treatmentbox"> </span>         
+                 </span>
+            </span>
+        </div><br /> -->
+    <apex:pageBlock >
+        	<apex:pageblocksection title="{!patient.Name}" id="pbs_Patient" columns="2">
                <apex:commandbutton action="{!newPatient}" value="New Patient "></apex:commandbutton>            
-               <apex:commandbutton action="{!savePatient}" value="Save Patient "></apex:commandbutton>              
-               <apex:pageMessages />
-            <div class="fieldwrapper">            
-                <div class="fieldwrap">
-                    <div class="label">Suffix: </div> 
-                    <div class="item"><apex:inputfield value="{!patient.Salutation__c}"></apex:inputfield></div>
-                </div>
-                <div class="fieldwrap">
-                    <div class="label">First Name:</div> 
-                    <div class="item"><apex:inputText value="{!firstName}" ></apex:inputText></div>
-                </div>
-                <div class="fieldwrap">
-                    <div class="label">Last Name:</div> 
-                    <div class="item"><apex:inputText value="{!lastName}" ></apex:inputText></div>
-                </div>                
-                <div class="fieldwrap"><div class="label">Email:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Email__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">
-                    <div class="label">Primary Phone:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Phone__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">                
-                    <div class="label">Alternate Phone:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Mobile__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">
-                    <div class="label">Street:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Street__c}"></apex:inputfield></div>
-                </div>                                    
-                <div class="fieldwrap">
-                    <div class="label">City:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.City__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">
-                    <div class="label">State/Province:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.State__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">
-                    <div class="label">Zip/Postal Code:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Postal_Code__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">
-                    <div class="label">Country:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Country__c}"></apex:inputfield></div>
-                </div>                                
-                <div class="fieldwrap">
-                    <div class="label">Preferred Language:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Preferred_Language__c}"></apex:inputfield></div>
-                </div>                
-                <div class="fieldwrap">
-                  <div class="label">Last Communication:</div> 
-                  <div class="item"><apex:inputfield value="{!patient.Last_Communication__c}"></apex:inputfield></div>
-                </div>
-                <div class="fieldwrap">
-                    <div class="label">Owner:</div> 
-                    <div class="item"><apex:inputfield value="{!patient.Ownerid}"></apex:inputfield></div>
-                </div>            
-            </div>
-           </div> 
-         </div>        
-        <div class="twisty open">       
-        <div class="orangeheader">
-            <span class="orangeheadertitle">Treatment</span>
-            <span class="orangeheaderoption"><a href="#" style="color:#fff"></a></span>
-        </div><br />                        
-        <div class="treatmentfieldwrapper">
-             <apex:commandbutton action="{!newTreatment}" value="New Treatment"></apex:commandbutton>        
-             <apex:commandbutton action="{!saveTreatment}" value="Save Treatment"></apex:commandbutton>
-             <apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}"> Previous</apex:commandlink>
-             <apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}"> Next</apex:commandlink>
-            <div class="treatmentform">
-                <div class="fieldwrapper">
-                    <div class="fieldwrap"><div class="label">Treatment Event #</div><div class="item">{!treatmentName} </div></div>                    
-                    <div class="fieldwrap"><div class="label">Next Follow Up:</div><div class="item"><apex:inputfield value="{!treatment.Next_Follow_Up__c}"></apex:inputfield></div></div>                    
-                </div>
-            </div><div class="fieldheading">Staging Process</div>
-            <div class="treatmentform">
-                <div class="fieldwrapper">                  
-                    <div class="fieldwrap"><div class="label">Phase</div> <div class="item"><apex:inputfield value="{!treatment.Phase__c}"></apex:inputfield></div></div>
-                    <div class="fieldwrap"><div class="label">Stage</div> <div class="item"><apex:inputfield value="{!treatment.Stage__c}"></apex:inputfield></div></div>
-                    <div class="fieldwrapfull"><div class="label">Sub-Stage</div> <div class="item"><apex:inputfield value="{!treatment.Sub_Stage__c}"></apex:inputfield></div></div>
-                </div>
-            </div><div class="fieldheading">Procedure Information</div>
-            <div class="treatmentform">
-                <div class="fieldwrapper">
-                    <div class="fieldwrap"><div class="label">Procedure Date</div> <div class="item"><apex:inputField value="{!treatment.Procedure_Date__c}"/></div></div>
-                    <div class="fieldwrap"><div class="label">Procedure Category</div> <div class="item"><apex:inputfield value="{!treatment.Procedure_Category__c}"></apex:inputfield></div></div>
-                    <div class="fieldwrapfull"><div class="labellong">Procedure</div> <div class="item">
-                        <apex:actionregion >
-                        <apex:inputfield value="{!treatment.Procedure__c}">
-                            <apex:actionSupport event="onchange" rerender="innerQuotePanel" action="{!changeProcedureSubCategory}"/>
-                        </apex:inputfield>
-                        </apex:actionregion>
-                    </div></div>
-                    <div class="fieldwrap"><div class="label">Request Summary</div> <div class="item"><apex:inputfield value="{!treatment.Request_Summary__c}"></apex:inputfield></div></div>                    
-                </div>
-            </div>
-                <div class="fieldheading">Complications</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Treatment as Quoted</div> <div class="item"><apex:inputfield value="{!travel.Treatment_as_Quoted__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Total Added Cost</div> <div class="item"><apex:inputfield value="{!travel.Total_Added_Cost__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Insurance Approval</div> <div class="item"><apex:inputfield value="{!travel.Insurance_Approval__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Additions - Comments</div> <div class="item"><apex:inputfield value="{!travel.Additions_Comments__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Event Diagnosis</div> <div class="item"><apex:inputfield value="{!travel.Event_Diagnosis__c}"></apex:inputfield></div></div>
+               <apex:commandbutton action="{!savePatient}" value="Save Patient "></apex:commandbutton>
+            	<apex:pageblocksectionitem helpText=""> 
+                	<apex:outputLabel value="Patient Care Coordinator"/>
+	                <apex:outputField value="{!patient.Ownerid}"/>
+    	        </apex:pageblocksectionitem>
+        	    <apex:pageblocksection />
+            	<apex:pageblocksectionitem helpText=""> 
+                	<apex:outputLabel value="Suffix"/>
+	                <apex:inputField value="{!patient.Salutation__c}"/>
+    	        </apex:pageblocksectionitem>
+        	    <apex:pageblocksectionitem helpText=""> 
+            	    <apex:outputLabel value="Street"/>
+                	<apex:inputText size="30" value="{!patient.Street__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="First Name"/>
+            	    <apex:inputField value="{!patient.Patient_First_Name__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="City"/>
+            	    <apex:inputField value="{!patient.City__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Last Name"/>
+            	    <apex:inputField value="{!patient.Patient_Last_Name__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="State/Province"/>
+            	    <apex:inputField value="{!patient.State__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Email"/>
+            	    <apex:inputField value="{!patient.Email__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Zip/Postal Code"/>
+	            	    <apex:inputField value="{!patient.Postal_Code__c}"/>
+    	        </apex:pageblocksectionitem>
+        	    <apex:pageblocksectionitem helpText=""> 
+            	    <apex:outputLabel value="Primary Phone"/>
+	                <apex:inputField value="{!patient.Phone__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Country"/>
+            	    <apex:inputField value="{!patient.Country__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Alternate Phone"/>
+            	    <apex:inputField value="{!patient.Mobile__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Preferred Language"/>
+            	    <apex:inputField value="{!patient.Preferred_Language__c}"/>
+	            </apex:pageblocksectionitem>
+    	        <apex:pageblocksectionitem helpText=""> 
+        	        <apex:outputLabel value="Last Communication"/>
+            	    <apex:inputTextarea rows="3" cols="50" value="{!patient.Last_Communication__c}"/>
+	            </apex:pageblocksectionitem>
+    	    </apex:pageblocksection>
+	      	<apex:pageblocksection title="Treatment" id="pbs_Treatment" columns="1">
+	        		<apex:outputPanel >
+		            	<apex:commandbutton action="{!newTreatment}" value="New Treatment"></apex:commandbutton>        
+        	     		<apex:commandbutton action="{!saveTreatment}" value="Save Treatment"></apex:commandbutton>
+            	 		<apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}"> Previous</apex:commandlink>&nbsp;
+             			<apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}"> Next</apex:commandlink>
+             		</apex:outputPanel>
+             	<apex:pageBlock >
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Treatment Event #"/>
+	            		    <apex:outputText value="{!treatmentName}"/>
+    	        		</apex:pageblocksectionitem>
+            			<apex:pageblocksectionitem helpText=""> 
+                			<apex:outputLabel value="Next Follow Up"/>
+	                		<apex:inputField value="{!treatment.Next_Follow_Up__c}"/>
+    	        		</apex:pageblocksectionitem>
+    	        	</apex:pageBlockSection>
+    	        </apex:pageBlock>
+    	        <apex:pageBlock title="Staging Process">
+    	        	<apex:pageBlockSection columns="3">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Phase"/>
+	            		    <apex:inputField value="{!treatment.Phase__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Stage"/>
+	            		    <apex:inputField value="{!treatment.Stage__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Sub-Stage"/>
+	            		    <apex:inputField value="{!treatment.Sub_Stage__c}"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    	        <apex:pageBlock title="Procedure Information">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Procedure Date"/>
+	            		    <apex:inputField value="{!treatment.Procedure_Date__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Procedure Category"/>
+	            		    <apex:inputField value="{!treatment.Procedure_Category__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Procedure"/>
+	                        <apex:actionregion >
+    	                    <apex:inputfield value="{!treatment.Procedure__c}">
+        	                    <apex:actionSupport event="onchange" rerender="innerQuotePanel" action="{!changeProcedureSubCategory}"/>
+            	            </apex:inputfield>
+                	        </apex:actionregion>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Request Summary"/>
+	            		    <apex:inputField value="{!treatment.Request_Summary__c}"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    	        <apex:pageBlock title="Complications">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Treatment as Quoted"/>
+	            		    <apex:inputField value="{!travel.Treatment_as_Quoted__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Total Added Cost"/>
+	            		    <apex:inputField value="{!travel.Total_Added_Cost__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Insurance Approval"/>
+	            		    <apex:inputField value="{!travel.Insurance_Approval__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Additions - Comments"/>
+	            		    <apex:inputField value="{!travel.Additions_Comments__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Event Diagnosis"/>
+	            		    <apex:inputField value="{!travel.Event_Diagnosis__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Incident Toolbar"/>
+    	        		</apex:pageblocksectionitem>
                         <div class="fieldwrap"><div class="label">Incident Toolbar</div> <div class="item"></div></div>               
-                    </div>
-                </div>                 
-        </div>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+        	</apex:pageblocksection>
+    </apex:pageBlock>
+        
         
             <div class="mainNav">
                 <div class="navitemfirst">
@@ -278,7 +318,6 @@
                     <div class="lucida" id="arrow4">&#187;</div><br /><br />
                 </div>
             </div>                      
-        </div>  
 
 </div>
  
