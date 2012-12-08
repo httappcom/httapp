@@ -17,15 +17,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Procedure_Code__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
                 <field>Doctor__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
                 <field>Facility__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Price__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -114,7 +114,6 @@
     <miniLayout>
         <fields>Procedure_Category__c</fields>
         <fields>Name</fields>
-        <fields>Procedure_Code__c</fields>
         <fields>Doctor__c</fields>
         <fields>Facility__c</fields>
         <relatedLists>
@@ -133,10 +132,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Treatment_Quote__c.Procedure__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Procedure_Add_on__c.Procedure__c</relatedList>
     </relatedLists>
     <relatedObjects>Facility__c</relatedObjects>
     <relatedObjects>Doctor__c</relatedObjects>

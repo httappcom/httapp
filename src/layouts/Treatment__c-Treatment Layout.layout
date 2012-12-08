@@ -31,6 +31,10 @@
                 <behavior>Readonly</behavior>
                 <field>Patient_Email_Formula__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Overdue__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

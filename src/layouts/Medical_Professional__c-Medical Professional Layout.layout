@@ -31,10 +31,6 @@
                 <field>Title__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>External_Id__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Bio__c</field>
             </layoutItems>
@@ -82,10 +78,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Procedure__c.Doctor__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Procedure_Add_on__c.Medical_Professional__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>

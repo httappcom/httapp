@@ -15,10 +15,6 @@
                 <field>Slogan__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>External_Id__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Comments__c</field>
             </layoutItems>
@@ -45,6 +41,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Country__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Onsite_Coordinator__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
