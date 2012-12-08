@@ -361,6 +361,10 @@ public class PatientExtension {
      }  
      return ApexPages.currentPage();
   } 
+  public PageReference openQuotePDF() {      
+	
+    return null;       
+  }   
   public PageReference nextIncident() {      
     if ( incidentCurNumber <= incidentTotCount ){ 
       incidentCurNumber = incidentCurNumber + 1; 
@@ -556,7 +560,6 @@ public class PatientExtension {
         Hospital_Nights_Required__c,
         Hotel_Nights_Included__c,
         Procedure_Category__c,
-        Procedure_Code__c,
         Recovery_Nights_Required__c,
         Transportation_Included__c
         FROM Procedure__c where id = :procedureId];

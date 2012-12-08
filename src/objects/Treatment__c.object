@@ -259,6 +259,16 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Overdue__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (Next_Follow_Up__c &lt; NOW() , &apos;*** OVERDUE ***&apos;, &apos;&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Overdue</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Patient_Email_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>Patient__r.Email__c</formula>
@@ -437,10 +447,6 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Neurology</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Cosmetic/Plastic</fullName>
                 <default>false</default>
             </picklistValues>
@@ -477,6 +483,10 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
+                <fullName>Neurology</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Obstetrics/Gynecology</fullName>
                 <default>false</default>
             </picklistValues>
@@ -489,7 +499,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Organ Tranplant</fullName>
+                <fullName>Organ Transplant</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -749,13 +759,29 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
+                <fullName>Dental Fillings</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Dental Implants</fullName>
                 <controllingFieldValues>Dentistry</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
+                <fullName>Dental Orthodontics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Dental - Other</fullName>
                 <controllingFieldValues>Dentistry</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dental Periodontics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dental- Root Canal</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -766,6 +792,10 @@
             <picklistValues>
                 <fullName>Dental Veneers</fullName>
                 <controllingFieldValues>Dentistry</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Dental - Whitening</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -811,6 +841,10 @@
             <picklistValues>
                 <fullName>Gastric Band Port Removal</fullName>
                 <controllingFieldValues>Gastroenterology</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Gastric Band Port Replacement</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -869,7 +903,7 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Heart</fullName>
-                <controllingFieldValues>Organ Tranplant</controllingFieldValues>
+                <controllingFieldValues>Organ Transplant</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -889,7 +923,7 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Kidney</fullName>
-                <controllingFieldValues>Organ Tranplant</controllingFieldValues>
+                <controllingFieldValues>Organ Transplant</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -908,11 +942,6 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Lumbar Dynamic Stabilization</fullName>
-                <controllingFieldValues>Spinal  Surgery</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Liposculpture with Brazilian Butt Lift</fullName>
                 <controllingFieldValues>Cosmetic/Plastic</controllingFieldValues>
                 <default>false</default>
@@ -924,7 +953,12 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Liver</fullName>
-                <controllingFieldValues>Organ Tranplant</controllingFieldValues>
+                <controllingFieldValues>Organ Transplant</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Lumbar Dynamic Stabilization</fullName>
+                <controllingFieldValues>Spinal  Surgery</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>

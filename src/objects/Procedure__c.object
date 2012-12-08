@@ -123,6 +123,15 @@
         <visibleLines>10</visibleLines>
     </fields>
     <fields>
+        <fullName>Price__c</fullName>
+        <externalId>false</externalId>
+        <label>Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Currency</type>
+    </fields>
+    <fields>
         <fullName>Procedure_Category__c</fullName>
         <externalId>false</externalId>
         <label>Procedure Category</label>
@@ -180,11 +189,11 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Opthalmology</fullName>
+                <fullName>Opthamology</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Organ Tranplant</fullName>
+                <fullName>Organ Transplant</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -218,16 +227,6 @@
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>Procedure_Code__c</fullName>
-        <caseSensitive>false</caseSensitive>
-        <externalId>true</externalId>
-        <label>Procedure Code</label>
-        <length>5</length>
-        <required>true</required>
-        <type>Text</type>
-        <unique>true</unique>
     </fields>
     <fields>
         <fullName>Recovery_Nights_Required__c</fullName>

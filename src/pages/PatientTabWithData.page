@@ -497,6 +497,7 @@
                     <div class="treatmentfieldwrapper">
                         <apex:commandbutton action="{!newQuote}" value="New Quote" rerender="QuotePanel,quoteTotalsPanel"></apex:commandbutton>
                         <apex:commandbutton action="{!saveQuote}" value="Save Quote"></apex:commandbutton>
+                        <apex:commandbutton action="https://na14.salesforce.com/apex/Quote?id={!treatmentQuote.id}" value="Open PDF"></apex:commandbutton>
                         <apex:commandLink action="{!previousQuote}" rendered="{!hasPreviousQuote}" rerender="QuotePanel,quoteTotalsPanel"> Previous</apex:commandlink>
                         <apex:commandLink action="{!nextQuote}" rendered="{!hasNextQuote}" rerender="QuotePanel,quoteTotalsPanel"> Next</apex:commandlink> 
                         <apex:outputText value="          "></apex:outputText><apex:outputText value="{!quoteCurNumber} of {!quoteTotCount} Quotes  "></apex:outputText>                                                 

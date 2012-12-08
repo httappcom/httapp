@@ -162,6 +162,20 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Hotel_Checkin__c</fullName>
+        <externalId>false</externalId>
+        <label>Hotel_Checkin</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Hotel_Checkout__c</fullName>
+        <externalId>false</externalId>
+        <label>Hotel_Checkout</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Hotel_Coordination_Needed__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

@@ -70,16 +70,6 @@
         <type>Currency</type>
     </fields>
     <fields>
-        <fullName>Procedure_Code__c</fullName>
-        <externalId>false</externalId>
-        <formula>Procedure__r.Procedure_Code__c</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Procedure Code</label>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Procedure__c</fullName>
         <externalId>false</externalId>
         <label>Procedure</label>
@@ -109,7 +99,6 @@
     <listViews>
         <fullName>Price_List</fullName>
         <columns>NAME</columns>
-        <columns>Procedure_Code__c</columns>
         <columns>Procedure__c</columns>
         <columns>Doctor__c</columns>
         <columns>Facility__c</columns>

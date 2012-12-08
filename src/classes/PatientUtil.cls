@@ -297,7 +297,6 @@ public class PatientUtil {
                               Procedure__r.Hospital_Nights_Required__c,
                               Procedure__r.Hotel_Nights_Included__c,
                               Procedure__r.Procedure_Category__c,
-                              Procedure__r.Procedure_Code__c,
                               Procedure__r.Recovery_Nights_Required__c,
                               Procedure__r.Transportation_Included__c 
                         From Treatment_Quotes__r)

@@ -200,6 +200,15 @@
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
+    <fields>
+        <fullName>echosignDocKey__c</fullName>
+        <externalId>false</externalId>
+        <label>echosignDocKey</label>
+        <length>40</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>Treatment Quote</label>
     <nameField>
         <displayFormat>IQ{00000000}</displayFormat>

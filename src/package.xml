@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>ChangePasswordController</members>
-        <members>EmailUtil</members>
-        <members>ForgotPasswordController</members>
-        <members>Logger</members>
-        <members>Message</members>
-        <members>Message_Test</members>
-        <members>MyProfilePageController</members>
-        <members>PatientExtension</members>
-        <members>PatientRank</members>
-        <members>PatientTest</members>
-        <members>PatientUtil</members>
-        <members>PipelineController</members>
-        <members>ProcedureLineExtension</members>
-        <members>QuoteController</members>
-        <members>SiteLoginController</members>
-        <members>SiteRegisterController</members>
-        <members>TravelUtility</members>
-        <members>TreatmentTests</members>
-        <members>TreatmentUtility</members>
-        <members>patientPortalController</members>
+        <members>*</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -53,6 +34,11 @@
         <members>Procedure_Price__c</members>
         <members>Treatment__c</members>
         <name>CustomTab</name>
+    </types>
+    <types>
+        <members>NueHealth_Dashboards</members>
+        <members>NueHealth_Dashboards/Pipeline</members>
+        <name>Dashboard</name>
     </types>
     <types>
         <members>PRM_Documents</members>
@@ -102,6 +88,7 @@
         <members>avatar</members>
         <members>bkgd</members>
         <members>collaboration</members>
+        <members>httItineraryBanner</members>
         <members>jQuery</members>
         <members>jQueryTwisty</members>
         <members>jquery</members>
@@ -109,6 +96,7 @@
         <members>jsonSuggest</members>
         <members>jsonSuggestJS</members>
         <members>paperclip</members>
+        <members>quoteResources</members>
         <members>sfscript</members>
         <members>sfstyles</members>
         <members>twistyClosed</members>
