@@ -1,6 +1,5 @@
 <apex:page standardController="Patient__c" extensions="PatientExtension">
 
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
 <head profile="http://gmpg.org/xfn/11">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title></title>
@@ -45,9 +44,8 @@
     });
     </script> 
 </head>
-<apex:pageBlock >
-<apex:form >
 <body class='no-js'>
+<apex:form >
 <div class="wrapper">
 	<div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
     	<apex:image id="collaboration" url="{!URLFOR($Resource.KenResources, '/img/collaboration.png')}" width="26" height="246" alt=""  />
@@ -116,7 +114,6 @@
     	</div><br /><br />      
 	</div>        
 </div>
-<div class="content" id="content">    
 
 	<!-- div class="twisty open">   
     	<div class="orangeheader"> 
@@ -147,6 +144,8 @@
     			$("input[id*=':First_Name']").focus();
 			});
 		</script>
+
+<apex:outputPanel layout="block" style="margin-right:35px">
     <apex:pageBlock >
         	<apex:pageblocksection title="{!patient.Name}" id="pbs_Patient" columns="2">
                <apex:commandbutton action="{!newPatient}" value="New Patient "></apex:commandbutton>            
@@ -216,7 +215,6 @@
             	 		<apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}"> Previous</apex:commandlink>&nbsp;
              			<apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}"> Next</apex:commandlink>
              		</apex:outputPanel>
-             	<apex:pageBlock >
     	        	<apex:pageBlockSection columns="2">
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Treatment Event #"/>
@@ -224,82 +222,76 @@
     	        		</apex:pageblocksectionitem>
             			<apex:pageblocksectionitem helpText=""> 
                 			<apex:outputLabel value="Next Follow Up"/>
-	                		<apex:inputField value="{!treatment.Next_Follow_Up__c}"/>
+	                		<apex:inputField value="{!treatment.Next_Follow_Up__c}" tabOrderHint="200"/>
     	        		</apex:pageblocksectionitem>
     	        	</apex:pageBlockSection>
-    	        </apex:pageBlock>
-    	        <apex:pageBlock title="Staging Process">
-    	        	<apex:pageBlockSection columns="3">
+    	        	<apex:pageBlockSection title="Staging Process" columns="3" collapsible="true">
 		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Phase"/>
-	            		    <apex:inputField value="{!treatment.Phase__c}"/>
+        		        	<apex:outputLabel value="Phase" style="width: 15%;"/>
+	            		    <apex:inputField value="{!treatment.Phase__c}" style="width: 17%;" tabOrderHint="201"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Stage"/>
-	            		    <apex:inputField value="{!treatment.Stage__c}"/>
+        		        	<apex:outputLabel value="Stage" style="width: 15%;"/>
+	            		    <apex:inputField value="{!treatment.Stage__c}" style="width: 17%;" tabOrderHint="202"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Sub-Stage"/>
-	            		    <apex:inputField value="{!treatment.Sub_Stage__c}"/>
+        		        	<apex:outputLabel value="Sub-Stage" style="width: 15%;"/>
+	            		    <apex:inputField value="{!treatment.Sub_Stage__c}" style="width: 17%;" tabOrderHint="203"/>
     	        		</apex:pageblocksectionitem>
                     </apex:pageBlockSection>
-                </apex:pageBlock>
-    	        <apex:pageBlock title="Procedure Information">
-    	        	<apex:pageBlockSection columns="2">
+    	        	<apex:pageBlockSection title="Procedure Information" columns="2" collapsible="true">
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Procedure Date"/>
-	            		    <apex:inputField value="{!treatment.Procedure_Date__c}"/>
+	            		    <apex:inputField value="{!treatment.Procedure_Date__c}" tabOrderHint="210"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Procedure Category"/>
-	            		    <apex:inputField value="{!treatment.Procedure_Category__c}"/>
+	            		    <apex:inputField value="{!treatment.Procedure_Category__c}" tabOrderHint="220"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Procedure"/>
 	                        <apex:actionregion >
-    	                    <apex:inputfield value="{!treatment.Procedure__c}">
+    	                    <apex:inputfield value="{!treatment.Procedure__c}" tabOrderHint="212">
         	                    <apex:actionSupport event="onchange" rerender="innerQuotePanel" action="{!changeProcedureSubCategory}"/>
             	            </apex:inputfield>
                 	        </apex:actionregion>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Request Summary"/>
-	            		    <apex:inputField value="{!treatment.Request_Summary__c}"/>
+	            		    <apex:inputField value="{!treatment.Request_Summary__c}" tabOrderHint="222"/>
     	        		</apex:pageblocksectionitem>
                     </apex:pageBlockSection>
-                </apex:pageBlock>
-    	        <apex:pageBlock title="Complications">
-    	        	<apex:pageBlockSection columns="2">
+    	        	<apex:pageBlockSection id="pbs_Complications" columns="2" collapsible="true" title="Complications">
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Treatment as Quoted"/>
-	            		    <apex:inputField value="{!travel.Treatment_as_Quoted__c}"/>
+	            		    <apex:inputField value="{!travel.Treatment_as_Quoted__c}" tabOrderHint="232"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Total Added Cost"/>
-	            		    <apex:inputField value="{!travel.Total_Added_Cost__c}"/>
+	            		    <apex:inputField value="{!travel.Total_Added_Cost__c}" tabOrderHint="242"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Insurance Approval"/>
-	            		    <apex:inputField value="{!travel.Insurance_Approval__c}"/>
+	            		    <apex:inputField value="{!travel.Insurance_Approval__c}" tabOrderHint="234"/>
     	        		</apex:pageblocksectionitem>
+    	        		<apex:pageblocksectionitem />
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Additions - Comments"/>
-	            		    <apex:inputField value="{!travel.Additions_Comments__c}"/>
+	            		    <apex:inputField value="{!travel.Additions_Comments__c}" tabOrderHint="244"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Event Diagnosis"/>
-	            		    <apex:inputField value="{!travel.Event_Diagnosis__c}"/>
+	            		    <apex:inputField value="{!travel.Event_Diagnosis__c}" tabOrderHint="236"/>
     	        		</apex:pageblocksectionitem>
-		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Incident Toolbar"/>
-    	        		</apex:pageblocksectionitem>
-                        <div class="fieldwrap"><div class="label">Incident Toolbar</div> <div class="item"></div></div>               
                     </apex:pageBlockSection>
-                </apex:pageBlock>
+					<script>
+        				twistSection(document.getElementById('{!$Component.pbs_Treatment.pbs_Complications}').getElementsByTagName('img')[0])
+    				</script>
         	</apex:pageblocksection>
     </apex:pageBlock>
         
         
+    <apex:pageBlock >
             <div class="mainNav">
                 <div class="navitemfirst">
                     <apex:commandLink id="nav1" onmousemove="document.getElementById('arrow1').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow1').style.color = '#CCCCCC'" action="{!displayInquiry}" reRender="resultPanel">    
@@ -327,129 +319,214 @@
                 </div>
             </div>                      
 
-</div>
  
 <apex:outputPanel id="resultPanel">
-    <apex:outputPanel rendered="{!inquiryFlag}">
-        <div class="twisty open">   
-            <div class="orangeheader">
-                <span class="orangeheadertitle">Inquiry</span>
-                <span class="orangeheaderoption"><a href="#" style="color:#fff"></a></span>
-            </div><br />
-            <div class="treatmentfieldwrapper">
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Treatment Event #</div> <div class="item">{!treatmentName}</div></div>
-                    </div>
-                </div>
-                <div class="fieldheading">Inquiry Sourcing</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">                  
-                        <div class="fieldwrap"><div class="label">Inquiry Source</div> <div class="item"><apex:inputfield value="{!treatment.Inquiry_Source__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Primary Campaign Source</div> <div class="item"><apex:inputfield value="{!treatment.Primary_Campaign__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Advocate Name</div> <div class="item"><apex:inputfield value="{!patient.Advocate_Name__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Advocate Phone</div> <div class="item"><apex:inputfield value="{!patient.Advocate_Phone__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Advocate Email</div> <div class="item"><apex:inputfield value="{!patient.Advocate_Email__c}"></apex:inputfield></div></div>
-                    <div class="fieldwrapfull"><div class="labellong">Patient Not Committed Reason:</div><div class="item"><apex:inputfield value="{!treatment.Patient_Not_Committed_Reason__c}"></apex:inputfield></div></div>                        
-                    </div>
-                </div>
-                <div class="fieldheading">Inquiry Information</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                       <div class="fieldwrap"><div class="label">Inquiry Quality</div> <div class="item"><apex:inputfield value="{!treatment.Inquiry_Quality__c}"></apex:inputfield></div></div>
-                       <div class="fieldwrap"><div class="label">Preferred Form of Contact</div> <div class="item"><apex:inputfield value="{!treatment.Preferred_Form_of_Contact__c}"></apex:inputfield></div></div>
-                       <div class="fieldwrap"><div class="label">Time Zone</div> <div class="item"><apex:inputfield value="{!patient.Time_Zone__c}"></apex:inputfield></div></div>
-                       <div class="fieldwrap"><div class="label">Best Time to Contact</div> <div class="item"><apex:inputfield value="{!treatment.Best_Time_to_Contact__c}"></apex:inputfield></div></div>
-                  </div>
-                </div>
-                <div class="fieldheading">Scheduling Information</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Decision Timing</div> <div class="item"><apex:inputfield value="{!treatment.Decision_Timeframe__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Preferred Destination</div> <div class="item"><apex:inputfield value="{!treatment.Preferred_Destination__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Financing Required?</div> <div class="item"><apex:inputfield value="{!treatment.Financing_Required__c}"></apex:inputfield></div></div> 
-                        <div class="fieldwrap"><div class="label">Preferred Travel Date: Depart</div> <div class="item"><apex:inputField value="{!treatment.Preferred_Travel_Date_From__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Preferred Travel Date: Return</div> <div class="item"><apex:inputField value="{!treatment.Preferred_Travel_Date_To__c}"></apex:inputfield></div></div>
-                    </div>
-                </div>             
-                <div class="fieldheading">Payment Information</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Payment Type</div> <div class="item"><apex:inputfield value="{!treatment.Payment_Type__c} "></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Deposit Required</div> <div class="item"><apex:inputfield value="{!treatment.Deposit_Required__c} "></apex:inputfield></div></div>   
-                    </div>
-                </div>                       
-                <div class="fieldheading">Demographics</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                       <div class="fieldwrap"><div class="label">Age</div> <div class="item"><apex:outputfield value="{!patient.Age__c}"></apex:outputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Male or Female</div> <div class="item"><apex:inputfield value="{!patient.Gender__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Nationality</div> <div class="item"><apex:inputfield value="{!patient.Nationality__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Country Born</div> <div class="item"><apex:inputfield value="{!patient.Country__c}"></apex:inputfield></div></div>
-                    </div>
-                </div>              
-            </div>
-        </div>
-    </apex:outputPanel>
+	<apex:pageblocksection title="Inquiry" id="pbs_Inquiry" columns="1" rendered="{!inquiryFlag}">
+    	        <apex:pageBlock title="Inquiry Sourcing">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Inquiry Source"/>
+	            		    <apex:inputField value="{!treatment.Inquiry_Source__c}" taborderhint="310"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Advocate Name"/>
+	            		    <apex:inputField value="{!treatment.Primary_Campaign__c}" taborderhint="340"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Primary Campaign Source"/>
+	            		    <apex:inputField value="{!treatment.Primary_Campaign__c}" taborderhint="320"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Advocate Phone"/>
+	            		    <apex:inputField value="{!patient.Advocate_Phone__c}" taborderhint="350"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Patient Not Committed Reason"/>
+	            		    <apex:inputField value="{!travel.Event_Diagnosis__c}" taborderhint="330"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Advocate Email"/>
+	            		    <apex:inputField value="{!patient.Advocate_Email__c}" taborderhint="360"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    	        <apex:pageBlock title="Inquiry Information">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Inquiry Quality"/>
+	            		    <apex:inputField value="{!treatment.Inquiry_Quality__c}" taborderhint="410"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Time Zone"/>
+	            		    <apex:inputField value="{!patient.Time_Zone__c}" taborderhint="440"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Preferred Form of Contact"/>
+	            		    <apex:inputField value="{!treatment.Preferred_Form_of_Contact__c}" taborderhint="420"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Best Time to Contact"/>
+	            		    <apex:inputField value="{!treatment.Best_Time_to_Contact__c}" taborderhint="450"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    	        <apex:pageBlock title="Scheduling Information">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Decision Timing"/>
+	            		    <apex:inputField value="{!treatment.Decision_Timeframe__c}" taborderhint="510"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Preferred Destination"/>
+	            		    <apex:inputField value="{!treatment.Preferred_Destination__c}" taborderhint="540"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Financing Required?"/>
+	            		    <apex:inputField value="{!treatment.Financing_Required__c}" taborderhint="520"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Preferred Travel Date: Depart"/>
+	            		    <apex:inputField value="{!treatment.Preferred_Travel_Date_From__c}" taborderhint="550"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem /> 
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Preferred Travel Date: Return"/>
+	            		    <apex:inputField value="{!treatment.Preferred_Travel_Date_To__c}" taborderhint="530"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    	        <apex:pageBlock title="Payment Information">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Payment Type"/>
+	            		    <apex:inputField value="{!treatment.Payment_Type__c}" taborderhint="600"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Deposit Required"/>
+	            		    <apex:inputField value="{!treatment.Deposit_Required__c}" taborderhint="602"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    	        <apex:pageBlock title="Demographics">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Age"/>
+	            		    <apex:inputField value="{!patient.Age__c}" taborderhint="610"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Nationality"/>
+	            		    <apex:inputField value="{!patient.Nationality__c}" taborderhint="640"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Male or Female"/>
+	            		    <apex:inputField value="{!patient.Gender__c}" taborderhint="620"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Country Born"/>
+	            		    <apex:inputField value="{!patient.Country__c}" taborderhint="650"/>
+    	        		</apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+    </apex:pageblocksection>
     
     <apex:outputPanel rendered="{!interactionFlag}">
-        <div class="twisty open">   
-            <div class="orangeheader">
-                <span class="orangeheadertitle">Interaction</span>
-                <span class="orangeheaderoption"><a href="#" style="color:#fff"></a></span>
-            </div><br />
-            <div class="treatmentfieldwrapper">
-                <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Treatment Event #</div> <div class="item">{!treatmentName}</div></div>
-                    </div>
-                </div>
-                <div class="fieldheading">Interaction Information</div>
-                <div class="treatmentform">
-                    <div class="fieldwrapper">                      
-                        <div class="fieldwrap"><div class="label">Probability</div> <div class="item"><apex:inputfield value="{!treatment.Probability__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Procedure Amount</div> <div class="item"><apex:inputfield value="{!treatment.Amount__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Close Date</div> <div class="item"><apex:inputField value="{!treatment.Close_Date__c }"/></div></div>
-                        <div class="fieldwrap"><div class="label">Case Manager's Feel</div> <div class="item"><apex:inputfield value="{!treatment.Case_Manager_s_Feel__c}"></apex:inputfield></div></div>
-                    </div>
-                </div>                     
-            </div>
-        </div>
+	<apex:pageblocksection title="Interaction" id="pbs_Interaction" columns="1" rendered="{!interactionFlag}">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Probability"/>
+	            		    <apex:inputField value="{!treatment.Probability__c}" taborderhint="700"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Close Date"/>
+	            		    <apex:inputField value="{!treatment.Close_Date__c}" taborderhint="700"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Procedure Amount"/>
+	            		    <apex:inputField value="{!treatment.Amount__c}" taborderhint="700"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Case Manager's Feel"/>
+	            		    <apex:inputField value="{!treatment.Case_Manager_s_Feel__c}" taborderhint="700"/>
+    	        		</apex:pageblocksectionitem>
+    	        	</apex:pageBlockSection>
+    </apex:pageBlockSection>                     
         <div class="tabs">
             <apex:commandLink id="tab1" styleClass="tab" style="color:#EA6C1A;" onmousemove="document.getElementById('tab1').style.color = '#EA6C1A'" onmouseout="document.getElementById('tab1').style.color = '#CCCCCC'" action="{!displayIncident}" reRender="TabPanel"><h3>Incident</h3></apex:commandLink>
             <apex:commandLink id="tab2" styleClass="tab" onmousemove="document.getElementById('tab2').style.color = '#EA6C1A'" onmouseout="document.getElementById('tab2').style.color = '#CCCCCC'" action="{!displayFeatures}" reRender="TabPanel"><h3>Medical Profile and Record</h3></apex:commandLink>
             <apex:commandLink id="tab3" styleClass="tab" onmousemove="document.getElementById('tab3').style.color = '#EA6C1A'" onmouseout="document.getElementById('tab3').style.color = '#CCCCCC'" action="{!displayQuotes}" reRender="TabPanel"><h3>Quotes</h3></apex:commandLink>
-            <apex:commandLink id="tab4" styleClass="tab" onmousemove="document.getElementById('tab4').style.color = '#EA6C1A'" onmouseout="document.getElementById('tab4').style.color = '#CCCCCC'" action="{!displayPayments}" reRender="TabPanel"><h3>Payments</h3></apex:commandLink>
+            <!-- apex:commandLink id="tab4" styleClass="tab" onmousemove="document.getElementById('tab4').style.color = '#EA6C1A'" onmouseout="document.getElementById('tab4').style.color = '#CCCCCC'" action="{!displayPayments}" reRender="TabPanel"><h3>Payments</h3></apex:commandLink> -->
         </div>
         <apex:outputPanel id="TabPanel">
             <apex:outputPanel id="IncidentPanel" rendered="{!IncidentFlag}">
-                <div id="tab1box" class="tabbox" style="display:block;">
-                    <div class="treatmentfieldwrapper">
                         <apex:commandbutton action="{!newIncident}" value="New Incident"></apex:commandbutton>
                         <apex:commandbutton action="{!saveIncident}" value="Save Incident"></apex:commandbutton>
                         <apex:commandLink action="{!previousIncident}" rendered="{!hasPreviousIncident}"> Previous</apex:commandlink>
                         <apex:commandLink action="{!nextIncident}" rendered="{!hasNextIncident}"> Next</apex:commandlink> 
-                        <apex:outputText value="          "></apex:outputText><apex:outputText value="{!incidentCurNumber} of {!incidentTotCount} Incidents  "></apex:outputText>                    
-                        <div class="fieldheading">Incident Detail</div>                        
-                        <div class="treatmentformwhite">
-                            <div class="fieldwrapper">          
-                                <div class="fieldwrap"><div class="label">Incident Number</div> <div class="item">{!incidentName}</div></div>
-                                <div class="fieldwrap"><div class="label">Contact Name</div> <div class="item"><apex:inputfield value="{!incident.Contact__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Account Name</div> <div class="item"><apex:inputfield value="{!incident.Account__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Type</div> <div class="item"><apex:inputfield value="{!incident.Type__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Category</div> <div class="item"><apex:inputfield value="{!incident.Category__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Subject</div> <div class="item"><apex:inputfield value="{!incident.Subject__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Date Time Opened</div> <div class="item"><apex:inputfield value="{!incident.Date_Time_Opened__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Created By</div> <div class="item"><apex:inputfield value="{!incident.CreatedBy.Name}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Incident Owner</div> <div class="item"><apex:inputfield value="{!incident.CreatedBy.Name}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Status</div> <div class="item"><apex:inputfield value="{!incident.Status__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Due Date</div> <div class="item"><apex:inputfield value="{!incident.Due_Date__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Contact Phone</div> <div class="item"><apex:inputfield value="{!incident.Contact_Phone__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Contact Email</div> <div class="item"><apex:inputfield value="{!incident.Contact_Email__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Date Time Closed</div> <div class="item"><apex:inputfield value="{!incident.Date_Time_Closed__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Last Modified By  </div> <div class="item"><apex:inputfield value="{!incident.LastModifiedBy.Name}"></apex:inputfield></div></div>
-                            </div>
-                        </div>                      
+                        <apex:outputText value="          "></apex:outputText><apex:outputText value="{!incidentCurNumber} of {!incidentTotCount} Incidents  " rendered="{!!ISNULL(incidentCurNumber)}"></apex:outputText>                    
+    	        <apex:pageBlock title="Incident Detail">
+    	        	<apex:pageBlockSection columns="2">
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Incident Number"/>
+	            		    <apex:outputText value="{!incidentName}" rendered="{!!ISNULL(incidentName)}"/>
+    	        		</apex:pageblocksectionitem>
+    	        		<apex:pageblocksectionitem rendered="{!!ISNULL(incidentName)}"/>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Contact Name"/>
+	            		    <apex:inputField value="{!incident.Contact__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Status"/>
+	            		    <apex:inputField value="{!incident.Status__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Account Name"/>
+	            		    <apex:inputField value="{!incident.Account__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Due Date"/>
+	            		    <apex:inputField value="{!incident.Due_Date__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Type"/>
+	            		    <apex:inputField value="{!incident.Type__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Date Time Opened"/>
+	            		    <apex:inputField value="{!incident.Date_Time_Opened__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Category"/>
+	            		    <apex:inputField value="{!incident.Category__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Date Time Closed"/>
+	            		    <apex:inputField value="{!incident.Date_Time_Closed__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Subject"/>
+	            		    <apex:inputField value="{!incident.Subject__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Incident Owner"/>
+	            		    <apex:outputField value="{!incident.CreatedById}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Contact Phone"/>
+	            		    <apex:inputField value="{!incident.Contact_Phone__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Created By"/>
+	            		    <apex:outputField value="{!incident.CreatedById}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Contact Email"/>
+	            		    <apex:inputField value="{!incident.Contact_Email__c}"/>
+    	        		</apex:pageblocksectionitem>
+		            	<apex:pageblocksectionitem helpText=""> 
+        		        	<apex:outputLabel value="Last Modified By"/>
+	            		    <apex:outputField value="{!incident.LastModifiedById}"/>
+    	        		</apex:pageblocksectionitem>
+                        </apex:pageBlockSection>
                         <div class="fieldheading">Open Activities</div>
                         <div class="treatmentformwhite">
                             <div class="fieldwrapper">
@@ -473,9 +550,8 @@
                             <div class="fieldwrapper">
                                 <div class="fieldwrap"><div class="label"></div> <div class="item"></div></div>
                             </div>
-                        </div>                                                      
-                    </div>      
-                </div>  
+                        </div> 
+                    </apex:pageBlock>                                                     
             </apex:outputPanel>
             <apex:outputPanel id="FeaturesPanel" rendered="{!FeaturesFlag}">
                 <div id="tab2box" class="tabbox" style="display:block;">
@@ -541,7 +617,7 @@
                     </div>
                 </div>      
             </apex:outputPanel>
-            <apex:outputPanel id="PaymentPanel" rendered="{!PaymentFlag}">
+            <apex:outputPanel id="PaymentPanel" rendered="false"><!-- {!PaymentFlag} -->
                 <div id="tab4box" class="tabbox" style="display:block;">
                     <div class="treatmentfieldwrapper">
              <apex:commandbutton action="{!newPayment}"   value="New Payment"></apex:commandbutton>        
@@ -782,20 +858,19 @@
     </apex:outputPanel>
   
 </apex:outputPanel>
-
+</apex:pageBlock>
+</apex:outputPanel>
 </div>
 <script type="text/javascript">
     $(document).ready(function() {  
         $('div.twisty').twisty();  // Find all DIV tags with class "twisty" and then apply Twisty plugin.
     });   
 </script>
-</body>
 </apex:form>
-</apex:pageBlock>
-</html>
 
 
 <br/>
 <apex:relatedList list="NotesAndAttachments"/>
 
+</body>
 </apex:page>
