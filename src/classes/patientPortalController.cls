@@ -24,6 +24,7 @@ public  without sharing class patientPortalController {
     public list<Medical_Profile__c> medicalRecords {get;set;}
     public list<Travel__c> travelList {get;set;}
     public list<Treatment__c> treatmentList {get;set;}
+    public list<Treatment_Quote__c> treatmentQuoteList {get;set;}
     
     public class recentActivity {
         public string subject {get;set;}
@@ -164,6 +165,8 @@ public  without sharing class patientPortalController {
                 r.index = tq.id;
                 r.relatedTreatment = tq.name;
                 detailMap.put(tq.id,tq);
+                /*NEED TO DO LAST 10 TQ INTO TQ LIST FOR ITINERARY DISPLAY*/
+                
             }
         }
         return null;
@@ -193,8 +196,7 @@ public  without sharing class patientPortalController {
     public pagereference buildRelatedLists () {
         medicalRecords = patient.medical_profiles__r;
         treatmentList = patient.treatments__r;
-/*TO BE REPLACED WITH ITINERARY?*/
-        travelList = new list<Travel__c>();
+		
         return null;
     }
     

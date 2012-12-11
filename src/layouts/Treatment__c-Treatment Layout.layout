@@ -33,7 +33,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Overdue__c</field>
+                <field>Patient_Pipeline_Color__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

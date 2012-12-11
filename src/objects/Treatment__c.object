@@ -259,16 +259,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Overdue__c</fullName>
-        <externalId>false</externalId>
-        <formula>IF (Next_Follow_Up__c &lt; NOW() , &apos;*** OVERDUE ***&apos;, &apos;&apos;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Overdue</label>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Patient_Email_Formula__c</fullName>
         <externalId>false</externalId>
         <formula>Patient__r.Email__c</formula>
@@ -310,6 +300,16 @@
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Patient_Pipeline_Color__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (Next_Follow_Up__c &gt;  NOW() , &apos;red&apos;, &apos;white&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Patient Pipeline Color</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Patient__c</fullName>

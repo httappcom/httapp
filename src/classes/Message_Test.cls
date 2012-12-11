@@ -44,10 +44,28 @@ private class Message_Test {
     results = Message.getUserMessages(testUsers[0]);
     System.assert(results[0].msgs[0].Body_Rich_Text__c.contains('Test body'));
       
-        
+    Message.addToMessage(
+      results[0].msgHeader,
+      new Message__c(Body_Rich_Text__c = 'Test Msg')
+    );
     
-     
-      
-  
+    System.assertEquals(
+      2,
+      [select count() 
+       from Message__c 
+       where Message_Header__c = :results[0].msgHeader.Id]  
+    );
+    
+    Message.addToMessage(
+      results[0].msgHeader.Id,
+      new Message__c(Body_Rich_Text__c = 'Test Msg2')
+    );    
+    
+    System.assertEquals(
+      3,
+      [select count() 
+       from Message__c 
+       where Message_Header__c = :results[0].msgHeader.Id]  
+    );  
   }
 }

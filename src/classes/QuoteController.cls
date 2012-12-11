@@ -1,11 +1,11 @@
 public class QuoteController {
 
-  public Treatment__c treatment { get; set; }
+  public Treatment_Quote__c q { get; set; }
 
   public QuoteController(Apexpages.StandardController sc) {         
-    this.treatment = (Treatment__c)sc.getRecord();
+    this.q = (Treatment_Quote__c)sc.getRecord();
     try {       
-      this.treatment = TreatmentUtility.queryTreatmentForQuote(sc.getId());                  
+      this.q = QuoteUtility.queryQuoteForQuoteDoc(sc.getId());                  
     }
     catch(Exception e) {
       ApexPages.addMessage(new ApexPages.Message(

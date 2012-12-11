@@ -95,6 +95,31 @@ public class Message {
     return true;
     
   }
+  
+  public static Boolean addToMessage(Message_Header__c pMsgHeader,
+      Message__c pMessage) {
+  
+    if (pMsgHeader == null || pMessage == null) {
+      return false;
+    }
+    
+    pMessage.Message_Header__c = pMsgHeader.Id;
+    insert pMessage;
+    return true;
+  }
+  
+  public static Boolean addToMessage(Id pMsgHeaderId,
+      Message__c pMessage) {
+  
+    if (pMsgHeaderId == null || pMessage == null) {
+      return false;
+    }
+    
+    pMessage.Message_Header__c = pMsgHeaderId;
+    insert pMessage;
+    return true;
+  }
+  
 
   public class MsgResult {
     public Message_Header__c msgHeader { get; private set; }

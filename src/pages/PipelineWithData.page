@@ -7,46 +7,34 @@
  <apex:stylesheet value="{!$Resource.sfstyles}"/>
 </head>
 
-<div class="wrapper">   
-    <div class="pipelinechartsfull">
-        <div class="pipelineHeading">Patients</div>
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-           
-              <tr>
-                 <td>  
-                  <table widht="50%">    
-                   <td><apex:commandLink action="{!firstTreatments}">First</apex:commandlink></td>
-                   <td><apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}">Previous</apex:commandlink></td>
-                   <td><apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}">Next</apex:commandlink></td>
-                   <td><apex:commandLink action="{!lastTreatments}">Last</apex:commandlink></td>                
-                  </table>
-                 </td>
-                </tr>        
-                <tr class="chartheader">  
-                    <td valign="top"><a href="#">Patient</a></td>
-                    <td valign="top"><a href="#">Treatment</a></td>                                                            
-                    <td valign="top"><a href="#">Procedure Date</a></td>
-                    <td valign="top"><a href="#">Created Date</a></td>
-                    <td valign="top"><a href="#">Phase</a></td>
-                    <td valign="top"><a href="#">Stage</a></td>
-                    <td valign="top"><a href="#">Sub Stage</a></td>                                        
-                </tr>  
-             <apex:outputPanel id="treatmentTable">               
-              <apex:repeat value="{!treatments}" var="t" >            
-                <tr class="chartdetailsodd">
-                    <td valign="top"><a href="#">{!t.Patient__r.Name}</a></td>
-                    <td valign="top"><a href="#">{!t.Name}</a></td>
-                    <td valign="top"><a href="#"><apex:outputField value="{!t.Procedure_Date__c}"/></a></td>
-                    <td valign="top"><a href="#"><apex:outputField value="{!t.Createddate}"/></a></td>                    
-                    <td valign="top"><a href="#">{!t.Phase__c}</a></td>
-                    <td valign="top"><a href="#">{!t.Stage__c}</a></td>
-                    <td valign="top"><a href="#">{!t.Sub_Stage__c}</a></td>                                        
-                </tr>
-              </apex:repeat>  
-             </apex:outputPanel>                               
-            </table>
-        </div>
-    </div>
+    <apex:pageBlock >
+    	<apex:pageBlockSection title="Patients" columns="1" collapsible="true">
+    		<apex:pageBlockSectionItem >
+    			<apex:outputPanel >
+                   <apex:commandLink action="{!firstTreatments}">First</apex:commandlink>&nbsp;&nbsp;
+                   <apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}">Previous</apex:commandlink>&nbsp;&nbsp;
+                   <apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}">Next</apex:commandlink>&nbsp;&nbsp;
+                   <apex:commandLink action="{!lastTreatments}">Last</apex:commandlink>
+    			</apex:outputPanel>
+    		</apex:pageBlockSectionItem>
+             <apex:pageBlockTable value="{!active}" var="r">
+             	<apex:column value="{!r.Phase__c}"/>
+             	<apex:column value="{!r.Stage__c}"/>
+             	<apex:column value="{!r.LastModifiedDate}"/>
+             	<apex:column value="{!r.Procedure_Category__c}"/>
+              	<apex:column headerValue="Procedure">
+              		<apex:outputText value="{0}" rendered="{r.Treatment_Quotes__r.size>0}">
+              			<apex:param value="r.Treatment_Quotes__r[0].Procedure__c" />
+              		</apex:outputText>
+              	</apex:column>
+             	<apex:column value="{!r.Patient__c}"/>
+             	<apex:column value="{!r.Next_Follow_Up__c}"/>
+             	<apex:column value="{!r.CreatedDate}"/>
+             	<apex:column value="{!r.Patient__r.Last_Communication__c}"/>
+             	<apex:column value="{!r.Treatment_Summary__c}"/>
+			</apex:pageBlockTable>   
+        </apex:pageBlockSection>
+    </apex:pageBlock>
     <div style="clear:both"></div>
     <div class="pipelinechartscol1">
         <div class="pipelineHeading">Tasks</div>

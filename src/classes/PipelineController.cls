@@ -2,7 +2,7 @@ public with sharing class PipelineController {
 
   public Integer curPageSize {get; set; }
   
-  public List<Patient__c> patients {get; set; } 
+  public List<Treatment__c> active {get; set; } 
   public List<Treatment__c> treatments {get; set; }
   public List<Payment__c> Payments {get;set; }    
   public List<Task> tasks{get;set;}    
@@ -28,7 +28,7 @@ public with sharing class PipelineController {
            
   public Pipelinecontroller(){
     this.curPageSize = 10  ;
-    this.patients = new List<Patient__c>();      
+    this.active = new List<Treatment__c>();      
     this.allTreatments  = new List<Treatment__c>();
     this.allTasks = new List<Task>();        
     this.allIncidents = new List<Incident__c>(); 
@@ -40,12 +40,16 @@ public with sharing class PipelineController {
     this.payments = new List<Payment__c>();
     this.messages = new List<Message__c>();
     try {
-    patients = PatientUtil.queryPatientListAll(); 
-    for (Patient__c p : patients) {
-      if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
+    active = [SELECT Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, (SELECT Procedure__c FROM Treatment_Quotes__r order by createdDate desc limit 1), 
+Patient__r.Name, Next_Follow_Up__c, 
+Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Patient__r.Last_Communication__c, Treatment_Summary__c
+FROM Treatment__c
+WHERE Phase__c in ('(1) Inquiry', '(2) Interaction') and Stage__c <> 'Patient On Hold' and Sub_Stage__c <> 'Consult Requested'];
+    for (Treatment__c r : active) {
+/*      if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
       if(p.Payments__r.size()>0)   for (Payment__c pay : p.Payments__r) allPayments.add(pay); 
 //      if(p.Incidents__r.size()>0)  for (Incident__c i : p.Incidents__r) allIncidents.add(i); 
-      if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);       
+      if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);*/       
     }                 
     System.debug('treatments list '+alltreatments);  
     tcon = new ApexPages.StandardSetController(allTreatments); 
@@ -84,51 +88,51 @@ public with sharing class PipelineController {
   }   
       
   public Boolean hasNextTreatment {
-    get { return tcon.getHasNext();}
+    get { return tcon != null && tcon.getHasNext();}
     set;
   }
   public Boolean hasPreviousTreatment {
-    get { return tcon.getHasPrevious(); }
+    get { return tcon != null && tcon.getHasPrevious(); }
     set;
   }
   public Integer pageNumberTreatment {
-    get { return tcon.getPageNumber();   }
+    get { return tcon != null? tcon.getPageNumber(): null;   }
     set;
   } 
    public Boolean hasNextMessage {
-    get { return mcon.getHasNext();}
+    get { return mcon != null && mcon.getHasNext();}
     set;
   }
   public Boolean hasPreviousMessage {
-    get { return mcon.getHasPrevious(); }
+    get { return mcon != null && mcon.getHasPrevious(); }
     set;
   }
   public Integer pageNumberMessage {
-    get { return mcon.getPageNumber();   }
+    get { return mcon != null ? mcon.getPageNumber() : null;   }
     set;
   }
   public Boolean hasNextIncident {
-    get { return icon.getHasNext();}
+    get { return icon != null && icon.getHasNext();}
     set;
   }
   public Boolean hasPreviousIncident {
-    get { return icon.getHasPrevious(); }
+    get { return icon != null && icon.getHasPrevious(); }
     set;
   }
   public Integer pageNumberIncident {
-    get { return icon.getPageNumber();   }
+    get { return icon != null ? icon.getPageNumber() : null;   }
     set;
   }
   public Boolean hasNextPayment {
-    get { return pcon.getHasNext();}
+    get { return pcon != null && pcon.getHasNext();}
     set;
   }
   public Boolean hasPreviousPayment {
-    get { return pcon.getHasPrevious(); }
+    get { return pcon != null && pcon.getHasPrevious(); }
     set;
   }
   public Integer pageNumberPayment {
-    get { return pcon.getPageNumber();   }
+    get { return pcon != null ? pcon.getPageNumber() : null;   }
     set;
   }      
   public void firstTreatments()   { tcon.first();   treatments = tcon.getRecords();  }

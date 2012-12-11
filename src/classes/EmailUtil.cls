@@ -1,10 +1,6 @@
 public with sharing class EmailUtil {
 
-    public void sendEmailExample () {
-        if (StringUtil.isEmpty(email)) {
-            addError('Please enter an email address.');
-            return null;
-        }
+    public void sendEmailExample (String email) {
         Messaging.SingleEmailMessage emailMsg = new Messaging.SingleEmailMessage(); 
 
         // Reference the attachment page and pass in the account ID

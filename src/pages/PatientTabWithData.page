@@ -228,7 +228,7 @@
     	        	<apex:pageBlockSection title="Staging Process" columns="3" collapsible="true">
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Phase" style="width: 15%;"/>
-	            		    <apex:inputField value="{!treatment.Phase__c}" style="width: 17%;" tabOrderHint="201"/>
+	            		    <apex:inputField value="{!treatment.Phase__c}" tabOrderHint="201"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Stage" style="width: 15%;"/>
@@ -261,7 +261,7 @@
 	            		    <apex:inputField value="{!treatment.Request_Summary__c}" tabOrderHint="222"/>
     	        		</apex:pageblocksectionitem>
                     </apex:pageBlockSection>
-    	        	<apex:pageBlockSection id="pbs_Complications" columns="2" collapsible="true" title="Complications">
+    	        	<apex:pageBlockSection id="pbs_Complications" columns="2" collapsible="true" title="Treatment Additions">
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Treatment as Quoted"/>
 	            		    <apex:inputField value="{!travel.Treatment_as_Quoted__c}" tabOrderHint="232"/>
@@ -723,6 +723,9 @@
                 <div class="treatmentform">
                     <div class="fieldwrapper">
                         <div class="fieldwrap"><div class="label">Treatment Event #</div> <div class="item">{!treatmentName}</div></div>
+                        <div class="fieldwrap">
+							<apex:commandbutton action="https://c.na14.visual.force.com/apex/travelItineraryPDF?id=a0Ed000000h1i8e" value="Open Itinerary PDF"></apex:commandbutton>                        
+                        </div>
                     </div>
                 </div>
                 <div class="fieldheading">Traveler Information</div>
@@ -792,7 +795,7 @@
             </div>  
         </div>  
         <div id="tab2box" class="tabbox">
-            <div class="treatmentfieldwrapper">
+            <div class=" 	">
                 <div class="fieldheading">Itinerary Details</div>
                 <div class="treatmentformwhite">
                     <div class="fieldwrapper">

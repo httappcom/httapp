@@ -85,7 +85,7 @@
         <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Onsite Coordinator</label>
-        <referenceTo>Contract</referenceTo>
+        <referenceTo>Contact</referenceTo>
         <relationshipLabel>Medical Facilities</relationshipLabel>
         <relationshipName>Medical_Facilities</relationshipName>
         <required>false</required>

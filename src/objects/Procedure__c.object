@@ -74,6 +74,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>External_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>20</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>Facility__c</fullName>
         <deleteConstraint>Restrict</deleteConstraint>
         <description>What Hospital, facility provides this Procedure.</description>
