@@ -1,0 +1,158 @@
+<apex:page standardcontroller="Treatment_Quote__c" extensions="travelItineraryPDF_Controller" renderAs="pdf" standardstylesheets="false" sidebar="false" showheader="false">
+	<style>
+		@page {
+ 			@bottom-right {
+    			content: counter(page) " of " counter(pages);
+  			}
+		}
+		
+		
+		.banner {
+			width:90%;
+			text-align:center;
+			align:center;
+			padding-top:-20px;
+		}
+	</style>
+	<apex:pageblock >
+		<div style="margin-left:auto; margin-right:auto; text-align:center; width:90%"><apex:image styleClass="banner" value="{!URLFOR($Resource.httItineraryBanner)}"/><br/><br/></div>
+		<div style="margin-left:auto; margin-right:auto; text-align:center; width:90%"><apex:outputlabel value="Travel Itinerary" style="font-weight:bold; text-decoration:underline;"/></div><br/>
+		<table style="width:100%">
+			<tr>
+				<td valign="top" align="right">
+					<apex:outputlabel value="Patient Name: "/><br/>
+					<apex:outputlabel value="Companion Name: "/><br/>
+					<apex:outputlabel value="Patient Contact #: "/><br/>
+				</td>
+				<td valign="top">
+					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.name}"/><br/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Companion__c}"/><br/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.Phone__c}"/><br/>
+				</td>
+				<td width="10"></td>
+				<td valign="top" align="right">
+					<apex:outputlabel value="Dates of Travel: "/>
+				</td>
+				<td valign="top">
+					<apex:outputtext value="{!DATEVALUE(treatmentQuote.treatment__r.travel__r.Travel_Start__c)}"/>&nbsp;-<br/>
+					<apex:outputtext value="{!DATEVALUE(treatmentQuote.treatment__r.travel__r.Travel_End__c)}"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" valign="top">
+					<apex:outputlabel value="Doctor: "/>
+				</td>
+				<td valign="top">
+					<apex:outputfield value="{!treatmentQuote.procedure__r.doctor__r.name}"/>
+				</td>
+				<td width="10"></td>
+				<td valign="top" align="right">
+					<apex:outputlabel value="Procedure: "/><br/>
+					<apex:outputlabel value="Procedure Cost: "/>
+				</td>
+				<td valign="top">
+					<apex:outputfield value="{!treatmentQuote.procedure__r.name}"/><br/>
+					<apex:outputField value="{!treatmentQuote.Total_Price__c}"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" valign="top">
+					<br/>
+					<br/>
+					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.name}"/><Br/>
+					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.City__c}"/><Br/>
+					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.Country__c}"/>
+					<br/>
+					<apex:outputlabel value="On-site Coordinator:" style="font-weight:bold;"/><br/>
+					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_Coordinator__r.name}"/>
+					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_coordinator__r.phone}"/>
+					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_coordinator__r.email}"/>
+							
+							
+					<br/>
+					<apex:outputlabel value="EMERGENCY CONTACTS" style="text-decoration:underline; padding-bottom:10px;"/><br/>
+					<apex:outputlabel value="Case Manager:" style="font-weight:bold;"/><br/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.createdby.name}"/><br/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.createdby.phone}"/><br/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.createdby.email}"/>
+					<br/>---<br/><br/>
+					<apex:outputlabel value="Travel Logistics Manager:" style="font-weight:bold;"/><br/>
+					<apex:outputfield value="{!TravelConcierge.name}"/><br/>
+					<apex:outputfield value="{!TravelConcierge.phone}"/><br/>
+					<apex:outputfield value="{!TravelConcierge.email}"/>
+				</td>
+				<td width="10"></td>
+				<td colspan="2" valign="middle">
+					<!-- <apex:image value=""/> -->
+				</td>
+			</tr>
+		</table>
+
+		<br/><br/><br/><br/>
+		<div style="width:80%; margin-left:auto; margin-right:auto;">
+			<apex:outputlabel escape="false" value="Procedure should be paid in full at least one week prior to your departure.
+									<br/>We accept Cashier Checks, Check by Phone, Credit or Debit cards."/>
+		</div>
+		<div style="page-break-after:always;"/>
+		
+		<apex:outputlabel value="HOTEL & TRANSPORTATION INFORMATION"/><br/>
+		<br/>
+		<apex:outputlabel value="Flight Information" style="font-weight:bold;"/><br/>
+		<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Flight_Information__c}"/><br/><Br/>
+		---<Br/><Br/>
+		<apex:outputlabel value="Hotel Information" style="font-weight:bold;"/><Br/>
+		<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.hotel__r.name}"/><br/>
+		<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.hotel__r.Address__c}"/><br/>
+		<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.hotel__r.Phone__c}"/><br/>
+		<apex:outputlabel value="Hotel Check-in: "/>&nbsp;<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Hotel_Checkin__c}" rendered="{!ISBLANK(treatmentQuote.treatment__r.travel__r.Hotel_Checkin__c)==false}"/><br/>
+		<apex:outputlabel value="Hotel Check-out: "/>&nbsp;<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Hotel_Checkout__c}" rendered="{!ISBLANK(treatmentQuote.treatment__r.travel__r.Hotel_Checkout__c)==false}"/><br/>	
+		
+		<br/><br/>
+		<div style="width:80%; margin-left:auto; margin-right:auto;">
+			<apex:outputlabel escape="false" value="*We have arranged for your driver to meet you upon arrival.  If you are flying, they will meet you at the baggage corral, if you are driving, they will meet you by the entrance of the parking lot or structure above.  If you cannot locate the driver, please contact us."/>
+		</div>
+
+		<div style="page-break-after:always;"/>
+		<apex:outputpanel rendered="{!language == 'English'}">
+			<div style="padding-top:-20px; width:200px; text-align:center; margin-left:auto; margin-right:auto"><apex:outputlabel style="font-weight:bold; text-decoration:underline;" value="Travel Tips"/><br/><br/></div>
+			<apex:outputlabel escape="false" value="
+				Your Itinerary information above should offer you the information you require to safely<br/>
+				begin your medical journey abroad. If you feel there are any errors, please bring it to our<br/>
+				attention immediately so that we can make any modifications necessary to enhance your<br/>
+				trip logistics.<br/><br/>
+				
+				Requirements/Recommendations<br/><br/>
+				
+				1. Passport ( Required as of 6/1/09 ), we recommend that you also pack a photocopy in a<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;separate location in case this is lost while traveling abroad so that you can still gain<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;re-entry into the USA.<br/><br/>
+				
+				2. If you have any required medications that you commonly take, please bring those with <br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;you in the container in which they were originally prescribed.<br/><br/>
+				
+				3. If you want to bring some movies to watch, they can install a DVD player in your room <br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;for no additional charge upon request.<br/><br/>
+				
+				4. If you have a laptop computer, the hospital has free wireless accessibility; however <br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;you may not have it in your room. We suggest you bring an Ethernet cable<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;with you so that you may connect to the internet directly in your room.<br/><br/>
+				
+				5. Please remember if you are having any type of procedure requiring IV sedation, you should<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;not eat after 9 pm the night before your pre-op testing or surgery.  <br/><br/>
+				
+				6. In general, we recommend you do not use your cell phone in Mexico as it is very expensive. <br/>
+				&nbsp;&nbsp;&nbsp;You will be able to make calls from your hospital room for a more reasonable rate.<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;If you need cell access, contact your carrier before your tip for what to do <br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;to ensure you can make calls.<br/><br/>
+				
+				7. Please notify your bank you are traveling to Mexico in case you should use your card.<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;This will prevent them from blocking unusual location charges.<br/><br/>
+				
+				8. Besides the list of items above, here are a few additional items you may consider bringing:<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;books, cards, games and preferred personal toiletries (must be 6 oz or less and<br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;in a ziplock bag checked with luggage).
+			">
+			</apex:outputlabel>
+		</apex:outputpanel>
+	</apex:pageblock>
+</apex:page>

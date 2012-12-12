@@ -256,6 +256,22 @@
         <type>Checkbox</type>
     </fields>
     <label>Procedure</label>
+    <listViews>
+        <fullName>Procedures</fullName>
+        <columns>Procedure_Category__c</columns>
+        <columns>NAME</columns>
+        <columns>Price__c</columns>
+        <columns>Doctor__c</columns>
+        <columns>Facility__c</columns>
+        <columns>Details__c</columns>
+        <columns>Hospital_Nights_Required__c</columns>
+        <columns>Recovery_Nights_Required__c</columns>
+        <columns>Hotel_Nights_Included__c</columns>
+        <columns>Transportation_Included__c</columns>
+        <columns>Comments__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Procedures</label>
+    </listViews>
     <nameField>
         <label>Procedure Name</label>
         <type>Text</type>

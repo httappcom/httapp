@@ -8,6 +8,10 @@
         <label>Information</label>
         <layoutColumns>
             <layoutItems>
+                <behavior>Required</behavior>
+                <field>External_Id__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Procedure_Category__c</field>
             </layoutItems>
@@ -116,6 +120,7 @@
         <fields>Name</fields>
         <fields>Doctor__c</fields>
         <fields>Facility__c</fields>
+        <fields>External_Id__c</fields>
         <relatedLists>
             <fields>List_Price__c</fields>
             <relatedList>Procedure_Price__c.Procedure__c</relatedList>

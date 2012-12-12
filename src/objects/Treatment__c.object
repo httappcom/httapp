@@ -58,6 +58,15 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Arrival_Time__c</fullName>
+        <externalId>false</externalId>
+        <formula>Travel__r.Travel_Start__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Arrival Time</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
         <fullName>Best_Time_to_Contact__c</fullName>
         <externalId>false</externalId>
         <label>Best Time to Contact</label>
@@ -154,7 +163,7 @@
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Final Departure Date</label>
         <required>false</required>
-        <type>Date</type>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Financial_Reconciliation__c</fullName>
@@ -248,6 +257,13 @@
         <label>Next Follow Up</label>
         <required>false</required>
         <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>On_Hold__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>On Hold</label>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>On_Site_Recovery_Period__c</fullName>
@@ -1135,11 +1151,6 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Contact Made</fullName>
-                <controllingFieldValues>(1) Inquiry</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Contact Established</fullName>
                 <controllingFieldValues>(2) Interaction</controllingFieldValues>
                 <default>false</default>
@@ -1151,11 +1162,6 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Interested but Hold for Later</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Medical Information</fullName>
                 <controllingFieldValues>(2) Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
@@ -1173,22 +1179,12 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Quoting</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Patient On Hold</fullName>
+                <fullName>Treatment Approved/Quoting</fullName>
                 <controllingFieldValues>(2) Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Consult</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Travel Converted</fullName>
                 <controllingFieldValues>(2) Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
@@ -1204,11 +1200,6 @@
             </picklistValues>
             <picklistValues>
                 <fullName>At Provider</fullName>
-                <controllingFieldValues>(3) Travel</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Post-Treatment</fullName>
                 <controllingFieldValues>(3) Travel</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
@@ -1268,18 +1259,17 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Treament Information Given</fullName>
+                <fullName>Treament Information Provided</fullName>
                 <controllingFieldValues>Contact Established</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Patient Providing Medical Information</fullName>
-                <controllingFieldValues>Medical Information</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Medical Records Requested</fullName>
-                <controllingFieldValues>Medical Information</controllingFieldValues>
+                <fullName>Medical Information Requested</fullName>
+                <controllingFieldValues>Contact Established</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -1321,22 +1311,22 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Quote In Process</fullName>
-                <controllingFieldValues>Quoting</controllingFieldValues>
+                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Quote Signed</fullName>
-                <controllingFieldValues>Quoting</controllingFieldValues>
+                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Quote Revision</fullName>
-                <controllingFieldValues>Quoting</controllingFieldValues>
+                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Quote Rejected</fullName>
-                <controllingFieldValues>Quoting</controllingFieldValues>
+                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -1345,7 +1335,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Treatment Itinerary Provided</fullName>
+                <fullName>Treatment Itinerary Available</fullName>
                 <controllingFieldValues>Travel Itinerary</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
@@ -1381,17 +1371,10 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Start Follow up</fullName>
-                <controllingFieldValues>Post-Treatment</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>Financial Reconciliation</fullName>
-                <controllingFieldValues>Post-Treatment</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Maintain communication</fullName>
-                <controllingFieldValues>Ongoing Relationship</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -1439,5 +1422,12 @@ OR( AND( ISPICKVAL( Phase__c , &apos;(1) Inquiry&apos;) , ISPICKVAL( Stage__c , 
 ISPICKVAL( Patient_Not_Committed_Reason__c , &quot;&quot;) )</errorConditionFormula>
         <errorDisplayField>Patient_Not_Committed_Reason__c</errorDisplayField>
         <errorMessage>&apos;Patient Not Committed Reason&apos; is required when stage is &apos;Lost&apos;</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Stage_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>ISPICKVAL( Stage__c, &apos;&apos;)</errorConditionFormula>
+        <errorDisplayField>Stage__c</errorDisplayField>
+        <errorMessage>Please enter a value for Stage.</errorMessage>
     </validationRules>
 </CustomObject>

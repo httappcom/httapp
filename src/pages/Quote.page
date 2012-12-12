@@ -1,39 +1,25 @@
 <apex:page sidebar="false"
            showHeader="false"
            standardStylesheets="false"
-           standardController="Treatment__c" 
+           standardController="Treatment_Quote__c" 
            extensions="QuoteController" 
-           renderAs="pdf">
-
-
-<style>
-  body {
-    font-family: Tahoma,Verdana,Segoe,sans-serif;
-    margin: 0 auto;
-    width: 755px;
-  }
-  p, td, div, li {
-    font-family: Tahoma,Verdana,Segoe,sans-serif;
-    font-size: 10pt;
-    line-height: 1.25em;
-  }
-  h1 {
-    text-align: center;
-  }
-</style>
+          	renderAs="pdf">
+<apex:stylesheet value="{!URLFOR($Resource.quoteResources, 'quote-styles.css')}"/>
+<div class="page">
+<apex:image id="headerImage" value="{!URLFOR($Resource.quoteResources, 'htg_header.jpg')}" width="700" height="153" />
 
     <h1>Your Treatment Quote</h1>
     
     <p>Thank you for contacting Health Travel Guides for a treatment quote.  We are happy to help you with your dental, medical, surgical or homeopathic wellness needs.</p>
     
-    <p>Your Treatment Quote: {!treatment.amount__c}</p>
+    <p>Your Treatment Quote: {!q.Treatment__r.amount__c}</p>
     
     <p>Health Travel Guides is your guide to the best medical care around the world.  We take the guesswork out of obtaining high quality, affordable and innovative health care abroad.  We ensure a quality experience with a carefully selected network of top health care providers and specialists.  Your Case Manager is available any time with questions toll free 1-866-978-2573.</p>
     
     <div id="quoteTopSummary">
-        <p>Health Traveler Name: {{patient.first_name}} {{patient.last_name}}</p>
-        <p>Date of Travel: {{travel.start_date}}-{{travel.end_date}}</p>
-        <p>Treatment Destination: FIX ME</p>
+        <p>Health Traveler Name: {!q.Treatment__r.Patient__r.Name}</p>
+        <p>Date of Travel: {!q.Arrival_Date__c} - {!q.Departure_Date__c}</p>
+        <p>Treatment Destination: {!q.Procedure__r.Facility__r.Name}</p>
     </div>
     
     <h2>Payment:</h2>
@@ -43,12 +29,12 @@
     
     <p>If you have not paid a deposit within one week of receiving your signed quote, your surgery date may not be guaranteed and you will be responsible for any and all airfare and/or hotel change fees associated with changing your reserved date if it is no longer available.</p>
     
-    <p>
+
         <ul id="paymentOptions">
             <li>If paying with a major credit, debit card, or bank wire, final payment can be accepted up to the date of the procedure.</li>
-            <li>If paying by check, money order, cashier�s check, bank wire or ACH transfer, full payment is required within 14 days prior to the date of your surgery.</li>
+            <li>If paying by check, money order, cashier's check, bank wire or ACH transfer, full payment is required within 14 days prior to the date of your surgery.</li>
         </ul>
-    </p>
+
 
     
     <h2>Refunds:</h2>
@@ -65,7 +51,7 @@
     <p>You may submit your signed Quote in one of the following ways:</p>
     <ol>
         <li>Electronically sign and file your acceptance of this Quote and Informed Consent. 
-Health Travel Guides is pleased to feature the secure electronic Echosign� document review and approval service. We will store and make accessible to you at any time, free of charge, an electronic or printed copy of your Quote documentation.</li>
+Health Travel Guides is pleased to feature the secure electronic Echosign document review and approval service. We will store and make accessible to you at any time, free of charge, an electronic or printed copy of your Quote documentation.</li>
         
         <li>Review, review, print and sign, and return to Health Travel Guides using one of the following methods
 
@@ -80,14 +66,15 @@ Health Travel Guides is pleased to feature the secure electronic Echosign� doc
     <p><strong>Please Note:</strong>  Payment is required at the time that services are rendered. Failure to provide payment in full will result in a surcharge of 1.5% assessed monthly.  In addition, the patient is responsible for all costs of collection including reasonable attorneys fees incurred in the collection process.</p>
 
         <p>The Parties hereby agree and stipulate that in the event of a dispute, and regardless of whether or not the dispute matures into formal litigation or any alternative dispute procedure, and further regardless of whether or not a judgment is rendered or the matter is settled, the non-prevailing party will pay the attorneys fees and legal costs of the prevailing party.</p>
+        </div>
+        <div class="page">
             <div class="quote">
             <h1>Your Medical Travel Quote</h1>
             <div class="quoteSummary">
-                <p>Traveler Name: {{patient.first_name}} {{patient.last_name}}</p>
-                <p>Your Health Travel Guide: {{patient.owner}}</p>
-                <p>Doctor: FIX ME - should come from procedure record</p>
-                <p>Traveling To: FIX ME</p>
-                <p>Traveling from: {{travel.origin}}</p>
+                <p>Traveler Name: {!q.Treatment__r.Patient__r.Name}</p>
+                <p>Your Health Travel Guide: {!q.Treatment__r.Patient__r.Owner.Name}</p>
+                <p>Doctor: {!q.Procedure__r.Doctor__r.Name}</p>
+                <p>Traveling To: {!q.Procedure__r.Facility__r.Name}</p>
              </div>  
                 <h2>Medical Travel Package Inclusions:</h2>
                 <table>
@@ -97,17 +84,17 @@ Health Travel Guides is pleased to feature the secure electronic Echosign� doc
                     </tr>
                     <tr>
                         <td>Procedure</td>
-                        <td>{!treatment.Procedure__c}</td>
-                        <td>{{quotes.total}}</td>
+                        <td>{!q.Treatment__r.Procedure__c}</td>
+                        <td>{!q.Treatment__r.amount__c}</td>
                     </tr>
                     <tr>
                         <td>Hospital Stay</td>
-                        <td>{{travel.hosp_nights_incl}} night(s) included    </td>
+                        <td>{!q.Number_of_Hospital_Nights__c} night(s) included    </td>
                         <td>INCLUDED</td>
                     </tr>
                     <tr>
                         <td>Hotel Stay  </td>
-                        <td>{{travel.hotel_nights_incl}} night(s) included</td>
+                        <td>{!q.Hotel_Nights_Included__c} night(s) included</td>
                         <td>INCLUDED</td>
                     </tr>
                     <tr>
@@ -133,7 +120,7 @@ Health Travel Guides is pleased to feature the secure electronic Echosign� doc
                     <tr>
                         <td></td>
                         <td>QUOTE TOTAL:</td>
-                        <td>  {!treatment.Amount__c}</td>
+                        <td>{!q.Treatment__r.Amount__c}</td>
                     </tr>
                 </table>
                 
@@ -144,17 +131,17 @@ Health Travel Guides is pleased to feature the secure electronic Echosign� doc
                 <p>Traveling Companion: ________________________</p>
                 
                 <p>Accepted By:     ________________________________________________</p>
-                                                       Patient Signature*                                                  Date
+                <p>                                     Patient Signature*                                                  Date</p>
 
                 <p class="disclaimer">*In cases where the patient is a minor, we require the signature of a legal guardian.</p>
                 
                 <p>Legal Guardian Acceptance:   _______________________________________________________________         Date:______
          Relationship to Patient</p>
                 </div>
-                <h2>Terms and Conditions</h2>
-                
-                <p>Congratulations on finding a medical provider and destination to obtain your desired medical procedure as set forth on Exhibit A attached hereto.  These terms and conditions constitute a legally binding agreement (the �Agreement�) between you (�you�) and Health Travel Guides, Inc., a Delaware corporation (�HTG�).</p>
-                <h3>Description of HTG Services.</h3>
+                </div>
+                	<h2>Terms and Conditions</h2>                
+                	<p>Congratulations on finding a medical provider and destination to obtain your desired medical procedure as set forth on Exhibit A attached hereto.  These terms and conditions constitute a legally binding agreement (the "Agreement"") between you ("you") and Health Travel Guides, Inc., a Delaware corporation ("HTG").</p>
+               		<h3>Description of HTG Services.</h3>
                     <p>HTG is a health travel service firm in the United States specializing in medical treatment programs for patients seeking treatment in locations other than where they reside.  In this role, we research and gather available information and provide this information to you for your personal use in making a more informed decision about your medical treatment options in various locations throughout the world, but we do not recommend, refer, endorse, or approve any healthcare provider, travel agency or other providers about whom you may obtain information from us. You are obtaining your medical procedure set forth on Exhibit A directly from the medical provider listed thereon and have agreed to the charges set forth on Exhibit A.  Your medical provider will require that you execute an agreement or consent regarding your medical procedure, and that document will govern your relationship with your medical provider.</p>
                     <h3>Not A Medical Provider.</h3>
                     <p>HTG and its employees are not medical professionals and will not discuss or advise any issues relating to medical treatment.  We facilitate contact with, and provide information about, doctors in various locations throughout the world and provide information about their credentials in order for you to make informed decisions.  We do not recommend, refer, endorse, or approve any healthcare provider, travel agency or other providers about whom you may obtain information from us. We encourage and advise you to discuss all medical issues with your regular medical doctor before making a decision on medical treatment in another location.   We provide information about available medical treatment and recuperation and packages to assist you making an informed decision.  You agree to assume all responsibility in connection with choosing any doctor, hospital or other provider for your desired procedure. We assume no responsibility or liability for any treatment or other services rendered by any doctor or medical provider, or for any malpractice claims and other claims that may arise directly or indirectly from any such advice, treatment or other services.</p>
@@ -165,7 +152,7 @@ Health Travel Guides is pleased to feature the secure electronic Echosign� doc
                     
                     <h3>Limitations of Liability</h3>
                     
-                    <p>YOU AGREE THAT IN NO EVENT SHALL HTG OR ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, REPRESENTATIVES, AFFILIATES, ATTORNEYS, SUCCESSORS OR ASSIGNS SHALL BE LIABLE FOR ANY DAMAGES IN EXCESS OF THE AMOUNT YOU HAVE PAID RESULTING FROM YOUR USE OF, OR RELIANCE UPON, HTG�S WEB SITE, ANY HTG MATERIALS, OR ANY SERVICES OBTAINED FROM OR THROUGH HTG. IN THE EVENT OF ANY PROBLEM WITH THIS SITE, ANY SITE MATERIALS, OR SERVICES OBTAINED ON OR THROUGH THIS SITE, YOU AGREE THAT YOUR SOLE REMEDY IS TO CEASE USING SUCH ITEMS.</p>
+                    <p>YOU AGREE THAT IN NO EVENT SHALL HTG OR ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, REPRESENTATIVES, AFFILIATES, ATTORNEYS, SUCCESSORS OR ASSIGNS SHALL BE LIABLE FOR ANY DAMAGES IN EXCESS OF THE AMOUNT YOU HAVE PAID RESULTING FROM YOUR USE OF, OR RELIANCE UPON, HTG'S WEB SITE, ANY HTG MATERIALS, OR ANY SERVICES OBTAINED FROM OR THROUGH HTG. IN THE EVENT OF ANY PROBLEM WITH THIS SITE, ANY SITE MATERIALS, OR SERVICES OBTAINED ON OR THROUGH THIS SITE, YOU AGREE THAT YOUR SOLE REMEDY IS TO CEASE USING SUCH ITEMS.</p>
                     
                     <p>YOU AGREE THAT UNDER NO CIRCUMSTANCES WILL HTG OR ANY OF OUR DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, REPRESENTATIVES, ATTORNEYS, SUCCESSORS OR ASSIGNS, BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, EXEMPLARY OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, LOST PROFITS AND DAMAGES THAT RESULT FROM INCONVENIENCE, DELAY, OR LOSS OF USE) ARISING OUT OF USE OF THIS SITE, ANY SITE MATERIALS, ARRANGEMENTS MADE BASED ON INFORMATION OBTAINED ON OR THROUGH THIS SITE, OR PRODUCTS OR SERVICES OBTAINED ON OR THROUGH THIS SITE, EVEN IF WE OR THEY HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
                     

@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
-        <fullName>Fill_out_MQ</fullName>
-        <description>Fill out MQ</description>
+        <fullName>Post_Op_30day_Final_Email</fullName>
+        <description>Post Op 30day Final Email</description>
         <protected>false</protected>
         <recipients>
             <field>Patient_Email__c</field>
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>Nuehealth_PRM/Thank_You_MQ</template>
+        <template>Nuehealth_PRM/Post_Op_30_day_Final_Email</template>
+    </alerts>
+    <alerts>
+        <fullName>Post_Treatment_Welcome_Home</fullName>
+        <description>Post Treatment Welcome Home</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Post_Treatment_Welcome_Home</template>
     </alerts>
     <alerts>
         <fullName>Thank_You_New_Treatment</fullName>
@@ -22,6 +33,26 @@
         <senderType>CurrentUser</senderType>
         <template>Nuehealth_PRM/Thank_You_New_Treatment</template>
     </alerts>
+    <alerts>
+        <fullName>Treatment_Itinerary_Email_to_Patient</fullName>
+        <description>Treatment Itinerary Email to Patient</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Itinerary_Available</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>At_Provider</fullName>
+        <field>Stage__c</field>
+        <literalValue>At Provider</literalValue>
+        <name>At Provider</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
     <fieldUpdates>
         <fullName>Change_Phase_to_Travel</fullName>
         <field>Phase__c</field>
@@ -76,6 +107,24 @@
         <targetObject>Patient__c</targetObject>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Initialize_Treatment</fullName>
+        <field>Stage__c</field>
+        <literalValue>New</literalValue>
+        <name>Initialize Treatment</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Intialize_Travel_Phase</fullName>
+        <field>Stage__c</field>
+        <literalValue>Travel Itinerary</literalValue>
+        <name>Intialize Travel Phase</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Phase_to_Post_Op</fullName>
         <field>Phase__c</field>
         <literalValue>(4) Post-Op</literalValue>
@@ -99,6 +148,15 @@
         <field>Stage__c</field>
         <literalValue>Travel Itinerary</literalValue>
         <name>Restage to Travel Itinerary</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Set_Initialize_Travel_Sub_Stage</fullName>
+        <field>Sub_Stage__c</field>
+        <literalValue>Trip Preparation</literalValue>
+        <name>Set Initialize Travel Sub Stage</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
@@ -141,63 +199,53 @@
         <operation>Literal</operation>
         <protected>false</protected>
     </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Treatment_in_progress</fullName>
+        <field>Sub_Stage__c</field>
+        <literalValue>Treatment In Progress</literalValue>
+        <name>Treatment-in-progress</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
     <rules>
-        <fullName>Contact Made</fullName>
-        <actions>
-            <name>Change_phase_to_Interaction</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Change_stage_to_Contact_Established</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>Contact Made</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Interaction Lost</fullName>
-        <actions>
-            <name>Clear_SubStage</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Stage_to_Patient_Lost</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
+        <fullName>At Provider Now</fullName>
+        <active>false</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
-            <value>(2) Interaction</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>Treatment Approval Requested</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Sub_Stage__c</field>
-            <operation>equals</operation>
-            <value>No Treatment</value>
+            <value>(3) Travel</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>At_Provider</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <actions>
+                <name>Treatment_in_progress</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <actions>
+                <name>In_market_phone_call</name>
+                <type>Task</type>
+            </actions>
+            <offsetFromField>Treatment__c.Arrival_Time__c</offsetFromField>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
     </rules>
     <rules>
-        <fullName>MQ Stage</fullName>
+        <fullName>Itinerary Available</fullName>
         <actions>
-            <name>Fill_out_MQ</name>
+            <name>Treatment_Itinerary_Email_to_Patient</name>
             <type>Alert</type>
         </actions>
         <active>false</active>
         <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
+            <field>Treatment__c.Sub_Stage__c</field>
             <operation>equals</operation>
-            <value>Medical Information</value>
+            <value>Treatment Itinerary Available</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
@@ -206,6 +254,10 @@
         <actions>
             <name>Thank_You_New_Treatment</name>
             <type>Alert</type>
+        </actions>
+        <actions>
+            <name>Initialize_Treatment</name>
+            <type>FieldUpdate</type>
         </actions>
         <active>false</active>
         <criteriaItems>
@@ -217,7 +269,7 @@
         <triggerType>onCreateOnly</triggerType>
     </rules>
     <rules>
-        <fullName>Ongoing Relationship</fullName>
+        <fullName>Post Treatment Workflow</fullName>
         <active>false</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
@@ -232,12 +284,29 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
         <workflowTimeTriggers>
             <actions>
-                <name>Stage_to_Ongoing_Relationship</name>
-                <type>FieldUpdate</type>
+                <name>Post_Treatment_Medical_Checkin</name>
+                <type>Task</type>
+            </actions>
+            <timeLength>8</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Post_Op_30day_Final_Email</name>
+                <type>Alert</type>
             </actions>
             <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
             <timeLength>30</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Post_Treatment_Welcome_Home</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
     </rules>
     <rules>
@@ -260,30 +329,15 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>Stage Travel Converted to Travel Phase</fullName>
-        <actions>
-            <name>Change_Phase_to_Travel</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Clear_Stage</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>Travel Converted</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>(2) Interaction</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>Travel Itinerary Stage</fullName>
+        <actions>
+            <name>Intialize_Travel_Phase</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>Set_Initialize_Travel_Sub_Stage</name>
+            <type>FieldUpdate</type>
+        </actions>
         <actions>
             <name>Call_Patient_48</name>
             <type>Task</type>
@@ -310,35 +364,7 @@
             <operation>equals</operation>
             <value>(3) Travel</value>
         </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>Travel Itinerary</value>
-        </criteriaItems>
         <description>WF fires when the treatment enters Travel Itinerary Stage</description>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
-        <fullName>Travel%3A Post Treatment to Post Op</fullName>
-        <actions>
-            <name>Clear_Stage</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Phase_to_Post_Op</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>(3) Travel</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>Post-Treatment</value>
-        </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <tasks>
@@ -384,6 +410,28 @@
         <protected>false</protected>
         <status>Not Started</status>
         <subject>Collect Payment</subject>
+    </tasks>
+    <tasks>
+        <fullName>In_market_phone_call</fullName>
+        <assignedToType>owner</assignedToType>
+        <dueDateOffset>0</dueDateOffset>
+        <notifyAssignee>true</notifyAssignee>
+        <offsetFromField>Treatment__c.Arrival_Time__c</offsetFromField>
+        <priority>Normal</priority>
+        <protected>false</protected>
+        <status>Not Started</status>
+        <subject>In market phone call</subject>
+    </tasks>
+    <tasks>
+        <fullName>Post_Treatment_Medical_Checkin</fullName>
+        <assignedTo>Medical_Information_Officers</assignedTo>
+        <assignedToType>role</assignedToType>
+        <dueDateOffset>2</dueDateOffset>
+        <notifyAssignee>true</notifyAssignee>
+        <priority>Normal</priority>
+        <protected>false</protected>
+        <status>Not Started</status>
+        <subject>Post Treatment Medical Checkin</subject>
     </tasks>
     <tasks>
         <fullName>Start_Itinerary</fullName>
