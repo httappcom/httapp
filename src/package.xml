@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -17,9 +17,6 @@
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>User.Receive_Portal_Messages__c</members>
-        <members>User.Receive_Staff_Messages__c</members>
-        <members>User.Travel_Concierge__c</members>
         <members>Procedure__c.Active__c</members>
         <members>Procedure__c.Comments__c</members>
         <members>Procedure__c.Details__c</members>
@@ -34,6 +31,9 @@
         <members>Procedure__c.Procedure_Category__c</members>
         <members>Procedure__c.Recovery_Nights_Required__c</members>
         <members>Procedure__c.Transportation_Included__c</members>
+        <members>User.Receive_Portal_Messages__c</members>
+        <members>User.Receive_Staff_Messages__c</members>
+        <members>User.Travel_Concierge__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -90,12 +90,12 @@
     </types>
     <types>
         <members>Nuehealth_PRM</members>
-        <members>Nuehealth_PRM/MarketingProductInquiryResponse</members>
-        <members>Nuehealth_PRM/Thank_You_MQ</members>
-        <members>Nuehealth_PRM/Thank_You_New_Treatment</members>
         <members>Nuehealth_PRM/Itinerary_Available</members>
+        <members>Nuehealth_PRM/MarketingProductInquiryResponse</members>
         <members>Nuehealth_PRM/Post_Op_30_day_Final_Email</members>
         <members>Nuehealth_PRM/Post_Treatment_Welcome_Home</members>
+        <members>Nuehealth_PRM/Thank_You_MQ</members>
+        <members>Nuehealth_PRM/Thank_You_New_Treatment</members>
         <name>EmailTemplate</name>
     </types>
     <types>
@@ -125,8 +125,16 @@
         <name>Layout</name>
     </types>
     <types>
+        <members>Procedure__c.Procedures</members>
+        <name>ListView</name>
+    </types>
+    <types>
         <members>patientPortal</members>
         <name>Profile</name>
+    </types>
+    <types>
+        <members>Medical_Information_Officers</members>
+        <name>Role</name>
     </types>
     <types>
         <members>EHRApplicationStyle</members>
@@ -156,14 +164,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>Medical_Information_Officers</members>
-        <name>Role</name>
-    </types>
-    <types>
-        <members>Procedure__c.Procedures</members>
-        <name>ListView</name>
-    </types>
     <version>26.0</version>
 </Package>
-
