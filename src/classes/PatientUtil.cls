@@ -118,7 +118,7 @@ public class PatientUtil {
                               Travel__r.Departure_Flight_No__c,                              
                               Travel__r.Notes__c                                
 
-                       from Treatments__r),
+                       from Treatments__r order by CreatedDate),
                        (select id,
                                Owner.Name,
                                CallDurationInSeconds,

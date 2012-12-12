@@ -62,7 +62,10 @@ public without sharing class travelItineraryPDF_Controller {
 }
 	
 	public User getTravelConcierge() { //all fields
-		return [Select 	u.WorkspaceId, 
+		return [Select u.Name,
+						u.Phone,
+						u.Email
+/*		u.WorkspaceId, 
 						u.Username, 
 						u.UserType, 
 						u.UserRoleId, 
@@ -113,10 +116,8 @@ public without sharing class travelItineraryPDF_Controller {
 						u.ProfileId,
 						u.PostalCode,
 						u.PortalRole,
-						u.Phone,
 						u.OfflineTrialExpirationDate,
 						u.OfflinePdaTrialExpirationDate,
-						u.Name,
 						u.MobilePhone,
 						u.ManagerId,
 						u.LocaleSidKey,
@@ -133,12 +134,11 @@ public without sharing class travelItineraryPDF_Controller {
 						u.FullPhotoUrl,
 						u.ForecastEnabled,
 						u.FirstName,
-						/* u.FederationIdentifier, */
+// u.FederationIdentifier, 
 						u.Fax,
 						u.Extension,
 						u.EmployeeNumber,
 						u.EmailEncodingKey,
-						u.Email,
 						u.Division,
 						u.DigestFrequency,
 						u.Department,
@@ -154,7 +154,7 @@ public without sharing class travelItineraryPDF_Controller {
 						u.CallCenterId,
 						u.Alias,
 						u.AccountId, 
-						u.AboutMe 
+						u.AboutMe */ 
 					From User u 
 					where Travel_Concierge__c = true 
 					limit 1];
