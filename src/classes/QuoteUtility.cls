@@ -4,6 +4,7 @@ public with sharing class QuoteUtility {
         return null;
       } else {           
         return [Select id, 
+                        Total_Price__c,
                         Treatment__r.Name,
                         Treatment__r.Amount__c,                      
                         Treatment__r.Procedure__c, 
@@ -16,7 +17,8 @@ public with sharing class QuoteUtility {
                         Hotel_Nights_Needed__c,
                         Ground_Transportation_Included__c,
                         Procedure__r.Facility__r.Name,
-                        Procedure__r.Doctor__r.Name
+                        Procedure__r.Doctor__r.Name,
+                        Procedure__r.Price__c
                     from Treatment_Quote__c 
                     where id = :pQuoteId];               
       }  

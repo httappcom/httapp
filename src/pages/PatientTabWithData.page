@@ -40,6 +40,7 @@
     });
     </script>
     <apex:sectionHeader title="{!patient.Name}"/>
+    <apex:pageMessages id="errMsgs"/>
 <apex:form >
 <div class="wrapper">
 	<!-- div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
@@ -140,7 +141,7 @@
 //			});
 		</script>
 
-<apex:outputPanel layout="block" style="margin-right:0px">
+<apex:outputPanel id="mainPanel" layout="block" style="margin-right:0px">
     <apex:pageBlock >
 	    <apex:panelGrid columns="4" width="100%" bgcolor="white" style="vertical-align:center;">
     		<apex:outputText value="{!patient.Phone__c}" style="font-weight:bold;"/>
@@ -208,6 +209,11 @@
        	        <apex:outputLabel value="Last Communication"/>
            	    <apex:inputTextarea rows="3" cols="50" value="{!patient.Last_Communication__c}" />
             </apex:pageblocksectionitem>
+   	        <apex:pageblocksectionitem helpText=""> 
+       	        <apex:outputLabel value="Date of Birth"/>
+           	    <apex:inputField value="{!patient.Date_of_Birth__c}"  taborderhint="132"/>
+            </apex:pageblocksectionitem>
+            
    	    </apex:pageblocksection>
 		<script>
     			twistSection(document.getElementById('{!$Component.pbs_Patient}').getElementsByTagName('img')[0])
@@ -215,9 +221,14 @@
 	    <apex:pageblocksection title="Treatment" id="pbs_Treatment" columns="2">
 	    	<apex:pageBlockSectionItem >
 	     		<apex:outputPanel >
-             		<apex:commandbutton action="{!saveTreatment}" value="Save Treatment"></apex:commandbutton>
-           	 		<apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}" value=" Previous "/>&nbsp;
-           			<apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}" value=" Next "/>
+             		<apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel"/>
+             		<apex:actionStatus startText="saving..."  stopText="" id="treatmentSaveStatus"/>
+             		<apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!treatmentCurNumber==0}"/>
+           	 		<apex:commandLink status="treatmentFetchStatus" action="{!previousTreatment}" rendered="{!not(treatmentCurNumber=0) && hasPreviousTreatment}" value=" Newer " rerender="pbs_Treatment, mainNavDiv, resultPanel"/>&nbsp;
+           			<apex:commandLink status="treatmentFetchStatus" action="{!nextTreatment}" rendered="{!not(treatmentCurNumber=0) && hasNextTreatment}" value=" Older " rerender="pbs_Treatment, mainNavDiv, resultPanel"/>
+             		<apex:actionStatus startText="reading..."  stopText="" id="treatmentFetchStatus"/>
+           			
+           			<!-- cur={!treatmentCurNumber}, last={!treatmentLastNumber}, tot={!treatmentTotCount}  -->
           		</apex:outputPanel>
            	</apex:pageBlockSectionItem>
            	<apex:pageBlockSectionItem helpText="">
@@ -226,21 +237,17 @@
 			</apex:pageBlockSectionItem>
 		    <apex:pageblocksectionitem helpText=""> 
         	   	<apex:outputLabel value="Phase" style="width: 15%;"/>
-        	   	<apex:actionRegion >
 		            <apex:inputField value="{!treatment.Phase__c}" tabOrderHint="201">
-		            	<apex:actionSupport event="onchange" rerender="mainNavDiv,resultPanel" action="{!changeViewState}"/>
+		            	<apex:actionSupport event="onchange" rerender="mainNavDiv,resultPanel,procCatSelectPnl" action="{!changeViewState}"/>
 	    	        </apex:inputField>
-	            </apex:actionRegion>
     	    </apex:pageblocksectionitem>
           	<apex:pageblocksectionitem helpText=""> 
 	        	<apex:outputLabel value="Procedure" style="width: 15%;"/>
-	        	<apex:outputPanel >
-       		    <apex:inputField value="{!treatment.Procedure_Category__c}" tabOrderHint="220"/>
-       		    <apex:actionregion >
+	        	<apex:outputPanel id="procCatSelectPnl">
+	       		    <apex:inputField value="{!treatment.Procedure_Category__c}" tabOrderHint="220"/>
     	      	   	<apex:inputfield value="{!treatment.Procedure__c}" tabOrderHint="212">
-        	             <apex:actionSupport event="onchange" rerender="innerQuotePanel" action="{!changeProcedureSubCategory}"/>
+        	             <apex:actionSupport event="onchange" rerender="mainPanel" action="{!changeProcedureSubCategory}"/>
                    	</apex:inputfield>
-                </apex:actionregion>
        		    </apex:outputPanel>
        		</apex:pageblocksectionitem>
 		    <apex:pageblocksectionitem helpText="">
@@ -300,25 +307,25 @@
     <apex:pageBlock >
             <apex:outputPanel id="mainNavDiv" styleClass="mainNav" layout="block">
                 <div class="navitemfirst">
-                    <apex:commandLink id="nav1" onmousemove="document.getElementById('arrow1').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow1').style.color = '#CCCCCC'" action="{!displayInquiry}" reRender="resultPanel, mainNavDiv">    
+                    <apex:commandLink id="nav1" onmousemove="document.getElementById('arrow1').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow1').style.color = '#CCCCCC'" action="{!displayInquiry}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">    
                         <h3>Inquiry </h3>
                     </apex:commandLink>
                     <div class="lucida" id="arrow1"><span style="{!IF(inquiryFlag,'color:red','')}">&#187;</span></div><br /><br />
                 </div>
                 <div class="navitem">
-                    <apex:commandLink id="nav2" onmousemove="document.getElementById('arrow2').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow2').style.color = '#CCCCCC'" action="{!displayInteraction}" reRender="resultPanel, mainNavDiv">
+                    <apex:commandLink id="nav2" onmousemove="document.getElementById('arrow2').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow2').style.color = '#CCCCCC'" action="{!displayInteraction}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
                         <h3>Interaction </h3>
                     </apex:commandLink>
                     <div class="lucida" id="arrow2"><span style="{!IF(interactionFlag,'color:red','')}">&#187;</span></div><br /><br />
                 </div>
                 <div class="navitem">
-                    <apex:commandLink id="nav3" onmousemove="document.getElementById('arrow3').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow3').style.color = '#CCCCCC'" action="{!displayTravel}" reRender="resultPanel, mainNavDiv">
+                    <apex:commandLink id="nav3" onmousemove="document.getElementById('arrow3').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow3').style.color = '#CCCCCC'" action="{!displayTravel}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
                         <h3>Travel </h3>
                     </apex:commandLink>
                     <div class="lucida" id="arrow3"><span style="{!IF(travelFlag,'color:red','')}">&#187;</span></div><br /><br />
                 </div>
                 <div class="navitem">
-                    <apex:commandLink id="nav4" onmousemove="document.getElementById('arrow4').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow4').style.color = '#CCCCCC'" action="{!displayPostOp}" reRender="resultPanel, mainNavDiv">
+                    <apex:commandLink id="nav4" onmousemove="document.getElementById('arrow4').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow4').style.color = '#CCCCCC'" action="{!displayPostOp}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
                         <h3>Post-Op </h3>
                      </apex:commandLink>
                     <div class="lucida" id="arrow4"><span style="{!IF(postopFlag,'color:red','')}">&#187;</span></div><br /><br />
@@ -573,12 +580,11 @@
     	<apex:tab label="Quotes" id="Quotes">
     		<apex:panelGrid columns="2">
     			<apex:outputPanel >
-                        <apex:commandbutton action="{!saveQuote}" value="Save Quote" rerender="QuotePanel"></apex:commandbutton>
+                        <apex:commandbutton action="{!saveQuote}" value="Save Quote" rerender="QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
                         <apex:commandbutton action="{!sendQuoteToEchosign}" value="Send to Echosign"></apex:commandbutton>
                 </apex:outputPanel>        
     				<apex:outputPanel layout="block" style="float:right">
-                        <a href="{!itineraryURL}" target="_blank">View Itinerary</a>&nbsp;
-                        <a href="{!quoteURL}" target="_blank">View/Print Quote as Pdf</a>
+                        <a href="{!quoteURL}" target="_blank">View/Print Quote</a>
                     </apex:outputPanel>
                 </apex:panelGrid>
             <apex:actionRegion >
@@ -659,18 +665,14 @@
                  </apex:pageBlock> 
                 </apex:actionRegion>
             </apex:tab>
-    </apex:tabPanel>
-        <apex:outputPanel id="TabPanel">
-            
-            
-            
-            <apex:outputPanel id="PaymentPanel" rendered="false"><!-- {!PaymentFlag} -->
+            <apex:tab title="Payments" rendered="false">
+            <apex:outputPanel id="PaymentPanel" rendered="false">
                 <div id="tab4box" class="tabbox" style="display:block;">
                     <div class="treatmentfieldwrapper">
-             <apex:commandbutton action="{!newPayment}"   value="New Payment"></apex:commandbutton>        
-             <apex:commandbutton action="{!savePayment}"   value="Save Payment"></apex:commandbutton>
-             <apex:commandLink action="{!previousPayment}" rendered="{!hasPreviousPayment}"> Previous</apex:commandlink>
-             <apex:commandLink action="{!nextPayment}" rendered="{!hasNextPayment}"> Next</apex:commandlink>
+             <apex:commandbutton action="{!newPayment}" value="New Payment"></apex:commandbutton>        
+             <apex:commandbutton action="{!savePayment}" value="Save Payment"></apex:commandbutton>
+             <apex:commandLink action="{!previousPayment}" rendered="{!hasPreviousPayment}"> Previous<apex:commandlink ></apex:commandlink>
+             <apex:commandLink action="{!nextPayment}" rendered="{!hasNextPayment}"> Next<apex:commandlink ></apex:commandlink>
              <apex:outputText value="          "></apex:outputText><apex:outputText value="{!paymentCurNumber} of {!paymentTotCount} Payments"></apex:outputText>                                                                            
                         <div class="fieldheading">Payment Tracking</div>
                         <div class="treatmentformwhite">
@@ -754,10 +756,10 @@
                                 <div class="fieldwrap"><div class="label">Insurance Comments</div> <div class="item">(insert custom object)</div></div>             
                             </div>                              
                         </div>                                                      
-                    </div>
+                    </apex:commandLink></apex:commandLink></div>
                 </div>  
-            </apex:outputPanel>
-        </apex:outputPanel>
+            </apex:outputPanel></apex:tab>
+    </apex:tabPanel>
     </apex:outputPanel>
     
      <apex:outputPanel rendered="{!travelFlag}">
@@ -770,24 +772,22 @@
                 <div class="treatmentform">
                     <div class="fieldwrapper">
                         <div class="fieldwrap">
-							<apex:commandbutton action="https://c.na14.visual.force.com/apex/travelItineraryPDF?id=a0Ed000000h1i8e" value="Open Itinerary PDF"></apex:commandbutton>                        
+                        	<a href="{!itineraryURL}" target="_blank">View Itinerary</a>
                         </div>
                     </div>
                 </div>
                 <div class="fieldheading">Traveler Information</div>
                 <div class="treatmentform">
                     <div class="fieldwrapper">                  
-                        <div class="fieldwrap"><div class="label">Patient Traveler Name</div> <div class="item"><apex:inputfield value="{!patient.Name}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Close Date</div> <div class="item"><apex:inputfield value="{!treatment.Close_Date__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Travel Start</div> <div class="item"><apex:inputfield value="{!travel.Travel_Start__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Travel End</div> <div class="item"><apex:inputfield value="{!travel.Travel_End__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Procedure Date</div> <div class="item"><apex:inputfield value="{!travel.Procedure_Date__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Number of Hospital Nights</div> <div class="item"><apex:inputfield value="{!travel.Number_of_Hospital_Nights__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Pre-op Instructions</div> <div class="item"><apex:inputfield value="{!travel.Pre_Op_Instructions__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Owner</div> <div class="item"></div></div>
+                        <div class="fieldwrap"><div class="label">Patient Traveler Name</div> <div class="item"><apex:outputfield value="{!patient.Name}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Close Date</div> <div class="item"><apex:outputfield value="{!treatment.Close_Date__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Travel Start</div> <div class="item"><apex:inputfield value="{!travel.Travel_Start__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Travel End</div> <div class="item"><apex:inputfield value="{!travel.Travel_End__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Number of Hospital Nights</div> <div class="item"><apex:outputfield value="{!treatmentQuote.Number_of_Hospital_Nights__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Pre-op Instructions</div> <div class="item"><apex:inputfield value="{!travel.Pre_Op_Instructions__c}"/></div></div>
                         <div class="fieldwrap"><div class="label">Date of Birth</div> <div class="item"><apex:outputText value="{0,date,short}"><apex:param value="{!patient.Date_of_Birth__c}"/></apex:outputText></div></div>
-                        <div class="fieldwrap"><div class="label">Visa Status</div> <div class="item"><apex:inputfield value="{!travel.Visa_Status__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Passport Status</div> <div class="item"><apex:inputfield value="{!travel.Passport_Status__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Visa Status</div> <div class="item"><apex:inputfield value="{!travel.Visa_Status__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Passport Status</div> <div class="item"><apex:inputfield value="{!travel.Passport_Status__c}"/></div></div>
                     </div>
                 </div>
                 <div class="fieldheading">Additional Services</div>
@@ -817,9 +817,13 @@
                 <div class="treatmentform">
                     <div class="fieldwrapper">
                         <div class="fieldwrap"><div class="label">Hotel</div> <div class="item"><apex:inputfield value="{!travel.Hotel__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Hotel Nights Included</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Nights_Included__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Hotel Nights Needed</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Nights_Needed__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Hotel Nights Included</div> <div class="item"><apex:outputfield value="{!treatmentQuote.Hotel_Nights_Included__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Check-in Date</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Checkin__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Hotel Nights Needed</div> <div class="item"><apex:outputfield value="{!treatmentQuote.Hotel_Nights_Needed__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Check-out Date</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Checkout__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Special Hotel Needs</div> <div class="item"><apex:inputfield value="{!travel.Special_Hotel_Needs__c}"></apex:inputfield></div></div>
+                        
+                        
                     </div>
                 </div>              
             </div>

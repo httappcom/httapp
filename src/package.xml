@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -129,6 +129,10 @@
         <name>ListView</name>
     </types>
     <types>
+        <members>*</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
         <members>patientPortal</members>
         <name>Profile</name>
     </types>
@@ -164,10 +168,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>*</members>
-        <name>PermissionSet</name>
-    </types>
     <version>26.0</version>
 </Package>
-

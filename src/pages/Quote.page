@@ -12,13 +12,21 @@
     
     <p>Thank you for contacting Health Travel Guides for a treatment quote.  We are happy to help you with your dental, medical, surgical or homeopathic wellness needs.</p>
     
-    <p>Your Treatment Quote: {!q.Treatment__r.amount__c}</p>
+    <p>Your Treatment Quote: 
+        <apex:outputText value="${0, number,###,###,###,###.##}">
+            <apex:param value="{!q.Total_Price__c}"/>
+        </apex:outputText>
+    </p>
     
     <p>Health Travel Guides is your guide to the best medical care around the world.  We take the guesswork out of obtaining high quality, affordable and innovative health care abroad.  We ensure a quality experience with a carefully selected network of top health care providers and specialists.  Your Case Manager is available any time with questions toll free 1-866-978-2573.</p>
     
     <div id="quoteTopSummary">
         <p>Health Traveler Name: {!q.Treatment__r.Patient__r.Name}</p>
-        <p>Date of Travel: {!q.Arrival_Date__c} - {!q.Departure_Date__c}</p>
+        <p>Dates of Travel: 
+            <apex:outputText value=" {0,date, EEE, MMMM d, yyyy} - {1,date, EEE, MMMM d, yyyy}">
+                <apex:param value="{!q.Arrival_Date__c}"/>
+                <apex:param value="{!q.Departure_Date__c}"/>
+            </apex:outputText></p>
         <p>Treatment Destination: {!q.Procedure__r.Facility__r.Name}</p>
     </div>
     
@@ -85,16 +93,18 @@ Health Travel Guides is pleased to feature the secure electronic Echosign docume
                     <tr>
                         <td>Procedure</td>
                         <td>{!q.Treatment__r.Procedure__c}</td>
-                        <td>{!q.Treatment__r.amount__c}</td>
+                        <td><apex:outputText value="${0, number,###,###,###,###.##}" >
+                        		<apex:param value="{!q.Procedure__r.Price__c}"/>
+                        	</apex:outputText></td>
                     </tr>
                     <tr>
                         <td>Hospital Stay</td>
-                        <td>{!q.Number_of_Hospital_Nights__c} night(s) included    </td>
+                        <td>{!q.Number_of_Hospital_Nights__c} night{! IF ((q.Number_of_Hospital_Nights__c <> 1), 's', null)} included    </td>
                         <td>INCLUDED</td>
                     </tr>
                     <tr>
                         <td>Hotel Stay  </td>
-                        <td>{!q.Hotel_Nights_Included__c} night(s) included</td>
+                        <td>{!q.Hotel_Nights_Included__c} night{! IF ((q.Hotel_Nights_Included__c <> 1), 's', null)} included</td>
                         <td>INCLUDED</td>
                     </tr>
                     <tr>
@@ -120,7 +130,9 @@ Health Travel Guides is pleased to feature the secure electronic Echosign docume
                     <tr>
                         <td></td>
                         <td>QUOTE TOTAL:</td>
-                        <td>{!q.Treatment__r.Amount__c}</td>
+                        <td><apex:outputText value="${0, number,###,###,###,###.##}" >
+                        		<apex:param value="{!q.Total_Price__c}"/>
+                        	</apex:outputText></td>
                     </tr>
                 </table>
                 
@@ -130,13 +142,12 @@ Health Travel Guides is pleased to feature the secure electronic Echosign docume
                 
                 <p>Traveling Companion: ________________________</p>
                 
-                <p>Accepted By:     ________________________________________________</p>
-                <p>                                     Patient Signature*                                                  Date</p>
+                <p>Accepted By: ____________________________________________(Patient Signature*) Date: ________</p>
 
                 <p class="disclaimer">*In cases where the patient is a minor, we require the signature of a legal guardian.</p>
                 
-                <p>Legal Guardian Acceptance:   _______________________________________________________________         Date:______
-         Relationship to Patient</p>
+                <p>Legal Guardian Acceptance:   ____________________________________________     Date:________</p>
+         		<p>Relationship to Patient: ____________________________________________</p>
                 </div>
                 </div>
                 	<h2>Terms and Conditions</h2>                

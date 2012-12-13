@@ -91,6 +91,9 @@ public class PatientUtil {
                               //Companion__c,
                               Travel__r.Extra_Local_Concier__c,
                               Travel__r.Ground_Transportation_Needed__c,
+                              Travel__r.Hotel__c,
+                              Travel__r.Hotel_Checkin__c,
+                              Travel__r.Hotel_Checkout__c,
                               Travel__r.Hotel_Coordination_Needed__c,
                               Travel__r.Number_of_Hospital_Nights__c,
                               Travel__r.Passport_Status__c,
@@ -118,7 +121,7 @@ public class PatientUtil {
                               Travel__r.Departure_Flight_No__c,                              
                               Travel__r.Notes__c                                
 
-                       from Treatments__r order by CreatedDate),
+                       from Treatments__r order by CreatedDate desc),
                        (select id,
                                Owner.Name,
                                CallDurationInSeconds,
@@ -570,7 +573,7 @@ public class PatientUtil {
         User u = new User();
         string username = patient.Patient_First_Name__c.substring(0,1);
         username+=patient.patient_last_name__c;
-        username+= (patient.date_of_birth__c.year() != null)?string.valueof(patient.Date_of_Birth__c.year()).substring(2,3):'00'; 
+        username+= (patient.date_of_birth__c != null)?string.valueof(patient.Date_of_Birth__c.year()).substring(2,3):'00'; 
         username.replace(' ','_');
         
         u.firstname = patient.patient_First_name__c;
@@ -578,7 +581,7 @@ public class PatientUtil {
         u.Alias = username.substring(0,5)+username.substring(username.length()-2,username.length());
         u.Username = username+='@patient.htt.com';
         u.Email = patient.email__c;
-        u.CommunityNickname = username;
+        u.CommunityNickname = username; 
         u.TimeZoneSidKey = 'America/Tijuana';
         u.LocaleSidKey = 'en_US';
         u.EmailEncodingKey ='UTF-8';

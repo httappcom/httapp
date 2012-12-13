@@ -19,11 +19,8 @@ public class PatientExtension {
 	public List<SelectOption> taskOptions { get; set; }
  	public String selectedTaskOption { get; set; }
  	public integer treatmentCurNumber { get; set; }
- 	public Integer treatmentTotCount { get; set; } 
-  	public List<String> treatmentNames{ get; set; }   
-/*  public integer quoteCurNumber { get; set; } 
-  	public Integer quoteTotCount { get; set; } 
-  	public String quoteName{ get; set; }*/
+ 	public integer treatmentLastNumber { get; set; }
+ 	public Integer treatmentTotCount { get; set; }
   	public integer paymentCurNumber { get; set; } 
   	public Integer paymentTotCount { get; set; }     
   	public String paymentName{ get; set; } 
@@ -34,10 +31,6 @@ public class PatientExtension {
   	public Boolean interactionFlag { get; set; }    
   	public Boolean travelFlag { get; set; }
   	public Boolean postopFlag { get; set; }
-  	public Boolean IncidentFlag { get; set; }
-  	public Boolean FeaturesFlag { get; set; }
-  	public Boolean QuoteFlag { get; set; }
-  	public Boolean PaymentFlag { get; set; }
   	public String quoteURL { get; private set; }
   	public String itineraryURL { get; private set; }
   	public String activeInteractionTab { get; public set; }
@@ -47,29 +40,22 @@ public class PatientExtension {
   	public List<Treatment__c> treatments { get; private set; }
   	private List<Payment__c> payments ;    
   	private List<Incident__c> incidents ;
-//  private List<Treatment_Quote__c> treatmentQuotes ;
             
   	public PatientExtension(ApexPages.StandardController sc) {
   		Logger.info('Patient Constructor');
+  		treatmentLastNumber = 0;
     	this.initiatePatient();
     	try {  
    		if  (sc.getId() != null  ) {
       		//this.patient = (Patient__c)sc.getRecord();
       		this.patient = PatientUtil.queryPatientAll(sc.getId());
       		if (this.patient != null) {
-      		if ( patient.Treatments__r.size() > 0 ) {
   Logger.info('Treatments exist');         
-        		treatmentCurNumber = 1;  
-        		this.treatmentTotCount = patient.Treatments__r.size() ; 
-        		this.treatments = patient.Treatments__r;
-        		this.treatments.sort() ;
+       		treatmentCurNumber = 1;  
+       		this.treatmentTotCount = patient.Treatments__r.size() ; 
+       		this.treatments = patient.Treatments__r;
   Logger.info('treatments='+treatments);
-        		for (Treatment__c t : this.treatments) {
-            		this.treatmentNames.add(t.name);
-  Logger.info('tName='+t.name);
-        		}
-        		setTreatmentInfo( 1 );
-      		}
+       		setTreatmentInfo();
       		if ( patient.Medical_Profiles__r.size() > 0 ) this.medprofile = patient.Medical_Profiles__r[0];
       		if ( patient.Payments__r.size() > 0 ) {
  	       		paymentCurNumber = 1;
@@ -91,7 +77,10 @@ public class PatientExtension {
 
       		searchTask();                                                   
       	} 
-      	}        
+      	}
+      	if (patient == null) this.patient = new Patient__c ();      
+		if (treatments == null) this.treatments = new List<Treatment__c> (); 
+		if (treatment == null) initiateTreatment();      	        
       	setInitialViewState();
     	} catch(Exception e){
    Logger.info(e.getStackTraceString());
@@ -104,18 +93,10 @@ public class PatientExtension {
     this.interactionFlag = false;
     this.travelFlag = false;
     this.postopFlag = false;
-    this.IncidentFlag = false;
-    this.FeaturesFlag = false;
-    this.QuoteFlag = false;
-    this.PaymentFlag = false;    
-    this.patient = new Patient__c ();      
-    this.treatments = new List<Treatment__c> (); 
     this.tasks = new List<Task> ();
     this.messages = new List<Message__c> ();
     this.treatmentCurNumber = 0;
-    this.treatmentTotCount = 0;   
-    this.treatmentNames = new List<String> ();     
-    initiateTreatment() ;                 
+    this.treatmentTotCount = 0;
     this.selectedTaskOption = 'All Open';
     this.taskOptions = new List<SelectOption>();
     this.taskOptions.add(new SelectOption('All Open', 'All Open'));
@@ -125,9 +106,11 @@ public class PatientExtension {
   } 
   
   	private void initiateTreatment() {
-    	this.treatment = new Treatment__c (Phase__c = '(1) Inquiry', Stage__c = 'New');  
-    	this.travel = new  Travel__c ();
-    	this.payment = new Payment__c ();
+    	this.treatment = new Treatment__c (Phase__c = '(1) Inquiry', Stage__c = 'New');
+    	this.treatmentCurNumber = 0;
+    	this.travel = new  Travel__c();
+   Logger.info('travel set to blank object');
+    	this.payment = new Payment__c();
     	this.payments = new List<Payment__c> ();  
     	this.medProfiles = new List<Medical_Profile__c>  ();
     	this.medProfile = new Medical_Profile__c (); 
@@ -144,7 +127,7 @@ public class PatientExtension {
   }      
   public PageReference savePatient() {
   Logger.info('Save Patient');
-    if ( patient.id == Null ){
+    if ( patient.id == null ){
       insert patient;
     } else {              
       update patient;  
@@ -160,55 +143,57 @@ public class PatientExtension {
   	}
 	public PageReference newTreatment() {
     	initiateTreatment();
-    	return ApexPages.currentPage();  
-  	}  
+    	return null;  
+  	}
+  	public PageReference cancelTreatment() {
+  		treatmentCurNumber = treatmentLastNumber;
+  		setTreatmentInfo();
+  		return null;
+  		
+  	}
 	public PageReference saveTreatment() {
-    	Treatment__c tempTreatment;
     	try {
 	    	if ( patient.id == null ) {
     	  		insert patient;
     		} else {
 		      	update patient;  
     		}
+   Logger.info('saveTreatment travel='+travel);
+   			travel.Patient__c = patient.id;
+    		if (travel.id == null) {
+    			insert travel;
+    		} else {
+    			update travel;
+    		}
+    		treatment.Travel__c = travel.id;
+   Logger.info('treatment.Travel='+treatment.Travel__c);
 	    	if ( treatment.id == null ) {
       			treatment.Patient__c = patient.id;    
-      			insert treatment ;
-	      		treatments.add(treatment);
-			    treatmentTotCount = treatments.size() + 1;
-      			treatmentCurNumber = treatmentCurNumber + 1;         
-      			tempTreatment = [select id, Name from  Treatment__c where id = : treatment.id ];
-    	  		treatmentNames.add(tempTreatment.Name) ;
+      			insert treatment;
+	      		treatments.add(0, treatment);
+			    treatmentTotCount = treatments.size();
+      			treatmentCurNumber = 1;
+      			treatmentLastNumber = 1;
     		} else {     
-        		update treatment ; 
+        		update treatment; 
     		}
     	} catch (DmlException dmlEx) {
     		addError(dmlEx);
     	}
     	return null;
 	}
-	 
-  public boolean hasNextTreatment { 
-    get { 
-      if (treatmentCurNumber >= treatments.size()) {
-        return false; 
-      } else {
-        return true; 
-      }
-    }
-    set ;
-  }
-  public String phaseCount { 
-    get { 
-      if (treatment.id != null){    
-      if (treatment.Phase__c.contains( 'Inquiry' )) { return  '1';}  
-      if (treatment.Phase__c.contains( 'Interaction' )) {return   '2';}  
-      if (treatment.Phase__c.contains( 'Travel' )) {return   '3';}   
-      if (treatment.Phase__c.contains( 'Post-Op' )) {return   '4';} 
-      }
-        return '';
-    }
-        set ;
-  }  
+	
+	public boolean hasNextTreatment { 
+    	get { 
+      		if (treatmentCurNumber >= treatments.size()) {
+        		return false; 
+      		} else {
+        		return true; 
+      		}
+    	}
+    	set ;
+  	}
+  	
   public boolean hasPreviousTreatment { 
    get{ if(treatmentCurNumber <= 1 ) {
         return false; 
@@ -278,34 +263,36 @@ public class PatientExtension {
     }
     set;
   }
- 	private void setTreatmentInfo( Integer idx ) {
-//    this.quoteCurNumber = 1;
-    	if (idx<1 || idx > treatments.size()) {
-        	treatment = null;
-        	treatmentWithChildren = null;
-        	return;
-    	}
-      	treatment = treatments[ idx-1 ];
+ 	private void setTreatmentInfo() {
+      	treatment = treatments[ treatmentCurNumber-1 ];
       	treatmentWithChildren = PatientUtil.getTreatmentChildren( treatment.Id );
-      	this.travel = treatment.Travel__r;  
+      	this.travel = treatment.Travel__c==null?(new Travel__c()): treatment.Travel__r;
+  Logger.info('setTreatmentInfo travel='+travel);
       	setQuoteInfo();
       	loadProcedureList();
       	incidents = treatmentWithChildren.Incidents__r;
   	}
-  public PageReference nextTreatments() {      
-    if ( treatmentCurNumber <= treatmentTotCount ){ 
-      treatmentCurNumber = treatmentCurNumber + 1;
-      setTreatmentInfo( treatmentCurNumber -1 );
-    }
-    return ApexPages.currentPage();        
-  }
-  public PageReference previousTreatments() {      
-    if ( treatmentCurNumber > 1 ){ 
-       treatmentCurNumber = treatmentCurNumber - 1; 
-      setTreatmentInfo( treatmentCurNumber -1 );
-    }
-    return ApexPages.currentPage();        
-  }
+  	
+  	public PageReference nextTreatment() {      
+    Logger.info('nextTreatment curNum=' + treatmentCurNumber);
+    	if ( treatmentCurNumber < treatmentTotCount ) {
+    		treatmentLastNumber = treatmentCurNumber;
+      		treatmentCurNumber = treatmentCurNumber + 1;
+    Logger.info('nextTreatment2 curNum=' + treatmentCurNumber);
+      		setTreatmentInfo();
+    	}
+    	return null;        
+  	}
+  	public PageReference previousTreatment() {      
+    Logger.info('previousTreatment curNum=' + treatmentCurNumber);
+    	if ( treatmentCurNumber > 1 ){ 
+    		treatmentLastNumber = treatmentCurNumber;
+       		treatmentCurNumber = treatmentCurNumber - 1; 
+    Logger.info('previousTreatment2 curNum=' + treatmentCurNumber);
+      		setTreatmentInfo(  );
+    	}
+    	return null;        
+  	}
 	private void setQuoteInfo() {
 		if ( treatmentWithChildren != null && treatmentWithChildren.Treatment_Quotes__r.size() > 0 ) {
 			treatmentQuote = treatmentWithChildren.Treatment_Quotes__r[0];
@@ -341,11 +328,9 @@ public class PatientExtension {
     return null;       
   }*/
      
-  	public PageReference newQuote() {
-    	treatmentQuote = new Treatment_Quote__c(); 
-    	treatmentQuote.Treatment__c = treatment.id;
+  	private void newQuote() {
+    	treatmentQuote = new Treatment_Quote__c(Treatment__c = treatment.id);
     	procedure = null;
-    	return null;
   	}
  	
  	public PageReference saveQuote() {
@@ -470,57 +455,38 @@ public class PatientExtension {
 		}
 	}
 
-	public void displayInquiry(){
+	public PageReference displayInquiry(){
     	inquiryFlag = true;
     	interactionFlag = false;
     	travelFlag = false;
     	postopFlag = false;
+    	return null;
   	}
-  	public void displayInteraction(){
+  	public PageReference displayInteraction(){
     	inquiryFlag = false;
     	interactionFlag = true;
     	travelFlag = false;
     	postopFlag = false;
-    	IncidentFlag = true;
     	setInteractionState();
+    	return null;
   	}   
-  	public void displayTravel(){
+  	public PageReference displayTravel(){
     	inquiryFlag = false;
     	interactionFlag = false;
     	travelFlag = true;
     	postopFlag = false;
+    	return null;
   	}
-  public void displayPostOp(){
-    inquiryFlag = false;
-    interactionFlag = false;
-    travelFlag = false;
-    postopFlag = true;
-  }   
-  public void displayIncident(){
-    IncidentFlag = true;
-    FeaturesFlag = false;
-    QuoteFlag = false;
-    PaymentFlag = false;
-  }    
-  public void displayFeatures(){
-    IncidentFlag = false;
-    FeaturesFlag = true;
-    QuoteFlag = false;
-    PaymentFlag = false;
-  }    
+	public PageReference displayPostOp(){
+    	inquiryFlag = false;
+    	interactionFlag = false;
+    	travelFlag = false;
+    	postopFlag = true;
+    	return null;
+  	}
   public void displayQuotes(){
-    IncidentFlag = false;
-    FeaturesFlag = false;
-    QuoteFlag = true;
-    PaymentFlag = false;
     loadProcedureList();
     setQuoteInfo();
-  }    
-  public void displayPayments(){
-    IncidentFlag = false;
-    FeaturesFlag = false;
-    QuoteFlag = false;
-    PaymentFlag = true;
   }    
   
   public void searchTask(){
@@ -563,6 +529,7 @@ public class PatientExtension {
   		return null;
   	}
   public PageReference changeProcedureSubCategory() {
+  Logger.info('changeProcedureSubCategory');
     loadProcedureList();
     if (treatmentQuote.id == null) {
         treatmentQuote.Procedure__c = null;
@@ -613,6 +580,7 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
     	Procedure__c[] procs = [SELECT Name, Doctor__r.Name, Facility__r.Name, Price__c FROM Procedure__c 
         	where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure__c
         	order by Doctor__r.Name, Facility__r.Name];
+ Logger.info('proces='+procs);
     	procedureList.add(new SelectOption('', ''));
     	for (Procedure__c proc : procs) {
         	procedureList.add(new SelectOption(proc.Id, proc.Doctor__r.Name + ' / ' + proc.Facility__r.Name + ' / ' + proc.Price__c));
@@ -646,10 +614,7 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
     pe.displayInteraction();
     pe.displayTravel();
     pe.displayPostOp();
-    pe.displayIncident();  
-    pe.displayFeatures(); 
     pe.displayQuotes();  
-    pe.displayPayments();   
     pe.selectedTaskOption = 'All Closed';
     pe.searchTask();    
   }       

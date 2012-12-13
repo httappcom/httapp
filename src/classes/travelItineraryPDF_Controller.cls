@@ -41,6 +41,7 @@ public without sharing class travelItineraryPDF_Controller {
 							t.procedure__r.facility__r.country__c,
 							t.procedure__r.facility__r.onsite_Coordinator__r.name,
 							t.procedure__r.facility__r.onsite_coordinator__r.phone,
+							t.procedure__r.facility__r.onsite_coordinator__r.mobilephone,
 							t.procedure__r.facility__r.onsite_coordinator__r.email,
 							t.treatment__r.patient__r.name,
 							t.treatment__r.patient__r.createdby.name,
@@ -64,6 +65,7 @@ public without sharing class travelItineraryPDF_Controller {
 	public User getTravelConcierge() { //all fields
 		return [Select u.Name,
 						u.Phone,
+						u.MobilePhone,
 						u.Email
 /*		u.WorkspaceId, 
 						u.Username, 
