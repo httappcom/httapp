@@ -17,50 +17,11 @@
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>Procedure__c.Active__c</members>
-        <members>Procedure__c.Comments__c</members>
-        <members>Procedure__c.Details__c</members>
-        <members>Procedure__c.Doctor__c</members>
-        <members>Procedure__c.External_Id__c</members>
-        <members>Procedure__c.Facility__c</members>
-        <members>Procedure__c.Hospital_Nights_Required__c</members>
-        <members>Procedure__c.Hotel_Nights_Included__c</members>
-        <members>Procedure__c.Post_Op_Instruction__c</members>
-        <members>Procedure__c.Pre_Op_Instruction__c</members>
-        <members>Procedure__c.Price__c</members>
-        <members>Procedure__c.Procedure_Category__c</members>
-        <members>Procedure__c.Recovery_Nights_Required__c</members>
-        <members>Procedure__c.Transportation_Included__c</members>
-        <members>User.Receive_Portal_Messages__c</members>
-        <members>User.Receive_Staff_Messages__c</members>
-        <members>User.Travel_Concierge__c</members>
-        <name>CustomField</name>
-    </types>
-    <types>
         <members>CustomLabels</members>
         <name>CustomLabels</name>
     </types>
     <types>
-        <members>Airline__c</members>
-        <members>Airport__c</members>
-        <members>Hotel__c</members>
-        <members>Incident__c</members>
-        <members>Instruction__c</members>
-        <members>Knowledge_Base__c</members>
-        <members>Medical_Facility__c</members>
-        <members>Medical_Professional__c</members>
-        <members>Medical_Profile__c</members>
-        <members>Message_Header__c</members>
-        <members>Message_User__c</members>
-        <members>Message__c</members>
-        <members>My_Message_Settings__c</members>
-        <members>Patient__c</members>
-        <members>Payment__c</members>
-        <members>Procedure_Line_Item__c</members>
-        <members>Procedure_Price__c</members>
-        <members>Travel__c</members>
-        <members>Treatment_Quote__c</members>
-        <members>Treatment__c</members>
+        <members>*</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -125,10 +86,6 @@
         <name>Layout</name>
     </types>
     <types>
-        <members>Procedure__c.Procedures</members>
-        <name>ListView</name>
-    </types>
-    <types>
         <members>*</members>
         <name>PermissionSet</name>
     </types>
@@ -142,6 +99,7 @@
     </types>
     <types>
         <members>EHRApplicationStyle</members>
+        <members>HoverIntent</members>
         <members>KenResources</members>
         <members>avatar</members>
         <members>bkgd</members>

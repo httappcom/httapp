@@ -18,9 +18,8 @@ public class PatientExtension {
     
 	public List<SelectOption> taskOptions { get; set; }
  	public String selectedTaskOption { get; set; }
- 	public integer treatmentCurNumber { get; set; }
- 	public integer treatmentLastNumber { get; set; }
- 	public Integer treatmentTotCount { get; set; }
+ 	public ID treatmentId { get; public set; }
+ 	public ID treatmentLastId { get; set; }
   	public integer paymentCurNumber { get; set; } 
   	public Integer paymentTotCount { get; set; }     
   	public String paymentName{ get; set; } 
@@ -43,17 +42,15 @@ public class PatientExtension {
             
   	public PatientExtension(ApexPages.StandardController sc) {
   		Logger.info('Patient Constructor');
-  		treatmentLastNumber = 0;
     	this.initiatePatient();
     	try {  
    		if  (sc.getId() != null  ) {
       		//this.patient = (Patient__c)sc.getRecord();
       		this.patient = PatientUtil.queryPatientAll(sc.getId());
       		if (this.patient != null) {
-  Logger.info('Treatments exist');         
-       		treatmentCurNumber = 1;  
-       		this.treatmentTotCount = patient.Treatments__r.size() ; 
-       		this.treatments = patient.Treatments__r;
+      		treatmentId = patient.Treatments__r.size()==0 ? null : patient.Treatments__r[0].id;
+  Logger.info('Treatments exist');
+       		loadTreatments();
   Logger.info('treatments='+treatments);
        		setTreatmentInfo();
       		if ( patient.Medical_Profiles__r.size() > 0 ) this.medprofile = patient.Medical_Profiles__r[0];
@@ -64,22 +61,23 @@ public class PatientExtension {
         		this.payments.sort();
         		this.payment = payments[0] ;        
       		}
-      		if ( treatment.Incidents__r.size() > 0 ) {
-        		incidentCurNumber = 1;
-        		this.incidentTotCount = treatment.Incidents__r.size() ; 
-        		this.incidents= treatment.Incidents__r ;  
-        		this.incidents.sort();
-        		this.incident = incidents[0] ;        
-      		}
-      		if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
-      		if ( treatment.Incidents__r.size() > 0 ) this.incident = treatment.incidents__r[0];
+			if ( treatment != null ) {
+      			if ( treatment.Incidents__r.size() > 0 ) {
+        			incidentCurNumber = 1;
+        			this.incidentTotCount = treatment.Incidents__r.size() ; 
+	        		this.incidents= treatment.Incidents__r ;  
+    	    		this.incidents.sort();
+        			this.incident = incidents[0] ;        
+      			}
+      			if ( treatment.Incidents__r.size() > 0 ) this.incident = treatment.incidents__r[0];
   Logger.info('quotes='+treatment.Treatment_Quotes__r);
+			}
+      		if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
 
       		searchTask();                                                   
       	} 
       	}
-      	if (patient == null) this.patient = new Patient__c ();      
-		if (treatments == null) this.treatments = new List<Treatment__c> (); 
+      	if (patient == null) this.patient = new Patient__c ();
 		if (treatment == null) initiateTreatment();      	        
       	setInitialViewState();
     	} catch(Exception e){
@@ -95,8 +93,6 @@ public class PatientExtension {
     this.postopFlag = false;
     this.tasks = new List<Task> ();
     this.messages = new List<Message__c> ();
-    this.treatmentCurNumber = 0;
-    this.treatmentTotCount = 0;
     this.selectedTaskOption = 'All Open';
     this.taskOptions = new List<SelectOption>();
     this.taskOptions.add(new SelectOption('All Open', 'All Open'));
@@ -107,7 +103,7 @@ public class PatientExtension {
   
   	private void initiateTreatment() {
     	this.treatment = new Treatment__c (Phase__c = '(1) Inquiry', Stage__c = 'New');
-    	this.treatmentCurNumber = 0;
+    	treatmentId = null;
     	this.travel = new  Travel__c();
    Logger.info('travel set to blank object');
     	this.payment = new Payment__c();
@@ -138,15 +134,12 @@ public class PatientExtension {
     initiatePatient();
     return ApexPages.currentPage();  
   }
-  	public PageReference listTreatments() {
-  		return null;
-  	}
 	public PageReference newTreatment() {
     	initiateTreatment();
     	return null;  
   	}
   	public PageReference cancelTreatment() {
-  		treatmentCurNumber = treatmentLastNumber;
+  		treatmentId = treatmentLastId;
   		setTreatmentInfo();
   		return null;
   		
@@ -159,7 +152,9 @@ public class PatientExtension {
 		      	update patient;  
     		}
    Logger.info('saveTreatment travel='+travel);
-   			travel.Patient__c = patient.id;
+   			if (travel.Patient__c == null) {
+   				travel.Patient__c = patient.id;
+   			}
     		if (travel.id == null) {
     			insert travel;
     		} else {
@@ -170,10 +165,10 @@ public class PatientExtension {
 	    	if ( treatment.id == null ) {
       			treatment.Patient__c = patient.id;    
       			insert treatment;
-	      		treatments.add(0, treatment);
-			    treatmentTotCount = treatments.size();
-      			treatmentCurNumber = 1;
-      			treatmentLastNumber = 1;
+      			treatmentId = treatment.id;
+      			loadTreatments();
+      			setTreatmentInfo();
+      			treatmentLastid = treatmentId;
     		} else {     
         		update treatment; 
     		}
@@ -183,46 +178,6 @@ public class PatientExtension {
     	return null;
 	}
 	
-	public boolean hasNextTreatment { 
-    	get { 
-      		if (treatmentCurNumber >= treatments.size()) {
-        		return false; 
-      		} else {
-        		return true; 
-      		}
-    	}
-    	set ;
-  	}
-  	
-  public boolean hasPreviousTreatment { 
-   get{ if(treatmentCurNumber <= 1 ) {
-        return false; 
-        } else {
-          return true; 
-        }
-    }
-    set;
-  }
-/*  public boolean hasNextQuote { 
-    get { 
-      if (treatmentQuotes==null || quoteCurNumber >= treatmentQuotes.size()) {
-        return false; 
-      } else {
-        return true; 
-      }
-    }
-    set ;
-  }
-  public boolean hasPreviousQuote { 
-    get{ 
-      if(quoteCurNumber <= 1 ) {
-        return false; 
-      } else {
-        return true; 
-      }
-    }
-    set;
-  }*/ 
   public boolean hasNextIncident { 
     get { 
       if(incidentCurNumber >= incidents.size()) {
@@ -264,8 +219,9 @@ public class PatientExtension {
     set;
   }
  	private void setTreatmentInfo() {
-      	treatment = treatments[ treatmentCurNumber-1 ];
-      	treatmentWithChildren = PatientUtil.getTreatmentChildren( treatment.Id );
+ 		treatment = treatmentId == null? null : treatmentMap.get(treatmentId);
+ 		if (treatment == null) return;
+      	treatmentWithChildren = treatmentMap==null?null:treatmentMap.get( treatmentId );
       	this.travel = treatment.Travel__c==null?(new Travel__c()): treatment.Travel__r;
   Logger.info('setTreatmentInfo travel='+travel);
       	setQuoteInfo();
@@ -273,24 +229,9 @@ public class PatientExtension {
       	incidents = treatmentWithChildren.Incidents__r;
   	}
   	
-  	public PageReference nextTreatment() {      
-    Logger.info('nextTreatment curNum=' + treatmentCurNumber);
-    	if ( treatmentCurNumber < treatmentTotCount ) {
-    		treatmentLastNumber = treatmentCurNumber;
-      		treatmentCurNumber = treatmentCurNumber + 1;
-    Logger.info('nextTreatment2 curNum=' + treatmentCurNumber);
-      		setTreatmentInfo();
-    	}
-    	return null;        
-  	}
-  	public PageReference previousTreatment() {      
-    Logger.info('previousTreatment curNum=' + treatmentCurNumber);
-    	if ( treatmentCurNumber > 1 ){ 
-    		treatmentLastNumber = treatmentCurNumber;
-       		treatmentCurNumber = treatmentCurNumber - 1; 
-    Logger.info('previousTreatment2 curNum=' + treatmentCurNumber);
-      		setTreatmentInfo(  );
-    	}
+  	public PageReference setTreatment() {
+ Logger.info('setTreatment id='+treatmentId);
+   		setTreatmentInfo();
     	return null;        
   	}
 	private void setQuoteInfo() {
@@ -350,8 +291,48 @@ public class PatientExtension {
      	setQuoteInfo();
      	return null;
   	}
+  private String getQuoteDocumentFilename() {
+  	return 'Nuehealth Medical Treatment Quote for ' + patient.Name;
+  }  	
+  private String getQuoteDocumentBinary() {
+  	PageReference quoteDocument = Page.Quote;
+	quoteDocument.getParameters().put('id', treatmentQuote.id);
+	quoteDocument.setRedirect(true);
+	return EncodingUtil.base64Encode(quoteDocument.getContentAsPDF());
+  }
   public PageReference sendQuoteToEchosign() {
+  	String apiKey = 'QB9XRK3PX2755I';
   	
+  	//Set up SenderInfo object
+  	dtoApiEchosign.SenderInfo quoteSenderInfo = new dtoApiEchosign.SenderInfo();
+  	quoteSenderInfo.email = 'rich@healthtraveltechnologies.com';
+  	quoteSenderInfo.password = 'Publ1csax';
+  	
+  	//Set up DocumentCreationInfo object
+  	dtoApiEchosign.DocumentCreationInfo quoteDocCrInfo = new dtoApiEchosign.DocumentCreationInfo();
+  	quoteDocCrInfo.name = getQuoteDocumentFilename();
+  	//Set up RecipientInfo object - part of DocumentCreationInfo object
+  	dto14ApiEchosign.RecipientInfo quoteDocRecInfo = new dto14ApiEchosign.RecipientInfo();
+  	quoteDocRecInfo.email = patient.Email__c;
+  	quoteDocRecInfo.role = 'SIGNER';
+  	dto14ApiEchosign.ArrayOfRecipientInfo quoteDocRecipients = new dto14ApiEchosign.ArrayOfRecipientInfo();
+	quoteDocRecipients.RecipientInfo = new List<dto14ApiEchosign.RecipientInfo>();
+ 	quoteDocRecipients.RecipientInfo.add(quoteDocRecInfo);
+  	quoteDocCrInfo.recipients = quoteDocRecipients;
+  	dtoApiEchosign.FileInfo quoteDocFileInfo = new dtoApiEchosign.FileInfo();
+  	quoteDocFileInfo.fileName = getQuoteDocumentFilename();
+  	quoteDocFileInfo.file = getQuoteDocumentBinary();
+  	quoteDocFileInfo.mimeType = 'application/pdf';
+  	dtoApiEchosign.ArrayOfFileInfo quoteDocFileInfoArray = new dtoApiEchosign.ArrayOfFileInfo();
+  	quoteDocFileInfoArray.FileInfo = new List<dtoApiEchosign.FileInfo>();
+  	quoteDocFileInfoArray.FileInfo.add(quoteDocFileInfo);
+  	quoteDocCrInfo.fileInfos = quoteDocFileInfoArray;
+  	quoteDocCrInfo.signatureType = 'ESIGN';
+  	quoteDocCrInfo.signatureFlow = 'SENDER_SIGNATURE_NOT_REQUIRED';
+  	quoteDocCrInfo.message = 'Please review your attached Nuehealth medical treatment quote.';
+  	apiEchosign.EchoSignDocumentService15HttpPort echoSignDoc = new apiEchosign.EchoSignDocumentService15HttpPort();
+  	dtoApiEchosign.ArrayOfDocumentKey echosignResults = echoSignDoc.sendDocument(apiKey, quoteSenderInfo, quoteDocCrInfo);
+  	Logger.info('Document key returned: ' + echosignResults.DocumentKey[0].documentKey);
   	return null;
   }	
   public PageReference nextIncident() {      
@@ -545,8 +526,7 @@ public class PatientExtension {
         treatmentQuote.Hotel_Nights_Included__c = procedure.Hotel_Nights_Included__c;
         treatmentQuote.Hotel_Nights_Needed__c = procedure.Recovery_Nights_Required__c;
         treatmentQuote.Ground_Transportation_Included__c = procedure.Transportation_Included__c;
-        PatientUtil.loadProcedurePrices( treatment );
-        treatmentQuote.Sub_Total__c = PatientUtil.getProcedurePrice( procedure.id );
+        treatmentQuote.Sub_Total__c = procedure.Price__c;
     }
     return null;
   }
@@ -577,14 +557,23 @@ public class PatientExtension {
 	private void loadProcedureList() {
 Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedure__c);
     	procedureList = new List<SelectOption>();
-    	Procedure__c[] procs = [SELECT Name, Doctor__r.Name, Facility__r.Name, Price__c FROM Procedure__c 
+    	Procedure__c[] procs = [SELECT Name, Doctor__r.Last_Name__c, Facility__r.Name, Price__c FROM Procedure__c 
         	where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure__c
-        	order by Doctor__r.Name, Facility__r.Name];
+        	order by Doctor__r.Last_Name__c, Facility__r.Name];
  Logger.info('proces='+procs);
     	procedureList.add(new SelectOption('', ''));
     	for (Procedure__c proc : procs) {
-        	procedureList.add(new SelectOption(proc.Id, proc.Doctor__r.Name + ' / ' + proc.Facility__r.Name + ' / ' + proc.Price__c));
+        	procedureList.add(new SelectOption(proc.Id, proc.Doctor__r.Last_Name__c + ' / ' + proc.Facility__r.Name + ' / ' + proc.Price__c));
     	}
+  	}
+  	
+  	private Map<ID, Treatment__c> treatmentMap = null;
+  	private void loadTreatments() {
+  		treatments = PatientUtil.getTreatmentsWithChildren(patient.Id);
+  		treatmentMap = new Map<ID, Treatment__c>();
+  		for (Treatment__c treatment : treatments) {
+  			treatmentMap.put(treatment.Id, treatment);
+  		}
   	}
 
 	private void addError( DmlException dmlEx) {

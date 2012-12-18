@@ -123,7 +123,47 @@
                     
                     [messages]
                     <br/><Br/><br/>
-                    [itinerary list]
+                    Your Itineraries<Br/><Br/>
+                    <apex:pageblocktable value="{!treatmentList}" var="t">
+                    	<apex:column >
+                    		<apex:facet name="header">Itinerary<br/>Number</apex:facet>
+                    		<apex:outputfield value="{!t.name}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Stage</apex:facet>
+                    		<apex:outputfield value="{!t.Sub_Stage__c}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Procedure</apex:facet>
+                    		<apex:outputfield value="{!t.Procedure__c}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Doctor</apex:facet>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.doctor__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Hospital</apex:facet>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.facility__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Price</apex:facet>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].Total_Price__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Procedure<br/>Date</apex:facet> 
+                    		<apex:outputfield value="{!t.Procedure_Date__c}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Printable<br/>Version</apex:facet>
+                    		<apex:commandlink value="View" action="{!getItineraryPDF}" target="_Blank">
+                    			<apex:param name="selectedItinerary" value="{!t.treatment_quotes__r[0].id}" assignTo="{!selectedItinerary}"/>
+                    		</apex:commandlink> 
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Email</apex:facet>
+                    		<apex:outputlink value="#">Send</apex:outputlink>
+                    	</apex:column>
+                    </apex:pageblocktable>
                     <br/>
                 </apex:outputpanel>
                 
@@ -167,24 +207,47 @@
                     
                     Treatment:<br/>
                     <apex:pageblocktable value="{!treatmentList}" var="t">
-                        <apex:column >
-                            <apex:facet name="header">Reference</apex:facet>
-                                <apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
-                                    <apex:outputtext value="{!t.name}"/>
-                                    <apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!t.id}"/>
-                                </apex:commandlink>
+                         <apex:column >
+                            <apex:facet name="header">Quote<br/>Number</apex:facet>
+                          	<apex:commandlink action="{!showDetails}" rerender="outerdetails"> 
+                                <apex:outputtext value="{!t.name}"/>
+                            	<apex:param name="showDetailID" assignTo="{!showDetailID}" value="{!t.treatment_quotes__r[0].id}"/>
+                            </apex:commandlink>
                         </apex:column>
                         <apex:column >
-                            <apex:facet name="header">Treatment Date</apex:facet>
+                            <apex:facet name="header">Signature</apex:facet>
+                            <apex:outputpanel rendered="{!ISBLANK(t.treatment_quotes__r) == false && UPPER(t.treatment_quotes__r[0].echosignDocKey__c) == 'NEEDED'}">
+                            	<div style="background-color:#FFB2B2;"><apex:outputfield value="{!t.treatment_quotes__r[0].echosignDocKey__c}"/></div>
+                            </apex:outputpanel>
+                            <apex:outputfield value="{!t.treatment_quotes__r[0].echosignDocKey__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false && UPPER(t.treatment_quotes__r[0].echosignDocKey__c) == 'RECEIVED'}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Procedure</apex:facet>
+                            <apex:outputfield value="{!t.Procedure__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Doctor</apex:facet>
+                           	<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.doctor__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Hospital</apex:facet>
+                            <apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.facility__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Price</apex:facet>
+                           	<apex:outputfield value="{!t.treatment_quotes__r[0].total_price__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Procedure<br/>Date</apex:facet>
                             <apex:outputfield value="{!t.Procedure_Date__c}"/>
                         </apex:column>
                         <apex:column >
-                            <apex:facet name="header">Primary Provider</apex:facet>
-                            <!--apex:outputfield value=""/--> FIX ME
+                            <apex:facet name="header">Printable<br/>Version</apex:facet>
+                           <!--  <apex:outputfield value="{!t.Procedure_Date__c}"/> -->
                         </apex:column>
                         <apex:column >
-                            <apex:facet name="header">Phase</apex:facet>
-                            <apex:outputfield value="{!t.Phase__c}"/>
+                            <apex:facet name="header">Email</apex:facet>
+                           <!--  <apex:outputfield value="{!t.Procedure_Date__c}"/> -->
                         </apex:column>
                     </apex:pageblocktable><br/><br/><br/>
                     

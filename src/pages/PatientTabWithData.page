@@ -4,49 +4,96 @@
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/stylesheets/liquid-slider-0.1.css')}"/>
     
     <!-- Definitely use these for development -->
-    <!-- apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/-->
+    <script>
+    	var j$ = jQuery.noConflict();
+    </script>
+    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
     
     <!-- This of course is required. The full version (not .min) is also included in the js directory -->
-    <!-- <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery.liquid-slider-0.1.min.js')}"/>
+    <!-- apex:includeScript value="{!$Resource.HoverIntent}"/>-->
     
-    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/sfscript.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquerytwisty.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery.hoverIntent.minified.js')}"/>-->
-
     <script>
-    $(function(){
-
-      /* Here is the slider using default settings */
-//      $('#slider-id').liquidSlider();
-      /* If you want to adjust the settings, you set an option
-         as follows:
-
-          $('#slider-id').liquidSlider({
-            autoSlide:false,
-            autoHeight:false
-          });
-
-         Find more options at http://liquidslider.kevinbatdorf.com/
-      */
-
-      /* If you need to access the internal property or methods, use this method.
-
-//      var sliderObject = $.data( $('#slider-id')[0], 'liquidSlider');
-//      console.log(sliderObject);
-
-      */
-
-    });
+    	function recalcTotalPrice() {
+    		var procedurePrice = j$("input[id='procedurePrice']").val();
+    		if (procedurePrice == null || procedurePrice == '') {
+    			procedurePrice = 0;
+    		} else {
+//    			procedurePrice = parseFloat(procedurePrice);
+    		}
+    		var discountAmount = j$("input[id='"+discountAmountId+"']").val();
+    		if (discountAmount == null || discountAmount == '') {
+    			discountAmount = 0;
+    		} else {
+//    			discountAmount = parseFloat(discountAmount);
+    		}
+    		j$("input[id='"+totalPriceId+"']").val(procedurePrice-discountAmount);
+    		
+    	}
+/*     	j$(function(){
+      		j$('#slider-id').liquidSlider();
+    	});*/
+    	
+    	function showTreatmentList() {
+    		jQuery("[id='"+treatmentListId+"']").show();
+    	}
+    	function hideTreatmentList() {
+    		jQuery("[id='"+treatmentListId+"']").hide();
+    	}
+    	function selectTreatment( id ) {
+    		hideTreatmentList();
+    		setTreatment( id );
+    	}
     </script>
+    <style>
+        .treatmentListLBox{
+                background-color: white;
+                border-style: solid;
+                border-width: 2px;
+                border-color: #000;
+                left: 50%;
+                padding:10px;
+                position: absolute;
+                z-index: 9999;
+                width: 500px;
+                margin-left: -250px;
+                top:130px;
+                //top:50px;
+            }
+             
+            .treatmentListBox{
+                /*display: none;*/ 
+                position: absolute;
+                top: 0;/* must be 0 ideally*/
+                left: 0;/* must be 0 ideally */
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                z-index:1001;
+                -moz-opacity: 0.5;
+                opacity:.50;
+                filter: alpha(opacity=50);
+                /*zoom: 1;*/
+            }
+            
+            .link {
+                text-decoration:underline;
+            }
+            .link:hover {
+                text-decoration:none;
+            }
+    </style>
     <apex:sectionHeader title="{!patient.Name}"/>
     <apex:pageMessages id="errMsgs"/>
 <apex:form >
+    <apex:actionFunction name="setTreatment" action="{!setTreatment}" reRender="mainPanel"> 
+    	<apex:param name="treatmentId" assignTo="{!treatmentId}" value="" /> 
+	</apex:actionFunction> 
 <div class="wrapper">
-	<!-- div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
+	<div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
     	<apex:image id="collaboration" url="{!URLFOR($Resource.KenResources, '/img/collaboration.png')}" width="26" height="246" alt=""  />
-	</div-->
-	<!-- div id="rightPanel">
+	</div>
+	<div id="rightPanel">
     	<div id="rightPanelcontent">
         	<div class="vfButtonBarDark">
             	<div>
@@ -109,47 +156,24 @@
             
     	</div><br /><br />      
 	</div>        
-</div>-->
+</div>
 
-	<!-- div class="twisty open">   
-    	<div class="orangeheader"> 
-            <span class="orangeheadertitle">{!patient.Name}</span>
-
-            <span class="treatmentwrapper">
-                <span class="treatmenttitle"> {!treatmentCurNumber} of {!treatmentTotCount} Treatments</span>
-                <span class="treatmentboxeswrapper">
-                    <span class="treatmentboxon"> </span>
-                    <span class="treatmentbox"> </span>
-                    <span class="treatmentbox"> </span>
-                    <span class="treatmentbox"> </span>
-                </span>
-                <span class="treatmenttitle">{!phaseCount } of 4 Phases</span>
-                <span class="treatmentboxeswrapper">
-                    <span class="treatmentboxon"> </span>
-                    <span class="treatmentbox"> </span>
-                    <span class="treatmentbox"> </span>
-                    <span class="treatmentbox"> </span>         
-                 </span>
-            </span>
-        </div><br /> -->
         
 		<script type="text/javascript">
 			function setFocus() {} //disable SalesForce setFocus
-			var firstEl = null;
-//			$(document).ready(function() {
-//   			$("input[id*=':First_Name']").focus();
-//			});
 		</script>
 
-<apex:outputPanel id="mainPanel" layout="block" style="margin-right:0px">
+<apex:outputPanel id="mainPanel" layout="block" style="margin-right:30px">
     <apex:pageBlock >
-	    <apex:panelGrid columns="4" width="100%" bgcolor="white" style="vertical-align:center;">
-    		<apex:outputText value="{!patient.Phone__c}" style="font-weight:bold;"/>
-    		<apex:outputField value="{!patient.Email__c}" />
-    		<apex:outputPanel >
-    			<apex:commandLink action="{!listTreatments}" value="Treatments List" rendered="{!treatments.size>1}"/>
+	    <apex:panelGrid columns="3" width="100%" bgcolor="white" style="vertical-align:center;">
+    		<apex:outputText value="{!patient.Phone__c}" style="font-weight:bold; width:25%;"/>
+    		<apex:outputField value="{!patient.Email__c}" style="width:25%;"/>
+    		<apex:outputPanel style="float:right;" layout="block">
+    		    <apex:outputPanel ><!-- rendered="{!treatments.size>1}" -->
+    				<a href="javascript:showTreatmentList();" >Treatment List</a>
+    			</apex:outputPanel>&nbsp;
+	    		<apex:commandButton action="{!newTreatment}" value="New Treatment"/>
     		</apex:outputPanel>
-    		<apex:commandButton action="{!newTreatment}" value="New Treatment" style="float:right;"/>
     	</apex:panelGrid>
         <apex:pageblocksection title="Contact Details" id="pbs_Patient" columns="2">
            	<apex:commandbutton action="{!savePatient}" value="Save Patient"/>
@@ -215,20 +239,17 @@
             </apex:pageblocksectionitem>
             
    	    </apex:pageblocksection>
+   	    <apex:outputPanel rendered="{!!ISBLANK(patient.Patient_Last_Name__c)}">
 		<script>
     			twistSection(document.getElementById('{!$Component.pbs_Patient}').getElementsByTagName('img')[0])
 		</script>
-	    <apex:pageblocksection title="Treatment" id="pbs_Treatment" columns="2">
+		</apex:outputPanel>
+	    <apex:pageblocksection title="Treatment {!treatment.Name}" id="pbs_Treatment" columns="2">
 	    	<apex:pageBlockSectionItem >
 	     		<apex:outputPanel >
              		<apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel"/>
              		<apex:actionStatus startText="saving..."  stopText="" id="treatmentSaveStatus"/>
-             		<apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!treatmentCurNumber==0}"/>
-           	 		<apex:commandLink status="treatmentFetchStatus" action="{!previousTreatment}" rendered="{!not(treatmentCurNumber=0) && hasPreviousTreatment}" value=" Newer " rerender="pbs_Treatment, mainNavDiv, resultPanel"/>&nbsp;
-           			<apex:commandLink status="treatmentFetchStatus" action="{!nextTreatment}" rendered="{!not(treatmentCurNumber=0) && hasNextTreatment}" value=" Older " rerender="pbs_Treatment, mainNavDiv, resultPanel"/>
-             		<apex:actionStatus startText="reading..."  stopText="" id="treatmentFetchStatus"/>
-           			
-           			<!-- cur={!treatmentCurNumber}, last={!treatmentLastNumber}, tot={!treatmentTotCount}  -->
+             		<apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!ISNULL(treatmentId)}"/>
           		</apex:outputPanel>
            	</apex:pageBlockSectionItem>
            	<apex:pageBlockSectionItem helpText="">
@@ -266,12 +287,16 @@
        		    <apex:inputField value="{!treatment.Procedure_Date__c}" tabOrderHint="210"/>
       		</apex:pageblocksectionitem>
 		    <apex:pageblocksectionitem helpText=""> 
-        	   	<apex:outputLabel value="Request Summary" style="width: 15%;"/>
-	            <apex:inputField value="{!treatment.Request_Summary__c}" tabOrderHint="222"/>
-    	    </apex:pageblocksectionitem>
-		    <apex:pageblocksectionitem helpText=""> 
         	  	<apex:outputLabel value="On Hold" style="width: 15%;"/>
 	           	<apex:inputField value="{!treatment.On_Hold__c}" tabOrderHint="214"/>
+    	    </apex:pageblocksectionitem>
+		    <apex:pageblocksectionitem helpText=""> 
+        	  	<apex:outputLabel value="Total Price" style="width: 15%;"/>
+	           	<apex:outputField value="{!treatmentQuote.Total_Price__c}"/>
+    	    </apex:pageblocksectionitem>
+		    <apex:pageblocksectionitem helpText=""> 
+        	   	<apex:outputLabel value="Request Summary" style="width: 15%;"/>
+	            <apex:inputField value="{!treatment.Request_Summary__c}" tabOrderHint="222"/>
     	    </apex:pageblocksectionitem>
         </apex:pageBlockSection>
             
@@ -335,6 +360,12 @@
  
 <apex:outputPanel id="resultPanel">
 	<apex:pageblocksection title="Inquiry" id="pbs_Inquiry" columns="1" rendered="{!inquiryFlag}">
+		<apex:pageBlockSectionItem >
+			<apex:outputPanel >
+             		<apex:commandbutton action="{!saveTreatment}" value="Save Inquiry Changes" status="inquirySaveStatus" rerender="mainPanel"/>
+             		<apex:actionStatus startText="saving..."  stopText="" id="inquirySaveStatus"/>
+			</apex:outputPanel>
+		</apex:pageBlockSectionItem>
     	        <apex:pageBlock title="Inquiry Sourcing">
     	        	<apex:pageBlockSection columns="2">
 		            	<apex:pageblocksectionitem helpText=""> 
@@ -446,16 +477,12 @@
 	<apex:pageblocksection title="Interaction" id="pbs_Interaction" columns="1" rendered="{!interactionFlag}">
     	        	<apex:pageBlockSection columns="2">
 		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Probability"/>
-	            		    <apex:inputField value="{!treatment.Probability__c}" taborderhint="700"/>
-    	        		</apex:pageblocksectionitem>
-		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Close Date"/>
 	            		    <apex:inputField value="{!treatment.Close_Date__c}" taborderhint="700"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Procedure Amount"/>
-	            		    <apex:inputField value="{!treatment.Amount__c}" taborderhint="700"/>
+        		        	<apex:outputLabel value="Procedure Total Price"/>
+	            		    <apex:outputField value="{!treatmentQuote.Total_Price__c}"/>
     	        		</apex:pageblocksectionitem>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Case Manager's Feel"/>
@@ -580,7 +607,8 @@
     	<apex:tab label="Quotes" id="Quotes">
     		<apex:panelGrid columns="2">
     			<apex:outputPanel >
-                        <apex:commandbutton action="{!saveQuote}" value="Save Quote" rerender="QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
+                        <apex:commandbutton status="saveQuoteStatus" action="{!saveQuote}" value="Save Quote" rerender="QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
+                        <apex:actionStatus startText="saving..."  stopText="" id="saveQuoteStatus"/>
                         <apex:commandbutton action="{!sendQuoteToEchosign}" value="Send to Echosign"></apex:commandbutton>
                 </apex:outputPanel>        
     				<apex:outputPanel layout="block" style="float:right">
@@ -615,14 +643,14 @@
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
                     	<apex:outputLabel value="Procedure Date"/>
-                    	<apex:inputField value="{!treatment.Procedure_Date__c}"/>
+                    	<apex:outputField value="{!treatment.Procedure_Date__c}"/>
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
                     	<apex:outputLabel value="Number of Hospital Nights"/>
                     	<apex:inputField value="{!treatmentQuote.Number_of_Hospital_Nights__c}"/>
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
-                    	<apex:outputLabel value="Arrival"/>
+                    	<apex:outputLabel value="Proposed Arrival"/>
                     	<apex:inputField value="{!treatmentQuote.Arrival_Date__c}"/>
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
@@ -630,7 +658,7 @@
                     	<apex:inputField value="{!procedure.Hotel_Nights_Included__c}"/>
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
-                    	<apex:outputLabel value="Departure"/>
+                    	<apex:outputLabel value="Proposed Departure"/>
                     	<apex:inputField value="{!treatmentQuote.Departure_Date__c}"/>
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
@@ -646,10 +674,6 @@
                     	<apex:inputField value="{!treatmentQuote.Ground_Transportation_Included__c}"/>
                     </apex:pageBlockSectionItem>
                     <apex:pageBlockSectionItem helpText="">
-                    	<apex:outputLabel value="Description"/>
-                    	<apex:inputField value="{!treatmentQuote.Description__c}"/>
-                    </apex:pageBlockSectionItem>
-                    <apex:pageBlockSectionItem helpText="">
                     	<apex:outputLabel value="Comments"/>
                     	<apex:inputField value="{!procedure.Comments__c}"/>
                     </apex:pageBlockSectionItem>
@@ -657,9 +681,17 @@
                         <div class="fieldheading">Totals</div>
                         <apex:outputPanel id="quoteTotalsPanel" styleClass="treatmentformwhite" layout="block">
                             <div class="fieldwrapper">
-                                <div class="fieldwrap"><div class="label">Sub-total</div> <div class="item"><apex:outputField value="{!procedure.Price__c}" /></div></div>
-                                <div class="fieldwrap"><div class="label">Discount</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Discount_Amount__c}"></apex:inputfield></div></div>
-                                <div class="fieldwrap"><div class="label">Total Price</div> <div class="item"><apex:inputfield value="{!treatmentQuote.Total_Price__c}"></apex:inputfield></div></div>                    
+                                <div class="fieldwrap"><div class="label">Sub-total</div> <div class="item">
+                                <apex:outputField value="{!procedure.Price__c}" />
+                                <input type="hidden" id="procedurePrice" value="{!procedure.Price__c}"/>
+                                </div></div>
+                                <div class="fieldwrap"><div class="label">Discount</div> <div class="item"><apex:inputfield id="discountAmount" onchange="recalcTotalPrice();" value="{!treatmentQuote.Discount_Amount__c}"></apex:inputfield></div></div>
+                                <div class="fieldwrap"><div class="label">Total Price</div> <div class="item"><apex:inputfield id="totalPrice" value="{!treatmentQuote.Total_Price__c}"></apex:inputfield></div></div>
+                                <script>
+                                	var discountAmountId = "{!$Component.discountAmount}";
+                                	var totalPriceId = "{!$Component.totalPrice}";
+                                	recalcTotalPrice();
+                                </script>                    
                             </div>
                         </apex:outputPanel>
                  </apex:pageBlock> 
@@ -770,23 +802,19 @@
             </div><br />
             <div class="treatmentfieldwrapper">
                 <div class="treatmentform">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap">
+			<apex:outputPanel >
+             		<apex:commandbutton action="{!saveTreatment}" value="Save Travel Changes" status="inquirySaveStatus" rerender="mainPanel"/>
+             		<apex:actionStatus startText="saving..."  stopText="" id="inquirySaveStatus"/>
                         	<a href="{!itineraryURL}" target="_blank">View Itinerary</a>
-                        </div>
-                    </div>
+			</apex:outputPanel>
                 </div>
                 <div class="fieldheading">Traveler Information</div>
                 <div class="treatmentform">
                     <div class="fieldwrapper">                  
-                        <div class="fieldwrap"><div class="label">Patient Traveler Name</div> <div class="item"><apex:outputfield value="{!patient.Name}"/></div></div>
                         <div class="fieldwrap"><div class="label">Close Date</div> <div class="item"><apex:outputfield value="{!treatment.Close_Date__c}"/></div></div>
                         <div class="fieldwrap"><div class="label">Travel Start</div> <div class="item"><apex:inputfield value="{!travel.Travel_Start__c}"/></div></div>
-                        <div class="fieldwrap"><div class="label">Travel End</div> <div class="item"><apex:inputfield value="{!travel.Travel_End__c}"/></div></div>
-                        <div class="fieldwrap"><div class="label">Number of Hospital Nights</div> <div class="item"><apex:outputfield value="{!treatmentQuote.Number_of_Hospital_Nights__c}"/></div></div>
-                        <div class="fieldwrap"><div class="label">Pre-op Instructions</div> <div class="item"><apex:inputfield value="{!travel.Pre_Op_Instructions__c}"/></div></div>
-                        <div class="fieldwrap"><div class="label">Date of Birth</div> <div class="item"><apex:outputText value="{0,date,short}"><apex:param value="{!patient.Date_of_Birth__c}"/></apex:outputText></div></div>
                         <div class="fieldwrap"><div class="label">Visa Status</div> <div class="item"><apex:inputfield value="{!travel.Visa_Status__c}"/></div></div>
+                        <div class="fieldwrap"><div class="label">Travel End</div> <div class="item"><apex:inputfield value="{!travel.Travel_End__c}"/></div></div>
                         <div class="fieldwrap"><div class="label">Passport Status</div> <div class="item"><apex:inputfield value="{!travel.Passport_Status__c}"/></div></div>
                     </div>
                 </div>
@@ -795,20 +823,20 @@
                     <div class="fieldwrapper">
                         <div class="fieldwrap"><div class="label">Special Passport/Visa</div> <div class="item"><apex:inputfield value="{!travel.Special_Passport_Visa__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Airfare Coordination Needed</div> <div class="item"><apex:inputfield value="{!travel.Airfare_Coordination_Needed__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Hotel Coordination Needed</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Coordination_Needed__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Extra Local Concierge</div> <div class="item"><apex:inputfield value="{!travel.Extra_Local_Concier__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Ground Transportation Needed</div> <div class="item"><apex:inputfield value="{!travel.Ground_Transportation_Needed__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Hotel Coordination Needed</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Coordination_Needed__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Wheelchair Bound</div> <div class="item"><apex:inputfield value="{!travel.Wheel_Chair_Bound__c}"></apex:inputfield></div></div>   
+                        <div class="fieldwrap"><div class="label">Ground Transportation Needed</div> <div class="item"><apex:inputfield value="{!travel.Ground_Transportation_Needed__c}"></apex:inputfield></div></div>
                     </div>
                 </div>
                 <div class="fieldheading">Transportation</div>
                 <div class="treatmentform">
                     <div class="fieldwrapper">
                         <div class="fieldwrap"><div class="label">Arrival Airport Code</div> <div class="item"><apex:inputfield value="{!travel.Arrival_Airport_Code__c}"></apex:inputfield></div></div>                       
-                        <div class="fieldwrap"><div class="label">Arrival Airline</div> <div class="item"><apex:inputfield value="{!travel.Arrival_Airline__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Arrival Flight No</div> <div class="item"><apex:inputfield value="{!travel.Arrival_Flight_No__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Departure Airport Code</div> <div class="item"><apex:inputfield value="{!travel.Departure_Airport_Code__c}"></apex:inputfield></div></div>                        
+                        <div class="fieldwrap"><div class="label">Arrival Airline</div> <div class="item"><apex:inputfield value="{!travel.Arrival_Airline__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Departure Airline</div> <div class="item"><apex:inputfield value="{!travel.Departure_Airline__c}"></apex:inputfield></div></div>
+                        <div class="fieldwrap"><div class="label">Arrival Flight No</div> <div class="item"><apex:inputfield value="{!travel.Arrival_Flight_No__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Departure Flight No</div> <div class="item"><apex:inputfield value="{!travel.Departure_Flight_No__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Notes</div> <div class="item"><apex:inputfield value="{!travel.Notes__c}"></apex:inputfield></div></div>
                     </div>
@@ -821,64 +849,11 @@
                         <div class="fieldwrap"><div class="label">Check-in Date</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Checkin__c}"></apex:inputfield></div></div>
                         <div class="fieldwrap"><div class="label">Hotel Nights Needed</div> <div class="item"><apex:outputfield value="{!treatmentQuote.Hotel_Nights_Needed__c}"/></div></div>
                         <div class="fieldwrap"><div class="label">Check-out Date</div> <div class="item"><apex:inputfield value="{!travel.Hotel_Checkout__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Special Hotel Needs</div> <div class="item"><apex:inputfield value="{!travel.Special_Hotel_Needs__c}"></apex:inputfield></div></div>
                         
                         
                     </div>
                 </div>              
             </div>
-        </div>
-        <div class="tabs">
-            <a href="javascript:void(0);" id="tab1" class="tab" style="color:#EA6C1A">Scheduling</a>
-            <a href="javascript:void(0);" id="tab2" class="tab">Travel Itinerary</a>
-        </div>
-        <div id="tab1box" class="tabbox" style="display:block">
-            <div class="treatmentfieldwrapper">
-                <div class="fieldheading">Features</div>
-                <div class="treatmentformwhite">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrapfull"><div class="labellong">This section will be able to create new calendar events, ability to view hospital /provider calendars</div> <div class="item"></div></div>
-                        <div class="fieldwrapfull"><div class="labellong">Being able to send calendar invites to the provider&amp;s calendar (outlook, gmail) </div> <div class="item"></div></div>
-                        <div class="fieldwrapfull"><div class="labellong">View the provider calendar</div> <div class="item"></div></div>                   
-                    </div>
-                </div>                                              
-            </div>  
-        </div>  
-        <div id="tab2box" class="tabbox">
-            <div class=" 	">
-                <div class="fieldheading">Itinerary Details</div>
-                <div class="treatmentformwhite">
-                    <div class="fieldwrapper">
-                        <div class="fieldwrap"><div class="label">Patient Name</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Companion Name</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Patient Contact Number</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Dates of Travel</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Doctor</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Hospital Destination</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Procedure</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Procedure Cost</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Payments Made</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Balance Due</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Important Contacts</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Onsite Coordinator</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Phone</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Email</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Patient Care Coordinator</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Phone</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Email</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Travel Concierge</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Phone</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Email</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Hotel and Transportation Information</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Flight Information</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Hotel information</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Name</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Address</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Check in</div> <div class="item">(insert custom object)</div></div>
-                        <div class="fieldwrap"><div class="label">Check out</div> <div class="item">(insert custom object)</div></div>      
-                    </div>
-                </div>                                              
-            </div>      
         </div>
     </apex:outputPanel>
     
@@ -892,12 +867,7 @@
                 <div class="fieldheading">Post Treatment Information</div>
                 <div class="treatmentform">
                     <div class="fieldwrapper">                  
-                        <div class="fieldwrap"><div class="label">Treatment Date (Completed)</div> <div class="item"><apex:inputField value="{!treatment.Procedure_Date__c}"></apex:inputField></div></div>
                         <div class="fieldwrap"><div class="label">On-Site Recovery Period</div> <div class="item"><apex:inputfield value="{!treatment.On_Site_Recovery_Period__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Post-Op Follow Up Program</div> <div class="item"><apex:inputfield value="{!treatment.On_Site_Recovery_Period__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Financial Reconciliation</div> <div class="item"><apex:inputfield value="{!treatment.Financial_Reconciliation__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Additional Amount</div> <div class="item"><apex:inputfield value="{!treatment.Additional_Amount__c}"></apex:inputfield></div></div>
-                        <div class="fieldwrap"><div class="label">Accounting Line Items</div> <div class="item">(insert custom object)</div></div>
                         <div class="fieldwrap"><div class="label">Treatment Summary</div> <div class="item"><apex:inputfield value="{!treatment.Treatment_Summary__c}"></apex:inputfield></div></div>
                     </div>
                 </div>
@@ -909,14 +879,60 @@
 </apex:pageBlock>
 </apex:outputPanel>
 </div>
-<script type="text/javascript">
-//    $(document).ready(function() {  
-//        $('div.twisty').twisty();  // Find all DIV tags with class "twisty" and then apply Twisty plugin.
-//    });   
-</script>
 </apex:form>
 
 
 <br/>
 <apex:relatedList list="NotesAndAttachments"/>
+
+        <apex:outputPanel layout="block" id="treatmentList"  style="display:none;">
+          <apex:pageBlock >
+            <apex:outputPanel layout="block" styleClass="treatmentListBox"/>
+            <apex:outputpanel styleClass="treatmentListLBox" layout="block">
+                <div align="center">
+                    <apex:outputtext style="font-weight:bold;" value="Treatment List"/><br/>
+                </div>
+                    <apex:pageblocktable value="{!treatments}" var="t">
+                    	<apex:column >
+                    		<apex:facet name="header"><br/>Select</apex:facet>
+                    		<a href="javascript:parent.selectTreatment('{!t.id}');">Select</a>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Treatment<br/>Number</apex:facet>
+                    		<apex:outputfield value="{!t.name}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header"><br/>Stage</apex:facet>
+                    		<apex:outputfield value="{!t.Sub_Stage__c}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header"><br/>Procedure</apex:facet>
+                    		<apex:outputfield value="{!t.Procedure__c}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header"><br/>Doctor</apex:facet>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.doctor__c}" rendered="{!!ISBLANK(t.treatment_quotes__r) && t.treatment_quotes__r.size>0}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header"><br/>Hospital</apex:facet>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.facility__c}" rendered="{!!ISBLANK(t.treatment_quotes__r) && t.treatment_quotes__r.size>0}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header"><br/>Price</apex:facet>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].Total_Price__c}" rendered="{!!ISBLANK(t.treatment_quotes__r) && t.treatment_quotes__r.size>0}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">Procedure<br/>Date</apex:facet> 
+                    		<apex:outputfield value="{!t.Procedure_Date__c}"/>
+                    	</apex:column>
+                    </apex:pageblocktable>
+                <div align="center">
+                    <apex:form >
+                        <a href="javascript:hideTreatmentList()" class="link" style="color:#000;" >Close</a>
+                    </apex:form>
+                </div>
+            </apex:outputpanel>
+            </apex:pageBlock>
+        </apex:outputpanel>
+        <script>var treatmentListId = "{!$Component.treatmentList}";</script>
 </apex:page>

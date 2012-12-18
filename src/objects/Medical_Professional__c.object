@@ -42,7 +42,7 @@
         <externalId>false</externalId>
         <label>Bio</label>
         <length>5000</length>
-        <type>LongTextArea</type>
+        <type>Html</type>
         <visibleLines>12</visibleLines>
     </fields>
     <fields>

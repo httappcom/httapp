@@ -94,22 +94,25 @@
     <fields>
         <fullName>Case_Manager_s_Feel__c</fullName>
         <externalId>false</externalId>
-        <label>Case Manager&apos;s Feel</label>
+        <label>Case Manager&apos;s Estimate</label>
         <picklist>
             <picklistValues>
-                <fullName>Not Going to Happen</fullName>
+                <fullName>Low</fullName>
+                <color>#3366FF</color>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Needs More Time</fullName>
+                <fullName>Average</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Looking Better Than Expected</fullName>
+                <fullName>Hot</fullName>
+                <color>#F96FB7</color>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Hot Oppty</fullName>
+                <fullName>Top 5</fullName>
+                <color>#FF0000</color>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -443,15 +446,6 @@
         <relationshipName>Treatments</relationshipName>
         <required>false</required>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Probability__c</fullName>
-        <externalId>false</externalId>
-        <label>Probability</label>
-        <precision>7</precision>
-        <required>false</required>
-        <scale>2</scale>
-        <type>Percent</type>
     </fields>
     <fields>
         <fullName>Procedure_Category__c</fullName>

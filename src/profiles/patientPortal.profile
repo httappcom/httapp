@@ -926,7 +926,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment_Quote__c.Doctor_Name__c</field>
+        <field>Treatment_Quote__c.Doc_Signed_Timestamp__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1131,11 +1131,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment__c.Probability__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Treatment__c.Procedure_Category__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1187,21 +1182,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Treatment__c.Treatment_Summary__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.Receive_Portal_Messages__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.Receive_Staff_Messages__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>User.Travel_Concierge__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>
@@ -1409,6 +1389,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Procedure_Price__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Procedure__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

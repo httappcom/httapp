@@ -52,12 +52,18 @@ public without sharing class travelItineraryPDF_Controller {
 							t.treatment__r.travel__r.companion__c,
 							t.treatment__r.travel__r.travel_start__c,
 							t.treatment__r.travel__r.travel_end__c,
-							t.treatment__r.travel__r.flight_information__c,
+							t.treatment__r.travel__r.Arrival_Airport_Code__c,
+							t.treatment__r.travel__r.Departure_Airport_Code__c,
+							t.treatment__r.travel__r.Arrival_Airline__c,
+							t.treatment__r.travel__r.Departure_Airline__c,
+							t.treatment__r.travel__r.Arrival_Flight_No__c,
+							t.treatment__r.travel__r.Departure_Flight_No__c,
+							t.treatment__r.travel__r.Notes__c,		
 							t.treatment__r.travel__r.hotel__r.name,
 							t.treatment__r.travel__r.hotel__r.address__c, 
 							t.treatment__r.travel__r.hotel__r.phone__c,
 							t.treatment__r.travel__r.hotel_checkin__c,
-							t.treatment__r.travel__r.hotel_checkout__c				
+							t.treatment__r.travel__r.hotel_checkout__c
 					From Treatment_Quote__c t 
 					where id = :treatmentid];
 }

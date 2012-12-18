@@ -46,7 +46,6 @@ public class PatientUtil {
                                LastModifiedBy.Name,
                                LastModifiedDate,
                                Additional_Amount__c,
-                               Amount__c,
                                Best_Time_to_Contact__c, 
                                Case_Manager_s_Feel__c,
                                Close_Date__c,
@@ -74,14 +73,14 @@ public class PatientUtil {
                                Sub_Stage__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
-                               Probability__c,
                                Request_Summary__c,
                                Next_Follow_Up__c,
                                Primary_Campaign__c,
                                Related_Campaign__c,
                                Treatment_Summary__c,
                                On_Hold__c,
-							  Travel__r.Id,
+                              Travel__r.Id,
+                              Travel__r.Patient__c,
                               Travel__r.Name,
                               Travel__r.CreatedBy.Name,
                               Travel__r.CreatedDate,
@@ -203,8 +202,8 @@ public class PatientUtil {
       }  
    }
    
-  public static Treatment__c getTreatmentChildren(Id treatmentId) { 
-      if(treatmentId == null) {          
+  public static List<Treatment__c> getTreatmentsWithChildren(Id patientId) { 
+      if(patientId == null) {          
         return null;
       } else {
         return [Select id, 
@@ -214,7 +213,6 @@ public class PatientUtil {
                                LastModifiedBy.Name,
                                LastModifiedDate,
                                Additional_Amount__c,
-                               Amount__c,
                                Best_Time_to_Contact__c, 
                                Case_Manager_s_Feel__c,
                                Close_Date__c,
@@ -242,12 +240,52 @@ public class PatientUtil {
                                Sub_Stage__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
-                               Probability__c,
                                Request_Summary__c,
                                Next_Follow_Up__c,
                                Primary_Campaign__c,
                                Related_Campaign__c,
-                               Treatment_Summary__c,                                
+                               Treatment_Summary__c,
+                               On_Hold__c,
+                              Travel__r.Id,
+                              Travel__r.Patient__c,
+                              Travel__r.Name,
+                              Travel__r.CreatedBy.Name,
+                              Travel__r.CreatedDate,
+                              Travel__r.LastModifiedBy.Name,
+                              Travel__r.LastModifiedDate,
+                              Travel__r.Airfare_Coordination_Needed__c,
+                              //Companion__c,
+                              Travel__r.Extra_Local_Concier__c,
+                              Travel__r.Ground_Transportation_Needed__c,
+                              Travel__r.Hotel__c,
+                              Travel__r.Hotel_Checkin__c,
+                              Travel__r.Hotel_Checkout__c,
+                              Travel__r.Hotel_Coordination_Needed__c,
+                              Travel__r.Number_of_Hospital_Nights__c,
+                              Travel__r.Passport_Status__c,
+                              Travel__r.Pre_Op_Instructions__c,
+                              Travel__r.Procedure_Date__c,
+                              Travel__r.Special_Passport_Visa__c,
+                              Travel__r.Travel_End__c,
+                              Travel__r.Travel_Start__c,
+                              Travel__r.Visa_Status__c,
+                              Travel__r.Wheel_Chair_Bound__c,
+                              Travel__r.Additions_Comments__c,
+                              Travel__r.Companion__c,
+                              Travel__r.Event_Diagnosis__c,
+                              Travel__r.Hotel_Nights_Included__c,
+                              Travel__r.Hotel_Nights_Needed__c,
+                              Travel__r.Insurance_Approval__c,
+                              Travel__r.Special_Hotel_Needs__c,
+                              Travel__r.Total_Added_Cost__c,
+                              Travel__r.Treatment_as_Quoted__c ,
+                              Travel__r.Arrival_Airline__c,
+                              Travel__r.Arrival_Airport_Code__c,
+                              Travel__r.Arrival_Flight_No__c,
+                              Travel__r.Departure_Airline__c,
+                              Travel__r.Departure_Airport_Code__c,
+                              Travel__r.Departure_Flight_No__c,                              
+                              Travel__r.Notes__c,                                
                       (Select Id, 
                               Name,                       
                               CreatedDate, 
@@ -278,7 +316,6 @@ public class PatientUtil {
                               IsDeleted, 
                               Description__c, 
                               Discount_Amount__c, 
-                              Doctor_Name__c, 
                               Expiration_Date__c, 
                               LastModifiedById, 
                               LastModifiedDate, 
@@ -294,7 +331,7 @@ public class PatientUtil {
                               Arrival_Date__c,
                               Departure_Date__c,
 //                              Syncing__c,
-							  Procedure__r.Price__c,
+                              Procedure__r.Price__c,
                               Procedure__r.Comments__c,
                               Procedure__r.Details__c,
                               Procedure__r.Doctor__c,
@@ -306,29 +343,10 @@ public class PatientUtil {
                               Procedure__r.Transportation_Included__c 
                         From Treatment_Quotes__r)
                 from Treatment__c 
-                where id = :treatmentId];
+                where Patient__c = :patientId order by CreatedDate desc];
       }  
    }
    
-  public static Map<Id, Procedure__c> procedurePriceMap = null;
-   
-  public static void loadProcedurePrices( Treatment__c treatment ) {
-    if (procedurePriceMap != null) return;
-    List<ID> procedureIds = new List<ID>();
-    for (Treatment_Quote__c tr : treatment.Treatment_Quotes__r) {
-        if (tr.Procedure__c != null) {
-            procedureIds.add(tr.Procedure__c);
-        }
-    }
-    procedurePriceMap = new Map<ID, Procedure__c>(
-        [SELECT Id, (SELECT List_Price__c FROM Procedure_Prices__r) 
-                    FROM Procedure__c
-                    WHERE id in :procedureIds]);
-  }
-  public static Decimal getProcedurePrice( ID procedureId ) {
-    Procedure__c p = procedurePriceMap.get( procedureId );
-    return p==null?null:(p.Procedure_Prices__r.size()>0?p.Procedure_Prices__r[0].List_Price__c:null);
-  }
   public static List<Patient__c> queryPatientListAll() {    
       
         return [Select id, 
@@ -368,7 +386,6 @@ public class PatientUtil {
                                LastModifiedBy.Name,
                                LastModifiedDate,
                                Additional_Amount__c,
-                               Amount__c,
                                Best_Time_to_Contact__c, 
                                Case_Manager_s_Feel__c,
                                Close_Date__c,
@@ -396,7 +413,6 @@ public class PatientUtil {
                                Sub_Stage__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
-                               Probability__c,
                                Request_Summary__c,                               
                                Next_Follow_Up__c,
                                Primary_Campaign__c,
@@ -618,5 +634,18 @@ public class PatientUtil {
         else {
             //notify an admin of failure
         }
+    }
+    
+    /**
+     * mWicherski@mkpartners.com
+     * currentUserSamePatient
+     * Verifies that the currently logged in user matches the patient for files being requested
+     * @param string patientID
+     * @return boolean ; true if match
+     */
+    public static boolean currentUserSamePatient(string patientID) {
+        User currentUser = [select id, contactid from User where id = :userinfo.getUserId()];
+        return 
+            (currentUser.ContactId == [select id, key_contact__c from Patient__c where id = :patientID].key_contact__c)?true:false;
     }
 }

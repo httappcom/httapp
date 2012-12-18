@@ -6,7 +6,6 @@ public with sharing class QuoteUtility {
         return [Select id, 
                         Total_Price__c,
                         Treatment__r.Name,
-                        Treatment__r.Amount__c,                      
                         Treatment__r.Procedure__c, 
                         Treatment__r.Patient__r.Name,
                         Treatment__r.Patient__r.Owner.Name,                        

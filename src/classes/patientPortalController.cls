@@ -26,6 +26,8 @@ public  without sharing class patientPortalController {
     public list<Treatment__c> treatmentList {get;set;}
     public list<Treatment_Quote__c> treatmentQuoteList {get;set;}
     
+    public string selectedItinerary {get;set;}
+    
     public class recentActivity {
         public string subject {get;set;}
         public string reference {get;set;}
@@ -39,6 +41,12 @@ public  without sharing class patientPortalController {
     }
     
     public patientPortalController () {
+        recentActivities  = new list<recentActivity>();
+        medicalRecords = new list<Medical_Profile__c>();
+        travelList = new list<Travel__c>();
+        treatmentList = new list<Treatment__c>();
+        treatmentQuoteList = new list<Treatment_Quote__c>();
+    
         User u = [select id, contactid from User where id = :userinfo.getUserId()];
         
         list<Patient__c> plist = [select id 
@@ -121,26 +129,17 @@ public  without sharing class patientPortalController {
             r.relatedTreatment ='';
             detailMap.put(t.id,t);
             treatmentIds.add(t.id);
-        }
+        } 
         
+        treatmentList = queryTreatmentRelatedDesc(treatmentIDs);
         map<id,Treatment__c> treatmentMap = new map<id,Treatment__c>();
-        for (id i : treatmentIds) {
-            treatmentMap.put(i,patientUtil.getTreatmentChildren(i));
+        for (Treatment__c t : treatmentList) {
+            treatmentMap.put(t.id,t);
         }
         
         for (string s : treatmentMap.keySet()) {
-            Travel__c t = (Travel__c)treatmentMap.get(s).travel__r;
             recentActivity r = new recentActivity();
-            r.lastModified = t.LastModifiedDate;
-            r.subject = 'Travel';
-            r.reference = t.name;
-            r.status = '';
-            r.dateCreated = string.valueof(t.CreatedDate);
-            sortInsertRecentActivity(r);
-            r.index = t.id;
-            r.relatedTreatment = t.name;
-            detailMap.put(t.id,t);
-            
+           
             for (Incident__c i : treatmentMap.get(s).Incidents__r) {
                 r = new recentActivity();
                 r.lastModified = i.LastModifiedDate;
@@ -195,8 +194,7 @@ public  without sharing class patientPortalController {
     
     public pagereference buildRelatedLists () {
         medicalRecords = patient.medical_profiles__r;
-        treatmentList = patient.treatments__r;
-		
+        
         return null;
     }
     
@@ -266,6 +264,17 @@ public  without sharing class patientPortalController {
         }
         else showDetailBox = false;
         return null;
+    }
+    
+    public pagereference getItineraryPDF() {
+        if (apexpages.currentpage().getParameters().get('selectedItinerary') != null) {
+            selectedItinerary = apexpages.currentpage().getParameters().get('selectedItinerary');       
+        }
+        
+        Pagereference p = Page.travelItineraryPDF;
+        p.getParameters().put('id',selectedItinerary);
+        p.setRedirect(true);
+        return p;
     }
     
     @isTest (seealldata=true)
@@ -373,7 +382,6 @@ public  without sharing class patientPortalController {
                                LastModifiedBy.Name,
                                LastModifiedDate,
                                Additional_Amount__c,
-                               Amount__c,
                                Best_Time_to_Contact__c, 
                                Case_Manager_s_Feel__c,
                                Close_Date__c,
@@ -402,7 +410,6 @@ public  without sharing class patientPortalController {
                                Sub_Stage__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
-                               Probability__c,
                                Request_Summary__c,
                                Next_Follow_Up__c,
                                Primary_Campaign__c,
@@ -494,7 +501,112 @@ public  without sharing class patientPortalController {
                 where id = :patientId];
     }
     
-    public Treatment__c queryTreatmentRelatedDesc(string treatmentId) {
-        return null;
+    public list<Treatment__c> queryTreatmentRelatedDesc(set<id> treatmentIds) {
+        return 
+            [ Select    t.Treatment_Summary__c,
+                        t.Travel__c,
+                        t.SystemModstamp,
+                        t.Sub_Stage__c,
+                        t.Stage__c,
+                        t.Response_SLA__c,
+                        t.Request_Summary__c,
+                        t.Related_Campaign__c,
+                        t.Procedure__c,
+                        t.Procedure_Treatment_Type__c,
+                        t.Procedure_Date__c,
+                        t.Procedure_Category__c,
+                        t.Primary_Campaign__c,
+                        t.Preferred_Travel_Date_To__c,
+                        t.Preferred_Travel_Date_From__c,
+                        t.Preferred_Form_of_Contact__c,
+                        t.Preferred_Destination__c,
+                        t.Phase__c,
+                        t.Payment_Type__c,
+                        t.Patient__c,
+                        t.Patient_Pipeline_Color__c,
+                        t.Patient_Not_Committed_Reason__c,
+                        t.Patient_Email__c,
+                        t.Patient_Email_Formula__c,
+                        t.On_Site_Recovery_Period__c,
+                        t.On_Hold__c,
+                        t.Next_Follow_Up__c,
+                        t.Name,
+                        t.LastModifiedDate,
+                        t.LastModifiedById,
+                        t.LastActivityDate,
+                        t.IsDeleted,
+                        t.Inquiry_Source__c,
+                        t.Inquiry_Quality__c,
+                        t.Id,
+                        t.Financing_Required__c,
+                        t.Financial_Reconciliation__c,
+                        t.Final_Departure_Date__c,
+                        t.Deposit_Required__c,
+                        t.Decision_Timeframe__c,
+                        t.CreatedDate,
+                        t.CreatedById,
+                        t.Close_Date__c,
+                        t.Case_Manager_s_Feel__c,
+                        t.Best_Time_to_Contact__c,
+                        t.Arrival_Time__c,
+                        t.Amount__c,
+                        t.Additional_Amount__c,
+                            (Select tq.echosignDocKey__c,
+                                    tq.Treatment__c,
+                                    tq.Total_Price__c,
+                                    tq.SystemModstamp,
+                                    tq.Syncing__c,
+                                    tq.Sub_Total__c,
+                                    tq.Status__c,
+                                    tq.Procedure__c,
+                                    tq.Number_of_Hospital_Nights__c,
+                                    tq.Name,
+                                    tq.LastModifiedDate,
+                                    tq.LastModifiedById,
+                                    tq.IsDeleted,
+                                    tq.Id,
+                                    tq.Hotel_Nights_Needed__c,
+                                    tq.Hotel_Nights_Included__c,
+                                    tq.Ground_Transportation_Included__c,
+                                    tq.Expiration_Date__c,
+                                    tq.Discount_Amount__c,
+                                    tq.Description__c,
+                                    tq.Departure_Date__c,
+                                    tq.CreatedDate,
+                                    tq.CreatedById,
+                                    tq.Arrival_Date__c,
+                                    tq.procedure__r.doctor__c,
+                                    tq.procedure__r.facility__c 
+                                From Treatment_Quotes__r tq
+                                order by tq.lastmodifieddate desc),
+                            (Select i.Type__c,
+                                    i.Treatment__c,
+                                    i.SystemModstamp,
+                                    i.Subject__c,
+                                    i.Sub_Category__c,
+                                    i.Status__c,
+                                    i.Name,
+                                    i.LastModifiedDate,
+                                    i.LastModifiedById,
+                                    i.LastActivityDate,
+                                    i.IsDeleted,
+                                    i.Id,
+                                    i.Due_Date__c,
+                                    i.Date_Time_Opened__c,
+                                    i.Date_Time_Closed__c,
+                                    i.CreatedDate,
+                                    i.CreatedById,
+                                    i.Contact__c,
+                                    i.Contact_Phone__c,
+                                    i.Contact_Email__c,
+                                    i.Category__c,
+                                    i.Account__c 
+                                From Incidents__r i
+                                order by i.lastmodifieddate desc)    
+                    From Treatment__c t
+                    where id
+                    IN :treatmentIds
+                    order by t.Procedure_Date__c desc
+            ];
     }
 }

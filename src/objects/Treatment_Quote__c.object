@@ -42,14 +42,14 @@
     <fields>
         <fullName>Arrival_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Arrival Date</label>
+        <label>Proposed Arrival Date</label>
         <required>false</required>
         <type>Date</type>
     </fields>
     <fields>
         <fullName>Departure_Date__c</fullName>
         <externalId>false</externalId>
-        <label>Departure Date</label>
+        <label>Proposed Departure Date</label>
         <required>false</required>
         <type>Date</type>
     </fields>
@@ -71,13 +71,11 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Doctor_Name__c</fullName>
+        <fullName>Doc_Signed_Timestamp__c</fullName>
         <externalId>false</externalId>
-        <label>Doctor Name</label>
-        <length>255</length>
+        <label>Doc Signed Timestamp</label>
         <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Expiration_Date__c</fullName>
@@ -130,7 +128,7 @@
         <fullName>Procedure__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>Procedure</label>
+        <label>Treatment Detail</label>
         <referenceTo>Procedure__c</referenceTo>
         <relationshipLabel>Treatment Quotes</relationshipLabel>
         <relationshipName>Treatment_Quotes</relationshipName>

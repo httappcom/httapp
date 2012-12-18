@@ -31,11 +31,10 @@
 				</td>
 				<td width="10"></td>
 				<td valign="top" align="right">
-					<apex:outputlabel value="Dates of Travel: "/>
+					<apex:outputlabel value="Proposed procedure Date: "/>
 				</td>
 				<td valign="top">
-					<apex:outputtext value="{!DATEVALUE(treatmentQuote.treatment__r.travel__r.Travel_Start__c)}"/>&nbsp;-<br/>
-					<apex:outputtext value="{!DATEVALUE(treatmentQuote.treatment__r.travel__r.Travel_End__c)}"/>
+					<apex:outputtext value="{!treatmentQuote.treatment__r.Procedure_Date__c}"/>
 				</td>
 			</tr>
 			<tr>
@@ -110,8 +109,50 @@
 		
 		<apex:outputlabel value="HOTEL & TRANSPORTATION INFORMATION"/><br/>
 		<br/>
-		<apex:outputlabel value="Flight Information" style="font-weight:bold;"/><br/>
-		<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Flight_Information__c}"/><br/><Br/>
+		<apex:outputlabel value="Flight Information" style="font-weight:bold; padding-bottom:10px"/><br/>
+		<div style="width:75%; margin-left:auto; margin-right:auto;">
+			<table style="width:100%;">
+				<tr>
+					<td colspan="2">
+						<div align="center" style="font-weight:bold; text-decoration:underline;">Arrival</div>
+					</td>
+					<td style="width:10px">&nbsp;</td>
+					<td colspan="2">
+						<div align="center" style="font-weight:bold; text-decoration:underline;">Departure</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<apex:outputlabel value="Airport: "/><br/>
+						<apex:outputlabel value="Airline: "/><br/>
+						<apex:outputlabel value="Flight:"/><br/>
+					</td>
+					<td>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Arrival_Airport_Code__c}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Arrival_Airline__c}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Arrival_Flight_No__c}"/>
+					</td>
+					<td>&nbsp;</td>
+					<td>
+						<apex:outputlabel value="Airport: "/><br/>
+						<apex:outputlabel value="Airline: "/><br/>
+						<apex:outputlabel value="Flight: "/><br/>
+					</td>
+					<td>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Departure_Airport_Code__c}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Departure_Airline__c}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Departure_Flight_No__c}"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<apex:outputlabel value="Additional Information: " rendered="{!ISBLANK(treatmentQuote.treatment__r.travel__r.Notes__c) == false}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.Notes__c}"/>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br/>
 		---<Br/><Br/>
 		<apex:outputlabel value="Hotel Information" style="font-weight:bold;"/><Br/>
 		<apex:outputfield value="{!treatmentQuote.treatment__r.travel__r.hotel__r.name}"/><br/>

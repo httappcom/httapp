@@ -62,7 +62,6 @@ public with sharing class TreatmentUtility {
                         CreatedDate,                                                             
                         LastModifiedBy.Name,
                         Additional_Amount__c,
-                        Amount__c,
                         Best_Time_to_Contact__c, 
                         Case_Manager_s_Feel__c,
                         Close_Date__c,
@@ -103,7 +102,6 @@ public with sharing class TreatmentUtility {
                         CreatedDate,                                                             
                         LastModifiedBy.Name,
                         Additional_Amount__c, */
-                        Amount__c,
                         /* Best_Time_to_Contact__c, 
                         Case_Manager_s_Feel__c,
                         Close_Date__c,
