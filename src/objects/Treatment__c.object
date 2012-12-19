@@ -301,7 +301,7 @@
         <label>Patient Not Committed Reason</label>
         <picklist>
             <picklistValues>
-                <fullName>Patient Not Committed Reason</fullName>
+                <fullName>Interested but not Responding</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -310,10 +310,6 @@
             </picklistValues>
             <picklistValues>
                 <fullName>Patient Not Interested</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Interested but not Responding</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -438,14 +434,20 @@
     </fields>
     <fields>
         <fullName>Primary_Campaign__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Primary Campaign</label>
-        <referenceTo>Campaign</referenceTo>
-        <relationshipLabel>Treatments</relationshipLabel>
-        <relationshipName>Treatments</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
+        <picklist>
+            <picklistValues>
+                <fullName>Google Adwords</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Press Release</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>Procedure_Category__c</fullName>
@@ -1250,11 +1252,6 @@
             <picklistValues>
                 <fullName>Bad Information</fullName>
                 <controllingFieldValues>Lost</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Treament Information Provided</fullName>
-                <controllingFieldValues>Contact Established</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>

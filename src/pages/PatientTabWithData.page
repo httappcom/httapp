@@ -165,7 +165,8 @@
 
 <apex:outputPanel id="mainPanel" layout="block" style="margin-right:30px">
     <apex:pageBlock >
-	    <apex:panelGrid columns="3" width="100%" bgcolor="white" style="vertical-align:center;">
+	    <apex:panelGrid columns="4" width="100%" bgcolor="white" style="vertical-align:center;">
+	    	<apex:outputtext value="{!patient.Patient_First_Name__c} {!patient.Patient_Last_Name__c}" style="font-weight:bold; width:25%;"/>
     		<apex:outputText value="{!patient.Phone__c}" style="font-weight:bold; width:25%;"/>
     		<apex:outputField value="{!patient.Email__c}" style="width:25%;"/>
     		<apex:outputPanel style="float:right;" layout="block">
@@ -237,11 +238,32 @@
        	        <apex:outputLabel value="Date of Birth"/>
            	    <apex:inputField value="{!patient.Date_of_Birth__c}"  taborderhint="132"/>
             </apex:pageblocksectionitem>
-            
+            <apex:pageblocksectionitem >
+            	<apex:outputtext value=""/>
+            	<apex:outputpanel >
+            		<apex:commandbutton value="Hide Advocate Information" action="{!toggleAdvocateInfo}" rerender="pbs_Patient" rendered="{!showAdvocateInfo == true}"/>
+            		<apex:commandbutton value="Show Advocate Information" action="{!toggleAdvocateInfo}" rerender="pbs_Patient" rendered="{!showAdvocateInfo == false}"/>
+            	</apex:outputpanel>
+            </apex:pageblocksectionitem>
+            <apex:outputtext value="" rendered="{!showAdvocateInfo == true}"/>
+            <apex:pageblocksectionitem helpText=""  rendered="{!showAdvocateInfo == true}"> 
+        		<apex:outputLabel value="Advocate Name"/>
+     		    <apex:inputField value="{!patient.Advocate_Name__c}" taborderhint="340"/>
+       		</apex:pageblocksectionitem>
+			<apex:outputtext value="" rendered="{!showAdvocateInfo == true}"/>
+			<apex:pageblocksectionitem helpText="" rendered="{!showAdvocateInfo == true}"> 
+    		   	<apex:outputLabel value="Advocate Phone"/>
+         	    <apex:inputField value="{!patient.Advocate_Phone__c}" taborderhint="350"/>
+	       	</apex:pageblocksectionitem>
+			<apex:outputtext value="" rendered="{!showAdvocateInfo == true}"/>
+			<apex:pageblocksectionitem helpText="" rendered="{!showAdvocateInfo == true}"> 
+    		   	<apex:outputLabel value="Advocate Email"/>
+         	    <apex:inputField value="{!patient.Advocate_Email__c}" taborderhint="360"/>
+	       </apex:pageblocksectionitem>
    	    </apex:pageblocksection>
    	    <apex:outputPanel rendered="{!!ISBLANK(patient.Patient_Last_Name__c)}">
 		<script>
-    			twistSection(document.getElementById('{!$Component.pbs_Patient}').getElementsByTagName('img')[0])
+    		//	twistSection(document.getElementById('{!$Component.pbs_Patient}').getElementsByTagName('img')[0])
 		</script>
 		</apex:outputPanel>
 	    <apex:pageblocksection title="Treatment {!treatment.Name}" id="pbs_Treatment" columns="2">
@@ -372,25 +394,15 @@
         		        	<apex:outputLabel value="Inquiry Source"/>
 	            		    <apex:inputField value="{!treatment.Inquiry_Source__c}" taborderhint="310"/>
     	        		</apex:pageblocksectionitem>
-		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Advocate Name"/>
-	            		    <apex:inputField value="{!treatment.Primary_Campaign__c}" taborderhint="340"/>
-    	        		</apex:pageblocksectionitem>
+    	        		<apex:outputtext value=""/>
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Primary Campaign Source"/>
-	            		    <apex:inputField value="{!treatment.Primary_Campaign__c}" taborderhint="320"/>
+ 	            		    <apex:inputField value="{!treatment.Primary_Campaign__c}" taborderhint="320"/>
     	        		</apex:pageblocksectionitem>
-		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Advocate Phone"/>
-	            		    <apex:inputField value="{!patient.Advocate_Phone__c}" taborderhint="350"/>
-    	        		</apex:pageblocksectionitem>
+						<apex:outputtext value=""/>		            	
 		            	<apex:pageblocksectionitem helpText=""> 
         		        	<apex:outputLabel value="Patient Not Committed Reason"/>
 	            		    <apex:inputField value="{!travel.Event_Diagnosis__c}" taborderhint="330"/>
-    	        		</apex:pageblocksectionitem>
-		            	<apex:pageblocksectionitem helpText=""> 
-        		        	<apex:outputLabel value="Advocate Email"/>
-	            		    <apex:inputField value="{!patient.Advocate_Email__c}" taborderhint="360"/>
     	        		</apex:pageblocksectionitem>
                     </apex:pageBlockSection>
                 </apex:pageBlock>
@@ -607,7 +619,7 @@
     	<apex:tab label="Quotes" id="Quotes">
     		<apex:panelGrid columns="2">
     			<apex:outputPanel >
-                        <apex:commandbutton status="saveQuoteStatus" action="{!saveQuote}" value="Save Quote" rerender="QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
+                        <apex:commandbutton status="saveQuoteStatus" action="{!saveQuote}" value="Save Quote" rerender="interactionPanel, pbs_Treatment, QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
                         <apex:actionStatus startText="saving..."  stopText="" id="saveQuoteStatus"/>
                         <apex:commandbutton action="{!sendQuoteToEchosign}" value="Send to Echosign"></apex:commandbutton>
                 </apex:outputPanel>        

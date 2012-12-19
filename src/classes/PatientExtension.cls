@@ -39,6 +39,8 @@ public class PatientExtension {
   	public List<Treatment__c> treatments { get; private set; }
   	private List<Payment__c> payments ;    
   	private List<Incident__c> incidents ;
+     
+    public boolean showAdvocateInfo {get;set;}
             
   	public PatientExtension(ApexPages.StandardController sc) {
   		Logger.info('Patient Constructor');
@@ -47,6 +49,7 @@ public class PatientExtension {
    		if  (sc.getId() != null  ) {
       		//this.patient = (Patient__c)sc.getRecord();
       		this.patient = PatientUtil.queryPatientAll(sc.getId());
+      		showAdvocateInfo = (this.patient.Advocate_Name__c != null)?true:false;
       		if (this.patient != null) {
       		treatmentId = patient.Treatments__r.size()==0 ? null : patient.Treatments__r[0].id;
   Logger.info('Treatments exist');
@@ -270,15 +273,18 @@ public class PatientExtension {
   }*/
      
   	private void newQuote() {
+  		if (treatment.id == null) saveTreatment();
     	treatmentQuote = new Treatment_Quote__c(Treatment__c = treatment.id);
     	procedure = null;
+    	treatmentQuote.Departure_Date__c = treatment.Preferred_Travel_Date_To__c;
+    	treatmentQuote.Arrival_Date__c = treatment.Preferred_Travel_Date_From__c;
   	}
  	
  	public PageReference saveQuote() {
  	Logger.info('saveQuote='+treatmentQuote);
   		if (treatmentQuote == null) newQuote();
+		if (treatmentQuote.Treatment__c==null) treatmentQuote.Treatment__c = treatment.id;
      	if ( treatmentQuote.id == null ) {
-        	treatmentQuote.Treatment__c = treatment.id;     
         	insert treatmentQuote ;
 //        treatmentQuotes.add(treatmentQuote);
 //        quoteTotCount = quoteTotCount + 1; 
@@ -583,6 +589,15 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
 	private void addError( String msg ) {
        	ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.ERROR, msg));
 	}
+	
+	public pagereference toggleAdvocateInfo() {
+		showAdvocateInfo = (showAdvocateInfo==false)?true:false;
+		patient.Advocate_Email__c = (patient.Advocate_Email__c==null)?patient.Email__c:patient.Advocate_Email__c;
+		patient.Advocate_Phone__c = (patient.Advocate_Phone__c==null)?patient.Phone__c:patient.Advocate_Phone__c;
+		patient.Advocate_Name__c = (patient.Advocate_Name__c==null)?patient.Name:patient.Advocate_Name__c;
+		return null;
+	}
+	
   static testMethod void testPatientExtension(){
     Patient__c pat = new Patient__c();
     pat.name = 'Test';
