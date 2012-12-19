@@ -1301,6 +1301,11 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
+                <fullName>Quote Complete - Send to Echosign</fullName>
+                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
                 <fullName>Quote In Process</fullName>
                 <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
                 <default>false</default>

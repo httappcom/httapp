@@ -91,21 +91,6 @@
         <type>Currency</type>
     </fields>
     <label>Procedure Price</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
-    <listViews>
-        <fullName>Price_List</fullName>
-        <columns>NAME</columns>
-        <columns>Procedure__c</columns>
-        <columns>Doctor__c</columns>
-        <columns>Facility__c</columns>
-        <columns>List_Price__c</columns>
-        <filterScope>Everything</filterScope>
-        <label>Price List</label>
-    </listViews>
     <nameField>
         <displayFormat>PCP{000000000}</displayFormat>
         <label>Procedure Price</label>

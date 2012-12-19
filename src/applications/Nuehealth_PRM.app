@@ -3,13 +3,11 @@
     <defaultLandingTab>standard-home</defaultLandingTab>
     <description>Patient Relationship Management App</description>
     <label>Nuehealth PRM</label>
-    <logo>PRM_Documents/Header_Logo.jpeg</logo>
     <tab>Pipeline</tab>
     <tab>Patient__c</tab>
     <tab>Knowledge_Base__c</tab>
     <tab>Incident__c</tab>
     <tab>standard-report</tab>
     <tab>Procedure_Catalog</tab>
-    <tab>Procedure_Price__c</tab>
     <tab>standard-Document</tab>
 </CustomApplication>

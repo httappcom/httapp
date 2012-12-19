@@ -125,6 +125,11 @@
         <type>Url</type>
     </fields>
     <label>Medical Facility</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Medical Facility Name</label>
         <type>Text</type>

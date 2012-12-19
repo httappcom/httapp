@@ -47,6 +47,11 @@
         <unique>false</unique>
     </fields>
     <label>Airport</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Airport Name</label>
         <type>Text</type>

@@ -109,6 +109,11 @@
         <unique>false</unique>
     </fields>
     <label>Medical Professional</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Medical Professional Name</label>
         <type>Text</type>
