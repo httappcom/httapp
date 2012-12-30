@@ -1092,6 +1092,15 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Referral_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>Referral Source</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Related_Campaign__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1410,6 +1419,18 @@
     <pluralLabel>Treatments</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Cant_change_substage_while_quote_pending</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(
+ $Profile.Id != &quot;00ed00000015XPu&quot; ,  
+ISCHANGED( Sub_Stage__c ),
+ISPICKVAL(  PRIORVALUE( Sub_Stage__c ) , &apos;Quote In Process&apos; ), 
+NOT ISPICKVAL(  Sub_Stage__c  , &apos;Quote In Process&apos; )
+)</errorConditionFormula>
+        <errorDisplayField>Sub_Stage__c</errorDisplayField>
+        <errorMessage>Can&apos;t change Sub-stage until patient signs quote, or quote expires.</errorMessage>
+    </validationRules>
     <validationRules>
         <fullName>Patient_Not_Committed_required_if_lost</fullName>
         <active>true</active>

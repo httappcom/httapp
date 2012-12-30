@@ -9,12 +9,14 @@ public class PatientExtension {
  	public Payment__c payment { get; set; }      
  	public Travel__c travel { get; set; }
  	public List<Message__c> messages { get; set; }
- 	public List<Task> tasks { get; set; }  
+ 	public List<Task> tasks { get; set; }
+ 	public UILookup__c lookup { get; public set; }
  
  	public List<Medical_Profile__c> medProfiles { get; set; }
  	public Medical_Profile__c medProfile { get; set; }  
  	public Treatment_Quote__c treatmentQuote { get; set; }
  	public Incident__c incident { get; set; }
+ 	public String emailType { get; set; }
     
 	public List<SelectOption> taskOptions { get; set; }
  	public String selectedTaskOption { get; set; }
@@ -41,8 +43,14 @@ public class PatientExtension {
   	private List<Incident__c> incidents ;
      
     public boolean showAdvocateInfo {get;set;}
+	public boolean emailToPatient {get;set;}
+	public boolean emailToOnsiteCoordinator {get;set;}
+	public string additionalEmailRecipients {get;set;}
+	public string emailError {get;set;}
+	public boolean sendSuccess {get;set;}
             
   	public PatientExtension(ApexPages.StandardController sc) {
+  		sendSuccess = false;
   		Logger.info('Patient Constructor');
     	this.initiatePatient();
     	try {  
@@ -88,6 +96,7 @@ public class PatientExtension {
       		ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
       		throw e;
     	}
+    	if (incident == null) newIncident();
   	}  
   private void initiatePatient() {
     this.inquiryFlag = true;
@@ -148,14 +157,45 @@ public class PatientExtension {
   		
   	}
 	public PageReference saveTreatment() {
+Logger.info('saveTreatment');
     	try {
-	    	if ( patient.id == null ) {
-    	  		insert patient;
-    		} else {
-		      	update patient;  
-    		}
+	    	savePatient();
    Logger.info('saveTreatment travel='+travel);
-   			if (travel.Patient__c == null) {
+   			saveTravel();
+    		treatment.Travel__c = travel.id;
+   Logger.info('treatment.Travel='+treatment.Travel__c);
+        if (treatment.Sub_Stage__c == 'Quote Complete - Send to Echosign')
+        {
+          Treatment_Quote__c tempTreatmentQuote = [select id, echosignDocKey__c from  Treatment_Quote__c where Id = : treatmentQuote.id ];
+          Logger.info('tempTreatmentQuote.echosignDocKey__c = ' + tempTreatmentQuote.echosignDocKey__c);
+          if ( tempTreatmentQuote.echosignDocKey__c == null)
+          { 
+            sendQuoteToEchosign();
+          }
+        }   
+	    	if ( treatment.id == null ) {
+      			treatment.Patient__c = patient.id;    
+      			insert treatment;
+      			treatmentId = treatment.id;
+  Logger.info('Inserted Treatment id='+treatmentId);
+      			loadTreatments();
+      			setTreatmentInfo();
+      			treatmentLastid = treatmentId;
+  Logger.info('Treatment.id='+treatment.id);
+    		} else {
+  Logger.info('Updating Treatment...');
+        		update treatment; 
+    		}
+
+    	} catch (DmlException dmlEx) {
+    		addError(dmlEx);
+    		throw dmlEx;
+    	}
+    	return null;
+	}
+	
+	public pagereference saveTravel() {
+		if (travel.Patient__c == null) {
    				travel.Patient__c = patient.id;
    			}
     		if (travel.id == null) {
@@ -163,22 +203,7 @@ public class PatientExtension {
     		} else {
     			update travel;
     		}
-    		treatment.Travel__c = travel.id;
-   Logger.info('treatment.Travel='+treatment.Travel__c);
-	    	if ( treatment.id == null ) {
-      			treatment.Patient__c = patient.id;    
-      			insert treatment;
-      			treatmentId = treatment.id;
-      			loadTreatments();
-      			setTreatmentInfo();
-      			treatmentLastid = treatmentId;
-    		} else {     
-        		update treatment; 
-    		}
-    	} catch (DmlException dmlEx) {
-    		addError(dmlEx);
-    	}
-    	return null;
+		return null;
 	}
 	
   public boolean hasNextIncident { 
@@ -237,6 +262,12 @@ public class PatientExtension {
    		setTreatmentInfo();
     	return null;        
   	}
+  		public PageReference setTreatment(string jsTreatmentID) { //overloaded to accepted treatment id as param from treatment list js
+ Logger.info('setTreatment id='+jstreatmentId);
+ 		treatmentID = jsTreatmentID;
+   		setTreatmentInfo();
+    	return null;        
+  	}
 	private void setQuoteInfo() {
 		if ( treatmentWithChildren != null && treatmentWithChildren.Treatment_Quotes__r.size() > 0 ) {
 			treatmentQuote = treatmentWithChildren.Treatment_Quotes__r[0];
@@ -283,8 +314,13 @@ public class PatientExtension {
  	public PageReference saveQuote() {
  	Logger.info('saveQuote='+treatmentQuote);
   		if (treatmentQuote == null) newQuote();
-		if (treatmentQuote.Treatment__c==null) treatmentQuote.Treatment__c = treatment.id;
+		if (treatmentQuote.Treatment__c==null) {
+Logger.info('treatmentQuote.Treatment= null');
+				saveTreatment();
+			treatmentQuote.Treatment__c = treatment.id;
+		}
      	if ( treatmentQuote.id == null ) {
+   Logger.info('Inserting treatmentQuote='+treatmentQuote);
         	insert treatmentQuote ;
 //        treatmentQuotes.add(treatmentQuote);
 //        quoteTotCount = quoteTotCount + 1; 
@@ -292,55 +328,19 @@ public class PatientExtension {
 //        tempQuote = [select id, Name from  Treatment_Quote__c where id = : treatmentQuote.id ];
 //        quoteName =  tempQuote.Name;                          
      	} else {
+   Logger.info('Updating treatmentQuote='+treatmentQuote);
         	update treatmentQuote;
      	}
-     	setQuoteInfo();
+//     	setQuoteInfo();
      	return null;
   	}
-  private String getQuoteDocumentFilename() {
-  	return 'Nuehealth Medical Treatment Quote for ' + patient.Name;
-  }  	
-  private String getQuoteDocumentBinary() {
-  	PageReference quoteDocument = Page.Quote;
-	quoteDocument.getParameters().put('id', treatmentQuote.id);
-	quoteDocument.setRedirect(true);
-	return EncodingUtil.base64Encode(quoteDocument.getContentAsPDF());
-  }
-  public PageReference sendQuoteToEchosign() {
-  	String apiKey = 'QB9XRK3PX2755I';
-  	
-  	//Set up SenderInfo object
-  	dtoApiEchosign.SenderInfo quoteSenderInfo = new dtoApiEchosign.SenderInfo();
-  	quoteSenderInfo.email = 'rich@healthtraveltechnologies.com';
-  	quoteSenderInfo.password = 'Publ1csax';
-  	
-  	//Set up DocumentCreationInfo object
-  	dtoApiEchosign.DocumentCreationInfo quoteDocCrInfo = new dtoApiEchosign.DocumentCreationInfo();
-  	quoteDocCrInfo.name = getQuoteDocumentFilename();
-  	//Set up RecipientInfo object - part of DocumentCreationInfo object
-  	dto14ApiEchosign.RecipientInfo quoteDocRecInfo = new dto14ApiEchosign.RecipientInfo();
-  	quoteDocRecInfo.email = patient.Email__c;
-  	quoteDocRecInfo.role = 'SIGNER';
-  	dto14ApiEchosign.ArrayOfRecipientInfo quoteDocRecipients = new dto14ApiEchosign.ArrayOfRecipientInfo();
-	quoteDocRecipients.RecipientInfo = new List<dto14ApiEchosign.RecipientInfo>();
- 	quoteDocRecipients.RecipientInfo.add(quoteDocRecInfo);
-  	quoteDocCrInfo.recipients = quoteDocRecipients;
-  	dtoApiEchosign.FileInfo quoteDocFileInfo = new dtoApiEchosign.FileInfo();
-  	quoteDocFileInfo.fileName = getQuoteDocumentFilename();
-  	quoteDocFileInfo.file = getQuoteDocumentBinary();
-  	quoteDocFileInfo.mimeType = 'application/pdf';
-  	dtoApiEchosign.ArrayOfFileInfo quoteDocFileInfoArray = new dtoApiEchosign.ArrayOfFileInfo();
-  	quoteDocFileInfoArray.FileInfo = new List<dtoApiEchosign.FileInfo>();
-  	quoteDocFileInfoArray.FileInfo.add(quoteDocFileInfo);
-  	quoteDocCrInfo.fileInfos = quoteDocFileInfoArray;
-  	quoteDocCrInfo.signatureType = 'ESIGN';
-  	quoteDocCrInfo.signatureFlow = 'SENDER_SIGNATURE_NOT_REQUIRED';
-  	quoteDocCrInfo.message = 'Please review your attached Nuehealth medical treatment quote.';
-  	apiEchosign.EchoSignDocumentService15HttpPort echoSignDoc = new apiEchosign.EchoSignDocumentService15HttpPort();
-  	dtoApiEchosign.ArrayOfDocumentKey echosignResults = echoSignDoc.sendDocument(apiKey, quoteSenderInfo, quoteDocCrInfo);
-  	Logger.info('Document key returned: ' + echosignResults.DocumentKey[0].documentKey);
+
+  public PageReference sendQuoteToEchosign()
+  {
+  	QuoteUtility.sendQuoteToEchosign(treatment);
   	return null;
-  }	
+  }
+
   public PageReference nextIncident() {      
     if ( incidentCurNumber <= incidentTotCount ){ 
       incidentCurNumber = incidentCurNumber + 1; 
@@ -359,12 +359,15 @@ public class PatientExtension {
   }   
   public PageReference newIncident() {
     incident = new Incident__c(); 
-    incident.Treatment__c = treatment.id;
+    if (incidentTotCount==null) incidentTotCount = 0;
+    if (incidentCurNumber ==null) incidentCurNumber=0;
+    if (incidents == null) incidents = new list<Incident__c>();
     return ApexPages.currentPage();
   }   
   public PageReference saveIncident() { 
      Incident__c tempIncident;
-     if ( incident.id == Null ){
+     if ( this.incident.id == Null ){
+     	if (treatment.id == null) saveTreatment();
         incident.Treatment__c = treatment.id;     
         insert incident ;
         incidents.add(incident);
@@ -376,8 +379,7 @@ public class PatientExtension {
         update incident ; 
      }  
      return ApexPages.currentPage();
-  } 
-  
+  }   
   public PageReference nextPayment() {      
     if ( paymentCurNumber <= paymentTotCount ){ 
       paymentCurNumber = paymentCurNumber + 1; 
@@ -447,6 +449,7 @@ public class PatientExtension {
     	interactionFlag = false;
     	travelFlag = false;
     	postopFlag = false;
+    	calcEmailType();
     	return null;
   	}
   	public PageReference displayInteraction(){
@@ -454,6 +457,7 @@ public class PatientExtension {
     	interactionFlag = true;
     	travelFlag = false;
     	postopFlag = false;
+    	calcEmailType();
     	setInteractionState();
     	return null;
   	}   
@@ -462,6 +466,7 @@ public class PatientExtension {
     	interactionFlag = false;
     	travelFlag = true;
     	postopFlag = false;
+    	calcEmailType();
     	return null;
   	}
 	public PageReference displayPostOp(){
@@ -469,6 +474,7 @@ public class PatientExtension {
     	interactionFlag = false;
     	travelFlag = false;
     	postopFlag = true;
+    	calcEmailType();
     	return null;
   	}
   public void displayQuotes(){
@@ -480,8 +486,10 @@ public class PatientExtension {
     Id currentUserId =   UserInfo.getUserId();
     this.tasks = new List<Task>();
         
-    try {
+//    try {
          
+ Logger.info('searchTask option='+selectedTaskOption);
+ Logger.info('tasks='+this.patient.Tasks);
       if (selectedTaskOption == 'All Open') {
         for (Task t : this.patient.Tasks) {
           if (t.Status != 'Completed') {     
@@ -507,9 +515,9 @@ public class PatientExtension {
             }
         }
       }                                                                 
-    }catch(Exception e){
+/*    }catch(Exception e){
       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
-    }
+    }*/
   }
   	public PageReference changeViewState() {
   	    this.setInitialViewState();
@@ -598,6 +606,116 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
 		return null;
 	}
 	
+	public pagereference showEmailForm() {
+		sendSuccess = false;
+		calcEmailType();
+		saveQuote();
+		emailToPatient = (patient.Email__c != null && patient.Email__c.trim().length() > 0)?true:false;
+		emailToOnsiteCoordinator = (Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email != null && Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;
+		additionalEmailRecipients = '';
+		return null;
+	}
+	
+	private void calcEmailType() {
+		emailType = (interactionFlag==true)?'Quote':(travelFlag==true)?'Itinerary':'';
+	}
+	public pagereference sendEmail() {
+		calcEmailType();
+		//add patient and onsite emails if applicable
+		list<string> toAddresses = new list<string>();
+		if (additionalEmailRecipients != null && additionalEmailRecipients.trim().length() > 0){
+			if (additionalEmailRecipients.indexof(',') > 0) {
+				toAddresses = additionalEmailRecipients.split(',');
+			}
+			else{
+				toAddresses.add(additionalEmailRecipients);
+			}
+		}
+		if (emailToPatient==true) {
+			toAddresses.add(patient.email__c);
+		}
+		if (emailToOnsiteCoordinator==true){
+			toAddresses.add(Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email);
+		}
+		
+		emailError = '';
+		//verify all additional recipients and add if pass; return error otherwise
+		for (string email : toAddresses) {
+			boolean valid = validateEmail(email.trim());
+			if (valid == false){
+				emailError = email + ' is not a valid email address.';//return error message about invalid email
+				return null;
+			}
+			email = email.trim();
+		}
+			
+		//Email constructors
+		if (toAddresses.size() > 10) {
+			emailError = 'Cannot exceed 10 recipients, including the patient and onsite coordinator.';//return error for exceeding limit
+			return null;
+		}
+		else if (toAddresses.size() == 0) {
+			emailError = 'Must specify at least 1 recipient.';//return error for no to address.
+			return null;
+		}
+		Messaging.reserveSingleEmailCapacity(toAddresses.size());
+		Messaging.SingleEmailMessage msg = new Messaging.SingleEmailMessage();
+		EmailTemplate[] tmpls = [select Body from EmailTemplate where DeveloperName = 'Your_Travel_Itinerary_is_Ready'];
+Logger.info('tmpls='+tmpls);
+		String body = tmpls[0].body.replace('{!Patient__c.Name}', patient.Name);
+		msg.setPlainTextBody(body);
+		Pagereference PDF;
+		Messaging.EmailFileAttachment efa = new Messaging.EmailFileAttachment();    
+		
+		if (emailType == 'Itinerary') {
+			pdf = Page.travelItineraryPDF;
+			pdf.getparameters().put('id',treatmentquote.id);
+			efa.setFileName('Travel_Itinerary.pdf'); 
+			// use template "Your Travel Itinerary is Ready"
+		}
+		else if (emailType == 'Quote') {
+			pdf = Page.Quote;
+			pdf.getparameters().put('id',treatmentquote.id);
+			efa.setFileName('Treatment_Quote.pdf'); 
+			//use template ????
+		}		
+		
+		pdf.setRedirect(true);
+        efa.setBody(pdf.getContent()); //attach the PDF  
+        
+        msg.setFileAttachments(new Messaging.EmailFileAttachment[] {efa});
+		msg.setBccSender(false);
+   		msg.setUseSignature(false);
+   		msg.setReplyTo('noreply@htt.com');
+   		msg.setSenderDisplayName('Mike Test');
+		msg.setToAddresses(toAddresses);
+		system.debug('To Addresses: '+toAddresses);
+		//process email into template and mail 
+		try {
+			Messaging.sendEmail(new Messaging.SingleEmailMessage[] { msg });
+			sendSuccess = true;
+			emailToPatient = (patient.Email__c != null && patient.Email__c.trim().length() > 0)?true:false;
+			emailToOnsiteCoordinator = (Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email != null && Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;
+			additionalEmailRecipients = '';
+		}
+		catch (exception e){
+			emailError = 'There was an error sending the email.';
+			sendSuccess = false;
+		}
+		return null;
+	}
+	
+	public static Boolean validateEmail(string email) {
+		if ( email != null ) {
+			String pat = '[a-zA-Z0-9\\.\\!\\#\\$\\%\\&\\*\\/\\=\\?\\^\\_\\+\\-\\`\\{\\|\\}\\~\'._%+-]+@[a-zA-Z0-9\\-.-]+\\.[a-zA-Z]+';
+			Boolean test = Pattern.matches(pat, email);
+			return test;
+		} 
+		else {
+			return false;
+		}
+	}
+	
   static testMethod void testPatientExtension(){
     Patient__c pat = new Patient__c();
     pat.name = 'Test';
@@ -621,5 +739,28 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
     pe.displayQuotes();  
     pe.selectedTaskOption = 'All Closed';
     pe.searchTask();    
-  }       
+  } 
+  
+  public static void testEmailSend() {
+  	 Messaging.SingleEmailMessage mail = 
+            new Messaging.SingleEmailMessage();
+ 
+// Who you are sending the email to
+//   mail.setTargetObjectId(recipient);
+   mail.setToAddresses(new List<String>{'richjvann@gmail.com', 'rich@healthtraveltechnologies.com'});
+
+   // The email template ID used for the email
+   mail.setTemplateId('00Xd0000000WwaSEAS');
+          
+   mail.setWhatId('a08d000000I542T');    
+   mail.setBccSender(false);
+   mail.setUseSignature(false);
+   mail.setReplyTo('richjvann@gmail.com');
+   mail.setSenderDisplayName('Rich Test');
+   mail.setSaveAsActivity(false);  
+ 
+Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+
+  	
+  }      
 }

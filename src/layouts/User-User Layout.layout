@@ -10,6 +10,10 @@
                 <behavior>Edit</behavior>
                 <field>Travel_Concierge__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Medical_Information_Officer__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

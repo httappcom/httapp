@@ -74,7 +74,7 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>  
-          <table widht="50%">    
+          <table width="50%">    
           <td><apex:commandLink action="{!firstIncidents}">First</apex:commandlink></td>
           <td><apex:commandLink action="{!previousIncidents}" rendered="{!hasPreviousIncident}">Previous</apex:commandlink></td>
           <td><apex:commandLink action="{!nextIncidents}" rendered="{!hasNextIncident}">Next</apex:commandlink></td>

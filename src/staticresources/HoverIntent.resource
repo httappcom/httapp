@@ -48,7 +48,7 @@ var rightpanel = false;
 j$(document).ready(function() {
     /* expandPanel on click - good for mobile devices without mouse */
     j$('#rightPanel').click(expandPanel);
-	//j$('#rightpanelname').click(expandPanel);
+	j$('#rightpanelname').click(expandPanel);
     /* show+hide panel on mouse hover */
     j$('#rightPanel').hoverIntent({
         over: expandPanel,

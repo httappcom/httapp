@@ -164,6 +164,197 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Ins_Authorization_Num__c</fullName>
+        <externalId>false</externalId>
+        <label>Authorization #</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Benefit_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <label>Benefit Percentage</label>
+        <precision>17</precision>
+        <required>false</required>
+        <scale>1</scale>
+        <trackHistory>false</trackHistory>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Claim_Address__c</fullName>
+        <externalId>false</externalId>
+        <label>Claim Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Clinic_Num__c</fullName>
+        <externalId>false</externalId>
+        <label>Clinic #</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ins_Co_Pay__c</fullName>
+        <externalId>false</externalId>
+        <label>Co-pay</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ins_Comments__c</fullName>
+        <externalId>false</externalId>
+        <label>Insurance Comments</label>
+        <length>2000</length>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Ins_Contact__c</fullName>
+        <externalId>false</externalId>
+        <label>Insurance Contact</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ins_Deductible__c</fullName>
+        <externalId>false</externalId>
+        <label>Deductible</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Dependent_Coverage__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Dependent Coverage</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Effective_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Effective Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Group__c</fullName>
+        <externalId>false</externalId>
+        <label>Group #</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ins_Lifetime_Max__c</fullName>
+        <externalId>false</externalId>
+        <label>Lifetime Max</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Name__c</fullName>
+        <description>Name of Insurance</description>
+        <externalId>false</externalId>
+        <label>Insurance Name</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ins_Out_of_Pocket_Met__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Out of Pocket Met</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Out_of_Pocket__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient&apos;s Out of Pocket (Stop-Loss)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Policy__c</fullName>
+        <externalId>false</externalId>
+        <label>Policy #/ID #</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ins_Pre_Auth_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>Pre-Auth Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Pre_Cert_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Pre-Cert Required</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Pre_Existing_Clause_Applies__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Pre-Existing Clause Applies?</label>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Verification_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Verification Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Ins_Verify_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>Verification Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
+    </fields>
+    <fields>
         <fullName>Key_Contact__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -183,6 +374,14 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Medical_Reviews_Fax__c</fullName>
+        <externalId>false</externalId>
+        <label>Medical Reviews Fax</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Phone</type>
     </fields>
     <fields>
         <fullName>Mobile__c</fullName>

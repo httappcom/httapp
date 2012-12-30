@@ -34,7 +34,7 @@
 					<apex:outputlabel value="Proposed procedure Date: "/>
 				</td>
 				<td valign="top">
-					<apex:outputtext value="{!treatmentQuote.treatment__r.Procedure_Date__c}"/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.Procedure_Date__c}" rendered="{!ISBLANK(treatmentQuote.treatment__r.Procedure_Date__c) ==false}"/>
 				</td>
 			</tr>
 			<tr>

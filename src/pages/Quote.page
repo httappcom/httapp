@@ -13,7 +13,7 @@
     <p>Thank you for contacting Health Travel Guides for a treatment quote.  We are happy to help you with your dental, medical, surgical or homeopathic wellness needs.</p>
     
     <p>Your Treatment Quote: 
-        <apex:outputText value="${0, number,###,###,###,###.##}">
+        <apex:outputText value=" ${0, number,###,###,###,###.##}">
             <apex:param value="{!q.Total_Price__c}"/>
         </apex:outputText>
     </p>
@@ -138,16 +138,7 @@ Health Travel Guides is pleased to feature the secure electronic Echosign docume
                 
                 <p class="disclaimer">*A nonrefundable deposit is required to guarantee surgery date.  All prices quoted in USD.</p>
                 
-                <p>Preferred Airport:   ________________________</p>
-                
-                <p>Traveling Companion: ________________________</p>
-                
-                <p>Accepted By: ____________________________________________(Patient Signature*) Date: ________</p>
-
-                <p class="disclaimer">*In cases where the patient is a minor, we require the signature of a legal guardian.</p>
-                
-                <p>Legal Guardian Acceptance:   ____________________________________________     Date:________</p>
-         		<p>Relationship to Patient: ____________________________________________</p>
+                                
                 </div>
                 </div>
                 	<h2>Terms and Conditions</h2>                

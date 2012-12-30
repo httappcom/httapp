@@ -190,6 +190,15 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>Sub_stage_to_Quote_in_Process</fullName>
+        <field>Sub_Stage__c</field>
+        <literalValue>Quote In Process</literalValue>
+        <name>Set Sub-stage to Quote in Process</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Substage_to_treatment_in_progess</fullName>
         <description>Set substage to &quot;Treatment in Progress&quot;</description>
         <field>Sub_Stage__c</field>
@@ -210,7 +219,7 @@
     </fieldUpdates>
     <rules>
         <fullName>At Provider Now</fullName>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
@@ -241,7 +250,7 @@
             <name>Treatment_Itinerary_Email_to_Patient</name>
             <type>Alert</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Sub_Stage__c</field>
             <operation>equals</operation>
@@ -259,7 +268,7 @@
             <name>Initialize_Treatment</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Stage__c</field>
             <operation>equals</operation>
@@ -270,7 +279,7 @@
     </rules>
     <rules>
         <fullName>Post Treatment Workflow</fullName>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
@@ -326,6 +335,22 @@
             <operation>equals</operation>
             <value>(4) Post-Op</value>
         </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>Send Quote to EchoSign</fullName>
+        <actions>
+            <name>Sub_stage_to_Quote_in_Process</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <field>Treatment__c.Sub_Stage__c</field>
+            <operation>equals</operation>
+            <value>Quote Complete - Send to Echosign</value>
+        </criteriaItems>
+        <description>Sends the quote document as a PDF to EchoSign for the patient to sign.</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
