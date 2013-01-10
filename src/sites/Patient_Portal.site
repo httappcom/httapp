@@ -17,6 +17,5 @@
     <portal>Customer Portal</portal>
     <requireInsecurePortalAccess>false</requireInsecurePortalAccess>
     <siteAdmin>rvann@nuehealth.com.dev</siteAdmin>
-    <siteTemplate>SiteTemplate</siteTemplate>
     <subdomain>richsite-developer-edition</subdomain>
 </CustomSite>

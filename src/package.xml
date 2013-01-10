@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
         <name>ApexClass</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ApexComponent</name>
     </types>
     <types>
         <members>*</members>
@@ -15,6 +19,14 @@
     <types>
         <members>*</members>
         <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>User.EchoSign_Acct_Email__c</members>
+        <members>User.Medical_Information_Officer__c</members>
+        <members>User.Receive_Portal_Messages__c</members>
+        <members>User.Receive_Staff_Messages__c</members>
+        <members>User.Travel_Concierge__c</members>
+        <name>CustomField</name>
     </types>
     <types>
         <members>CustomLabels</members>
@@ -124,13 +136,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>User.Medical_Information_Officer__c</members>
-        <members>User.Receive_Portal_Messages__c</members>
-        <members>User.Receive_Staff_Messages__c</members>
-        <members>User.Travel_Concierge__c</members>
-        <name>CustomField</name>
-    </types>
     <version>26.0</version>
 </Package>
-

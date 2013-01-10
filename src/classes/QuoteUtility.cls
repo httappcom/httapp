@@ -52,21 +52,23 @@ public with sharing class QuoteUtility {
 	       t = [SELECT 	id,
 	        			Patient__r.Name,
 	        			Patient__r.Email__c,
-	        			(SELECT id FROM Treatment_Quotes__r ORDER BY CreatedDate DESC LIMIT 1)
+	        			(SELECT id, echosignDocKey__c, Doc_Signed_Timestamp__c FROM Treatment_Quotes__r ORDER BY CreatedDate DESC LIMIT 1)
 	        from Treatment__c where id = :t.id];
 	        return t;
       	} 
   }
   
-  public static PageReference sendQuoteToEchosign(Treatment__c treatment) {
+  public static PageReference sendQuoteToEchosign(Treatment__c treatment) 
+  {
   	
   	treatment = queryTreatmentForEchosignDoc(treatment);
-  	String echoSignSetting = 'Stephan-dev-acct';
+  	String echoSignSetting = 'Nuehealth';
   	String apiKey = echoSignAPI__c.getValues(echoSignSetting).API_Key__c;  	
   	  	
   	//Set up SenderInfo object
   	dtoApiEchosign.SenderInfo quoteSenderInfo = new dtoApiEchosign.SenderInfo();
-  	quoteSenderInfo.email = echoSignAPI__c.getValues(echoSignSetting).Email__c;
+  	User u = [Select Id, EchoSign_Acct_Email__c from User where Id = :UserInfo.getUserId()];
+  	quoteSenderInfo.email = u.EchoSign_Acct_Email__c == null ? echoSignAPI__c.getValues(echoSignSetting).Email__c : u.EchoSign_Acct_Email__c ;
   	//Set up DocumentCreationInfo object
   	dtoApiEchosign.DocumentCreationInfo quoteDocCrInfo = new dtoApiEchosign.DocumentCreationInfo();
   	quoteDocCrInfo.name = getQuoteDocumentFilename(treatment);
@@ -115,6 +117,52 @@ public with sharing class QuoteUtility {
        ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
        throw e;
     }
+  	return null;
+  }
+  
+  public static Treatment__c pollEchoSignDocInfo(Treatment__c treatment, Treatment_Quote__c quote)
+  {
+  	if ( (quote.echosignDocKey__c != null) && (quote.Doc_Signed_Timestamp__c == null) )
+  	{
+  		String echoSignSetting = 'Nuehealth';
+      String apiKey = echoSignAPI__c.getValues(echoSignSetting).API_Key__c;
+	  	apiEchosign.EchoSignDocumentService15HttpPort echoSignDoc = new apiEchosign.EchoSignDocumentService15HttpPort();
+	  	dto15ApiEchosign.DocumentInfo echoSignDocInfo = new dto15ApiEchosign.DocumentInfo();
+	  	try 
+	    {	    	
+	      echoSignDocInfo = echoSignDoc.getDocumentInfo(apiKey, quote.echosignDocKey__c);	
+	    }
+	    catch(CalloutException ce)
+	    {
+	       Logger.info(ce.getStackTraceString());
+	       ServerLogUtility.updateServerLog('EchoSign', ce.getmessage());
+	    }   
+	    catch(Exception e)
+	    {
+	       Logger.info(e.getStackTraceString());
+	       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
+	       throw e;
+	    }
+	    if (echoSignDocInfo.status == 'SIGNED')
+	    {
+	    	treatment.Sub_Stage__c = 'Quote Signed';
+	    	update treatment;
+	    	for ( dto15ApiEchosign.DocumentHistoryEvent docEvent : echoSignDocInfo.events.DocumentHistoryEvent)
+	    	{
+	    	  if (docEvent.type_x == 'APPROVED') 
+	    	  { 
+	    	    	quote.Doc_Signed_Timestamp__c = docEvent.date_x;
+	    	    	update quote;
+	    	  }
+	    	} 
+	    }
+	    else if (echoSignDocInfo.status == 'ABORTED' || echosignDocInfo.status == 'EXPIRED')
+	    {
+	    	treatment.Sub_Stage__c = 'Quote Rejected';
+	    	update treatment;
+	    }
+  	}
+  	
   	return null;
   }
 }

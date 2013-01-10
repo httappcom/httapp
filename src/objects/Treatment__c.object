@@ -36,7 +36,7 @@
     <description>What Treatment is the patient interested in.</description>
     <enableActivities>true</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
     <fields>
@@ -46,6 +46,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -55,6 +56,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -89,6 +91,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -117,6 +120,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -125,6 +129,7 @@
         <externalId>false</externalId>
         <label>Close Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -150,6 +155,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -157,7 +163,21 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Deposit Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Destination_Facility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Determines the &quot;branding&quot; for this treatment and which SalesForce users can access this treatment and associated records.</description>
+        <externalId>false</externalId>
+        <label>Destination Facility</label>
+        <referenceTo>Medical_Facility__c</referenceTo>
+        <relationshipLabel>Treatments</relationshipLabel>
+        <relationshipName>Treatments</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Final_Departure_Date__c</fullName>
@@ -175,6 +195,7 @@
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Currency</type>
     </fields>
     <fields>
@@ -182,6 +203,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Financing Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -207,6 +229,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -252,6 +275,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -259,6 +283,7 @@
         <externalId>false</externalId>
         <label>Next Follow Up</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>DateTime</type>
     </fields>
     <fields>
@@ -266,6 +291,7 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>On Hold</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Checkbox</type>
     </fields>
     <fields>
@@ -274,8 +300,20 @@
         <label>On-Site Recovery Period</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Onsite_Coordinator__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Onsite Coordinator</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Treatments</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Patient_Email_Formula__c</fullName>
@@ -292,6 +330,7 @@
         <externalId>false</externalId>
         <label>Patient Email</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Email</type>
         <unique>false</unique>
     </fields>
@@ -314,6 +353,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -335,6 +375,7 @@
         <relationshipName>Treatments</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
@@ -353,6 +394,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -378,6 +420,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -386,6 +429,7 @@
         <label>Preferred Destination</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -416,6 +460,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -423,6 +468,7 @@
         <externalId>false</externalId>
         <label>Preferred Travel Date From</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -430,6 +476,7 @@
         <externalId>false</externalId>
         <label>Preferred Travel Date To</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -447,6 +494,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -544,6 +592,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -551,6 +600,7 @@
         <externalId>false</externalId>
         <label>Procedure Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Date</type>
     </fields>
     <fields>
@@ -616,6 +666,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1089,6 +1140,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1097,6 +1149,7 @@
         <label>Referral Source</label>
         <length>50</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1109,6 +1162,7 @@
         <relationshipLabel>Treatments (Related Campaign)</relationshipLabel>
         <relationshipName>Treatments1</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1116,6 +1170,7 @@
         <externalId>false</externalId>
         <label>Request Summary</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
@@ -1220,6 +1275,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1384,6 +1440,7 @@
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
     </fields>
     <fields>
@@ -1395,6 +1452,7 @@
         <relationshipLabel>Treatments</relationshipLabel>
         <relationshipName>Treatments</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Lookup</type>
     </fields>
     <fields>
@@ -1402,6 +1460,7 @@
         <externalId>false</externalId>
         <label>Treatment Summary</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
@@ -1414,6 +1473,7 @@
     <nameField>
         <displayFormat>TR{00000000}</displayFormat>
         <label>Treatment</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>Treatments</pluralLabel>

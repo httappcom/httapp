@@ -1,0 +1,21 @@
+<apex:page controller="surveyPDF_Controller" renderAs="pdf">
+	<apex:outputpanel rendered="{!error==false}">
+		<h1>{!IF(type=='m',medicalProfile.name,satisfactionSurvey.name)}</h1>
+		<h2>For {!IF(type=='m',medicalProfile.patient__r.name,satisfactionSurvey.treatment__r.patient__r.name)}</h2>
+		<br/>
+		<br/>
+		<apex:pageblock >
+			<apex:pageblocktable value="{!IF(type=='m',medicalProfileQuestions,satisfactionSurveyQuestions)}" var="q" columnswidth="50%,50%" cellspacing="10px">
+	       	   	<apex:column >
+	       	   		<apex:facet name="header">Question</apex:facet>
+	       	   		<apex:outputtext style="font-weight:bold" value="{!q.Full_Question_Text__c}" escape="false"/>
+	       	   	</apex:column>
+	       	   	<apex:column >
+	       	   		<apex:facet name="header">Answer</apex:facet>
+	       	   		<apex:outputtext value="{!q.Answer__c}" escape="false"/>
+	       	   	</apex:column>
+	       	</apex:pageblocktable>
+		</apex:pageblock>
+	</apex:outputpanel>
+	<apex:pagemessages rendered="{!error==true}"/>
+</apex:page>

@@ -1,0 +1,5 @@
+<apex:page sidebar="false" showHeader="false" >
+	<body>
+		<c:messaging height="1000" patientId="a08d000000I53zr" />
+	</body>
+</apex:page>

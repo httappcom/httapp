@@ -91,17 +91,6 @@
         <unique>true</unique>
     </fields>
     <fields>
-        <fullName>Onsite_Coordinator__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Onsite Coordinator</label>
-        <referenceTo>Contact</referenceTo>
-        <relationshipLabel>Medical Facilities</relationshipLabel>
-        <relationshipName>Medical_Facilities</relationshipName>
-        <required>false</required>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Slogan__c</fullName>
         <externalId>false</externalId>
         <label>Slogan</label>

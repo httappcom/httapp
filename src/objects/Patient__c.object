@@ -40,7 +40,7 @@
     <description>Core object in the PRM data model.</description>
     <enableActivities>true</enableActivities>
     <enableEnhancedLookup>false</enableEnhancedLookup>
-    <enableFeeds>false</enableFeeds>
+    <enableFeeds>true</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <fields>
@@ -48,6 +48,7 @@
         <externalId>false</externalId>
         <label>Advocate Email</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
         <unique>false</unique>
@@ -59,6 +60,7 @@
         <label>Advocate Name</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -68,6 +70,7 @@
         <externalId>false</externalId>
         <label>Advocate Phone</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -95,6 +98,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Alternate Email</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
         <unique>false</unique>
@@ -105,6 +109,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>City</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -115,6 +120,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Country</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -125,6 +131,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Date of Birth</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
@@ -133,6 +140,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Do Not Contact</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
@@ -141,6 +149,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Email</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Email</type>
         <unique>false</unique>
@@ -160,6 +169,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
     </fields>
@@ -168,6 +178,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Authorization #</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -178,6 +189,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <precision>17</precision>
         <required>false</required>
         <scale>1</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Percent</type>
     </fields>
@@ -186,6 +198,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Claim Address</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>TextArea</type>
     </fields>
@@ -195,6 +208,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Clinic #</label>
         <length>30</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -206,6 +220,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
@@ -215,6 +230,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Insurance Comments</label>
         <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
@@ -225,6 +241,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Insurance Contact</label>
         <length>30</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -236,6 +253,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -244,6 +262,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Dependent Coverage</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
@@ -252,6 +271,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Effective Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
@@ -261,6 +281,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Group #</label>
         <length>30</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -272,6 +293,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -282,6 +304,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Insurance Name</label>
         <length>30</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -291,6 +314,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Out of Pocket Met</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
@@ -301,6 +325,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <precision>18</precision>
         <required>false</required>
         <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Currency</type>
     </fields>
@@ -310,6 +335,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Policy #/ID #</label>
         <length>40</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -319,6 +345,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Pre-Auth Phone</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -327,6 +354,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Pre-Cert Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
@@ -335,6 +363,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Pre-Existing Clause Applies?</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
     </fields>
@@ -343,6 +372,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Verification Date</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Date</type>
     </fields>
@@ -351,6 +381,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Verification Phone</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -363,6 +394,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <relationshipLabel>Patients</relationshipLabel>
         <relationshipName>Patients</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
@@ -371,15 +403,28 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Last Communication</label>
         <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Medical_Profile_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Medical Profile Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Medical_Reviews_Fax__c</fullName>
         <externalId>false</externalId>
         <label>Medical Reviews Fax</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -388,6 +433,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Mobile</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -397,6 +443,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Nationality</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -408,6 +455,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
@@ -418,6 +466,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Patient First Name</label>
         <length>50</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -428,6 +477,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Patient Last Name</label>
         <length>50</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -451,6 +501,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
     </fields>
@@ -477,6 +528,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
     </fields>
@@ -485,6 +537,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <externalId>false</externalId>
         <label>Phone</label>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Phone</type>
     </fields>
@@ -496,6 +549,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <referenceTo>User</referenceTo>
         <relationshipName>Patients</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
@@ -505,6 +559,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Postal Code</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -552,6 +607,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
     </fields>
@@ -582,6 +638,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
     </fields>
@@ -591,6 +648,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>State</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -601,6 +659,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <label>Street</label>
         <length>255</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -736,8 +795,21 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>hashid__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>false</externalId>
+        <label>hashid</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
     </fields>
     <label>Patient</label>
     <listViews>
@@ -747,6 +819,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
     </listViews>
     <nameField>
         <label>Patient Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Text</type>
     </nameField>

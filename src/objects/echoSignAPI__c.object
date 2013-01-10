@@ -16,8 +16,10 @@
     </fields>
     <fields>
         <fullName>Email__c</fullName>
+        <description>Email to use for generic EchoSign signing requests</description>
         <externalId>false</externalId>
-        <label>Email</label>
+        <inlineHelpText>This EchoSign account will be used when a user doesn&apos;t have their own EchoSign email set.</inlineHelpText>
+        <label>Default Email</label>
         <required>false</required>
         <type>Email</type>
         <unique>false</unique>

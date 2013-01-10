@@ -13,7 +13,7 @@ public  without sharing class patientPortalController {
     public Task detailTask {get;set;}
     public Travel__c detailTravel {get;set;}
     public Payment__c detailPayment {get;set;}
-    public Medical_Profile__c detailMedicalRecord {get;set;}
+//    public Medical_Profile__c detailMedicalRecord {get;set;}
     public Incident__c detailIncident {get;set;}
     public Treatment_Quote__c detailTreatmentQuote {get;set;}
 
@@ -21,7 +21,7 @@ public  without sharing class patientPortalController {
     public Attachment tempfile {get;set;} // placeholder file to be deleted once portal built out more
     
     public list<recentActivity> recentActivities {get;set;}
-    public list<Medical_Profile__c> medicalRecords {get;set;}
+//    public list<Medical_Profile__c> medicalRecords {get;set;}
     public list<Travel__c> travelList {get;set;}
     public list<Treatment__c> treatmentList {get;set;}
     public list<Treatment_Quote__c> treatmentQuoteList {get;set;}
@@ -42,7 +42,7 @@ public  without sharing class patientPortalController {
     
     public patientPortalController () {
         recentActivities  = new list<recentActivity>();
-        medicalRecords = new list<Medical_Profile__c>();
+//        medicalRecords = new list<Medical_Profile__c>();
         travelList = new list<Travel__c>();
         treatmentList = new list<Treatment__c>();
         treatmentQuoteList = new list<Treatment_Quote__c>();
@@ -77,7 +77,7 @@ public  without sharing class patientPortalController {
     
     public pagereference buildRecentActivity() {
         recentActivities = new list<recentActivity>();
-        for (Medical_Profile__c mp : patient.Medical_Profiles__r) {
+/*        for (Medical_Profile__c mp : patient.Medical_Profiles__r) {
             recentActivity r = new recentActivity();
             r.lastModified = mp.LastModifiedDate;
             r.subject = 'Medical Profile';
@@ -89,7 +89,7 @@ public  without sharing class patientPortalController {
             r.relatedTreatment ='';
             detailMap.put(mp.id,mp);
         }
-        
+ */       
         for (Task t : patient.tasks) {
             recentActivity r = new recentActivity();
             r.lastModified = t.LastModifiedDate;
@@ -193,7 +193,7 @@ public  without sharing class patientPortalController {
     }
     
     public pagereference buildRelatedLists () {
-        medicalRecords = patient.medical_profiles__r;
+//        medicalRecords = patient.medical_profiles__r;
         
         return null;
     }
@@ -246,10 +246,10 @@ public  without sharing class patientPortalController {
                 showDetailRecordType = 'Payment';
                 detailPayment = (Payment__c)showDetailRecord;
             }
-            else if (showDetailRecord instanceof Medical_Profile__c){
+/*            else if (showDetailRecord instanceof Medical_Profile__c){
                 showDetailRecordType = 'Medical Record';
                 detailMedicalRecord = (Medical_Profile__c)showDetailRecord;
-            }
+            }*/
             else if (showDetailRecord instanceof Incident__c){
                 showDetailRecordType = 'Incident';
                 detailIncident = (Incident__c)showDetailRecord;
@@ -316,11 +316,11 @@ public  without sharing class patientPortalController {
         paymentTest.Treatment__c = treatmentTest.id;
         insert paymentTest;
         
-        Medical_Profile__c MRTest = new Medical_Profile__c();
+/*        Medical_Profile__c MRTest = new Medical_Profile__c();
         MRTest.Patient__c = p.id;
         MRTest.Treatment__c = treatmentTest.id;
         insert MRTest;
-        
+*/        
         Incident__c incidentTest = new Incident__c();
         incidentTest.Treatment__c = treatmentTest.id;
         insert incidentTest;
@@ -397,7 +397,7 @@ public  without sharing class patientPortalController {
                                Patient__r.Email__c,
                                Payment_Type__c, 
                                Phase__c,
-                               Preferred_Destination__c,
+                               Destination_Facility__c,
                                Preferred_Form_of_Contact__c, 
                                Preferred_Travel_Date_From__c,
                                Preferred_Travel_Date_To__c,
@@ -484,18 +484,6 @@ public  without sharing class patientPortalController {
                               Verification_Date__c,
                               Verification_Phone_Number__c 
                       from Payments__r
-                      order by lastModifiedDate desc),
-                      (select Id,
-                              Name,
-                              CreatedBy.Name,
-                              CreatedDate,
-                              IsDeleted,
-                              LastModifiedBy.Name, 
-                              LastModifiedDate,
-                              Patient__c,
-                              SystemModstamp,
-                              Treatment__c         
-                      from Medical_Profiles__r
                       order by lastModifiedDate desc)
                 from Patient__c 
                 where id = :patientId];
@@ -519,7 +507,7 @@ public  without sharing class patientPortalController {
                         t.Preferred_Travel_Date_To__c,
                         t.Preferred_Travel_Date_From__c,
                         t.Preferred_Form_of_Contact__c,
-                        t.Preferred_Destination__c,
+                        t.Destination_Facility__c,
                         t.Phase__c,
                         t.Payment_Type__c,
                         t.Patient__c,

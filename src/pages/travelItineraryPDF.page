@@ -63,16 +63,16 @@
 					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.Country__c}"/>
 					<br/><br/>
 					<apex:outputlabel value="On-site Coordinator:" style="font-weight:bold;"/><br/>
-					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_Coordinator__r.name}"/><br/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_Coordinator__r.name}"/><br/>
 					<apex:outputtext >
 						<apex:outputtext value="Phone: "/>
-						<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_coordinator__r.phone}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_coordinator__r.phone}"/><br/>
 					</apex:outputtext>
 					<apex:outputtext >
 						<apex:outputtext value="Mobile: " />
-						<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_coordinator__r.mobilephone}"/><br/>
+						<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_coordinator__r.mobilephone}"/><br/>
 					</apex:outputtext>
-					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.onsite_coordinator__r.email}"/>
+					<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_coordinator__r.email}"/>
 					<br/>		
 					<br/>
 					<apex:outputlabel value="EMERGENCY CONTACTS" style="text-decoration:underline; padding-bottom:10px;"/><br/>

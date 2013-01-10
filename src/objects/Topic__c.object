@@ -33,42 +33,31 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
-    <description>The medical profile of the patient</description>
     <enableActivities>false</enableActivities>
-    <enableEnhancedLookup>false</enableEnhancedLookup>
-    <enableFeeds>false</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <fields>
         <fullName>Patient__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Patient</label>
         <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Medical Profiles</relationshipLabel>
-        <relationshipName>Medical_Profiles</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
-        <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Treatment</label>
-        <referenceTo>Treatment__c</referenceTo>
-        <relationshipLabel>Medical Profiles</relationshipLabel>
-        <relationshipName>Treatment_Medical_Profiles</relationshipName>
+        <relationshipLabel>Topics</relationshipLabel>
+        <relationshipName>Topics</relationshipName>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
-    <label>Medical Profile</label>
+    <label>Topic</label>
     <nameField>
-        <displayFormat>MQ{0000000000}</displayFormat>
-        <label>Medical Profile</label>
-        <type>AutoNumber</type>
+        <label>Topic Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
     </nameField>
-    <pluralLabel>Medical Profiles</pluralLabel>
+    <pluralLabel>Topics</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

@@ -77,7 +77,7 @@ public with sharing class TreatmentUtility {
                         Patient_Email__c,
                         Payment_Type__c, 
                         Phase__c,
-                        Preferred_Destination__c,
+                        Destination_Facility__c,
                         Preferred_Form_of_Contact__c, 
                         Preferred_Travel_Date_From__c,
                         Preferred_Travel_Date_To__c,
@@ -117,7 +117,7 @@ public with sharing class TreatmentUtility {
                         Patient_Email__c,
                         Payment_Type__c, 
                         Phase__c,
-                        Preferred_Destination__c,
+                        Destination_Facility__c,
                         Preferred_Form_of_Contact__c, 
                         Preferred_Travel_Date_From__c,
                         Preferred_Travel_Date_To__c,*/
@@ -142,5 +142,19 @@ public with sharing class TreatmentUtility {
                     from Treatment__c 
                     where id = :pTreatmentId];               
       }  
-   }   
+   } 
+   
+   public static list<Satisfaction_Survey_Question__c> querySatisfactionSurveyQuestions(string headerid){
+   		return	[select id, 
+   						name, 
+   						answer__c, 
+   						boolean_answer__c, 
+   						comment__c, 
+   						full_question_text__c, 
+   						order__c, 
+   						satisfaction_survey__c 
+   				from Satisfaction_Survey_Question__c 
+   				where Satisfaction_Survey__c = :headerid 
+   				order by order__c];
+   }  
 }

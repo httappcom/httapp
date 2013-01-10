@@ -12,13 +12,14 @@ public class PatientExtension {
  	public List<Task> tasks { get; set; }
  	public UILookup__c lookup { get; public set; }
  
- 	public List<Medical_Profile__c> medProfiles { get; set; }
- 	public Medical_Profile__c medProfile { get; set; }  
+// 	public List<Medical_Profile__c> medProfiles { get; set; }
+// 	public Medical_Profile__c medProfile { get; set; }  
  	public Treatment_Quote__c treatmentQuote { get; set; }
  	public Incident__c incident { get; set; }
  	public String emailType { get; set; }
     
 	public List<SelectOption> taskOptions { get; set; }
+	public List<SelectOption> onsiteCoordinators { get; set; }
  	public String selectedTaskOption { get; set; }
  	public ID treatmentId { get; public set; }
  	public ID treatmentLastId { get; set; }
@@ -28,7 +29,7 @@ public class PatientExtension {
   	public integer incidentCurNumber { get; set; } 
   	public Integer incidentTotCount { get; set; }     
   	public String incidentName{ get; set; }        
-  	public Boolean inquiryFlag { get; set; }    
+  	public Boolean inquiryFlag { get; set; }     
   	public Boolean interactionFlag { get; set; }    
   	public Boolean travelFlag { get; set; }
   	public Boolean postopFlag { get; set; }
@@ -41,6 +42,9 @@ public class PatientExtension {
   	public List<Treatment__c> treatments { get; private set; }
   	private List<Payment__c> payments ;    
   	private List<Incident__c> incidents ;
+     
+    public Medical_Profile_Header__c medicalProfile {get;set;}
+    public list<Medical_Profile_Question__c> medicalProfileQuestions {get;set;} 
      
     public boolean showAdvocateInfo {get;set;}
 	public boolean emailToPatient {get;set;}
@@ -64,7 +68,7 @@ public class PatientExtension {
        		loadTreatments();
   Logger.info('treatments='+treatments);
        		setTreatmentInfo();
-      		if ( patient.Medical_Profiles__r.size() > 0 ) this.medprofile = patient.Medical_Profiles__r[0];
+      		queryMedicalProfile();
       		if ( patient.Payments__r.size() > 0 ) {
  	       		paymentCurNumber = 1;
         		this.paymentTotCount = patient.Payments__r.size() ; 
@@ -120,8 +124,8 @@ public class PatientExtension {
    Logger.info('travel set to blank object');
     	this.payment = new Payment__c();
     	this.payments = new List<Payment__c> ();  
-    	this.medProfiles = new List<Medical_Profile__c>  ();
-    	this.medProfile = new Medical_Profile__c (); 
+//    	this.medProfiles = new List<Medical_Profile__c>  ();
+//    	this.medProfile = new Medical_Profile__c (); 
     	this.treatmentQuote = new Treatment_Quote__c ();
     	this.procedure = null;
     	this.incidents = new List<Incident__c> ();
@@ -158,21 +162,31 @@ public class PatientExtension {
   	}
 	public PageReference saveTreatment() {
 Logger.info('saveTreatment');
+      if (treatment.Sub_Stage__c == 'Quote Complete - Send to Echosign')
+      {    	
+        Logger.info('treatmentQuote.id=' + treatmentQuote.id);
+        try 
+        {
+        	Treatment_Quote__c tempTreatmentQuote = [select id, echosignDocKey__c from  Treatment_Quote__c where Id = : treatmentQuote.id ];
+          Logger.info('tempTreatmentQuote.echosignDocKey__c = ' + tempTreatmentQuote.echosignDocKey__c);        
+          if ( tempTreatmentQuote.echosignDocKey__c == null)
+	        { 
+	          sendQuoteToEchosign();
+	        }
+        }
+        catch (Exception e)
+        {
+          Logger.info(e.getStackTraceString());
+          ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
+          throw e;
+        }
+      }
     	try {
 	    	savePatient();
    Logger.info('saveTreatment travel='+travel);
    			saveTravel();
     		treatment.Travel__c = travel.id;
-   Logger.info('treatment.Travel='+treatment.Travel__c);
-        if (treatment.Sub_Stage__c == 'Quote Complete - Send to Echosign')
-        {
-          Treatment_Quote__c tempTreatmentQuote = [select id, echosignDocKey__c from  Treatment_Quote__c where Id = : treatmentQuote.id ];
-          Logger.info('tempTreatmentQuote.echosignDocKey__c = ' + tempTreatmentQuote.echosignDocKey__c);
-          if ( tempTreatmentQuote.echosignDocKey__c == null)
-          { 
-            sendQuoteToEchosign();
-          }
-        }   
+   Logger.info('treatment.Travel='+treatment.Travel__c);   
 	    	if ( treatment.id == null ) {
       			treatment.Patient__c = patient.id;    
       			insert treatment;
@@ -186,7 +200,6 @@ Logger.info('saveTreatment');
   Logger.info('Updating Treatment...');
         		update treatment; 
     		}
-
     	} catch (DmlException dmlEx) {
     		addError(dmlEx);
     		throw dmlEx;
@@ -334,7 +347,20 @@ Logger.info('treatmentQuote.Treatment= null');
 //     	setQuoteInfo();
      	return null;
   	}
-
+  	public PageReference checkOnEchoSign()
+  	{
+	    if ( (treatment.Sub_Stage__c == 'Quote In Process') )
+	      
+	      {
+	        Treatment_Quote__c currentQuote =  [SELECT Id, Treatment__c, echosignDocKey__c,  Doc_Signed_Timestamp__c 
+	                                            FROM  Treatment_Quote__c WHERE Treatment__c = :treatment.Id ORDER BY CreatedDate DESC LIMIT 1 ];                                          
+	         if (currentQuote.Doc_Signed_Timestamp__c == null)
+	          {
+	            QuoteUtility.pollEchoSignDocInfo(treatment, currentQuote);
+	          }
+	      }
+	     return null;
+  	}
   public PageReference sendQuoteToEchosign()
   {
   	QuoteUtility.sendQuoteToEchosign(treatment);
@@ -545,6 +571,7 @@ Logger.info('treatmentQuote.Treatment= null');
     return null;
   }
   private void loadProcedure(ID procedureId) {
+Logger.info('Load Procedure');
     if (procedureId == null) {
         procedure = null;
         return;
@@ -561,8 +588,17 @@ Logger.info('treatmentQuote.Treatment= null');
         Recovery_Nights_Required__c,
         Transportation_Included__c
         FROM Procedure__c where id = :procedureId];
+    onsiteCoordinators = new List<SelectOption>();
     if (procedures.size()>0) {
         procedure = procedures[0];
+ Logger.info('procedure='+procedure);
+	    Medical_Facility_User__c[] medFacUsers = [select User__c, User__r.Name from Medical_Facility_User__c 
+	    	where Medical_Facility__c = :procedure.Facility__c and 
+	    	Role__c in ('Primary Onsite Coordinator', 'Onsite Coordinator')];
+Logger.info('Med Fac Users='+medFacUsers);
+	    for (Medical_Facility_User__c user : medFacUsers) {
+	    	onsiteCoordinators.add(new SelectOption(user.User__c, user.User__r.Name));
+	    }
     } else {
         procedure = null;
     }
@@ -611,7 +647,7 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
 		calcEmailType();
 		saveQuote();
 		emailToPatient = (patient.Email__c != null && patient.Email__c.trim().length() > 0)?true:false;
-		emailToOnsiteCoordinator = (Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email != null && Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;
+        emailToOnsiteCoordinator = (treatment.Onsite_Coordinator__r.Email != null && treatment.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;
 		additionalEmailRecipients = '';
 		return null;
 	}
@@ -635,7 +671,7 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
 			toAddresses.add(patient.email__c);
 		}
 		if (emailToOnsiteCoordinator==true){
-			toAddresses.add(Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email);
+            toAddresses.add(Treatmentquote.Treatment__r.Onsite_Coordinator__r.Email);
 		}
 		
 		emailError = '';
@@ -695,7 +731,7 @@ Logger.info('tmpls='+tmpls);
 			Messaging.sendEmail(new Messaging.SingleEmailMessage[] { msg });
 			sendSuccess = true;
 			emailToPatient = (patient.Email__c != null && patient.Email__c.trim().length() > 0)?true:false;
-			emailToOnsiteCoordinator = (Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email != null && Treatmentquote.Procedure__r.Facility__r.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;
+            emailToOnsiteCoordinator = (Treatmentquote.Treatment__r.Onsite_Coordinator__r.Email != null && Treatmentquote.Treatment__r.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;
 			additionalEmailRecipients = '';
 		}
 		catch (exception e){
@@ -713,6 +749,20 @@ Logger.info('tmpls='+tmpls);
 		} 
 		else {
 			return false;
+		}
+	}
+	
+	public pagereference retrieveMedicalProfile () {
+		surveyGizmoAPI_Methods.retrieveMedicalProfile(this.patient.id);
+		this.patient = PatientUtil.queryPatientAll(this.patient.id);
+		queryMedicalProfile();
+		return null;
+	}
+	
+	public void queryMedicalProfile() {
+		if ( patient.Survey_Headers__r.size() > 0 ){
+  			 medicalProfile = patient.Survey_Headers__r[0];
+  			 medicalProfileQuestions = patientUtil.queryMedicalProfileQuestions(medicalProfile.id);
 		}
 	}
 	

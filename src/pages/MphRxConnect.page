@@ -1,0 +1,3 @@
+<apex:page >
+<apex:iframe src="https://srsna.mphrx.com/connectwebapp/mpiPatient/viewFullChart?cert=htt&patientId=000000001551&password=Je7eFAaUtD6Ef8Ysz3U9ow==" scrolling="true" id="MphRxIframe" height="650px" width="100%"/>
+</apex:page>

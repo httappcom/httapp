@@ -51,6 +51,14 @@
                 <behavior>Edit</behavior>
                 <field>Referral_Source__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Destination_Facility__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Onsite_Coordinator__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -64,6 +72,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Case_Manager_s_Feel__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Next_Follow_Up__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
@@ -270,14 +282,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Patient__c</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>Medical_Profile__c.Treatment__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Incident__c.Treatment__c</relatedList>
         <sortField>CREATED_DATE</sortField>
@@ -286,13 +290,17 @@
     <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Satisfaction_Survey__c.Treatment__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00hd000000MOt0O</masterLabel>
+        <masterLabel>00hd000000Mn0iA</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
