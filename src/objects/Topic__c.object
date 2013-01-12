@@ -50,6 +50,19 @@
         <trackHistory>false</trackHistory>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>Treatment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Treatment</label>
+        <referenceTo>Treatment__c</referenceTo>
+        <relationshipLabel>Topics</relationshipLabel>
+        <relationshipName>Topics</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
     <label>Topic</label>
     <nameField>
         <label>Topic Name</label>

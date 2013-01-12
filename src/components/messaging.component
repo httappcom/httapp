@@ -256,7 +256,7 @@
 	
 											<div class="publishercontainer cxchattertextareacontainer chattertextareacontainer defaultState zen" style="min-height: 0px;">
 												<apex:outputPanel layout="block" styleClass="publisherrightcontainer" id="publisherrightcontainer" >
-													<apex:outputPanel layout="block" styleClass="publishercontrols" rendered="{!selectedTopic != '' && selectedTopic != 'New Topic'}">
+													<apex:outputPanel layout="block" styleClass="publishercontrols" rendered="{!selectedTopic != ''}">
 														<div id="contentButtonBar" class="cxcontentbuttonbar publisherFeedItemTypeChoices">
 															<apex:outputPanel layout="none" rendered="true" > 
 																<a id="publisherAttachTextPost" class="publisherattach withArrowAttached publisherTextPost" href="javascript: void(0);">

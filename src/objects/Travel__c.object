@@ -283,18 +283,6 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Patient__c</fullName>
-        <externalId>false</externalId>
-        <label>Patient</label>
-        <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Travels</relationshipLabel>
-        <relationshipName>Travels</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
-    </fields>
-    <fields>
         <fullName>Pre_Op_Instructions__c</fullName>
         <externalId>false</externalId>
         <label>Pre-Op Instructions</label>
@@ -393,5 +381,5 @@
     </nameField>
     <pluralLabel>Travels</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

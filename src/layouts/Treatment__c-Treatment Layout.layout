@@ -59,15 +59,15 @@
                 <behavior>Edit</behavior>
                 <field>Onsite_Coordinator__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Patient__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Name</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Required</behavior>
-                <field>Patient__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -293,6 +293,17 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Satisfaction_Survey__c.Treatment__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>User__c</fields>
+        <fields>Role__c</fields>
+        <relatedList>Care_Team_Member__c.Treatment__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Patient__c</fields>
+        <relatedList>Topic__c.Treatment__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

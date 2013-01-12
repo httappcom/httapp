@@ -47,6 +47,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Banner Image</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>City__c</fullName>
         <externalId>false</externalId>
         <label>City</label>
@@ -81,6 +90,14 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Doctor_Portal_Welcome_Msg__c</fullName>
+        <externalId>false</externalId>
+        <label>Doctor Portal Welcome Msg</label>
+        <length>2000</length>
+        <type>Html</type>
+        <visibleLines>15</visibleLines>
+    </fields>
+    <fields>
         <fullName>External_Id__c</fullName>
         <caseSensitive>false</caseSensitive>
         <externalId>true</externalId>
@@ -89,6 +106,30 @@
         <required>true</required>
         <type>Text</type>
         <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Logo__c</fullName>
+        <externalId>false</externalId>
+        <label>Logo</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner_Portal_Welcome_Msg__c</fullName>
+        <externalId>false</externalId>
+        <label>Partner Portal Welcome Msg</label>
+        <length>3000</length>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Satisfaction_Survey_Link__c</fullName>
+        <externalId>false</externalId>
+        <label>Satisfaction Survey Link</label>
+        <required>false</required>
+        <type>Url</type>
     </fields>
     <fields>
         <fullName>Slogan__c</fullName>
@@ -105,6 +146,14 @@
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Twitter_Widget__c</fullName>
+        <externalId>false</externalId>
+        <label>Twitter Widget</label>
+        <length>3000</length>
+        <type>LongTextArea</type>
+        <visibleLines>8</visibleLines>
     </fields>
     <fields>
         <fullName>Website__c</fullName>

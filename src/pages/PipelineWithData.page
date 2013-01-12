@@ -7,43 +7,43 @@
  <apex:stylesheet value="{!$Resource.sfstyles}"/>
 </head>
 <style>
-	.redRow {
-		background-color:#FFA4A4;
-	}
-	.redRow:hover {}
-	
-	.blueRow {
-		background-color:#94B8FF;
-	}
-	
-	.blueRow:hover {}
+    .redRow {
+        background-color:#FFA4A4;
+    }
+    .redRow:hover {}
+    
+    .blueRow {
+        background-color:#94B8FF;
+    }
+    
+    .blueRow:hover {}
 </style>
     <apex:pageBlock >
-    	<apex:pageBlockSection title="Patients" columns="1" collapsible="true">
-    		<apex:pageBlockSectionItem >
-    			<apex:outputPanel >
+        <apex:pageBlockSection title="Patients" columns="1" collapsible="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputPanel >
                    <apex:commandLink action="{!firstTreatments}">First</apex:commandlink>&nbsp;&nbsp;
                    <apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}">Previous</apex:commandlink>&nbsp;&nbsp;
                    <apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}">Next</apex:commandlink>&nbsp;&nbsp;
                    <apex:commandLink action="{!lastTreatments}">Last</apex:commandlink>
-    			</apex:outputPanel>
-    		</apex:pageBlockSectionItem>
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
              <apex:pageBlockTable value="{!active}" var="r">
-             	<apex:column value="{!r.Phase__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.Stage__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.LastModifiedDate}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.Procedure_Category__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/> 
-              	<apex:column headerValue="Procedure" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}">
-              		<apex:outputText value="{0}" rendered="{r.Treatment_Quotes__r.size>0}">
-              			<apex:param value="r.Treatment_Quotes__r[0].Procedure__c" />
-              		</apex:outputText>
-              	</apex:column> 
-             	<apex:column value="{!r.Patient__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.Next_Follow_Up__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.CreatedDate}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.Patient__r.Last_Communication__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-             	<apex:column value="{!r.Treatment_Summary__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
-			</apex:pageBlockTable>   
+                <apex:column value="{!r.Phase__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Stage__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.LastModifiedDate}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Procedure_Category__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/> 
+                <apex:column headerValue="Procedure" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}">
+                    <apex:outputText value="{0}" rendered="{r.Treatment_Quotes__r.size>0}">
+                        <apex:param value="r.Treatment_Quotes__r[0].Procedure__c" />
+                    </apex:outputText>
+                </apex:column> 
+                <apex:column value="{!r.Patient__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Next_Follow_Up__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.CreatedDate}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Patient__r.Last_Communication__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Treatment_Summary__c}" styleClass="{!IF(((r.Phase__c=='(1) Inquiry'&& r.Stage__c =='New' && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+            </apex:pageBlockTable>   
         </apex:pageBlockSection>
     </apex:pageBlock>
     <div style="clear:both"></div>

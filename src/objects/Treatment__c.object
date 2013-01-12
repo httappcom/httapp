@@ -368,16 +368,15 @@
     </fields>
     <fields>
         <fullName>Patient__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Patient</label>
         <referenceTo>Patient__c</referenceTo>
         <relationshipLabel>Treatments</relationshipLabel>
         <relationshipName>Treatments</relationshipName>
-        <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>MasterDetail</type>
-        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Payment_Type__c</fullName>
@@ -1478,7 +1477,7 @@
     </nameField>
     <pluralLabel>Treatments</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ControlledByParent</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <validationRules>
         <fullName>Cant_change_substage_while_quote_pending</fullName>
         <active>true</active>

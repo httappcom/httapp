@@ -417,7 +417,7 @@ private class TreatmentTests {
         treatmentCheck = [select id, patient__r.do_not_contact__c 
                             from Treatment__c where id = :treatment.id];
         
-        system.assertEquals(true,treatmentCheck.patient__r.do_not_Contact__c);  
+        system.assertEquals(true,treatmentCheck.patient__r.do_not_Contact__c);
     }
     
     

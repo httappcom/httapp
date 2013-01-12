@@ -1,7 +1,7 @@
 public  without sharing class patientPortalController {
 
-    public Patient__c patient {get;set;}
     public string currentPage {get;set;}
+    public Patient__c patient {get;set;}
     public boolean showDetailBox {get;set;}
     public string showDetailID {get;set;}
     public string patientid {get;set;}
@@ -297,7 +297,6 @@ public  without sharing class patientPortalController {
         insert p;
         
         Travel__c testTravel = new Travel__c();
-        testTravel.Patient__c = p.id;
         insert testTravel;
 
         Treatment__c treatmentTest = new treatment__c();
@@ -315,16 +314,12 @@ public  without sharing class patientPortalController {
         paymentTest.Patient__c = p.id;
         paymentTest.Treatment__c = treatmentTest.id;
         insert paymentTest;
-        
+
 /*        Medical_Profile__c MRTest = new Medical_Profile__c();
         MRTest.Patient__c = p.id;
         MRTest.Treatment__c = treatmentTest.id;
         insert MRTest;
 */        
-        Incident__c incidentTest = new Incident__c();
-        incidentTest.Treatment__c = treatmentTest.id;
-        insert incidentTest;
-                
         Treatment_Quote__c quoteTest = new Treatment_Quote__c();
         quoteTest.Treatment__c = treatmentTest.id;
         insert quoteTest;
@@ -344,7 +339,7 @@ public  without sharing class patientPortalController {
     }
     
     public Patient__c queryPatientRelatedDesc(string patientId) {
-        return [Select id, 
+        return  [Select id, 
                        Name,
                        CreatedBy.Name,
                        CreatedDate,
@@ -436,29 +431,6 @@ public  without sharing class patientPortalController {
                                Subject
                        from Tasks
                        order by lastModifiedDate desc), 
-                     /*(select id,
-                               Name,
-                              CreatedBy.Name,
-                              CreatedDate,
-                              LastModifiedBy.Name,
-                              LastModifiedDate,
-                              Owner.Name,
-                              Body_Rich_Text__c,
-                              Body__c,
-                              Truncated_Body__c,
-                              From_Name__c,
-                              From__c,
-                              Has_Attachments__c,
-                              Priority__c,
-                              IsRead__c,
-                              Reply_Rich_Text__c,
-                              Reply__c,
-                              Sent__c,
-                              Status__c,
-                              To_Name__c,
-                              To__c
-                      from Messages__r
-                      order by lastModifiedDate desc), */ //todo fix the message relationship                                                                    
                       (select Id,
                               Name,
                               Benefit_Percentage__c,

@@ -38,73 +38,57 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
-        <fullName>Banner_Image__c</fullName>
+        <fullName>Preferred_Medical_Facility__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Banner Image</label>
-        <length>18</length>
+        <label>Preferred Medical Facility</label>
+        <referenceTo>Medical_Facility__c</referenceTo>
+        <relationshipLabel>Partners</relationshipLabel>
+        <relationshipName>Partners</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Referral_Source__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Referral Source</label>
+        <referenceTo>Referral_Source__c</referenceTo>
+        <relationshipLabel>Partners</relationshipLabel>
+        <relationshipName>Partners</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Referrer_Contact__c</fullName>
+        <externalId>false</externalId>
+        <label>Referrer Contact</label>
+        <length>50</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Call_Center_Number__c</fullName>
+        <fullName>Referrer_Email__c</fullName>
         <externalId>false</externalId>
-        <label>Call Center Number</label>
+        <label>Referrer Email</label>
+        <required>true</required>
+        <type>Email</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>Referrer_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>Referrer Phone</label>
         <required>false</required>
         <type>Phone</type>
     </fields>
-    <fields>
-        <fullName>Doctor_Portal_Welcome_Msg__c</fullName>
-        <externalId>false</externalId>
-        <label>Doctor Portal Welcome Msg</label>
-        <length>2000</length>
-        <type>Html</type>
-        <visibleLines>15</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Logo__c</fullName>
-        <externalId>false</externalId>
-        <label>Logo</label>
-        <length>18</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Partner_Portal_Welcome_Msg__c</fullName>
-        <externalId>false</externalId>
-        <label>Partner Portal Welcome Msg</label>
-        <length>3000</length>
-        <type>Html</type>
-        <visibleLines>25</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Satisfaction_Survey_Link__c</fullName>
-        <externalId>false</externalId>
-        <label>Satisfaction Survey Link</label>
-        <required>false</required>
-        <type>Url</type>
-    </fields>
-    <fields>
-        <fullName>Twitter_Widget__c</fullName>
-        <externalId>false</externalId>
-        <label>Twitter Widget</label>
-        <length>3000</length>
-        <type>LongTextArea</type>
-        <visibleLines>8</visibleLines>
-    </fields>
-    <label>PRM Config</label>
-    <listViews>
-        <fullName>All</fullName>
-        <filterScope>Everything</filterScope>
-        <label>All</label>
-    </listViews>
+    <label>Partner</label>
     <nameField>
-        <displayFormat>{0}</displayFormat>
-        <label>PRM Config Name</label>
-        <type>AutoNumber</type>
+        <label>Partner Name</label>
+        <type>Text</type>
     </nameField>
-    <pluralLabel>PRM Config</pluralLabel>
+    <pluralLabel>Partners</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
 </CustomObject>

@@ -4,8 +4,10 @@ public with sharing class messaging_Controller {
 		get;
 		set{
 			parentId = value;
-			newMessage.parentId = parentId;
-			queryMessages();
+			if ( parentId != null ){
+				newMessage.parentId = parentId;
+				queryMessages();
+			}
 		}
 	}
 	public FeedItem newMessage {
@@ -98,8 +100,10 @@ public with sharing class messaging_Controller {
 	public List<SelectOption> getTopicOptions(){
 		List<SelectOption> options = new List<SelectOption>();
 		options.add(new SelectOption('','Recent'));
-		for ( Topic__c t : [Select Id, Name, Patient__c from Topic__c where Patient__c = :parentId order by Name]){
-			options.add(new SelectOption(t.Id,t.Name));
+		if ( parentId != null ){
+			for ( Topic__c t : [Select Id, Name, Patient__c from Topic__c where Patient__c = :parentId order by Name]){
+				options.add(new SelectOption(t.Id,t.Name));
+			}
 		}
 		options.add(new SelectOption('New Topic','New Topic'));
 		return options;
@@ -137,7 +141,7 @@ public with sharing class messaging_Controller {
 		queryString += '(SELECT Id, CommentBody, CreatedDate, CreatedBy.Name FROM FeedComments order BY CreatedDate LIMIT 10),';
 		queryString += '(SELECT CreatedBy.FirstName, CreatedBy.LastName FROM FeedLikes)';
 		queryString += ' FROM NewsFeed ';
-		if ( parentId != userInfo.getUserId() ){
+		if ( parentId != null && parentId != userInfo.getUserId() ){
 			system.debug(parentId);
 			queryString += 'where ParentId = \''+parentId +'\'';
 		}

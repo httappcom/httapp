@@ -16,10 +16,6 @@
                 <field>Flight_Information__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
-                <field>Patient__c</field>
-            </layoutItems>
-            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Arrival_Airline__c</field>
             </layoutItems>

@@ -97,16 +97,6 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Do_Not_Contact_Patient</fullName>
-        <field>Do_Not_Contact__c</field>
-        <literalValue>1</literalValue>
-        <name>Do Not Contact Patient</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-        <targetObject>Patient__c</targetObject>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Initialize_Treatment</fullName>
         <field>Stage__c</field>
         <literalValue>New</literalValue>
@@ -320,10 +310,6 @@
     </rules>
     <rules>
         <fullName>Relationship Terminated</fullName>
-        <actions>
-            <name>Do_Not_Contact_Patient</name>
-            <type>FieldUpdate</type>
-        </actions>
         <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Stage__c</field>

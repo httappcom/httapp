@@ -4,7 +4,7 @@
 
 public class PatientUtil {
 
-  public static Patient__c queryPatientAll(Id pPatientId) { 
+  public static Patient__c queryPatientAll(Id pPatientId) {
       if(pPatientId == null) {          
         return null;
       } else {
@@ -106,7 +106,6 @@ public class PatientUtil {
                                Treatment_Summary__c,
                                On_Hold__c,
                               Travel__r.Id,
-                              Travel__r.Patient__c,
                               Travel__r.Name,
                               Travel__r.CreatedById,
                               Travel__r.CreatedDate,
@@ -164,7 +163,7 @@ public class PatientUtil {
                                What.Name,
                                Status,
                                Subject
-                       from Tasks order by CreatedDate desc), 
+                       from Tasks order by CreatedDate desc),
                      /*(select id,
                                Name,
                               CreatedById,
@@ -225,7 +224,7 @@ public class PatientUtil {
                       from Survey_Headers__r)
                 from Patient__c 
                 where id = :pPatientId];
-      }  
+      }
    }
    
   public static List<Treatment__c> getTreatmentsWithChildren(Id patientId) { 
@@ -276,7 +275,6 @@ public class PatientUtil {
                                Treatment_Summary__c,
                                On_Hold__c,
                               Travel__r.Id,
-                              Travel__r.Patient__c,
                               Travel__r.Name,
                               Travel__r.CreatedById,
                               Travel__r.CreatedDate,
@@ -374,12 +372,11 @@ public class PatientUtil {
                               Procedure__r.Transportation_Included__c 
                         From Treatment_Quotes__r)
                 from Treatment__c 
-                where Patient__c = :patientId order by CreatedDate desc];
-      }  
+                where  Patient__c = :patientId order by CreatedDate desc];
+      }
    }
    
-  public static List<Patient__c> queryPatientListAll() {    
-      
+  public static List<Patient__c> queryPatientListAll() {
         return [Select id, 
                        Name,
                        CreatedById,
@@ -493,7 +490,7 @@ public class PatientUtil {
                                What.Name,
                                Status,
                                Subject
-                       from Tasks order by CreatedDate desc), 
+                       from Tasks order by CreatedDate desc),
                      /*(select id,
                                Name,
                               CreatedBy.Name,
@@ -540,7 +537,7 @@ public class PatientUtil {
                               Treatment__c,
                               Verification_Date__c,
                               Verification_Phone_Number__c ,
-                              Treatment__r.Name , 
+                              Treatment__r.Name,
                               Patient__r.Name                                                           
                       from Payments__r),
                       (select Id,

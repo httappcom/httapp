@@ -82,6 +82,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Medical_Facility__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Determines branding for Doctor Portal similar to how Treatment Destination Facility determines branding for Patient Portal.</description>
+        <externalId>false</externalId>
+        <label>Medical Facility</label>
+        <referenceTo>Medical_Facility__c</referenceTo>
+        <relationshipLabel>Medical Professionals</relationshipLabel>
+        <relationshipName>Medical_Professionals</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Middle_Name__c</fullName>
         <externalId>false</externalId>
         <label>Middle Name</label>

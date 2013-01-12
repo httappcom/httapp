@@ -30,8 +30,8 @@ public with sharing class PipelineController {
   public datetime next24Hours {get;set;}        
            
   public Pipelinecontroller(){
-  	twoHoursAgo = system.now().addHours(-2);
-  	next24Hours = system.now().addhours(24);
+    twoHoursAgo = system.now().addHours(-2);
+    next24Hours = system.now().addhours(24);
     this.curPageSize = 10  ;
     this.active = new List<Treatment__c>();      
     this.allTreatments  = new List<Treatment__c>();
@@ -45,11 +45,11 @@ public with sharing class PipelineController {
     this.payments = new List<Payment__c>();
     this.messages = new List<Message__c>();
     try {
-	    active = [SELECT Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, 
-		Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Patient__r.Last_Communication__c, Treatment_Summary__c, (SELECT Procedure__c FROM Treatment_Quotes__r order by createdDate desc limit 1)
-		FROM Treatment__c
-		WHERE Phase__c in ('(1) Inquiry', '(2) Interaction') and Stage__c != 'Patient On Hold' and Sub_Stage__c != 'Consult Requested' AND patient__r.ownerid = :userinfo.getUserId() order by Phase__c, Next_Follow_Up__c ];
-		
+        active = [SELECT Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, 
+        Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Patient__r.Last_Communication__c, Treatment_Summary__c, (SELECT Procedure__c FROM Treatment_Quotes__r order by createdDate desc limit 1)
+        FROM Treatment__c
+        WHERE Phase__c in ('(1) Inquiry', '(2) Interaction') and Stage__c != 'Patient On Hold' and Sub_Stage__c != 'Consult Requested' AND patient__r.ownerid = :userinfo.getUserId() order by Phase__c, Next_Follow_Up__c ];
+        
     for (Treatment__c r : active) {
 /*      if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
       if(p.Payments__r.size()>0)   for (Payment__c pay : p.Payments__r) allPayments.add(pay); 

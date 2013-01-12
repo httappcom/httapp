@@ -438,6 +438,17 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <type>Phone</type>
     </fields>
     <fields>
+        <fullName>MphRx_Patient_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>MphRx Patient ID</label>
+        <length>32</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Nationality__c</fullName>
         <externalId>false</externalId>
         <label>Nationality</label>
@@ -459,6 +470,19 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <trackHistory>false</trackHistory>
         <type>Number</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Partner__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Partner</label>
+        <referenceTo>Partner__c</referenceTo>
+        <relationshipLabel>Patients</relationshipLabel>
+        <relationshipName>Patients</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Patient_First_Name__c</fullName>

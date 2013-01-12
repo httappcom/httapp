@@ -330,6 +330,10 @@
                 <apex:outputLabel value="Last Communication"/>
                 <apex:inputTextarea rows="3" cols="50" value="{!patient.Last_Communication__c}" />
             </apex:pageblocksectionitem>
+            <apex:pageblocksectionitem helpText=""> 
+                <apex:outputLabel value="Gender"/>
+                <apex:inputField value="{!patient.Gender__c}"/>
+            </apex:pageblocksectionitem>            
             <apex:outputtext value=""/>
             <apex:pageblocksectionitem >
                 <apex:outputtext value=""/>
@@ -1230,20 +1234,7 @@
                 </apex:pageblocksection>
                 <br/>
                 <apex:pageblocksection columns="1" collapsible="true" title="Care Team">
-                    <apex:panelGrid columns="2">
-                        <apex:image id="avatar1" url="{!URLFOR($Resource.KenResources, '/img/avatar.png')}" width="45" height="45" />
-                        <apex:panelGrid columns="1">
-                            <apex:outputText value="John Smith"/>
-                            <apex:outputPanel ><a href="#">Assign Task</a></apex:outputPanel>
-                            <apex:outputPanel ><a href="#">Send Message</a></apex:outputPanel>
-                        </apex:panelGrid>
-                        <apex:image id="avatar2" url="{!URLFOR($Resource.KenResources, '/img/avatar.png')}" width="45" height="45" />
-                        <apex:panelGrid columns="1">
-                            <apex:outputText value="Mary Jones"/>
-                            <apex:outputPanel ><a href="#">Assign Task</a></apex:outputPanel>
-                            <apex:outputPanel ><a href="#">Send message</a></apex:outputPanel>
-                        </apex:panelGrid>
-                    </apex:panelGrid>
+					<c:careTeam parentId="{!treatment.Id}" />
                 </apex:pageblocksection>
                 <apex:pageblocksection columns="1" collapsible="true" title="Messaging">
                     <c:messaging height="300" patientId="{!Patient__c.Id}" />
@@ -1305,4 +1296,5 @@
             </apex:pageBlock>
         </apex:outputpanel>
         <script>var emailFormId = "{!$Component.emailForm}";</script>
+	<apex:outputText value="{!treatment.Travel__c}" />
 </apex:page>

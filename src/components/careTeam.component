@@ -1,0 +1,37 @@
+<apex:component controller="careTeam_Controller" allowDML="true" >
+	<apex:attribute name="parentId" type="Id" description="Treatment Record ID" assignTo="{!treatmentId}" />
+	<apex:form >
+		<table>
+			<apex:repeat value="{!careTeamMemberList}" var="c" >
+				<tr>
+					<td>
+						<apex:image id="avatar1" url="{!c.imageURL}" width="45" height="45" />
+					</td>
+					<td>
+						<apex:panelGrid columns="1" id="careTeamLeftCol" >
+							<apex:outputText value="{!c.name &' - '& c.role}" />
+							<apex:commandLink action="{!c.composeTask}" rendered="{!!c.showTask && !c.showMessage}" reRender="careTeamLeftCol,careTeamMessage" >Assign Task</apex:commandLink>
+							<apex:commandLink action="{!c.composeMessage}" rendered="{!!c.showTask && !c.showMessage}" reRender="careTeamLeftCol,careTeamMessage" >Send Message</apex:commandLink>
+							<apex:commandLink action="{!c.cancel}" rendered="{!c.showTask || c.showMessage}" reRender="careTeamLeftCol,careTeamMessage" >Cancel</apex:commandLink>
+						</apex:panelGrid>
+					</td>
+					<td>
+						<apex:outputPanel layout="block" id="careTeamMessage" >
+							<apex:outputPanel layout="block" styleClass="publisherTextAreaContainer" >
+								<div class="publisherTextAreaInner">
+									<apex:inputTextArea value="{!c.newMessage.Body}" style="min-height: 20px;" rendered="{!c.showMessage}" /> 
+									<apex:inputTextArea value="{!c.newTask.Description}" style="min-height: 20px;" rendered="{!c.showTask}" /> 
+								</div>
+								<div style="display:none" id="publishererrorcontainer" class="cxchattermessagecontainer chattermessagecontainer"></div>
+								<div class="bottomBarRight">
+									<apex:commandLink styleClass="zen-btn zen-highlightBtn" action="{!c.insertMessage}" value="Save Message" reRender="careTeamLeftCol,careTeamMessage" rendered="{!c.showMessage}"/>
+									<apex:commandLink styleClass="zen-btn zen-highlightBtn" action="{!c.insertTask}" value="Save Task" reRender="careTeamLeftCol,careTeamMessage" rendered="{!c.showTask}" />
+								</div>
+							</apex:outputPanel>
+						</apex:outputPanel>
+					</td>
+				</tr>
+			</apex:repeat>
+		</table>
+	</apex:form>
+</apex:component>
