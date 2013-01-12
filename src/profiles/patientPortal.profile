@@ -1678,6 +1678,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>User.Last_UI_State__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>User.Medical_Information_Officer__c</field>
         <readable>false</readable>
     </fieldPermissions>

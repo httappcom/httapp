@@ -12,6 +12,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Last_UI_State__c</fullName>
+        <description>Used to &quot;remember&quot; settings of the last UI state. For example, remember which sections on the Doctor Portal Home page are collapsed or expanded.</description>
+        <externalId>false</externalId>
+        <label>Last UI State</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Medical_Information_Officer__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
