@@ -322,29 +322,30 @@ Logger.info('saveTreatment');
     }
     
     public PageReference saveQuote() {
-    Logger.info('saveQuote='+treatmentQuote);
+		Logger.info('saveQuote='+treatmentQuote);
         if (treatmentQuote == null) newQuote();
         if (treatmentQuote.Treatment__c==null) {
-Logger.info('treatmentQuote.Treatment= null');
-                saveTreatment();
-            treatmentQuote.Treatment__c = treatment.id;
-        }
-        if ( treatmentQuote.id == null ) {
-   Logger.info('Inserting treatmentQuote='+treatmentQuote);
-            insert treatmentQuote ;
+			Logger.info('treatmentQuote.Treatment= null');
+			saveTreatment();
+			treatmentQuote.Treatment__c = treatment.id;
+		}
+		if ( treatmentQuote.id == null ) {
+			Logger.info('Inserting treatmentQuote='+treatmentQuote);
+			insert treatmentQuote ;
 //        treatmentQuotes.add(treatmentQuote);
 //        quoteTotCount = quoteTotCount + 1; 
 //        quoteCurNumber =  quoteCurNumber +1 ;      
 //        tempQuote = [select id, Name from  Treatment_Quote__c where id = : treatmentQuote.id ];
 //        quoteName =  tempQuote.Name;                          
-        } else {
-   Logger.info('Updating treatmentQuote='+treatmentQuote);
-            update treatmentQuote;
-        }
+		} else {
+			Logger.info('Updating treatmentQuote='+treatmentQuote);
+			update treatmentQuote;
+		}
 //      setQuoteInfo();
-        return null;
-    }
-    public PageReference checkOnEchoSign()
+		return null;
+	}
+
+	public PageReference checkOnEchoSign()
     {
         if ( (treatment.Sub_Stage__c == 'Quote In Process') )
           
@@ -616,7 +617,10 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
     
     private Map<ID, Treatment__c> treatmentMap = null;
     private void loadTreatments() {
+    	system.debug('Patient id'+patient.id);
         treatments = PatientUtil.getTreatmentsWithChildren(patient.Id);
+//        treatments = [select id, Preferred_Travel_Date_To__c, Preferred_Travel_Date_From__c, Procedure__c, Procedure_Category__c, Travel__c, Travel__r.Id from treatment__c where patient__c = :patient.id];
+        system.debug(treatments);
         treatmentMap = new Map<ID, Treatment__c>();
         for (Treatment__c treatment : treatments) {
             treatmentMap.put(treatment.Id, treatment);
@@ -642,6 +646,7 @@ Logger.info('cat='+treatment.Procedure_Category__c+', subcat='+treatment.Procedu
     public pagereference showEmailForm() {
         sendSuccess = false;
         calcEmailType();
+        if (patient.id != null && treatments != null && treatments.size() > 0)
         saveQuote();
         emailToPatient = (patient.Email__c != null && patient.Email__c.trim().length() > 0)?true:false;
         emailToOnsiteCoordinator = (treatment.Onsite_Coordinator__r.Email != null && treatment.Onsite_Coordinator__r.Email.trim().length() > 0 )?true:false;

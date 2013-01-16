@@ -1,17 +1,24 @@
 <apex:component controller="messaging_Controller" allowDML="true" layout="none"  >
 	<apex:attribute name="height" description="Max Height in Pixels of this Component" type="Integer" />
 	<apex:attribute name="patientId" description="Id of the Patient the component is on" type="Id" assignTo="{!parentId}" />
+
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/zenifiedChatterPageBase.css" />
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/ChatterFiles.css" />
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/chatterCore.css" />
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/chatterExtended.css" />
+	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/chatterTab.css" />
+	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/chatterFiles.css" />
+	<script type="text/javascript" src="/EXT/ext-3.2.2/ext.js" />
+	<script type="text/javascript" src="/jslibrary/1354563886000/sfdc/main.js" />
+	<script type="text/javascript" src="/jslibrary/1351189248000/sfdc/AccessibleDialog.js" />
+	<script type="text/javascript" src="/jslibrary/1352319344000/sfdc/Chatter.js" />
 	<apex:form >
-		<div style="height:{!height}px; overflow:scroll; width:567px;" >
-			<div class="chatterPage" style="width:557px;" >
-				<div id="chatterTab" class="threecolumn" style="width:557px;">
+		<div style="height:{!height}px; overflow:scroll;" >
+			<div class="chatterPage" >
+				<div id="chatterTab" class="threecolumn" >
 	
 					<!-- HEADER -->
-					<apex:outputPanel layout="block" styleClass="headerContent" rendered="false" >
+					<apex:outputPanel layout="block" styleClass="headerContent" >
 						<h1 class="pageTitle" >{!$User.FirstName} {!$User.LastName}</h1>
 						<!-- HELP LINK
 						<div class="headerRightContent">
@@ -24,13 +31,13 @@
 					</apex:outputPanel>
 	
 					<!--  LEFT COLUMN -->
-					<apex:outputPanel layout="block" styleClass="leftContent" rendered="false" >
-						<div class="chatterUserStatus" >
+					<apex:outputPanel layout="block" styleClass="leftContent" >
+						<apex:outputPanel layout="none" styleClass="chatterUserStatus" >
 							<div class="chatterUserStatusTop">
 								<div class="chatterUserStatusImg">
 									<a title="{!$User.FirstName} {!$User.LastName}" href="/_ui/core/userprofile/UserProfilePage?u={!$User.Id}">
 										<span class="chatter-avatar profileImage chatter-avatarRegular">
-											<img width="45" height="45" title="Michael Wicherski Dev" class="chatter-photo" alt="Michael Wicherski Dev" src="https://c.na14.content.force.com/profilephoto/005/T" />
+											<img width="45" height="45" title="{!$User.FirstName} {!$User.LastName}" class="chatter-photo" alt="{!$User.FirstName} {!$User.LastName}" src="https://c.na14.content.force.com/profilephoto/005/T" />
 											<img width="1" height="1" title="" class="chatter-avatarStyle" alt="" src="/s.gif" />
 										</span>
 									</a>
@@ -40,17 +47,18 @@
 								</div>
 	       						<div class="chatter-clear">&nbsp;</div>
 	   						</div>
-						</div>
-						<div class="chatterTabNavigation directMessagingNavigation chatterNavigationGroup" id="directMessagingNavigation">
-							<ul class="primaryNavList brandSideNav">
-								<li class="directMessageLink directMessage primaryNavSection hasIcon">
-									<img onerror="chatter.getToolbox().setImageSrc(this, '/s.gif');" src="/s.gif" class="icon" />
-									<a title="Message" onclick="chatter.getChatterTab().refresh('DirectMessages', {});" class="trigger" href="javascript:;">Messages</a>
-									<span id="directMessageUnreadCount" class="count">1</span>
-								</li>
-							</ul>
-						</div>
-	
+						</apex:outputPanel>
+						<apex:outputPanel layout="none" rendered="false" styleClass="chatterUserStatus" >
+							<div class="chatterTabNavigation directMessagingNavigation chatterNavigationGroup" id="directMessagingNavigation">
+								<ul class="primaryNavList brandSideNav">
+									<li class="directMessageLink directMessage primaryNavSection hasIcon">
+										<img onerror="chatter.getToolbox().setImageSrc(this, '/s.gif');" src="/s.gif" class="icon" />
+										<a title="Message" onclick="chatter.getChatterTab().refresh('DirectMessages', {});" class="trigger" href="javascript:;">Messages</a>
+										<span id="directMessageUnreadCount" class="count">1</span>
+									</li>
+								</ul>
+							</div>
+						</apex:outputPanel>	
 						<div class="chatterTabNavigation mainNavigation chatterNavigationGroup" id="mainNavigation">
 							<ul class="primaryNavList brandSideNav">
 								<li class="feedTypeList hasIcon hasSubNav">
@@ -60,17 +68,15 @@
 									</div>
 									<div style="display: block;" class="subNavSection">
 										<ul>
-											<li class="selected">
-												<a title="Everything I'm following - selected" class="NEWS trigger" href="javascript:;">What I Follow</a>
-											</li>
-											<li class="">
-												<a title="Directed to me" class="trigger ME" href="javascript:;">To Me</a>
-											</li>
-											<li class="">
-												<a title="Posts I bookmarked" class="trigger BOOKMARK" href="javascript:;">Bookmarked</a>
-											</li>
-											<li class="">
-												<a title="Everything at my company" class="COMPANY trigger" href="javascript:;">All Company</a>
+											<apex:repeat value="{!topicList}" var="t" >
+												<li class="{!if(t.Id == selectedTopic,'selected','')}">
+													<apex:commandLink value="{!t.Name}" styleClass="NEWS trigger" action="{!selectTopic}" >
+														<apex:param value="{!t.Id}" name="selectedTopic" assignTo="{!selectedTopic}" />
+													</apex:commandLink>
+												</li>
+											</apex:repeat>
+											<li>
+												<apex:commandLink value="Add New Topic" action="{!addNewTopic}" />
 											</li>
 										</ul>
 									</div>
@@ -78,57 +84,68 @@
 								<li class="peopleListView hasIcon hasSubNav">
 									<div class="primaryNavSection">
 										<span class="icon"></span>
-										<a class="trigger" title="Find people" href="javascript:;">People</a>
+										<a class="trigger" title="Find people" href="javascript:;">Care Team</a>
 									</div>
 									<div style="" class="subNavSection">
 										<ul>
-											<li class="">
-												<a title="All People" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;people&quot;,&quot;filter&quot;:&quot;all&quot;});" class="trigger" href="javascript:;">All People</a>
+											<apex:repeat value="{!careTeamMemberList}" var="t" >
+												<li class="{!if(t.Id == selectedTopic,'selected','')}">
+													<apex:commandLink value="{!t.Name}" styleClass="NEWS trigger" action="{!selectTopic}" >
+														<apex:param value="{!t.Id}" name="selectedTopic" assignTo="{!selectedTopic}" />
+													</apex:commandLink>
+												</li>
+											</apex:repeat>
+											<li>
+												<apex:commandLink value="Add New Member" action="{!addNewCareTeamMember}" />
 											</li>
 										</ul>
 									</div>
 								</li>
-								<li class="groupListView hasIcon hasSubNav">
-									<div class="primaryNavSection">
-										<span class="icon"></span>
-										<a class="trigger" title="Find groups" href="javascript:;" id="ext-gen19">Groups</a>
-									</div>
-									<div style="display: none;" class="subNavSection">
-										<ul>
-											<li class="">
-												<a title="Recently Viewed" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;recent&quot;});" class="trigger default ftr_recent cxgrouplistfilter" href="javascript:;">Recently Viewed</a>
-											</li>
-											<li class="">
-												<a title="My Groups" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;my&quot;});" class="trigger cxgrouplistfilter ftr_my" href="javascript:;">My Groups</a>
-											</li>
-											<li class="">
-												<a title="All Groups" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;all&quot;});" class="cxgrouplistfilter ftr_all trigger" href="javascript:;">All Groups</a>
-											</li>
-										</ul>
-									</div>
-								</li>
-								<li class="fileListView hasIcon hasSubNav">
-									<div class="primaryNavSection">
-										<span class="icon"></span>
-										<a class="trigger" title="Find files" href="javascript:;">Files</a>
-									</div>
-									<div style="" class="subNavSection">
-										<ul>
-											<li class="">
-												<a title="Recently Viewed" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;recent&quot;});" id="recentFilesLinkInChatterTab" class="trigger" href="javascript:;">Recently Viewed</a>
-											</li>
-											<li class="">
-												<a title="Files I Own" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;my&quot;});" id="myFilesLinkInChatterTab" class="trigger" href="javascript:;">Files I Own</a>
-											</li>
-											<li class="">
-												<a title="Files Shared with Me" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;shared&quot;});" id="sharedFilesLinkInChatterTab" class="trigger" href="javascript:;">Files Shared with Me</a>
-											</li>
-											<li class="">
-												<a title="All Files »" class="trigger" href="/_ui/core/chatter/files/FileTabPage?f=00Dd0000000gLpp">All Files »</a>
-											</li>
-										</ul>
-									</div>
-								</li>
+								<apex:outputPanel layout="none" rendered="false" >
+									<li class="groupListView hasIcon hasSubNav">
+										<div class="primaryNavSection">
+											<span class="icon"></span>
+											<a class="trigger" title="Find groups" href="javascript:;" id="ext-gen19">Groups</a>
+										</div>
+										<div style="display: none;" class="subNavSection">
+											<ul>
+												<li class="">
+													<a title="Recently Viewed" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;recent&quot;});" class="trigger default ftr_recent cxgrouplistfilter" href="javascript:;">Recently Viewed</a>
+												</li>
+												<li class="">
+													<a title="My Groups" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;my&quot;});" class="trigger cxgrouplistfilter ftr_my" href="javascript:;">My Groups</a>
+												</li>
+												<li class="">
+													<a title="All Groups" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;all&quot;});" class="cxgrouplistfilter ftr_all trigger" href="javascript:;">All Groups</a>
+												</li>
+											</ul>
+										</div>
+									</li>
+								</apex:outputPanel>
+								<apex:outputPanel layout="none" rendered="false" >
+									<li class="fileListView hasIcon hasSubNav">
+										<div class="primaryNavSection">
+											<span class="icon"></span>
+											<a class="trigger" title="Find files" href="javascript:;">Files</a>
+										</div>
+										<div style="" class="subNavSection">
+											<ul>
+												<li class="">
+													<a title="Recently Viewed" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;recent&quot;});" id="recentFilesLinkInChatterTab" class="trigger" href="javascript:;">Recently Viewed</a>
+												</li>
+												<li class="">
+													<a title="Files I Own" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;my&quot;});" id="myFilesLinkInChatterTab" class="trigger" href="javascript:;">Files I Own</a>
+												</li>
+												<li class="">
+													<a title="Files Shared with Me" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;shared&quot;});" id="sharedFilesLinkInChatterTab" class="trigger" href="javascript:;">Files Shared with Me</a>
+												</li>
+												<li class="">
+													<a title="All Files »" class="trigger" href="/_ui/core/chatter/files/FileTabPage?f=00Dd0000000gLpp">All Files »</a>
+												</li>
+											</ul>
+										</div>
+									</li>
+								</apex:outputPanel>
 							</ul>
 						</div>
 						<div>&nbsp;</div>
@@ -136,8 +153,8 @@
 					</apex:outputPanel>
 	
 					<!-- MIDDLE COLUMN -->
-					<div class="mainContent" style="margin-left:0px; width:557px;">
-						<div id="lowerMainContent" class="lowerMainContent" style="width:557px;" >
+					<div class="mainContent" style="margin-left:0px;">
+						<div id="lowerMainContent" class="lowerMainContent" >
 							<div class="wholeContent" id="wholeContent"></div>
 							
 							<apex:outputPanel styleClass="rightContent" id="rightContent" rendered="false" >
@@ -216,6 +233,274 @@
 	
 							<div class="centerContent" id="centerContent">
 								<apex:outputPanel layout="block" id="newfeed">
+									<div class="publishercontainer cxchattertextareacontainer chattertextareacontainer defaultState zen" style="min-height: 0px;">
+										<apex:outputPanel layout="block" styleClass="publisherrightcontainer" id="publisherrightcontainer" >
+											<apex:outputPanel layout="block" styleClass="publishercontrols" >
+												<div id="contentButtonBar" class="cxcontentbuttonbar publisherFeedItemTypeChoices">
+													<apex:outputPanel layout="none" rendered="true" >
+														<apex:commandLink id="publisherAttachTextPost" styleClass="publisherattach publisherTextPost {!IF(mode=='TextPost','withArrowAttached','')}" action="{!switchMode}" reRender="publisherrightcontainer" >
+															<apex:param value="TextPost" name="mode" assignTo="{!mode}" />
+															<img title="" class="publishericon" alt="" src="/s.gif" />
+															<span class="publisherattachtext">Post</span>
+															<span class="pArrow"></span>
+														</apex:commandLink>
+													</apex:outputPanel>
+													<apex:outputPanel layout="none" rendered="true" > 
+														<apex:commandLink id="publisherAttachContentPost" styleClass="publisherattachContentPost publisherattach {!IF(mode=='FilePost','withArrowAttached','')}" action="{!switchMode}" reRender="publisherrightcontainer" >
+															<apex:param value="FilePost" name="mode" assignTo="{!mode}" />
+															<img title="" class="publishericon" alt="" src="/s.gif" />
+															<span class="publisherattachtext">File</span>
+															<span class="pArrow"></span>
+														</apex:commandLink>
+													</apex:outputPanel>
+													<apex:outputPanel layout="none" rendered="true" > 
+														<apex:commandLink id="publisherAttachLinkPost" styleClass="publisherattach publisherattachLinkPost {!IF(mode=='LinkPost','withArrowAttached','')}" action="{!switchMode}" reRender="publisherrightcontainer" >
+															<apex:param value="LinkPost" name="mode" assignTo="{!mode}" />
+															<img title="" class="publishericon" alt="" src="/s.gif" />
+															<span class="publisherattachtext">Link</span>
+															<span class="pArrow"></span>
+														</apex:commandLink>
+													</apex:outputPanel>
+													<apex:outputPanel layout="none" rendered="false" > 
+														<apex:commandLink id="publisherAttachPollPost" styleClass="publisherattachPollPost publisherattach {!IF(mode=='PollPost','withArrowAttached','')}" action="{!switchMode}" reRender="publisherrightcontainer" >
+															<apex:param value="PollPost" name="mode" assignTo="{!mode}" />
+															<img title="" class="publishericon" alt="" src="/s.gif" />
+															<span class="publisherattachtext">Poll</span>
+															<span class="pArrow"></span>
+														</apex:commandLink>
+													</apex:outputPanel>
+												</div>
+
+												<div class="TextPost publisherWrapper">
+													<div class="contentPublisherSlideDown abovePublisher">
+														<div id="chatterFileStageOne" class="panel hidden">
+															<div class="panelBody clear">
+																<table cellspacing="0" cellpadding="0" class="chatterPublisherActionsContainer">
+																	<tbody>
+																		<tr>
+																			<td class="chatterPublisherFileActionContainerLeft">
+																				<a title="Select a file from Salesforce" onclick="chatter.getPublisher().getHandler('ContentPost').setMyFilesFilterFlag(true);chatter.getPublisher().getHandler('ContentPost').showLinkFile(this);" id="chatterLinkFileAction" href="javascript:">Select a file from Salesforce</a>
+																			</td>
+																			<td id="chatterUploadFileActionPanel">
+																				<a title="Upload a file from your computer" onclick="chatter.getPublisher().getHandler('ContentPost').showFileInfo(this, null, false);" id="chatterUploadFileAction" href="javascript:">Upload a file from your computer</a>
+																				<input type="file" size="20" onchange="chatter.getPublisher().getHandler('ContentPost').fileNewInfoUpdate(this);" name="hiddenFileBtn" id="hiddenFileBtn" class="file hidden" />
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+														<div id="chatterFileStageTwo" class="panel hidden">
+															<div class="clearContentPanelButtonContainer">
+																<a title="Close the publisher" onclick="chatter.getPublisher().openTypeSpecificPanel(this, 'ContentPost');" class="clearContentPanelButton" href="javascript: void(0);">&nbsp;</a>
+															</div>
+															<div class="panelBody clear">
+																<form name="chatterFileForm" method="POST" id="chatterFileForm" action="">
+																	<div id="requiredLegend" class="requiredLegendContainer">
+																		<span class="requiredLegend">
+																			<span class="requiredExampleOuter">
+																				<span class="requiredExample">&nbsp;</span>
+																			</span>
+																			<span class="requiredMark">*</span>
+																			<span class="requiredText"> = Required Information</span>
+																		</span>&nbsp;
+																	</div>
+																	<table cellspacing="0" cellpadding="0" border="0" class="postInput">
+																		<tbody>
+																			<tr id="chatterFileRow">
+																				<td colspan="2">
+																					<div>
+																						<div class="requiredInput">
+																							<div class="requiredBlock"></div>
+																							<input type="file" title="Select a File" size="24" onchange="chatter.getPublisher().getHandler('ContentPost').fileInfoUpdate(this);" name="chatterFile" id="chatterFile" class="file" />
+																							<div class="errorMsg hidden"></div>
+																						</div>
+																						<div class="uploadFileSizeLimit">
+																							<span class="fileSize">Maximum file size is 2&nbsp;GB</span>
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																			<tr id="fileNameRow" class="hidden">
+																				<th scope="row">
+																					<label for="fileName"><span class="requiredMark">*</span>Name</label>
+																				</th>
+																				<td>
+																					<div class="requiredInput">
+																						<div class="requiredBlock"></div>
+																						<input type="text" value="" title="Name" size="20" name="fileName" maxlength="260" id="fileName" class="fileFormInputElement" />
+																						<div class="errorMsg hidden"></div>
+																					</div>
+																				</td>
+																			</tr>
+																			<tr id="descRow">
+																				<th scope="row">
+																					<label for="desc">Description</label>
+																				</th>
+																				<td>
+																					<div>
+																						<textarea wrap="soft" type="text" title="Description" rows="4" name="desc" maxlength="1005" id="desc" cols="60" class="fileFormInputElement"></textarea>
+																						<div class="errorMsg hidden"></div>
+																					</div>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																	<input type="hidden" value="" name="hiddenFileName" id="hiddenFileName" />
+																	<div id="sharedWithOptionPanel" class="sharedWithOptionPanel hidden">
+																	<label>What do you want to do with this file?</label>
+																	<ul>
+																		<li class="sharedWithStatusBar">
+																			<a onclick="Sfdc.AccessibleUploadFileDialog.showShareOptionDropdown(this, {pubLinkEnabled:true});return false;" id="shareOptionStatus" class="lockItemIcon" href="javascript:void(0);">
+																				<span>Upload privately</span>
+																				<img width="1" height="1" title="" class="tinyDownArrowIcon" alt="" src="/s.gif" />
+																			</a>
+																		</li>
+																	</ul>
+																</div>
+																<input type="hidden" value="pvt" name="shareOption" id="shareOption" />
+															</form>
+														</div>
+													</div>
+													<div id="chatterFileNewStageTwo" class="panel hidden">
+														<div class="clearContentPanelButtonContainer">
+															<a title="Close the publisher" onclick="chatter.getPublisher().openTypeSpecificPanel(this, 'ContentPost');" class="clearContentPanelButton" href="javascript: void(0);">&nbsp;</a>
+														</div>
+														<div class="panelBody clear">
+															<div id="chatterSelectedFileInfo">
+																<div class="selectedFileDetailsContainer">
+																	<div class="imgBlock fileType32x32Icon">
+																		<img width="32" height="32" title="" id="chatterSelectedFileTypeIcon" alt="" src="/s.gif" />
+																	</div>
+																	<div class="fileDetails">
+																		<div class="title">
+																			<span id="chatterSelectedFileName"></span>&nbsp;<span id="chatterSelectedFileSize" class="size"></span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div id="chatterFileContent" class="panel hidden">
+														<div class="clearContentPanelButtonContainer">
+															<a title="Close the publisher" onclick="chatter.getPublisher().openTypeSpecificPanel(this, 'ContentPost');" class="clearContentPanelButton" href="javascript: void(0);">&nbsp;</a>
+														</div>
+														<div class="panelBody clear">
+															<div id="chatterExistContentInfo"></div>
+														</div>
+													</div>
+													<div id="chatterLinkPost" class="panel hidden">
+														<div class="panelBody clear">
+															<table class="postInput">
+																<tbody>
+																	<tr>
+																		<th scope="row"><label for="url"><span class="requiredMark">*</span>Link URL</label></th>
+																		<td>
+																			<div class="requiredInput" id="ext-gen4">
+																				<div class="requiredBlock"></div>
+																				<input type="text" value="http://" title="Link URL" size="20" name="url" maxlength="1005" id="url" class="fileFormInputElement" />
+																				<div class="errorMsg hidden" id="ext-gen5"></div>
+																			</div>
+																		</td>
+																	</tr>
+																	<tr>
+																		<th scope="row"><label for="urlName">Link Name</label></th>
+																		<td>
+																			<div class="urlName" id="ext-gen6">
+																				<input type="text" value="" title="Link" size="20" name="urlName" maxlength="260" id="urlName" class="fileFormInputElement" />
+																				<div class="errorMsg hidden" id="ext-gen7"></div>
+																			</div>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div>
+												<div class="publisherTextAreaContainer">
+													<div class="publisherTextAreaInner">
+														<apex:inputTextArea value="{!newMessage.Body}" id="publishereditablearea" styleClass="chatterHashtagsEnabled publishertextarea publishertextareafocus" style="min-height: 40px;"/> 
+														<!-- 
+														<textarea wrap="soft" type="text" title="What are you working on?" tabindex="0" role="textbox" name="publishereditablearea" maxlength="1001" id="publishereditablearea" class="chatterHashtagsEnabled publishertextarea">What are you working on?</textarea>
+														 -->
+													</div>
+													<div style="display:none" id="publishererrorcontainer" class="cxchattermessagecontainer chattermessagecontainer"></div>
+												</div>
+												<input type="hidden" value="What are you working on?" name="publisherprompttext" id="publisherprompttext" />
+												<div class="contentPublisherSlideDown belowPublisher"><div id="chatterPollPost" class="panel hidden">
+													<div class="publisherpollchoices">
+														<div class="publisherpollchoice">
+															<label for="choiceinput1" class="publisherpollchoicelabel">Choice 1</label>
+															<input type="text" class="publisherpollchoiceinput" title="Choice 1" id="choiceinput1" />		
+															<div class="errorMsg hidden"></div>
+														</div>
+														<div class="publisherpollchoice">
+															<label for="choiceinput2" class="publisherpollchoicelabel">Choice 2</label>
+															<input type="text" class="publisherpollchoiceinput" title="Choice 2" id="choiceinput2" />		
+															<div class="errorMsg hidden"></div>
+														</div>
+													</div>
+													<div class="publisherpolladdchoice">
+														<a onclick="chatter.getPublisher().getHandler('PollPost').addPollChoiceInputElement(this);" id="polladdchoice" title="Add more choices" href="javascript: void(0);">			Add more choices</a>
+													</div>
+												</div>
+											</div>
+	
+											<div class="bottomBar">
+												<div class="bottomBarLeft">
+													<span class="postTo">
+														<span class="postToText">To </span>
+														<span class="postToTarget">
+															<span class="postToDropdown postToGroupDropdown">
+																<div data-isselect="true" data-sfdc-widget="SfdcCmp.Dropdown" class="zen-select" data-uidsfdc="20">
+																	<a title="My Followers" href="javascript:void(0);" class="zen-trigger">
+																		<b class="zen-selectArrow"></b>
+																		My Followers  
+																	</a>
+																	<ul class="zen-options">
+																		<li>
+																			<a title="My Followers" role="menuitem" onclick="chatter.getPublisher().getWidget('postToWidget').setTargetToMyProfile();" class="postToMyProfile" href="javascript:;">My Followers</a></li><li><a title="A Group" role="menuitem" onclick="chatter.getPublisher().getWidget('postToWidget').setTargetToGroup();" class="postToGroup" href="javascript:;">A Group</a>
+																		</li>
+																	</ul>
+																</div> 
+															</span>
+															<span class="groupSelection">
+																<input type="text" value="Search Groups" class="groupSelectionInput" id="publisherGroupSelectionInput" />
+																<span class="groupRecipient">
+																	<span class="groupIconContainer">
+																		<img id="publisherGroupSelectionInputGroupRecipient" class="groupIcon" src="/profilephoto/0F9/T" />
+																		<img class="groupPrivateIcon" src="/s.gif" />
+																	</span>
+																	<label for="publisherGroupSelectionInputGroupRecipient">
+																	<span class="groupInfo"></span>
+																		</label>
+																		<img class="nameFadeOut" src="/s.gif" />
+																		<a class="removeGroup" title="Remove" href="javascript:;"></a>
+																	</span>
+																</span>
+															</span>
+														</span>
+														<span style="display: none;" class="publisherOptionsMenuSection" id="publisherOptionsMenuSection">
+															<label for="publisherOptionsMenu" id="publisherOptionsMenuLabel"></label>
+															<select id="publisherOptionsMenu" class="optionsMenu"></select>
+														</span>
+														<span class="visibilityWidgetParent">
+															<a onclick="chatter.getPublisher().getWidget('visibilityWidget').toggleDisplay();" class="iconParent" href="javascript: void(0);">
+																<img title="Who can see your posts?" id="publisherVisibilityIcon" class="visibilityicon" alt="Who can see your posts?" src="/s.gif" />
+															</a>
+														</span>
+													</div>
+													<div class="bottomBarRight">
+														<apex:commandLink styleClass="zen-btn zen-highlightBtn" action="{!insertNewMessage}" id="publishersharebutton" value="Share" rendered="{!selectedTopic != ''}" />
+													</div>
+												</div>
+												<div class="externalGroupWarning">Sharing with customers</div>
+											</div>
+										</apex:outputPanel>
+									</apex:outputPanel>
+									<div class="clear"></div>
+								</div>
+	
 									<div class="cxfeedinnerwrapper" >
 										<div class="feedcontainer cxfeedcontainer actionsOnHoverEnabled">
 
@@ -240,7 +525,7 @@
 
 											<div class="dropDownFilters">
 												<div id="dropDownFeedFilters" class="checkedMenu">
-													<span class="checkedMenuLabel">Topic: </span>
+													<span class="checkedMenuLabel">Show: </span>
 													<apex:selectList size="1" value="{!selectedTopic}" >
 														<apex:actionSupport event="onchange" action="{!queryMessages}" reRender="newfeed" />
 														<apex:selectOptions value="{!topicOptions}" />
@@ -254,270 +539,7 @@
 											<div class="clearingBox"></div>
 	
 	
-											<div class="publishercontainer cxchattertextareacontainer chattertextareacontainer defaultState zen" style="min-height: 0px;">
-												<apex:outputPanel layout="block" styleClass="publisherrightcontainer" id="publisherrightcontainer" >
-													<apex:outputPanel layout="block" styleClass="publishercontrols" rendered="{!selectedTopic != ''}">
-														<div id="contentButtonBar" class="cxcontentbuttonbar publisherFeedItemTypeChoices">
-															<apex:outputPanel layout="none" rendered="true" > 
-																<a id="publisherAttachTextPost" class="publisherattach withArrowAttached publisherTextPost" href="javascript: void(0);">
-																	<img title="" class="publishericon" alt="" src="/s.gif" />
-																	<span class="publisherattachtext">Post</span>
-																	<span class="pArrow"></span>
-																</a>
-															</apex:outputPanel>
-															<apex:outputPanel layout="none" rendered="false" > 
-																<a id="publisherAttachContentPost" class="publisherattachContentPost publisherattach" href="javascript: void(0);">
-																	<img title="" class="publishericon" alt="" src="/s.gif" />
-																	<span class="publisherattachtext">File</span>
-																	<span class="pArrow"></span>
-																</a>
-															</apex:outputPanel>
-															<apex:outputPanel layout="none" rendered="false" > 
-																<a id="publisherAttachLinkPost" class="publisherattach publisherattachLinkPost" href="javascript: void(0);">
-																	<img title="" class="publishericon" alt="" src="/s.gif" />
-																	<span class="publisherattachtext">Link</span>
-																	<span class="pArrow"></span>
-																</a>
-															</apex:outputPanel>
-															<apex:outputPanel layout="none" rendered="false" > 
-																<a id="publisherAttachPollPost" class="publisherattachPollPost publisherattach" href="javascript: void(0);">
-																	<img title="" class="publishericon" alt="" src="/s.gif" />
-																	<span class="publisherattachtext">Poll</span>
-																	<span class="pArrow"></span>
-																</a>
-															</apex:outputPanel>
-														</div>
-														<div class="TextPost publisherWrapper">
-															<div class="contentPublisherSlideDown abovePublisher">
-																<div id="chatterFileStageOne" class="panel hidden">
-																	<div class="panelBody clear">
-																		<table cellspacing="0" cellpadding="0" class="chatterPublisherActionsContainer">
-																			<tbody>
-																				<tr>
-																					<td class="chatterPublisherFileActionContainerLeft">
-																						<a title="Select a file from Salesforce" onclick="chatter.getPublisher().getHandler('ContentPost').setMyFilesFilterFlag(true);chatter.getPublisher().getHandler('ContentPost').showLinkFile(this);" id="chatterLinkFileAction" href="javascript:">Select a file from Salesforce</a>
-																					</td>
-																					<td id="chatterUploadFileActionPanel">
-																						<a title="Upload a file from your computer" onclick="chatter.getPublisher().getHandler('ContentPost').showFileInfo(this, null, false);" id="chatterUploadFileAction" href="javascript:">Upload a file from your computer</a>
-																						<input type="file" size="20" onchange="chatter.getPublisher().getHandler('ContentPost').fileNewInfoUpdate(this);" name="hiddenFileBtn" id="hiddenFileBtn" class="file hidden" />
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																</div>
-																<div id="chatterFileStageTwo" class="panel hidden">
-																	<div class="clearContentPanelButtonContainer">
-																		<a title="Close the publisher" onclick="chatter.getPublisher().openTypeSpecificPanel(this, 'ContentPost');" class="clearContentPanelButton" href="javascript: void(0);">&nbsp;</a>
-																	</div>
-																	<div class="panelBody clear">
-																		<form name="chatterFileForm" method="POST" id="chatterFileForm" action="">
-																			<div id="requiredLegend" class="requiredLegendContainer">
-																				<span class="requiredLegend">
-																					<span class="requiredExampleOuter">
-																						<span class="requiredExample">&nbsp;</span>
-																					</span>
-																					<span class="requiredMark">*</span>
-																					<span class="requiredText"> = Required Information</span>
-																				</span>&nbsp;
-																			</div>
-																			<table cellspacing="0" cellpadding="0" border="0" class="postInput">
-																				<tbody>
-																					<tr id="chatterFileRow">
-																						<td colspan="2">
-																							<div>
-																								<div class="requiredInput">
-																									<div class="requiredBlock"></div>
-																									<input type="file" title="Select a File" size="24" onchange="chatter.getPublisher().getHandler('ContentPost').fileInfoUpdate(this);" name="chatterFile" id="chatterFile" class="file" />
-																									<div class="errorMsg hidden"></div>
-																								</div>
-																								<div class="uploadFileSizeLimit">
-																									<span class="fileSize">Maximum file size is 2&nbsp;GB</span>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																					<tr id="fileNameRow" class="hidden">
-																						<th scope="row">
-																							<label for="fileName"><span class="requiredMark">*</span>Name</label>
-																						</th>
-																						<td>
-																							<div class="requiredInput">
-																								<div class="requiredBlock"></div>
-																								<input type="text" value="" title="Name" size="20" name="fileName" maxlength="260" id="fileName" class="fileFormInputElement" />
-																								<div class="errorMsg hidden"></div>
-																							</div>
-																						</td>
-																					</tr>
-																					<tr id="descRow">
-																						<th scope="row">
-																							<label for="desc">Description</label>
-																						</th>
-																						<td>
-																							<div>
-																								<textarea wrap="soft" type="text" title="Description" rows="4" name="desc" maxlength="1005" id="desc" cols="60" class="fileFormInputElement"></textarea>
-																								<div class="errorMsg hidden"></div>
-																							</div>
-																						</td>
-																					</tr>
-																				</tbody>
-																			</table>
-																				<input type="hidden" value="" name="hiddenFileName" id="hiddenFileName" />
-																				<div id="sharedWithOptionPanel" class="sharedWithOptionPanel hidden">
-																				<label>What do you want to do with this file?</label>
-																				<ul>
-																					<li class="sharedWithStatusBar">
-																						<a onclick="Sfdc.AccessibleUploadFileDialog.showShareOptionDropdown(this, {pubLinkEnabled:true});return false;" id="shareOptionStatus" class="lockItemIcon" href="javascript:void(0);">
-																							<span>Upload privately</span>
-																							<img width="1" height="1" title="" class="tinyDownArrowIcon" alt="" src="/s.gif" />
-																						</a>
-																					</li>
-																				</ul>
-																			</div>
-																			<input type="hidden" value="pvt" name="shareOption" id="shareOption" />
-																		</form>
-																	</div>
-																</div>
-																<div id="chatterFileNewStageTwo" class="panel hidden">
-																	<div class="clearContentPanelButtonContainer">
-																		<a title="Close the publisher" onclick="chatter.getPublisher().openTypeSpecificPanel(this, 'ContentPost');" class="clearContentPanelButton" href="javascript: void(0);">&nbsp;</a>
-																	</div>
-																	<div class="panelBody clear">
-																		<div id="chatterSelectedFileInfo">
-																			<div class="selectedFileDetailsContainer">
-																				<div class="imgBlock fileType32x32Icon">
-																					<img width="32" height="32" title="" id="chatterSelectedFileTypeIcon" alt="" src="/s.gif" />
-																				</div>
-																				<div class="fileDetails">
-																					<div class="title">
-																						<span id="chatterSelectedFileName"></span>&nbsp;<span id="chatterSelectedFileSize" class="size"></span>
-																					</div>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<div id="chatterFileContent" class="panel hidden">
-																	<div class="clearContentPanelButtonContainer">
-																		<a title="Close the publisher" onclick="chatter.getPublisher().openTypeSpecificPanel(this, 'ContentPost');" class="clearContentPanelButton" href="javascript: void(0);">&nbsp;</a>
-																	</div>
-																	<div class="panelBody clear">
-																		<div id="chatterExistContentInfo"></div>
-																	</div>
-																</div>
-																<div id="chatterLinkPost" class="panel hidden">
-																	<div class="panelBody clear">
-																		<table class="postInput">
-																			<tbody>
-																				<tr>
-																					<th scope="row"><label for="url"><span class="requiredMark">*</span>Link URL</label></th>
-																					<td>
-																						<div class="requiredInput" id="ext-gen4">
-																							<div class="requiredBlock"></div>
-																							<input type="text" value="http://" title="Link URL" size="20" name="url" maxlength="1005" id="url" class="fileFormInputElement" />
-																							<div class="errorMsg hidden" id="ext-gen5"></div>
-																						</div>
-																					</td>
-																				</tr>
-																				<tr>
-																					<th scope="row"><label for="urlName">Link Name</label></th>
-																					<td>
-																						<div class="urlName" id="ext-gen6">
-																							<input type="text" value="" title="Link" size="20" name="urlName" maxlength="260" id="urlName" class="fileFormInputElement" />
-																							<div class="errorMsg hidden" id="ext-gen7"></div>
-																						</div>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</div>
-																</div>
-															</div>
-															<div class="publisherTextAreaContainer">
-																<div class="publisherTextAreaInner">
-																	<apex:inputTextArea value="{!newMessage.Body}" id="publishereditablearea" styleClass="chatterHashtagsEnabled publishertextarea publishertextareafocus" style="min-height: 40px;"/> 
-																	<!-- 
-																	<textarea wrap="soft" type="text" title="What are you working on?" tabindex="0" role="textbox" name="publishereditablearea" maxlength="1001" id="publishereditablearea" class="chatterHashtagsEnabled publishertextarea">What are you working on?</textarea>
-																	 -->
-																</div>
-																<div style="display:none" id="publishererrorcontainer" class="cxchattermessagecontainer chattermessagecontainer"></div>
-															</div>
-															<input type="hidden" value="What are you working on?" name="publisherprompttext" id="publisherprompttext" />
-															<div class="contentPublisherSlideDown belowPublisher"><div id="chatterPollPost" class="panel hidden">
-																<div class="publisherpollchoices">
-																	<div class="publisherpollchoice">
-																		<label for="choiceinput1" class="publisherpollchoicelabel">Choice 1</label>
-																		<input type="text" class="publisherpollchoiceinput" title="Choice 1" id="choiceinput1" />		
-																		<div class="errorMsg hidden"></div>
-																	</div>
-																	<div class="publisherpollchoice">
-																		<label for="choiceinput2" class="publisherpollchoicelabel">Choice 2</label>
-																		<input type="text" class="publisherpollchoiceinput" title="Choice 2" id="choiceinput2" />		
-																		<div class="errorMsg hidden"></div>
-																	</div>
-																</div>
-																<div class="publisherpolladdchoice">
-																	<a onclick="chatter.getPublisher().getHandler('PollPost').addPollChoiceInputElement(this);" id="polladdchoice" title="Add more choices" href="javascript: void(0);">			Add more choices</a>
-																</div>
-															</div>
-														</div>
-	
-	
-														<div class="bottomBar">
-															<div class="bottomBarLeft">
-																<span class="postTo">
-																	<span class="postToText">To </span>
-																	<span class="postToTarget">
-																		<span class="postToDropdown postToGroupDropdown">
-																			<div data-isselect="true" data-sfdc-widget="SfdcCmp.Dropdown" class="zen-select" data-uidsfdc="20">
-																				<a title="My Followers" href="javascript:void(0);" class="zen-trigger">
-																					<b class="zen-selectArrow"></b>
-																					My Followers  
-																				</a>
-																				<ul class="zen-options">
-																					<li>
-																						<a title="My Followers" role="menuitem" onclick="chatter.getPublisher().getWidget('postToWidget').setTargetToMyProfile();" class="postToMyProfile" href="javascript:;">My Followers</a></li><li><a title="A Group" role="menuitem" onclick="chatter.getPublisher().getWidget('postToWidget').setTargetToGroup();" class="postToGroup" href="javascript:;">A Group</a>
-																					</li>
-																				</ul>
-																			</div> 
-																		</span>
-																		<span class="groupSelection">
-																			<input type="text" value="Search Groups" class="groupSelectionInput" id="publisherGroupSelectionInput" />
-																			<span class="groupRecipient">
-																				<span class="groupIconContainer">
-																					<img id="publisherGroupSelectionInputGroupRecipient" class="groupIcon" src="/profilephoto/0F9/T" />
-																					<img class="groupPrivateIcon" src="/s.gif" />
-																				</span>
-																				<label for="publisherGroupSelectionInputGroupRecipient">
-																				<span class="groupInfo"></span>
-																					</label>
-																					<img class="nameFadeOut" src="/s.gif" />
-																					<a class="removeGroup" title="Remove" href="javascript:;"></a>
-																				</span>
-																			</span>
-																		</span>
-																	</span>
-																	<span style="display: none;" class="publisherOptionsMenuSection" id="publisherOptionsMenuSection">
-																		<label for="publisherOptionsMenu" id="publisherOptionsMenuLabel"></label>
-																		<select id="publisherOptionsMenu" class="optionsMenu"></select>
-																	</span>
-																	<span class="visibilityWidgetParent">
-																		<a onclick="chatter.getPublisher().getWidget('visibilityWidget').toggleDisplay();" class="iconParent" href="javascript: void(0);">
-																			<img title="Who can see your posts?" id="publisherVisibilityIcon" class="visibilityicon" alt="Who can see your posts?" src="/s.gif" />
-																		</a>
-																	</span>
-																</div>
-																<div class="bottomBarRight">
-																	<apex:commandLink styleClass="zen-btn zen-highlightBtn" action="{!insertNewMessage}" id="publishersharebutton" value="Share" />
-																</div>
-															</div>
-															<div class="externalGroupWarning">Sharing with customers</div>
-														</div>
-													</apex:outputPanel>
-												</apex:outputPanel>
-												<div class="clear"></div>
-											</div>
-	
+
 
 
 											<apex:repeat value="{!messageList}" var="m" >

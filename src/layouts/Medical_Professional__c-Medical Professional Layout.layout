@@ -46,6 +46,10 @@
                 <behavior>Edit</behavior>
                 <field>Medical_Facility__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Email__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -86,6 +90,10 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Procedure__c.Doctor__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Care_Team_Member__c.Medical_Professional__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>

@@ -129,6 +129,10 @@
         <fields>NAME</fields>
         <relatedList>Partner__c.Preferred_Medical_Facility__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Med_Facility_Med_Profile_L__c.Medical_Facility__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>

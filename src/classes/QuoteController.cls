@@ -1,4 +1,4 @@
-public class QuoteController {
+public with sharing class QuoteController {
 
   public Treatment_Quote__c q { get; set; }
 

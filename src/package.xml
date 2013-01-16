@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Medical_Information_Officers</members>
+        <name>Role</name>
+    </types>
     <types>
         <members>*</members>
         <name>ApexClass</name>
@@ -22,11 +26,11 @@
     </types>
     <types>
         <members>User.EchoSign_Acct_Email__c</members>
+        <members>User.Last_UI_State__c</members>
         <members>User.Medical_Information_Officer__c</members>
         <members>User.Receive_Portal_Messages__c</members>
         <members>User.Receive_Staff_Messages__c</members>
         <members>User.Travel_Concierge__c</members>
-        <members>User.Last_UI_State__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -105,29 +109,7 @@
         <name>Profile</name>
     </types>
     <types>
-        <members>Medical_Information_Officers</members>
-        <name>Role</name>
-    </types>
-    <types>
-        <members>EHRApplicationStyle</members>
-        <members>HoverIntent</members>
-        <members>KenResources</members>
-        <members>avatar</members>
-        <members>bkgd</members>
-        <members>collaboration</members>
-        <members>httItineraryBanner</members>
-        <members>jQuery</members>
-        <members>jQueryTwisty</members>
-        <members>jquery</members>
-        <members>jquery_custom_css</members>
-        <members>jsonSuggest</members>
-        <members>jsonSuggestJS</members>
-        <members>paperclip</members>
-        <members>quoteResources</members>
-        <members>sfscript</members>
-        <members>sfstyles</members>
-        <members>twistyClosed</members>
-        <members>twistyOpen</members>
+        <members>*</members>
         <name>StaticResource</name>
     </types>
     <types>
@@ -139,4 +121,3 @@
     </types>
     <version>26.0</version>
 </Package>
-

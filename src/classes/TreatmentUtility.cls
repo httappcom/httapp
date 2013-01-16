@@ -36,7 +36,6 @@ public with sharing class TreatmentUtility {
 		return results;
 	}
 
-
 	public static void afterInsert (List<Treatment__c> treatments){
 		patientIds = new Set<Id>();
 		List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
@@ -59,13 +58,13 @@ public with sharing class TreatmentUtility {
 					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, thisPatient.Portal_User__c, 'Patient'));
 				}
 				if ( treatment.Onsite_Coordinator__c != null ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, treatment.Onsite_Coordinator__c, 'Patient'));
+					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, treatment.Onsite_Coordinator__c, 'Onsite Coordinator'));
 				}
 				if ( orgDefaultUsers != null && orgDefaultUsers.containsKey(medicalInformationOfficer) ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, orgDefaultUsers.get(medicalInformationOfficer).Id, 'Patient'));
+					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, orgDefaultUsers.get(medicalInformationOfficer).Id, 'Medical Information Officer'));
 				}
 				if ( orgDefaultUsers != null &&  orgDefaultUsers.containsKey(travelConcierge) ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, orgDefaultUsers.get(travelConcierge).Id, 'Patient'));
+					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, orgDefaultUsers.get(travelConcierge).Id, 'Travel Concierge'));
 				}
 
 				Topic__c t = new Topic__c();
@@ -95,6 +94,19 @@ public with sharing class TreatmentUtility {
         treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
     }
   }
+
+	public static void afterUpdate(List<Treatment__c> newTreatments, List<Treatment__c> oldTreatments ){
+		List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
+		for ( Integer i=0; i<newTreatments.size(); i++ ){
+			if ( newTreatments[i].OwnerId != oldTreatments[i].OwnerId ){
+				careTeamMemberInserts.add( careTeamMember_Compiler(newTreatments[i].Id,newTreatments[i].OwnerId,'PCC') );
+			}
+		}
+		if ( careTeamMemberInserts.size() > 0 ){
+			insert careTeamMemberInserts;
+		}
+	}
+
     
   private static Map<Id, Patient__c> populatePatientMap(Set<Id> pPatientIds) {
     if (pPatientIds != null && pPatientIds.size() > 0) {

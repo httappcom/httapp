@@ -838,6 +838,8 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
     <label>Patient</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>Email__c</columns>
+        <columns>NAME</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

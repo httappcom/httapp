@@ -1,4 +1,4 @@
-public without sharing class travelItineraryPDF_Controller {
+public with sharing class travelItineraryPDF_Controller {
 
     public Treatment_Quote__c treatmentQuote {get;set;}
     public User TravelConcierge {get;set;}

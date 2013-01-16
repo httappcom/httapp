@@ -14,25 +14,22 @@ public with sharing class MedicalRecordUtility {
 		  	String pwd = mphRxSetting[0].Password__c;
 		    Http h = new Http();    
 		    HttpRequest req = new HttpRequest();
-		    String urlParameterString = '';
+		    String bodyString = '';
 				Set<String> keys = new Set<String>();
 		    keys = urlParameters.keySet();
 		    for (String k : keys)
 		    {
 		      String v = urlParameters.get(k);
-//		      urlParameterString = urlParameterString + '&' + k + '=' + EncodingUtil.urlEncode(v, 'UTF-8');
-          urlParameterString = urlParameterString + k + '=' + EncodingUtil.urlEncode(v, 'UTF-8') + '&';//test
+          bodyString = bodyString + k + '=' + EncodingUtil.urlEncode(v, 'UTF-8') + '&';
 		    }
-		    urlParameterString = urlParameterString + 'cert=' + cert + '&password=' + pwd; //test
-//		    url = url + urlCommand + '?cert=' + cert + '&password=' + pwd + urlParameterString;
-        url = url + urlCommand; //test
+		    bodyString = bodyString + 'cert=' + cert + '&password=' + pwd;
+        url = url + urlCommand;
         
 		    req.setEndpoint(url);
-//		    req.setMethod('GET');
-		    req.setMethod('POST'); //test
-		    req.setBody(urlParameterString);//test
-		    Logger.info(urlParameterString);//test
+		    req.setMethod('POST');
+		    req.setBody(bodyString);
 		    Logger.info(req.toString());
+		    Logger.info('Body: ' + bodyString);
 		    try
 		    {
 		      HttpResponse res = h.send(req);		    
@@ -158,7 +155,7 @@ public with sharing class MedicalRecordUtility {
     List<String> getURLResult = new List<String>();
     String uploadDicomURL = '';
     Map<String, String> parameters = new Map<String, String>();
-    parameters.put('patientID', patient.MphRx_Patient_ID__c);
+    parameters.put('patientId', patient.MphRx_Patient_ID__c);
     MphRxCallout callOut = new MphRxCallout();
     getURLResult = deserializeMphRxDataReturn(callout.getContent('getUploadDicomURL', parameters));
     if (getURLResult[0] == '0') //MphRx returned success
@@ -176,10 +173,13 @@ public with sharing class MedicalRecordUtility {
   }
   public static void testMphRx()
   {
- 	Patient__c testPatient = [SELECT Id, Patient_First_Name__c, Patient_Last_Name__c, Country__c, State__c, Date_of_Birth__c FROM Patient__c WHERE Id = 'a08d000000JTxM9AAL'];
- 	testPatient.Gender__c = 'Female';
- Logger.info('Patient created with ID: ' + createMphRxPatientRecord(testPatient)); 	
-// 	testPatient.MphRx_Patient_ID__c = '61';
-// 	Logger.info('URL for DICOM upload: ' + getUploadDicomURL(testPatient));
+ 	Patient__c[] testPatients = [SELECT Id, Patient_First_Name__c, Patient_Last_Name__c, Country__c, State__c, Date_of_Birth__c FROM Patient__c limit 1];
+	if (testPatients.size()==1) {
+//	 	testPatients[0].Gender__c = 'Female';
+// 		Logger.info('Patient created with ID: ' + createMphRxPatientRecord(testPatients[0]));
+	
+ 	testPatients[0].MphRx_Patient_ID__c = '71';
+  }  	
+ 	Logger.info('URL for DICOM upload: ' + getUploadDicomURL(testPatients[0]));
   }  
 }

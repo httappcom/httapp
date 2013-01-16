@@ -47,6 +47,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Medical_Professional__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Medical Professional</label>
+        <referenceTo>Medical_Professional__c</referenceTo>
+        <relationshipLabel>Care Team Members</relationshipLabel>
+        <relationshipName>Care_Team_Members</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Role__c</fullName>
         <externalId>false</externalId>
         <label>Role</label>

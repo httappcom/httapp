@@ -32,6 +32,22 @@
 					</td>
 				</tr>
 			</apex:repeat>
+				<tr>
+					<td>
+						<apex:commandLink value="Add Member" action="{!addCareTeamMember}" reRender="newMemberGrid" />
+					</td>
+					<td>
+						<apex:panelGrid columns="2" id="newMemberGrid"  >
+							<apex:outputLabel value="User" rendered="{!newCareTeamMember != null}" />
+							<apex:inputField value="{!newCareTeamMember.User__c}" rendered="{!newCareTeamMember != null}" />
+							<apex:outputLabel value="Role" rendered="{!newCareTeamMember != null}" />
+							<apex:outputPanel layout="block" rendered="{!newCareTeamMember != null}" >
+								<apex:inputField value="{!newCareTeamMember.Role__c}"  />
+								<apex:commandLink value="Save" action="{!insertNewCareTeamMember}" reRender="newMemberGrid" />
+							</apex:outputPanel>
+						</apex:panelGrid>
+					</td>
+				</tr>
 		</table>
 	</apex:form>
 </apex:component>

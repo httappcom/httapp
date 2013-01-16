@@ -57,10 +57,6 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>ProcedureLineExtension</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>QuoteController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -153,6 +149,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>testpage_controller</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>travelItineraryPDF_Controller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -164,6 +164,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Care_Team_Member__c.Email__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Care_Team_Member__c.Medical_Professional__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -303,6 +308,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Med_Facility_Med_Profile_L__c.Medical_Facility__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Med_Facility_Med_Profile_L__c.PRM_Medical_Profile__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -410,6 +420,11 @@
         <editable>true</editable>
         <field>Medical_Professional__c.Comments__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Medical_Professional__c.Email__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -609,6 +624,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>PRM_Medical_Profile_Link__c.Survey_Link__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PRM_User__c.PRM_Config__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PRM_User__c.User__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1926,10 +1951,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>ProcedureLine</apexPage>
-        <enabled>true</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>Quote</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
@@ -1966,11 +1987,19 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>messagingSidebar</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>patientPortal</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>surveyPDF</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>testpage</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

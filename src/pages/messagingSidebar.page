@@ -1,0 +1,6 @@
+<apex:page controller="messaging_Controller" showHeader="false" >
+	<apex:form >
+		<apex:outputText value="{!messagingAlert}" id="counter"/>
+		<apex:actionPoller action="{!pollNewsFeed}" rerender="counter" interval="15"/>
+	</apex:form>
+</apex:page>

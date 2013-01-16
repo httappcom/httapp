@@ -249,18 +249,8 @@
         <relatedList>RelatedHistoryList</relatedList>
     </relatedLists>
     <relatedLists>
-        <customButtons>New_Procedure_Line</customButtons>
         <fields>NAME</fields>
-        <fields>Quantity__c</fields>
-        <fields>Procedure__c</fields>
-        <fields>List_Price__c</fields>
-        <fields>Discount__c</fields>
-        <fields>Sale_Price__c</fields>
-        <fields>Line_Total__c</fields>
-        <fields>CREATED_DATE</fields>
         <relatedList>Procedure_Line_Item__c.Treatment__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>

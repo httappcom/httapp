@@ -176,16 +176,20 @@ public with sharing class surveyGizmoAPI_Methods {
 							qc.sfpquestion.answer__c = (qc.sfpquestion.answer__c == null || qc.sfpquestion.answer__c.trim().length() ==0)?s:qc.sfpquestion.answer__c+', '+s;
 						}
 					}
-				}
-				else {
-					if (patientOrTreatment == 'Treatment') {
+					if (patientOrTreatment == 'Treatment' && (qc.sfquestion.answer__c == null || qc.sfquestion.answer__c.trim().length() == 0)){
 						qc.sfquestion.answer__c = 'No Answer';
 					}
-					else if (patientOrTreatment == 'Patient') {
+					else if (patientOrTreatment == 'Patient' && (qc.sfpquestion.answer__c == null || qc.sfpquestion.answer__c.trim().length() == 0)) {
 						qc.sfpquestion.answer__c = 'No Answer';
 					}
 				}
-				
+				else if (patientOrTreatment == 'Treatment' && (qc.sfquestion.answer__c == null || qc.sfquestion.answer__c.trim().length() == 0)){
+					qc.sfquestion.answer__c = 'No Answer';
+				}
+				else if (patientOrTreatment == 'Patient' && (qc.sfpquestion.answer__c == null || qc.sfpquestion.answer__c.trim().length() == 0)) {
+					qc.sfpquestion.answer__c = 'No Answer';
+				}
+					
 				if (patientOrTreatment == 'Treatment') {
 					if (Pattern.matches('[0-9, ]*', qc.sfquestion.answer__c)) {
 						list<string> optionstrings = qc.sfquestion.answer__c.split(',');
@@ -216,10 +220,10 @@ public with sharing class surveyGizmoAPI_Methods {
 						}
 					}
 				}
-				if (patientOrTreatment == 'Treatment') {
+				if (patientOrTreatment == 'Treatment' && qc.sfquestion.answer__c.length() < 32000) {
 					sfqa.add(qc.sfquestion);
 				}
-				else if (patientOrTreatment == 'Patient') {
+				else if (patientOrTreatment == 'Patient' && qc.sfpquestion.answer__c.length() < 32000) {
 					sfpqa.add(qc.sfpquestion);
 				}		
 			}
@@ -237,6 +241,12 @@ public with sharing class surveyGizmoAPI_Methods {
 		String s = encodingUtil.base64Encode(b);
 		String f = encodingUtil.urlEncode(s,'UTF-8');
 		return f;
+	}
+	
+	public static string decryptPatientId (string encodedID) {
+		blob b = crypto.decrypt('AES256', encodingUtil.base64Decode(AESKEY), encodingUtil.base64Decode(INITV),encodingUtil.base64Decode(encodingUtil.urlDecode(encodedID, 'UTF-8')));
+		string patientID = string.valueof(b);
+		return patientID;
 	}
 	
 	public static surveyClass parseSurvey(string input) {
@@ -283,7 +293,7 @@ public with sharing class surveyGizmoAPI_Methods {
 //						system.debug('value: '+value);
 					}
 					
-					if (key!= null && value != null && key.trim().length()>0 && value.trim().length()>0 && key.contains('[variable')==false){
+					if (key!= null && value != null && key.trim().length()>0 /*&& value.trim().length()>0*/ && key.contains('[variable')==false){
 						list<string> templist = new list<string>();
 						if (responseMap.containsKey(key)) {
 							templist = responseMap.get(key);
@@ -300,4 +310,17 @@ public with sharing class surveyGizmoAPI_Methods {
 		}	
 		return responseMap;
 	}	
+	
+	public static string generateMedicalProfileLink(string PatientId) {
+		
+		string surveyname = [select Medical_Profile_Type__c from Patient__c where id = :patientId].Medical_Profile_Type__c;
+		string patientIDHash = encryptPatientId(patientId);
+		string oid = userinfo.getOrganizationId();
+		PRM_Config__c prm = [select id, banner_image__c from PRM_Config__c where name = '1'];
+		string did = prm.banner_image__c;
+		string serverinstance = System.URL.getSalesforceBaseUrl().getHost().substringbefore('-');
+		
+		string linkurl = '';
+		return linkurl;
+	}
 }

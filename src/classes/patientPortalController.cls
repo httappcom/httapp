@@ -1,4 +1,4 @@
-public  without sharing class patientPortalController {
+public with sharing class patientPortalController {
 
     public string currentPage {get;set;}
     public Patient__c patient {get;set;}

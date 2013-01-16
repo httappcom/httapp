@@ -128,17 +128,4 @@
     <pluralLabel>Procedure Line Items</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
-    <webLinks>
-        <fullName>New_Procedure_Line</fullName>
-        <availability>online</availability>
-        <description>Button to add a procedure to a Treatment.</description>
-        <displayType>massActionButton</displayType>
-        <height>600</height>
-        <linkType>page</linkType>
-        <masterLabel>New Procedure Line</masterLabel>
-        <openType>sidebar</openType>
-        <page>ProcedureLine</page>
-        <protected>false</protected>
-        <requireRowSelection>false</requireRowSelection>
-    </webLinks>
 </CustomObject>

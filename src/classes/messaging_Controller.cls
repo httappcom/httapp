@@ -1,4 +1,8 @@
 public with sharing class messaging_Controller {
+/*
+	a User associated with 1 medical facility should not be able to interact with a user from another medical facility
+*/
+
 	
 	public Id parentId {
 		get;
@@ -8,6 +12,12 @@ public with sharing class messaging_Controller {
 				newMessage.parentId = parentId;
 				queryMessages();
 			}
+		}
+	}
+	public Id treatmentId {
+		get;
+		set{
+			treatmentId = value;
 		}
 	}
 	public FeedItem newMessage {
@@ -23,7 +33,8 @@ public with sharing class messaging_Controller {
 	public List<messageWrapper> messageList {get;set;}
 	public String selectedTopic {get;set;}
 	public Topic__c newTopic {get;set;}
-
+	public String mode {get;set;}
+	
 	public class messageWrapper {
 		public String body {get;set;}
 		public Id createdById {get;set;}
@@ -75,6 +86,7 @@ public with sharing class messaging_Controller {
 	
 	public messaging_Controller(){
 		newTopic = new Topic__c();
+		mode = 'TextPost';
 	}
 
 	public PageReference insertNewMessage(){
@@ -105,25 +117,45 @@ public with sharing class messaging_Controller {
 				options.add(new SelectOption(t.Id,t.Name));
 			}
 		}
+		for ( Care_Team_Member__c ctm : [Select Id, Name from Care_Team_Member__c where Treatment__r.Patient__c =:parentId order by Name]){
+			options.add(new SelectOption(ctm.Id,ctm.Name));
+		}
 		options.add(new SelectOption('New Topic','New Topic'));
 		return options;
 	}
+
+	public List<Topic__c> getTopicList() {
+		return [Select Id, Name, Patient__c from Topic__c where Patient__c = :parentId order by Name];
+	}
+
+	public List<Care_Team_Member__c> getCareTeamMemberList() {
+		return [Select Id, Name from Care_Team_Member__c where Treatment__c =:treatmentId order by Name];
+	}
+
 
 	public PageReference queryMessages(){
 		messageList = queryTopicFeed();
 		return null;
 	}
 
+	/*
+		Need to query Newsfeed for 
+			topics on this Treatment
+			on this Treatment
+			on this Patient
+	*/ 
 	public List<messageWrapper> queryTopicFeed(){
 		String queryString = 'SELECT Id, Type, CreatedById, CreatedBy.Name, CreatedDate, ParentId, Parent.Name, Body, Title, LinkUrl, ContentData, ContentFileName,';
 		queryString += '(SELECT Id, FieldName, OldValue, NewValue FROM FeedTrackedChanges order by Id DESC),';
 		queryString += '(SELECT Id, CommentBody, CreatedDate, CreatedBy.Name FROM FeedComments order BY CreatedDate LIMIT 10),';
 		queryString += '(SELECT CreatedBy.FirstName, CreatedBy.LastName FROM FeedLikes)';
 		queryString += ' FROM Topic__Feed ';
+		//RV: Added String.escapeSingleQuotes() to pass Security Scanner
 		if ( selectedTopic instanceof Id ){
-			queryString += 'where ParentId = \''+selectedTopic +'\'';
+			queryString += 'where ParentId = \''+String.escapeSingleQuotes(selectedTopic) +'\' or ';
+			queryString += ' CreatedById = \''+String.escapeSingleQuotes(selectedTopic) +'\' ';
 		} else {
-			queryString += 'where ParentId in (Select Id from Topic__c where Patient__c = \''+parentId +'\')';
+			queryString += 'where ParentId in (Select Id from Topic__c where Patient__c = \''+String.escapeSingleQuotes(parentId) +'\')';
 		}
 		queryString += ' order by CreatedDate DESC, Id DESC';
 		queryString += ' limit 20';
@@ -134,6 +166,12 @@ public with sharing class messaging_Controller {
 		return results;
 	}
 
+	public String messagingAlert {get;set;}
+	public PageReference pollNewsFeed(){
+		queryNewsFeed();
+		return null;
+	}
+
 	public List<messageWrapper> queryNewsFeed(){
 		List<messageWrapper> results = new List<messageWrapper>();
 		String queryString = 'SELECT Id, Type, CreatedById, CreatedBy.Name, CreatedDate, ParentId, Parent.Name, Body, Title, LinkUrl, ContentData, ContentFileName,';
@@ -142,7 +180,6 @@ public with sharing class messaging_Controller {
 		queryString += '(SELECT CreatedBy.FirstName, CreatedBy.LastName FROM FeedLikes)';
 		queryString += ' FROM NewsFeed ';
 		if ( parentId != null && parentId != userInfo.getUserId() ){
-			system.debug(parentId);
 			queryString += 'where ParentId = \''+parentId +'\'';
 		}
 		queryString += ' order by CreatedDate DESC, Id DESC';
@@ -150,6 +187,13 @@ public with sharing class messaging_Controller {
 		
 		for ( NewsFeed n : database.query(queryString) ){
 			results.add(new messageWrapper(n));
+		}
+		if  ( results.size() > 0 ){
+			if ( results[0].createdDateTime.addMinutes(5) >= system.now() ){
+				messagingAlert = results[0].body;
+			} else {
+				messagingAlert = '';
+			}
 		}
 		return results;
 	}
@@ -164,6 +208,43 @@ public with sharing class messaging_Controller {
 		return results;
 	}
 	
+	public PageReference selectTopic(){
+		return null;
+	}
+
+	public PageReference selectCareTeamMember(){
+		return null;
+	}
+
+	public PageReference addNewTopic(){
+		return null;
+	}
+	
+
+	public Care_Team_Member__c newCareTeamMember {get;set;}
+	public PageReference addNewCareTeamMember(){
+		newCareTeamMember = new Care_Team_Member__c();
+		newCareTeamMember.Treatment__c = treatmentId;
+		return null;
+	}
+
+	public PageReference insertNewCareTeamMember(){
+		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
+			insert newCareTeamMember;
+			newCareTeamMember = null;
+		} else {
+			
+		}
+		return null;
+	}
+
+	public PageReference switchMode(){
+		if ( apexPages.currentPage().getParameters().get('mode') != null ){
+			mode = apexPages.currentPage().getParameters().get('mode');
+		}
+		return null;
+	}
+
 	public static String fixNulls(String s){
 		if ( s == null ){
 			s = '';

@@ -73,6 +73,23 @@ public with sharing class careTeam_Controller {
 		set;
 	}
 
+	public Care_Team_Member__c newCareTeamMember {get;set;}
+	public PageReference addCareTeamMember(){
+		newCareTeamMember = new Care_Team_Member__c();
+		newCareTeamMember.Treatment__c = treatmentId;
+		return null;
+	}
+
+	public PageReference insertNewCareTeamMember(){
+		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
+			insert newCareTeamMember;
+			newCareTeamMember = null;
+		} else {
+			
+		}
+		return null;
+	}
+
 	public careTeam_Controller(){
 
 		

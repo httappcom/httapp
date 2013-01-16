@@ -38,42 +38,34 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
-        <fullName>Medical_Facility__c</fullName>
+        <fullName>PRM_Config__c</fullName>
         <externalId>false</externalId>
-        <label>Medical Facility</label>
-        <referenceTo>Medical_Facility__c</referenceTo>
-        <relationshipLabel>Med Facility Med Profile Links</relationshipLabel>
-        <relationshipName>Med_Facility_Med_Profile_Links</relationshipName>
+        <label>PRM Config</label>
+        <referenceTo>PRM_Config__c</referenceTo>
+        <relationshipLabel>PRM Users</relationshipLabel>
+        <relationshipName>PRM_Users</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
-        <fullName>PRM_Medical_Profile__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
+        <fullName>User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>PRM Medical Profile</label>
-        <referenceTo>PRM_Medical_Profile_Link__c</referenceTo>
-        <relationshipLabel>Med Facility Med Profile Links</relationshipLabel>
-        <relationshipName>Med_Facility_Med_Profile_Links</relationshipName>
-        <required>true</required>
+        <label>User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>PRM_Users</relationshipName>
+        <required>false</required>
         <type>Lookup</type>
     </fields>
-    <fields>
-        <fullName>Survey_Link__c</fullName>
-        <externalId>false</externalId>
-        <label>Survey Link</label>
-        <required>false</required>
-        <type>Url</type>
-    </fields>
-    <label>Med Facility Med Profile Link</label>
+    <label>PRM User</label>
     <nameField>
-        <displayFormat>{000}</displayFormat>
-        <label>Med Facility Medical Profile Name</label>
+        <displayFormat>{0000}</displayFormat>
+        <label>PRM User Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>Med Facility Med Profile Links</pluralLabel>
+    <pluralLabel>PRM Users</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

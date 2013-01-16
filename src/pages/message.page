@@ -1,7 +1,5 @@
 <apex:page sidebar="false" showHeader="false" >
 	<body>
-		<c:careTeam parentId="a0Fd000000FEbLL" /> 
-
-		<c:messaging height="1000" patientId="a08d000000I53zr" rendered="false" />
+		<c:messaging height="1000" patientId="a08d000000JTigD" />
 	</body>
 </apex:page>
