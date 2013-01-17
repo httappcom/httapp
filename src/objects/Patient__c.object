@@ -410,14 +410,16 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
     </fields>
     <fields>
         <fullName>Medical_Profile_Type__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Medical Profile Type</label>
-        <length>50</length>
+        <referenceTo>PRM_Medical_Profile_Link__c</referenceTo>
+        <relationshipLabel>Patients</relationshipLabel>
+        <relationshipName>Patients</relationshipName>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Medical_Reviews_Fax__c</fullName>

@@ -203,6 +203,11 @@ public with sharing class patientPortalController {
         return null;
     }
     
+    public pagereference goToMessaging(){
+        currentPage = 'Messaging';
+        return null;
+    }
+
     public pagereference goToMedicalRecords(){
         currentPage = 'Medical Records';
         return null;
@@ -568,5 +573,13 @@ public with sharing class patientPortalController {
                     IN :treatmentIds
                     order by t.Procedure_Date__c desc
             ];
+    }
+    public PageReference uploadDicom()
+    {
+    	return null;
+    }
+    public PageReference uploadDocument()
+    {
+    	return null;
     }
 }

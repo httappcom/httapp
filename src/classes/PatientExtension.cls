@@ -4,6 +4,8 @@
 * CreatedBy   : Ramadevi Kanchadapu
 */ 
 public class PatientExtension {
+	PUBLIC STRING SURVEYURL {GET;SET;}
+	
     public Patient__c patient { get; set; }
     public Treatment__c treatment { get; set; }
     public Payment__c payment { get; set; }      
@@ -61,6 +63,7 @@ public class PatientExtension {
         if  (sc.getId() != null  ) {
             //this.patient = (Patient__c)sc.getRecord();
             this.patient = PatientUtil.queryPatientAll(sc.getId());
+SURVEYURL = surveyGizmoAPI_Methods.generateMedicalProfileLink(Patient.Id); 
             showAdvocateInfo = (this.patient.Advocate_Name__c != null)?true:false;
             if (this.patient != null) {
             treatmentId = patient.Treatments__r.size()==0 ? null : patient.Treatments__r[0].id;
@@ -143,7 +146,10 @@ public class PatientExtension {
       insert patient;
     } else {              
       update patient;  
-    }      
+    }
+    
+SURVEYURL = surveyGizmoAPI_Methods.generateMedicalProfileLink(Patient.Id);  
+    
     return ApexPages.currentPage();
   } 
   public PageReference newPatient() {

@@ -121,15 +121,15 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Medical_Profile_Type__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
                 <field>MphRx_Patient_ID__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Partner__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Medical_Profile_Type__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -282,6 +282,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Treatment__c</fields>
         <relatedList>Topic__c.Patient__c</relatedList>
     </relatedLists>
     <relatedLists>

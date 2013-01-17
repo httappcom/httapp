@@ -178,7 +178,7 @@ public with sharing class MedicalRecordUtility {
 //	 	testPatients[0].Gender__c = 'Female';
 // 		Logger.info('Patient created with ID: ' + createMphRxPatientRecord(testPatients[0]));
 	
- 	testPatients[0].MphRx_Patient_ID__c = '71';
+ 	testPatients[0].MphRx_Patient_ID__c = '61';
   }  	
  	Logger.info('URL for DICOM upload: ' + getUploadDicomURL(testPatients[0]));
   }  

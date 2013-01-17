@@ -44,6 +44,7 @@
                 <table style="width:599px; cell-padding:5px;">
                     <tr>
                         <td style="padding-left:25px;"><apex:commandlink value="Home" action="{!goToHome}"/></td>
+                        <td><apex:commandlink value="Messaging" action="{!goToMessaging}"/></td>
                         <td><apex:commandlink value="Medical Records" action="{!goToMedicalRecords}"/></td>
                         <td><apex:commandlink value="Your Travel" action="{!goToYourTravel}"/></td>
                         <td><apex:commandlink value="Have a Question?" action="{!goToHaveAQuestion}"/></td>
@@ -57,6 +58,10 @@
                     Please contact Health Travel Guides for assistance. 
                 </apex:outputpanel>
                 
+                <apex:outputpanel rendered="{!currentpage == 'Messaging'}">
+					<c:messaging patientId="{!patient.Id}" /> 
+				</apex:outputpanel>
+
                 <apex:outputpanel rendered="{!currentpage == 'Home'}">
                     {!patient.Patient_First_Name__c},<br/><br/>Welcome to your personal health hub! Your health hub is a portal in the cloud, and you can log in from any browser.<br/><br/>
     
@@ -101,9 +106,9 @@
                 </apex:outputpanel>
                 
                 <apex:outputpanel rendered="{!currentpage == 'Medical Records'}">
-                    [medical records here]<br/><br/><br/><br/>
-                    
-                    submit file<br/><br/><br/>
+                     <apex:commandbutton action="{!uploadDicom}" value="Upload DICOM Study"></apex:commandbutton><br/><br/>
+                     <apex:commandbutton action="{!uploadDocument}" value="Upload Document"></apex:commandbutton><br/>                  
+                    <br/><br/><br/>
                      
                     No medical history on file? Submit one now.<br/>
                     <ul>
@@ -114,6 +119,7 @@
                         <li>Stem cell</li>
                     </ul>
                     <br/>
+                    <apex:outputtext value="{!patient.Id}"/>
                 </apex:outputpanel>
                 
                 <apex:outputpanel rendered="{!currentpage == 'Your Travel'}">

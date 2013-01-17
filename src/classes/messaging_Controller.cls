@@ -3,7 +3,6 @@ public with sharing class messaging_Controller {
 	a User associated with 1 medical facility should not be able to interact with a user from another medical facility
 */
 
-	
 	public Id parentId {
 		get;
 		set{
@@ -29,11 +28,6 @@ public with sharing class messaging_Controller {
 		}
 		set;
 	}
-	
-	public List<messageWrapper> messageList {get;set;}
-	public String selectedTopic {get;set;}
-	public Topic__c newTopic {get;set;}
-	public String mode {get;set;}
 	
 	public class messageWrapper {
 		public String body {get;set;}
@@ -83,29 +77,56 @@ public with sharing class messaging_Controller {
 			return page.Message.setRedirect(true);
 		}
 	} 
-	
+
+	public String mode {get;set;}
+	public String selectedFilterBy {get;set;}
+	public Care_Team_Member__c newCareTeamMember {get;set;}
+	public Topic__c newTopic {get;set;}
+	public List<messageWrapper> messageList {get;set;}
+	public Task newTask {get;set;}
+		
 	public messaging_Controller(){
-		newTopic = new Topic__c();
+		newTask = new Task();
 		mode = 'TextPost';
 	}
 
-	public PageReference insertNewMessage(){
-		if ( selectedTopic == 'New Topic' && newTopic.Name != null ){
-			insertNewTopic();
+	public PageReference addNewCareTeamMember(){
+		newTopic = null;
+		newCareTeamMember = new Care_Team_Member__c();
+		newCareTeamMember.Treatment__c = treatmentId;
+		return null;
+	}
+
+	public PageReference addNewTopic(){
+		newCareTeamMember = null;
+		newTopic = new Topic__c();
+		newTopic.Patient__c = parentId;
+//		newTopic.Treatment__c = treatmentId;
+		return null;
+	}
+	
+	public PageReference insertNewCareTeamMember(){
+		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
+			insert newCareTeamMember;
+			newCareTeamMember = null;
+		} else {
+			
 		}
-		newMessage.ParentId = selectedTopic;
+		return null;
+	}
+
+	public PageReference insertNewMessage(){
+		newMessage.ParentId = selectedFilterBy;
 		insert newMessage;
-		system.debug(newMessage.id);
 		newMessage = new FeedItem();
 		messageList = queryNewsFeed();
 		return null;
 	}
 
 	public PageReference insertNewTopic(){
-		newTopic.Patient__c = parentId;
 		insert newTopic;
-		selectedTopic = newTopic.Id;
-		newTopic = new Topic__c(Patient__c=parentId);
+		selectedFilterBy = newTopic.Id;
+		newTopic = null;
 		return null;
 	}
 
@@ -117,10 +138,6 @@ public with sharing class messaging_Controller {
 				options.add(new SelectOption(t.Id,t.Name));
 			}
 		}
-		for ( Care_Team_Member__c ctm : [Select Id, Name from Care_Team_Member__c where Treatment__r.Patient__c =:parentId order by Name]){
-			options.add(new SelectOption(ctm.Id,ctm.Name));
-		}
-		options.add(new SelectOption('New Topic','New Topic'));
 		return options;
 	}
 
@@ -151,9 +168,9 @@ public with sharing class messaging_Controller {
 		queryString += '(SELECT CreatedBy.FirstName, CreatedBy.LastName FROM FeedLikes)';
 		queryString += ' FROM Topic__Feed ';
 		//RV: Added String.escapeSingleQuotes() to pass Security Scanner
-		if ( selectedTopic instanceof Id ){
-			queryString += 'where ParentId = \''+String.escapeSingleQuotes(selectedTopic) +'\' or ';
-			queryString += ' CreatedById = \''+String.escapeSingleQuotes(selectedTopic) +'\' ';
+		if ( selectedFilterBy instanceof Id ){
+			queryString += 'where ParentId = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
+			queryString += ' CreatedById = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' ';
 		} else {
 			queryString += 'where ParentId in (Select Id from Topic__c where Patient__c = \''+String.escapeSingleQuotes(parentId) +'\')';
 		}
@@ -208,40 +225,42 @@ public with sharing class messaging_Controller {
 		return results;
 	}
 	
-	public PageReference selectTopic(){
+	public PageReference selectFilterBy(){
+		if ( selectedFilterBy == null && apexPages.currentPage().getParameters().get('selectedFilterBy') != null ){
+			selectedFilterBy = apexPages.currentPage().getParameters().get('selectedFilterBy');
+		}
+		messageList = queryTopicFeed();
 		return null;
 	}
 
-	public PageReference selectCareTeamMember(){
+	public PageReference clearFilterBy(){
+		selectedFilterBy = null;
+		messageList = queryTopicFeed();
+		return null;		
+	}
+
+	public PageReference selectTextmode(){
+		mode = 'TextPost';
 		return null;
 	}
 
-	public PageReference addNewTopic(){
+	public PageReference selectFileMode(){
+		mode = 'ContentPost';
 		return null;
 	}
 	
-
-	public Care_Team_Member__c newCareTeamMember {get;set;}
-	public PageReference addNewCareTeamMember(){
-		newCareTeamMember = new Care_Team_Member__c();
-		newCareTeamMember.Treatment__c = treatmentId;
+	public PageReference selectLinkMode(){
+		mode = 'LinkPost';
 		return null;
 	}
 
-	public PageReference insertNewCareTeamMember(){
-		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
-			insert newCareTeamMember;
-			newCareTeamMember = null;
-		} else {
-			
-		}
+	public PageReference selectPollMode(){
+		mode = 'PollPost';
 		return null;
 	}
 
-	public PageReference switchMode(){
-		if ( apexPages.currentPage().getParameters().get('mode') != null ){
-			mode = apexPages.currentPage().getParameters().get('mode');
-		}
+	public PageReference selectTaskMode(){
+		mode = 'TaskPost';
 		return null;
 	}
 
