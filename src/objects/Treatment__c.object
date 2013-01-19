@@ -1455,6 +1455,16 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Treatment_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text(Procedure__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Treatment Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Treatment_Summary__c</fullName>
         <externalId>false</externalId>
         <label>Treatment Summary</label>

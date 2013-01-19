@@ -51,7 +51,7 @@ public with sharing class surveyGizmoAPI_Methods {
     public static void retrieveMedicalProfile (string patientId) {
         Patient__c p = [select id, Medical_Profile_Type__r.Name from Patient__c where id = :patientId];
         thisPatientId = p.id;
-        retrieveSurvey(p.Medical_Profile_Type__c, 'Patient');
+        retrieveSurvey(p.Medical_Profile_Type__r.name, 'Patient');
     }
     
     public static void retrieveSatisfactionSurvey (string treatmentId) {

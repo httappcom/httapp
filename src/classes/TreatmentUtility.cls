@@ -68,7 +68,7 @@ public with sharing class TreatmentUtility {
 				}
 
 				Topic__c t = new Topic__c();
-				t.Name = treatment.Name;
+				t.Name = 'Treatment';
 				t.Treatment__c = treatment.Id;
 				t.Patient__c = thisPatient.Id;
 				topicInserts.add(t);

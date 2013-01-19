@@ -31,7 +31,7 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>Nuehealth_PRM/Thank_You_New_Treatment</template>
+        <template>Nuehealth_PRM/Received_Medical_Travel_Inquiry</template>
     </alerts>
     <alerts>
         <fullName>Treatment_Itinerary_Email_to_Patient</fullName>

@@ -5,7 +5,7 @@
 */ 
 public class PatientExtension {
 	PUBLIC STRING SURVEYURL {GET;SET;}
-	
+	public Boolean showLightbox {get;set;}
     public Patient__c patient { get; set; }
     public Treatment__c treatment { get; set; }
     public Payment__c payment { get; set; }      
@@ -56,6 +56,7 @@ public class PatientExtension {
     public boolean sendSuccess {get;set;}
             
     public PatientExtension(ApexPages.StandardController sc) {
+		showLightbox = false;
         sendSuccess = false;
         Logger.info('Patient Constructor');
         this.initiatePatient();
@@ -152,6 +153,11 @@ SURVEYURL = surveyGizmoAPI_Methods.generateMedicalProfileLink(Patient.Id);
     
     return ApexPages.currentPage();
   } 
+	public PageReference toggleLightBox(){
+		showLightbox = !showLightbox;
+		return null;
+	}
+  
   public PageReference newPatient() {
     initiatePatient();
     return ApexPages.currentPage();  
@@ -596,16 +602,25 @@ Logger.info('saveTreatment');
     if (procedures.size()>0) {
         procedure = procedures[0];
  Logger.info('procedure='+procedure);
+    } else {
+        procedure = null;
+    }
+    if (treatment.Destination_Facility__c == null) {
+        PRM_User__c[] prmUsers = [select User__c, User__r.Name from PRM_User__c  where
+            Role__c in ('Primary Onsite Coordinator', 'Onsite Coordinator')];
+Logger.info('Med Fac Users='+prmUsers);
+        for (PRM_User__c user : prmUsers) {
+            onsiteCoordinators.add(new SelectOption(user.User__c, user.User__r.Name));
+        }
+    } else {
         Medical_Facility_User__c[] medFacUsers = [select User__c, User__r.Name from Medical_Facility_User__c 
-            where Medical_Facility__c = :procedure.Facility__c and 
+            where Medical_Facility__c = :treatment.Destination_Facility__c and 
             Role__c in ('Primary Onsite Coordinator', 'Onsite Coordinator')];
 Logger.info('Med Fac Users='+medFacUsers);
         for (Medical_Facility_User__c user : medFacUsers) {
             onsiteCoordinators.add(new SelectOption(user.User__c, user.User__r.Name));
         }
-    } else {
-        procedure = null;
-    }
+	}
   }
   
     private void loadProcedureList() {

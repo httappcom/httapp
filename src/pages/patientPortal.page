@@ -38,13 +38,12 @@
             }
     </style>
     
-    <body style="width:600px;">
+    <body style="width:800px;">
         <apex:form >
-            <div style="width:600px;padding-top:10px;">
+            <div style="width:800px;padding-top:10px;">
                 <table style="width:599px; cell-padding:5px;">
                     <tr>
                         <td style="padding-left:25px;"><apex:commandlink value="Home" action="{!goToHome}"/></td>
-                        <td><apex:commandlink value="Messaging" action="{!goToMessaging}"/></td>
                         <td><apex:commandlink value="Medical Records" action="{!goToMedicalRecords}"/></td>
                         <td><apex:commandlink value="Your Travel" action="{!goToYourTravel}"/></td>
                         <td><apex:commandlink value="Have a Question?" action="{!goToHaveAQuestion}"/></td>
@@ -58,10 +57,6 @@
                     Please contact Health Travel Guides for assistance. 
                 </apex:outputpanel>
                 
-                <apex:outputpanel rendered="{!currentpage == 'Messaging'}">
-					<c:messaging patientId="{!patient.Id}" /> 
-				</apex:outputpanel>
-
                 <apex:outputpanel rendered="{!currentpage == 'Home'}">
                     {!patient.Patient_First_Name__c},<br/><br/>Welcome to your personal health hub! Your health hub is a portal in the cloud, and you can log in from any browser.<br/><br/>
     
@@ -71,7 +66,9 @@
                     conversations with and instructions from your doctor, and more.<br/><Br/>
     
                     Keep all your important information related to your medical travel treatments in one place, whenever you need the information, it's here.<Br/><br/>
+					<c:messaging pId="{!patientId}" treatmentId="{!treatmentId}" /> 
                     
+					<apex:outputPanel rendered="false" >                    
                     <a href="#">Account Settings</a><br/><br/>      
                     
                     Recent Activity<Br/>
@@ -103,6 +100,7 @@
                         <apex:inputtextarea value="{!tempstring}" rows="4" cols="60"/>
                         <apex:commandbutton value="Submit" action="{!null}"/>
                     </apex:pageblocksection>
+					</apex:outputPanel>
                 </apex:outputpanel>
                 
                 <apex:outputpanel rendered="{!currentpage == 'Medical Records'}">

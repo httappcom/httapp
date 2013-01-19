@@ -46,7 +46,7 @@
             </apex:pageBlockTable>   
         </apex:pageBlockSection>
     </apex:pageBlock>
-    <div style="clear:both"></div>
+    <!-- div style="clear:both"></div>
     <div class="pipelinechartscol1">
         <div class="pipelineHeading">Tasks</div>
                <apex:selectList value="{!selectedTaskOption}" size="1" id="sidebardropdown" styleClass="sidebardropdown" onChange="onChangeCC(this.options[this.selectedIndex].value);">
@@ -56,14 +56,6 @@
            <apex:outputPanel id="taskResult">                 
              <table width="100%" border="0" cellspacing="0" cellpadding="0">  
                 <tr>
-                 <!-- <td>  
-                  <table widht="50%">    
-                    <td><apex:commandLink action="{!firstTasks}">First</apex:commandlink></td>
-                    <td><apex:commandLink action="{!previousTasks}" rendered="{!hasPrevious}">Previous</apex:commandlink></td>
-                    <td><apex:commandLink action="{!nextTasks}" rendered="{!hasNext}">Next</apex:commandlink></td>
-                     <td><apex:commandLink action="{!lastTasks}">Last</apex:commandlink></td>
-                   </table>
-                  </td>  -->
                 </tr>            
                 <tr class="chartheader">
                     <td valign="top"><a href="#">Patient</a></td>
@@ -177,7 +169,7 @@
                     <td valign="top"><a href="#">Invitation</a></td>
                 </tr>
             </table>
-    </div>
+    </div> -->
 
  </apex:form>  
 </apex:page>

@@ -97,7 +97,7 @@
                 padding:10px;
                 position: absolute;
                 z-index: 9999;
-                width: 570px;
+                width: 770px;
                 margin-left: -250px;
                 top:130px;
                 //top:50px;
@@ -330,6 +330,10 @@
                 <apex:outputLabel value="Last Communication"/>
                 <apex:inputTextarea rows="3" cols="50" value="{!patient.Last_Communication__c}" />
             </apex:pageblocksectionitem>
+             <apex:pageblocksectionitem helpText=""> 
+                <apex:outputLabel value="Gender"/>
+                <apex:inputField value="{!patient.Gender__c}" taborderhint="135"/>
+            </apex:pageblocksectionitem>
             <apex:outputtext value=""/>
             <apex:pageblocksectionitem >
                 <apex:outputtext value=""/>
@@ -369,7 +373,8 @@
             </apex:pageBlockSectionItem>
             <apex:pageblocksectionitem >
                 <apex:outputPanel layout="block" style="float:right; text-align:right;width:100%; "><!-- rendered="{!treatments.size>1}" -->
-                    <a href="javascript:showTaskList();" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration"/></a>
+                    <!-- <a href="javascript:showTaskList();" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration"/></a> -->
+                    <apex:commandLink action="{!toggleLightbox}" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration" reRender="taskList" /></apex:commandLink>
                 </apex:outputPanel>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
@@ -576,14 +581,6 @@
                             <apex:outputLabel value="Nationality"/>
                             <apex:inputField value="{!patient.Nationality__c}" taborderhint="640"/>
                         </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Male or Female"/>
-                            <apex:inputField value="{!patient.Gender__c}" taborderhint="620"/>
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Country Born"/>
-                            <apex:inputField value="{!patient.Country__c}" taborderhint="650"/>
-                        </apex:pageblocksectionitem>
                     </apex:pageBlockSection>
                 </apex:pageBlock>
     </apex:pageblocksection>
@@ -712,6 +709,7 @@
                             <div class="fieldheading"><div>Medical Profile</div><br/>
                                 <apex:commandbutton status="retrieveStatus" style="font-size:x-small;" value="Request Medical Profile" action="{!retrieveMedicalProfile}" rerender="interactionPanel"/>
                                 <apex:actionStatus startText="Retrieving..." stopText="" id="retrieveStatus"/>
+                                <br/><br/> <apex:outputlink style="font-size:x-small;" value="{!SURVEYURL}" target="_Blank">temp take survey link</apex:outputlink>
                             </div>
                         </div>
                     </apex:outputpanel>
@@ -1203,10 +1201,10 @@
         </apex:outputpanel>
         <script>var treatmentListId = "{!$Component.treatmentList}";</script>
         
-        <apex:outputPanel layout="block" id="taskList" style="display:none">
+        <apex:outputPanel layout="block" id="taskList" >
           <apex:pageBlock >
-            <apex:outputPanel layout="block" styleClass="treatmentListBox"/>
-            <apex:outputpanel styleClass="treatmentListLBox" layout="block">
+            <apex:outputPanel layout="block" styleClass="treatmentListBox" rendered="{!showLightBox}" />
+            <apex:outputpanel styleClass="treatmentListLBox" layout="block" rendered="{!showLightBox}" >
                 <div align="center">
                     <apex:outputtext style="font-weight:bold;" value="Collaboration for Treatment {!treatment.Name}"/><br/><br/>
                 </div>
@@ -1233,29 +1231,14 @@
                     </apex:pageblocktable>
                 </apex:pageblocksection>
                 <br/>
-                <apex:pageblocksection columns="1" collapsible="true" title="Care Team">
-                    <apex:panelGrid columns="2">
-                        <apex:image id="avatar1" url="{!URLFOR($Resource.KenResources, '/img/avatar.png')}" width="45" height="45" />
-                        <apex:panelGrid columns="1">
-                            <apex:outputText value="John Smith"/>
-                            <apex:outputPanel ><a href="#">Assign Task</a></apex:outputPanel>
-                            <apex:outputPanel ><a href="#">Send Message</a></apex:outputPanel>
-                        </apex:panelGrid>
-                        <apex:image id="avatar2" url="{!URLFOR($Resource.KenResources, '/img/avatar.png')}" width="45" height="45" />
-                        <apex:panelGrid columns="1">
-                            <apex:outputText value="Mary Jones"/>
-                            <apex:outputPanel ><a href="#">Assign Task</a></apex:outputPanel>
-                            <apex:outputPanel ><a href="#">Send message</a></apex:outputPanel>
-                        </apex:panelGrid>
-                    </apex:panelGrid>
-                </apex:pageblocksection>
                 <apex:pageblocksection columns="1" collapsible="true" title="Messaging">
-                    <apex:form ><c:messaging height="300" patientId="{!Patient__c.Id}" /></apex:form>
+                    <apex:form ><c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/></apex:form>
                 </apex:pageblocksection>
                 
                 <div align="center">
                     <apex:form >
-                        <a href="javascript:hideTaskList()" class="link" style="color:#000;" >Close</a>
+<!--                         <a href="javascript:hideTaskList()" class="link" style="color:#000;" >Close</a> -->
+                        <apex:commandLink value="Close" action="{!toggleLightBox}" reRender="taskList"  />
                     </apex:form>
                 </div>
             </apex:outputpanel>

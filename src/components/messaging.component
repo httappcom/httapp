@@ -1,6 +1,6 @@
 <apex:component controller="messaging_Controller" allowDML="true" layout="none" id="messaging" >
 	<apex:attribute name="height" description="Max Height in Pixels of this Component" type="Integer" />
-	<apex:attribute name="patientId" description="Id of the Patient the component is on" type="Id" assignTo="{!parentId}" />
+	<apex:attribute name="pId" description="Id of the Patient the component is on" type="Id" assignTo="{!patientId}" required="true" />
 	<apex:attribute name="treatmentId" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />
 
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/zenifiedChatterPageBase.css" />
@@ -17,19 +17,6 @@
 			<div class="chatterPage" >
 				<div id="chatterTab" class="threecolumn" >
 	
-					<!-- HEADER -->
-					<apex:outputPanel layout="block" styleClass="headerContent" >
-						<h1 class="pageTitle" >{!$User.FirstName} {!$User.LastName}</h1>
-						<!-- HELP LINK
-						<div class="headerRightContent">
-							<a title="Video Demo (New Window)" class="videoLinkElement" href="javascript:openPopupFocus%28%27http%3A%2F%2Fwww.salesforce.com%2F_app%2Fvideo%2Fchatter%2Fhelp%2Fchatter_messages.jsp%27%2C%20%27win%27%2C%20720%2C%20500%2C%20%27width%3D720%2Cheight%3D500%2Cresizable%3Dno%2Ctoolbar%3Dno%2Cstatus%3Dno%2Cscrollbars%3Dyes%2Cmenubar%3Dno%2Cdirectories%3Dno%2Clocation%3Dno%2Cdependant%3Dno%27%2C%20false%2C%20false%29%3B" id="ext-gen3" style="display: none;"><span class="helpLink">Video Demo</span></a><a title="Help for this Page (New Window)" class="helpLinkElement" href="javascript:openPopupFocusEscapePounds(%27https://login.salesforce.com/services/auth/sso/00D30000000XsfGEAS/HTAuthProvider?startURL=%252Fapex%252Fhtdoor%253Floc%253Dhelp%2526target%253Dcollab_home_overview.htm%2526section%253DCollaboration%2526language%253Den_US%2526release%253D180.18%2526instance%253DNA14&amp;site=https%3A%2F%2Fhelp.salesforce.com%27, %27Help%27, 1024, 768, %27width=1024,height=768,resizable=yes,toolbar=yes,status=yes,scrollbars=yes,menubar=yes,directories=no,location=yes,dependant=no%27, false, false);"><span class="helpLink">Help for this Page</span>
-								<img title="Help for this Page (New Window)" class="helpIcon" alt="Help for this Page (New Window)" src="/s.gif" />
-							</a>
-							<script type="text/javascript">chatter.getChatterTab().hideVideoLink();</script>
-						</div>
-						 -->
-					</apex:outputPanel>
-	
 					<!--  LEFT COLUMN -->
 					<apex:outputPanel layout="block" styleClass="leftContent" >
 
@@ -38,7 +25,7 @@
 								<div class="chatterUserStatusImg">
 									<a title="{!$User.FirstName} {!$User.LastName}" href="/_ui/core/userprofile/UserProfilePage?u={!$User.Id}">
 										<span class="chatter-avatar profileImage chatter-avatarRegular">
-											<img width="45" height="45" title="{!$User.FirstName} {!$User.LastName}" class="chatter-photo" alt="{!$User.FirstName} {!$User.LastName}" src="https://c.na14.content.force.com/profilephoto/005/T" />
+											<img width="45" height="45" title="{!$User.FirstName} {!$User.LastName}" class="chatter-photo" alt="{!$User.FirstName} {!$User.LastName}" src="/profilephoto/005/T" />
 											<img width="1" height="1" title="" class="chatter-avatarStyle" alt="" src="/s.gif" />
 										</span>
 									</a>
@@ -50,18 +37,6 @@
 	   						</div>
 						</apex:outputPanel>
 
-						<apex:outputPanel layout="none" rendered="false" styleClass="chatterUserStatus" >
-							<div class="chatterTabNavigation directMessagingNavigation chatterNavigationGroup" id="directMessagingNavigation">
-								<ul class="primaryNavList brandSideNav">
-									<li class="directMessageLink directMessage primaryNavSection hasIcon">
-										<img onerror="chatter.getToolbox().setImageSrc(this, '/s.gif');" src="/s.gif" class="icon" />
-										<a title="Message" onclick="chatter.getChatterTab().refresh('DirectMessages', {});" class="trigger" href="javascript:;">Messages</a>
-										<span id="directMessageUnreadCount" class="count">1</span>
-									</li>
-								</ul>
-							</div>
-						</apex:outputPanel>	
-
 						<div class="chatterTabNavigation mainNavigation chatterNavigationGroup" id="mainNavigation">
 							<ul class="primaryNavList brandSideNav">
 								<li class="feedTypeList hasIcon hasSubNav">
@@ -71,7 +46,7 @@
 									</div>
 									<div style="display: block;" class="subNavSection">
 										<ul>
-											<li class="{!if( (selectedFilterBy == null || ISBLANK(selectedFilterBy)),'selected','')}">
+											<li class="{!if( selectedFilterBy == patientId || selectedFilterBy == null,'selected','')}">
 												<apex:commandLink value="Recent Items" styleClass="NEWS trigger" action="{!clearFilterBy}" />
 											</li>
 											<apex:repeat value="{!topicList}" var="t" >
@@ -107,51 +82,6 @@
 										</ul>
 									</div>
 								</li>
-								<apex:outputPanel layout="none" rendered="false" >
-									<li class="groupListView hasIcon hasSubNav">
-										<div class="primaryNavSection">
-											<span class="icon"></span>
-											<a class="trigger" title="Find groups" href="javascript:;" id="ext-gen19">Groups</a>
-										</div>
-										<div style="display: none;" class="subNavSection">
-											<ul>
-												<li class="">
-													<a title="Recently Viewed" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;recent&quot;});" class="trigger default ftr_recent cxgrouplistfilter" href="javascript:;">Recently Viewed</a>
-												</li>
-												<li class="">
-													<a title="My Groups" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;my&quot;});" class="trigger cxgrouplistfilter ftr_my" href="javascript:;">My Groups</a>
-												</li>
-												<li class="">
-													<a title="All Groups" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;group&quot;,&quot;filter&quot;:&quot;all&quot;});" class="cxgrouplistfilter ftr_all trigger" href="javascript:;">All Groups</a>
-												</li>
-											</ul>
-										</div>
-									</li>
-								</apex:outputPanel>
-								<apex:outputPanel layout="none" rendered="false" >
-									<li class="fileListView hasIcon hasSubNav">
-										<div class="primaryNavSection">
-											<span class="icon"></span>
-											<a class="trigger" title="Find files" href="javascript:;">Files</a>
-										</div>
-										<div style="" class="subNavSection">
-											<ul>
-												<li class="">
-													<a title="Recently Viewed" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;recent&quot;});" id="recentFilesLinkInChatterTab" class="trigger" href="javascript:;">Recently Viewed</a>
-												</li>
-												<li class="">
-													<a title="Files I Own" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;my&quot;});" id="myFilesLinkInChatterTab" class="trigger" href="javascript:;">Files I Own</a>
-												</li>
-												<li class="">
-													<a title="Files Shared with Me" onclick="chatter.getChatterTab().refresh('ListViews', {&quot;type&quot;:&quot;file&quot;,&quot;filter&quot;:&quot;shared&quot;});" id="sharedFilesLinkInChatterTab" class="trigger" href="javascript:;">Files Shared with Me</a>
-												</li>
-												<li class="">
-													<a title="All Files »" class="trigger" href="/_ui/core/chatter/files/FileTabPage?f=00Dd0000000gLpp">All Files »</a>
-												</li>
-											</ul>
-										</div>
-									</li>
-								</apex:outputPanel>
 							</ul>
 						</div>
 						<div>&nbsp;</div>
@@ -162,81 +92,6 @@
 					<div class="mainContent" style="margin-left:0px;">
 						<div id="lowerMainContent" class="lowerMainContent" >
 							<div class="wholeContent" id="wholeContent"></div>
-							
-							<apex:outputPanel styleClass="rightContent" id="rightContent" rendered="false" >
-								<div class="defaultRightContentDiv">
-
-									<apex:outputPanel layout="none" rendered="FALSE" >
-										<div data-rectype="ALL" data-hovdata="dir=chatterHover-left" class="recommend" id="recs_widget" data-uidsfdc="43">
-											<div class="recBoxHeader">
-												<h3>Recommendations</h3>
-												<a class="blueLink" title="See more recommendations" href="/_ui/core/chatter/recommend/RecommendationsPage?recType=USERS">	     		More</a>
-											</div>
-											<div aria-relevant="additions, text" aria-atomic="false" aria-live="assertive" class="recBox">
-												<apex:repeat value="{!recommendations}" var="r" >
-													<div tabindex="-1" data-purpose="0" data-recprocname="SharedWorkProcessor" data-recid="{!r.recordId}" class="recElement">
-														<a title="{!r.name}" href="/_ui/core/userprofile/UserProfilePage?u={!r.recordId}">
-															<span data-hovid="{!r.recordId}" class="recImage chatter-avatar chatter-avatarMedium" data-uidsfdc="63" id="hoverItem63">
-																<img width="30" height="30" title="{!r.name}" class="chatter-photo" alt="Rich Vann Dev" src="https://c.na14.content.force.com/profilephoto/005/T" />
-																<img width="12" height="1" title="" style="margin-right: 0.25em;margin-right: 0.25em;" class="chatter-avatarStyle" alt="" src="/s.gif" />
-															</span>
-														</a>    
-														<div class="recInfo">
-															<a title="Don't show me this recommendation again" href="javascript:void(0);">            
-																<img alt="Don't show me this recommendation again" class="recDismissImage" src="/s.gif" />
-															</a>
-													        <div class="recNameAndTitle">
-																<span data-hovid="{!r.recordId}" class="recElementName" data-uidsfdc="64" id="hoverItem64">
-																	<a title="{!r.name}" href="/{!r.recordId}">{!r.name}</a>
-																</span>
-													        </div>
-															<div data-explaintype="5" class="explanation unexpanded">
-																<a href="javascript:void(0);">
-												                    <img class="arrow-img" src="/s.gif" />
-																	Shares interest in 11 records
-																</a>
-													        </div>
-															<div class="recExpl"></div>
-															<div>
-																<div onclick="SfdcApp.Chatter.SubscribeButton.onClick(event);" data-sfdc-entity-id="{!r.recordId}" data-chatter-widget="subscribeBtn" class="followUnfollowElement">
-																	<span data-chatter-subscribe="1" class="zen-media zen-mediaExt">
-																		<a class="zen-mrs zen-img" href="javascript:void(0);">
-																			<img width="12" height="1" title="Follow this user to receive updates in your feed." style="margin-right: 0.25em;margin-right: 0.25em;" class="chatter-iconSmall chatter-followIcon" alt="Follow this user to receive updates in your feed." src="/s.gif" />
-																		</a>
-																		<span class="zen-mediaBody">
-																			<a title="Follow this user to receive updates in your feed." href="javascript:void(0);">Follow</a>
-																		</span>
-																	</span>
-																	<span style="display:none" class="zen-media zen-mediaExt">
-																		<img width="12" height="1" title="Stop following this user to stop receiving updates in your feed." style="margin-right: 0.25em;margin-right: 0.25em;" class="chatter-icon zen-mrs chatter-checkedIcon zen-img" alt="Stop following this user to stop receiving updates in your feed." src="/s.gif" />
-																		<span class="zen-mediaBody">
-																			Following
-																			<a title="Stop following this user to stop receiving updates in your feed." data-chatter-subscribe="0" class="zen-mls zen-imgExt" href="javascript:void(0);">
-																				<img width="12" height="1" title="Stop following this user to stop receiving updates in your feed." style="margin-right: 0.25em;margin-right: 0.25em;" class="chatter-icon chatter-unfollowIcon" alt="Stop following this user to stop receiving updates in your feed." src="/s.gif" />
-																			</a>
-																		</span>
-																	</span>
-																</div>
-															</div>
-													    </div>
-													</div>
-												</apex:repeat>
-											</div>
-										</div>
-									</apex:outputPanel>
-									<apex:outputPanel layout="none" rendered="false" >
-										<div id="trendingtopics" class="topicWidget">
-											<div class="topicBoxHeader">
-												<h3 class="topicWidgetHeader">Trending Topics</h3>
-											</div>
-											<div aria-relevant="additions, text" aria-atomic="false" aria-live="assertive" class="topicBox">
-												<div class="noTopics">Start a trend by adding a <a class="noTopicsLink topicLink" href="javascript:openPopupFocusEscapePounds(%27https://login.salesforce.com/services/auth/sso/00D30000000XsfGEAS/HTAuthProvider?startURL=%252Fapex%252Fhtdoor%253Floc%253Dhelp%2526target%253Dcollab_add_topic.htm%2526language%253Den_US%2526release%253D180.18%2526instance%253DNA14&amp;site=https%3A%2F%2Fhelp.salesforce.com%27, %27Help%27, 1024, 768, %27width=1024,height=768,resizable=yes,toolbar=yes,status=yes,scrollbars=yes,menubar=yes,directories=no,location=yes,dependant=no%27, false, false);">#Topic</a> to your post. Frequently used topics become trends.</div>
-											</div>
-										</div>
-									</apex:outputPanel>
-								</div>            
-							</apex:outputPanel>
-	
 	
 							<div class="centerContent" id="centerContent">
 								<apex:outputPanel layout="block" id="newfeed">
@@ -244,9 +99,8 @@
 										<apex:outputPanel layout="block" styleClass="publisherrightcontainer" id="publisherrightcontainer" >
 											<apex:outputPanel layout="block" styleClass="publishercontrols" >
 
-
 												<div id="contentButtonBar" class="cxcontentbuttonbar publisherFeedItemTypeChoices">
-													<apex:commandLink id="publisherAttachTextPost" styleClass="publisherattach publisherTextPost {!IF(mode=='TextPost','withArrowAttached','')}" action="{!selectTextMode}" >
+													<apex:commandLink id="publisherAttachTextPost" styleClass="publisherattach publisherTextPost {!IF(mode=='Text','withArrowAttached','')}" action="{!selectTextMode}" >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">Post</span>
 														<span class="pArrow"></span>
@@ -256,19 +110,14 @@
 														<span class="publisherattachtext">File</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
-													<apex:commandLink id="publisherAttachLinkPost" styleClass="publisherattach publisherattachLinkPost {!IF(mode=='LinkPost','withArrowAttached','')}" action="{!selectLinkMode}"  >
+													<apex:commandLink id="publisherAttachLinkPost" styleClass="publisherattach publisherattachLinkPost {!IF(mode=='Link','withArrowAttached','')}" action="{!selectLinkMode}"  >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">Link</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
-													<apex:commandLink id="publisherAttachTaskPost" styleClass="publisherattachPollPost publisherattach {!IF(mode=='TaskPost','withArrowAttached','')}" action="{!selectTaskMode}" >
+													<apex:commandLink id="publisherAttachTaskPost" styleClass="publisherattachPollPost publisherattach {!IF(mode=='Task','withArrowAttached','')}" action="{!selectTaskMode}" >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">Task</span>
-														<span class="pArrow"></span>
-													</apex:commandLink>
-													<apex:commandLink id="publisherAttachPollPost" styleClass="publisherattachPollPost publisherattach {!IF(mode=='PollPost','withArrowAttached','')}" action="{!selectPollMode}" rendered="false" >
-														<img title="" class="publishericon" alt="" src="/s.gif" />
-														<span class="publisherattachtext">Poll</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
 												</div>
@@ -276,7 +125,7 @@
 												<apex:outputPanel layout="block" styleClass="publisherWrapper {!mode}" >
 													<div class="contentPublisherSlideDown abovePublisher">
 
-														<apex:outputPanel layout="block" id="chatterTaskPost" styleClass="panel" rendered="{!mode == 'TaskPost'}" >
+														<apex:outputPanel layout="block" id="chatterTaskPost" styleClass="panel" rendered="{!mode == 'Task'}" >
 															<div class="panelBody clear">
 																<table class="postInput">
 																	<tbody>
@@ -286,47 +135,35 @@
 																				<div class="requiredInput" id="ext-gen4">
 																					<div class="requiredBlock"></div>
 																					<apex:inputText value="{!newTask.Subject}" title="Task Subject" size="20" maxlength="1005" id="taskSubject" styleClass="fileFormInputElement" />
-																					<div class="errorMsg hidden" id="ext-gen5"></div>
+																					<div class="errorMsg hidden" ></div>
 																				</div>
 																			</td>
 																		</tr>
-																		<!-- 
-																		<tr>
-																			<th scope="row"><label for="activityDate">Task Due Date</label></th>
-																			<td>
-																				<div>
-																					<apex:inputField value="{!newTask.ActivityDate}" id="activityDate" rendered="False" />
-																					<div class="errorMsg hidden" id="ext-gen7"></div>
-																				</div>
-																			</td>
-																		</tr>
-																		 -->
 																	</tbody>
 																</table>
 															</div>
 														</apex:outputPanel>
 
-
-														<apex:outputPanel layout="block" id="chatterLinkPost" styleClass="panel" rendered="{!mode == 'LinkPost'}" >
+														<apex:outputPanel layout="block" id="chatterLinkPost" styleClass="panel" rendered="{!mode == 'Link'}" >
 															<div class="panelBody clear">
 																<table class="postInput">
 																	<tbody>
 																		<tr>
 																			<th scope="row"><label for="url"><span class="requiredMark">*</span>Link URL</label></th>
 																			<td>
-																				<div class="requiredInput" id="ext-gen4">
+																				<div class="requiredInput">
 																					<div class="requiredBlock"></div>
 																					<apex:inputText value="{!newMessage.linkURL}" title="Link URL" size="20" maxlength="1005" id="url" styleClass="fileFormInputElement" />
-																					<div class="errorMsg hidden" id="ext-gen5"></div>
+																					<div class="errorMsg hidden" ></div>
 																				</div>
 																			</td>
 																		</tr>
 																		<tr>
 																			<th scope="row"><label for="urlName">Link Name</label></th>
 																			<td>
-																				<div class="urlName" id="ext-gen6">
-																					<apex:inputText value="{!newMessage.Title}" title="Link" size="20" maxlength="260" id="urlName" styleClass="fileFormInputElement" />
-																					<div class="errorMsg hidden" id="ext-gen7"></div>
+																				<div class="urlName">
+																					<apex:inputText value="{!newMessage.linkName}" title="Link" size="20" maxlength="260" id="urlName" styleClass="fileFormInputElement" />
+																					<div class="errorMsg hidden" ></div>
 																				</div>
 																			</td>
 																		</tr>
@@ -335,7 +172,7 @@
 															</div>
 														</apex:outputPanel>
 
-														<apex:outputPanel layout="block" id="chatterFileStageTwo" styleClass="panel" rendered="{!mode == 'ContentPost'}" >
+														<apex:outputPanel layout="block" id="chatterFileStageTwo" styleClass="panel" rendered="{!mode == 'Content'}" >
 															<div class="clearContentPanelButtonContainer">
 															</div>
 															<div class="panelBody clear">
@@ -356,7 +193,7 @@
 																				<div>
 																					<div class="requiredInput">
 																						<div class="requiredBlock"></div>
-																						<apex:inputFile value="{!newMessage.ContentData}" fileName="{!newMessage.ContentFileName}" />
+																						<apex:inputFile value="{!newMessage.attachment.body}" fileName="{!newMessage.attachment.name}" />
 																						<div class="errorMsg hidden"></div>
 																					</div>
 																					<div class="uploadFileSizeLimit">
@@ -389,7 +226,7 @@
 															</div>
 														</apex:outputPanel>
 													</div>
-													<apex:outputPanel layout="block" styleClass="publisherTextAreaContainer" rendered="{!mode=='TextPost' || mode=='ContentPost'}">
+													<apex:outputPanel layout="block" styleClass="publisherTextAreaContainer" rendered="{!mode=='Text' || mode=='Content'}">
 														<div class="publisherTextAreaInner" style="width:507px;">
 															<apex:inputTextArea value="{!newMessage.Body}" id="publishereditablearea" styleClass="chatterHashtagsEnabled publishertextarea publishertextareafocus" style="min-height: 40px; width:507px;"/> 
 														</div>
@@ -397,8 +234,9 @@
 													</apex:outputPanel>
 													<div class="contentPublisherSlideDown abovePublisher">
 													</div>
+
 													<div class="bottomBar" style="-moz-border-bottom-colors: none;-moz-border-left-colors: none;-moz-border-right-colors: none;-moz-border-top-colors: none; background: none repeat scroll 0 0 #F5F6F6;border-image: none;border-radius: 0 0 3px 3px;border-style: none solid #C7CCCE; border-width: medium 1px 1px;height: 30px;line-height: 30px;padding: 9px;clear: both;margin-bottom: 7px;color: #222222">
-														<div class="bottomBarLeft" style="display:inherit; float: left; line-height: 30px; margin: 0; padding: 0;">
+														<div class="bottomBarLeft" style="display:inline; float: left; line-height: 30px; margin: 0; padding: 0;">
 															<span class="postTo">
 																<span class="postToText">To / RE: </span>
 																<span class="postToTarget">
@@ -433,25 +271,6 @@
 	
 									<div class="cxfeedinnerwrapper" >
 										<div class="feedcontainer cxfeedcontainer actionsOnHoverEnabled">
-
-											<apex:outputPanel layout="block" styleClass="feedSortMenuContainer" rendered="false" >
-												<div id="feedSortId" class="checkedMenu feedSortMenu">
-													<span class="checkedMenuLabel">Sort by:</span>
-													<a title="Change sort order" name="Most Recent Activity" id="feedSortIdButton" class="checkedMenuButton">
-														<span tabindex="0" id="feedSortIdLabel">Most Recent Activity</span>
-													</a>
-													<div id="feedSortIdMenu" class="checkedMenuMenu">
-														<div class="checkedMenuOptionContainer">
-															<img width="1" height="1" title="" class="checkedMenuOptionIcon" alt="" src="/s.gif" />
-															<a class="firstMenuItem checkedMenuMenuLink" href="#">Post Date</a>
-														</div>
-														<div class="checkedMenuOptionContainer selected">
-															<img width="1" height="1" title="Selected" class="checkedMenuOptionIcon checkedMenuChecked" alt="Selected" src="/s.gif" />
-															<a class="checkedMenuMenuLink" href="#">Most Recent Activity</a>
-														</div>
-													</div>
-												</div>
-											</apex:outputPanel>
 
 											<div class="clearingBox"></div>
 
@@ -508,11 +327,11 @@
 											</apex:outputPanel>
 	
 											<apex:repeat value="{!messageList}" var="m" >
-												<div data-hovdata="dir=chatterHover-above" data-feeditem="{&quot;parentid&quot;:&quot;{!m.CreatedById}&quot;,&quot;parentname&quot;:&quot;User&quot;}" class="cxfeeditem feeditem" id="{!m.recordId}" data-uidsfdc="53">
+												<div data-hovdata="dir=chatterHover-above" data-feeditem="{&quot;parentid&quot;:&quot;{!m.CreatedById}&quot;,&quot;parentname&quot;:&quot;User&quot;}" class="cxfeeditem feeditem" id="{!m.recordId}" >
 												    <span class="">
 														<a href="/{!m.CreatedById}">
 															<span data-hovid="{!m.CreatedById}" class="chatter-avatar feeditemusericon chatter-avatarRegular" data-uidsfdc="54" id="hoverItem54">
-																<img width="45" height="45" title="{!m.CreatedByName}" class="chatter-photo" alt="{!m.CreatedByName}" src="https://c.na14.content.force.com/profilephoto/005/T" />
+																<img width="45" height="45" title="{!m.CreatedByName}" class="chatter-photo" alt="{!m.CreatedByName}" src="/profilephoto/005/T" />
 																<img width="12" height="1" title="" style="margin-right: 0.25em;margin-right: 0.25em;" class="chatter-avatarStyle" alt="" src="/s.gif" />
 															</span>
 														</a>
@@ -522,34 +341,61 @@
 															<div class="feeditembody">
 																<div class="preamblecontainer displayblock">
 																	<span class="feeditempreamble">
-																		<a data-hovid="{!m.CreatedById}" class="actorentitylink" href="/{!m.CreatedById}" data-uidsfdc="55" id="hoverItem55">{!m.CreatedByName}</a>
+																		<a data-hovid="{!m.CreatedById}" class="actorentitylink" href="/{!m.CreatedById}" >{!m.CreatedByName}</a>
 																	</span>
 																</div>
 																<span class="feeditemtext cxfeeditemtext">{!m.body}</span>
+
+																<apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+																	<span class="linkPostLinkTitle">
+																		<a class="linkPostLink" target="_blank" href="{!m.linkURL}">
+																			<img title="{!m.linkName}" alt="{!m.linkName}" src="/s.gif" />
+																			<span title="{!m.linkName}">{!m.linkName}</span>
+																		</a>
+																		<div class="feeditemlinkpost">{!m.linkURL}</div>
+																	</span>
+																</apex:outputPanel>
+																
+																<apex:outputPanel layout="none" rendered="{!m.messageType == 'Content'}" >
+																	<table class="contentPost">
+																		<tbody>
+																			<tr>
+																				<td class="thumbnailCell">
+																					<img class="contentThumbnail contentThumbnailNoPreview" title="We can't provide a preview for this file" alt="We can't provide a preview for this file" src="/sfc/images/docicons/doctype_exe_48.png" />
+																				</td>																				
+																				<td class="rightSideCell">
+																					<table class="contentdetails">
+																						<tbody>
+																							<tr>
+																								<td>
+																									<div class="contentFileTitle">
+																										<a class="contentActionLink" href="/{!m.FileId}" >
+																											<span class="contentTitleLink" title="{!m.FileName}" >{!m.attachment.Name}</span>
+																										</a>
+																									</div>
+																								</td>
+																							</tr>
+																							<tr>
+																								<td class="moreFileActions-td">
+																									<a class="contentActionLink" href="/servlet/servlet.FileDownload?file={!m.attachment.Id}">
+																										<img class="chatterFileIcon downloadItemIcon" width="1" height="1" alt="" src="/img/s.gif" />
+																										<span class="contentActionLabel">Download</span>
+																										<span class="contentActionLabel fileSize"></span>
+																									</a>
+																								</td>
+																							</tr>
+																						</tbody>
+																					</table>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</apex:outputPanel>
 															</div>            
 															<div class="feeditemfooter">          
 																<span class="cxallfeedactions">
-																	<a onclick="chatter.getFeed().showCommentBoxViaAnchor(this);" class="feeditemactionlink cxaddcommentaction" title="Comment on this post" href="javascript:void(0);">Comment</a>
+																	<apex:commandLink action="{!m.addNewComment}" styleClass="feeditemactionlink cxaddcommentaction" >Comment</apex:commandLink>
 																	<span class="cxfeeditemcommentdot feeditemseparatingdot"> · </span>
-																	<apex:outputPanel layout="none" rendered="false" >
-																		<a onclick="chatter.getFeed().likeItem(this, '{!m.recordId}');" class="feeditemactionlink cxlikeitemaction" style="" title="Like this post" href="javascript:void(0);">Like</a>           
-																		<a onclick="chatter.getFeed().unlikeItem(this, '{!m.recordId}');" class="feeditemactionlink cxunlikeitemaction" style="display:none;" title="Stop liking this post" href="javascript:void(0);">Unlike</a>
-																		<span class="cxfeeditemlikedot feeditemseparatingdot"> · </span>
-																	</apex:outputPanel>
-																	<apex:outputPanel layout="none" rendered="false" >
-																		<a onclick="chatter.getFeed().bookmark(this, '{!m.recordId}');" class="feeditemactionlink cxbookmarkaction bookmarkLink" style="" title="Bookmark this post" href="javascript:void(0);">Bookmark</a>
-																		<a onclick="chatter.getFeed().unbookmark(this, '{!m.recordId}');" class="feeditemactionlink cxunbookmarkaction unbookmarkLink" style="display:none;" title="Remove this bookmark" href="javascript:void(0);">Unbookmark</a>
-																		<span class="bookmarkDot feeditemseparatingdot"> · </span>
-																	</apex:outputPanel>
-																	<apex:outputPanel layout="none" rendered="false" >
-																		<a class="dialog_RechatDialog{!m.recordId}" onclick="if(!window.RechatDialog{!m.recordId}) { window.RechatDialog{!m.recordId} = chatter.createModalOverlay({id:'RechatDialog{!m.recordId}',height:'700',title:'Share Post',url:'/feeditems/rechatoverlay',width:'532px',extraClass:'rechatDialog',params:{type:'followers',feeditemid:'{!m.recordId}'},isDialogPositionAbsolute:'true'});  window.RechatDialog{!m.recordId}.register(); }  window.RechatDialog{!m.recordId}.open();" href="javascript:void(0);">
-																		<span title="Share Post">Share</span></a>
-																		<span class=" feeditemseparatingdot"> · </span>
-																	</apex:outputPanel>
-																	<apex:outputPanel layout="none" rendered="false" >
-																		<a onclick="chatter.getFeed().checkAccessAndDeleteItem(this, '{!m.recordId}', true);" class="feeditemactionlink cxdeleteitemaction feedDeleteLink" title="Delete this post" href="javascript:void(0);">Delete</a>
-																		<span class="deleteDot feeditemseparatingdot"> · </span>
-																	</apex:outputPanel>
 																</span>
 																<a class="feeditemtimestamp" title="Click for single-item view of this post." href="/{!m.recordId}"><apex:outputText value="{0,date,MMMMM d',' yyyy 'at' h:mm a}"><apex:param value="{!m.createdDateTime}" /></apex:outputText></a>
 															</div>
@@ -560,29 +406,29 @@
 																<div style="display:none" class="cxlikecontainer"></div>
 	
 																<apex:repeat value="{!m.comments}" var="c" >
-																	<div style="display:block" class="feeditemcomment cxfeedcomment ">
+																	<div style="display:block;" class="feeditemcomment cxfeedcomment " >
 																		<a class="feeditemcommentphoto" href="/{!c.CreatedById}">
 																			<span data-hovid="{!c.CreatedById}" class="chatter-avatarMedium chatter-avatar" data-uidsfdc="56" id="hoverItem56">
-																				<img width="30" height="30" title="{!c.CreatedBy.Name}" class="chatter-photo" alt="{!c.CreatedBy.Name}" src="https://c.na14.content.force.com/profilephoto/005/T" />
+																				<img width="30" height="30" title="{!c.CreatedByName}" class="chatter-photo" alt="{!c.CreatedByName}" src="/profilephoto/005/T" />
 																				<img width="12" height="1" title="" style="margin-right: 0.25em;margin-right: 0.25em;" class="chatter-avatarStyle" alt="" src="/s.gif" />
 																			</span>
 																		</a>
 																		<div class="feeditemcommentbody">
 																			<div class="feedcommentuser">
-																				<a data-hovid="{!c.CreatedById}" class="actorentitylink" href="/{!c.CreatedById}" data-uidsfdc="57" id="hoverItem57">{!c.CreatedBy.Name}</a>
+																				<a data-hovid="{!c.CreatedById}" class="actorentitylink" href="/{!c.CreatedById}" data-uidsfdc="57" id="hoverItem57">{!c.CreatedByName}</a>
 																			</div>
 																			<span class="feedcommenttext">{!c.CommentBody}</span>
 																			<div class="feedcommentfooter">
 																				<apex:outputPanel styleClass="feedcommentactions">       		
 																					<span>
 																						<span class="cxallfeedactions">
-																							<a title="Like this post" onclick="chatter.getFeed().likeComment(this, '{!m.recordId}', '{!c.Id}');" class="commentactionlink cxlikecommentaction" href="javascript:%20void%280%29%3B">Like</a>
-																							<a title="Stop liking this post" style="display:none" onclick="chatter.getFeed().unlikeComment(this, '{!m.recordId}', '{!c.Id}');" class="commentactionlink cxunlikecommentaction" href="javascript:%20void%280%29%3B">Unlike</a>
+																							<a title="Like this post" onclick="chatter.getFeed().likeComment(this, '{!m.recordId}', '{!c.recordId}');" class="commentactionlink cxlikecommentaction" href="javascript:%20void%280%29%3B">Like</a>
+																							<a title="Stop liking this post" style="display:none" onclick="chatter.getFeed().unlikeComment(this, '{!m.recordId}', '{!c.recordId}');" class="commentactionlink cxunlikecommentaction" href="javascript:%20void%280%29%3B">Unlike</a>
 																						</span>
 																					</span>
 																					<span class="cxcommentlikecontainer"><span></span></span>
 																					<span class="feeditemseparatingdot cxcommentlikedot"> · </span>
-																					<a onclick="chatter.getFeed().checkAccessAndDeleteComment(this, event, '{!c.Id}', true);" class="feeditemactionlink commentDeleteLink" title="Delete this comment" href="javascript:void(0);">Delete</a>
+																					<a onclick="chatter.getFeed().checkAccessAndDeleteComment(this, event, '{!c.recordId}', true);" class="feeditemactionlink commentDeleteLink" title="Delete this comment" href="javascript:void(0);">Delete</a>
 																					<span class="feeditemseparatingdot deleteDot"> · </span>
 																				</apex:outputPanel>
 																				<span class="feeditemtimestamp"><apex:outputText value="{0,date,MMMMM d',' yyyy 'at' h:mm a}"><apex:param value="{!c.createdDate}" /></apex:outputText></span>
@@ -591,11 +437,11 @@
 																	</div>
 																</apex:repeat>
 															</div>
-															<div style="display:block" class="cxnewcomment">
+															<div style="display:block;" class="cxnewcomment">
 																<div class="feeditemcomment feeditemcommenttext">
 																	<div class="feeditemcommentphotocontainer">
 																		<a class="feeditemcommentphoto" href="/{!$User.Id}">	                
-																			<img alt="{!$User.FirstName} {!$User.LastName}" title="{!$User.FirstName} {!$User.LastName}" src="https://c.na14.content.force.com/profilephoto/005/T" />
+																			<img alt="{!$User.FirstName} {!$User.LastName}" title="{!$User.FirstName} {!$User.LastName}" src="/profilephoto/005/T" />
 																		</a>
 																	</div>
 																	<div class="feeditemcommentnew  zen">
@@ -604,12 +450,6 @@
 																		</div>
 																		<div style="display:none" class="cxvalidationmessage cxchattermessagecontainer chattermessagecontainer"></div>
 																		<apex:commandLink action="{!m.insertNewComment}" styleClass="zen-btn cxnewcommentaction newcommentbutton cxchattersubmit" value="Comment" />                	   
-																		<apex:outputPanel layout="block" rendered="false" >
-																			<a onmousedown="chatter.getFeed().contentCommentActionMouseDown(this);" onfocus="chatter.getFeed().contentCommentActionFocus(this);" onclick="chatter.getFeed().createContentComment(this,'{!m.recordId}');" class="cxcontentcommentaction" onblur="chatter.getFeed().contentCommentActionBlur(this);" href="javascript:void(0);">
-																				<img src="/s.gif" class="cxcontentcommentactionimg" />
-																				<span class="cxcontentcommentactiontext">Attach File</span>
-																			</a>
-																		</apex:outputPanel>
 																		<div class="cxcontentcommentinfo"></div>
 																		<div class="feedclearfloat"></div>
 																	</div>

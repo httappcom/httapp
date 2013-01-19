@@ -10,6 +10,7 @@ public with sharing class patientPortalController {
     public string showDetailRecordType{get;set;}
 
     public Treatment__c detailTreatment {get;set;}
+    public Id treatmentId {get;set;}
     public Task detailTask {get;set;}
     public Travel__c detailTravel {get;set;}
     public Payment__c detailPayment {get;set;}
@@ -46,7 +47,8 @@ public with sharing class patientPortalController {
         travelList = new list<Travel__c>();
         treatmentList = new list<Treatment__c>();
         treatmentQuoteList = new list<Treatment_Quote__c>();
-    
+ 
+system.debug('USERID:' +userinfo.getUserId());    
         User u = [select id, contactid from User where id = :userinfo.getUserId()];
         
         list<Patient__c> plist = [select id 
@@ -67,7 +69,12 @@ public with sharing class patientPortalController {
     }
     
     public pagereference load() {
+    	system.debug('ID: '+patientid);
         patient = queryPatientRelatedDesc(patientid);
+		if ( patient.Treatments__r.size() > 0 ){
+	        treatmentId = patient.Treatments__r[0].Id;
+		}
+		system.debug('PATIENT: ' +patient);
         detailMap = new map<id,sobject>();
         buildRecentActivity();
         buildRelatedLists();

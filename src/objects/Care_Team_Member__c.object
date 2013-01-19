@@ -133,10 +133,9 @@
     </fields>
     <label>Care Team Member</label>
     <nameField>
-        <displayFormat>CTM-{00000000}</displayFormat>
         <label>Care Team Member Name</label>
         <trackHistory>false</trackHistory>
-        <type>AutoNumber</type>
+        <type>Text</type>
     </nameField>
     <pluralLabel>Care Team Members</pluralLabel>
     <searchLayouts/>
