@@ -157,7 +157,6 @@ SURVEYURL = surveyGizmoAPI_Methods.generateMedicalProfileLink(Patient.Id);
 		showLightbox = !showLightbox;
 		return null;
 	}
-  
   public PageReference newPatient() {
     initiatePatient();
     return ApexPages.currentPage();  

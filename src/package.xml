@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -51,16 +51,16 @@
         <name>Dashboard</name>
     </types>
     <types>
-        <members>PRM_Documents</members>
-        <members>PRM_Documents/Header_Logo.jpeg</members>
         <members>NueHealth_Images</members>
         <members>NueHealth_Images/Email_Button.png</members>
+        <members>NueHealth_Images/NGA_Banner.png</members>
+        <members>NueHealth_Images/NueHealth_Test_Image.png</members>
         <members>NueHealth_Images/footer_htg_we_take_care.jpg</members>
         <members>NueHealth_Images/generic_htg_team.png</members>
         <members>NueHealth_Images/header_nuehealth.png</members>
         <members>NueHealth_Images/img_doctors2.png</members>
-        <members>NueHealth_Images/NGA_Banner.png</members>
-        <members>NueHealth_Images/NueHealth_Test_Image.png</members>
+        <members>PRM_Documents</members>
+        <members>PRM_Documents/Header_Logo.jpeg</members>
         <name>Document</name>
     </types>
     <types>
@@ -113,6 +113,10 @@
         <name>Profile</name>
     </types>
     <types>
+        <members>*</members>
+        <name>ReportType</name>
+    </types>
+    <types>
         <members>Medical_Information_Officers</members>
         <name>Role</name>
     </types>
@@ -127,10 +131,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>*</members>
-        <name>ReportType</name>
-    </types>
     <version>26.0</version>
 </Package>
-

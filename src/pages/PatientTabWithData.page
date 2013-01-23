@@ -5,13 +5,13 @@
     <apex:form ><apex:actionFunction name="loadEmailBox" action="{!showEmailForm}" rerender=""/></apex:form>
     
     <!-- Definitely use these for development -->
+    <span id="hideMyParent"></span> 
+    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
+    <script type="text/javascript"> j$(document).ready(function() { var thisdate= new Date(); var thisyear=thisdate.getFullYear(); var startYear=1900; var endYear=thisyear+1; var optionsString=''; if(startYear<endYear){ for(i=startYear;i<endYear+1;i++){ optionsString += "<option value=\""+i+"\">"+i+"</option>"; } j$('#calYearPicker').html(optionsString); } j$('#sidebarDiv #hideMyParent').parent().parent().hide(); });</script>
     <script>
         var j$ = jQuery.noConflict();
     </script>
-    <span id="hideMyParent"></span> 
-    <script type="text/javascript"> j$(document).ready(function() { var thisdate= new Date(); var thisyear=thisdate.getFullYear(); var startYear=1900; var endYear=thisyear+1; var optionsString=''; if(startYear<endYear){ for(i=startYear;i<endYear+1;i++){ optionsString += "<option value=\""+i+"\">"+i+"</option>"; } j$('#calYearPicker').html(optionsString); } j$('#sidebarDiv #hideMyParent').parent().parent().hide(); });</script>
-    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
-    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
     
     <!-- This of course is required. The full version (not .min) is also included in the js directory -->
     <!-- apex:includeScript value="{!$Resource.HoverIntent}"/> -->
@@ -373,7 +373,7 @@
             </apex:pageBlockSectionItem>
             <apex:pageblocksectionitem >
                 <apex:outputPanel layout="block" style="float:right; text-align:right;width:100%; "><!-- rendered="{!treatments.size>1}" -->
-                    <!-- <a href="javascript:showTaskList();" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration"/></a> -->
+                    <!-- <a href="javascript:showTaskList();" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration"/></a> -->                    
                     <apex:commandLink action="{!toggleLightbox}" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration" reRender="taskList" /></apex:commandLink>
                 </apex:outputPanel>
             </apex:pageblocksectionitem>
@@ -1234,7 +1234,11 @@
                 <apex:pageblocksection columns="1" collapsible="true" title="Messaging">
                     <apex:form ><c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/></apex:form>
                 </apex:pageblocksection>
-                
+                 <apex:pageblocksection columns="1" collapsible="true" title="Email">
+                    <apex:form >
+<!--                      <c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/> -->
+                    </apex:form>
+                </apex:pageblocksection>               
                 <div align="center">
                     <apex:form >
 <!--                         <a href="javascript:hideTaskList()" class="link" style="color:#000;" >Close</a> -->

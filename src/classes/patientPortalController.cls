@@ -22,7 +22,6 @@ public with sharing class patientPortalController {
     public Attachment tempfile {get;set;} // placeholder file to be deleted once portal built out more
     
     public list<recentActivity> recentActivities {get;set;}
-//    public list<Medical_Profile__c> medicalRecords {get;set;}
     public list<Travel__c> travelList {get;set;}
     public list<Treatment__c> treatmentList {get;set;}
     public list<Treatment_Quote__c> treatmentQuoteList {get;set;}
@@ -56,6 +55,7 @@ system.debug('USERID:' +userinfo.getUserId());
                             where key_contact__c = :u.contactid
                             limit 1]; 
         
+        currentPage='Home';
         if (apexPages.currentPage().getparameters().get('devPatID') != null) {
             patientid = apexPages.currentPage().getparameters().get('devPatID');
             load();
@@ -69,7 +69,7 @@ system.debug('USERID:' +userinfo.getUserId());
     }
     
     public pagereference load() {
-    	system.debug('ID: '+patientid);
+    	Logger.info('load, patientId: '+patientid);
         patient = queryPatientRelatedDesc(patientid);
 		if ( patient.Treatments__r.size() > 0 ){
 	        treatmentId = patient.Treatments__r[0].Id;
@@ -77,8 +77,6 @@ system.debug('USERID:' +userinfo.getUserId());
 		system.debug('PATIENT: ' +patient);
         detailMap = new map<id,sobject>();
         buildRecentActivity();
-        buildRelatedLists();
-        currentPage='Home';
         return null;
     }
     
@@ -196,12 +194,6 @@ system.debug('USERID:' +userinfo.getUserId());
         if (recentActivities.size() > 10) {
             recentActivities.remove(10); //10th index is 11th item
         }
-        return null;
-    }
-    
-    public pagereference buildRelatedLists () {
-//        medicalRecords = patient.medical_profiles__r;
-        
         return null;
     }
     
@@ -468,7 +460,8 @@ system.debug('USERID:' +userinfo.getUserId());
                               Verification_Date__c,
                               Verification_Phone_Number__c 
                       from Payments__r
-                      order by lastModifiedDate desc)
+                      order by lastModifiedDate desc),
+                      (SELECT Name, Id, S3_Doc_Key__c, Content_Type__c, File_Name__c FROM Medical_Records__r order by Name)
                 from Patient__c 
                 where id = :patientId];
     }
@@ -588,5 +581,9 @@ system.debug('USERID:' +userinfo.getUserId());
     public PageReference uploadDocument()
     {
     	return null;
+    }
+    
+    public List<Medical_Record__c> getMedicalRecords() {
+    	return patient.Medical_Records__r;
     }
 }

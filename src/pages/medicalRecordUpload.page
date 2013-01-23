@@ -1,0 +1,73 @@
+<apex:page showHeader="false" standardController="Medical_Record__c" extensions="MedicalRecordUploadController" action="{!constructor}">
+	<apex:form >
+		<apex:actionRegion >
+		<apex:outputPanel id="msgs">
+    		<apex:pageMessages />
+    	</apex:outputPanel>
+	    <apex:actionFunction action="{!saveMedRec}" name="saveMedRec" rerender="msgs"/>
+	    <apex:inputHidden value="{!serverURL}" id="hiddenServerURL" />
+	    <apex:inputHidden id="contentType" value="{!Medical_Record__c.Content_Type__c}" />
+	    <apex:inputHidden id="fileName" value="{!Medical_Record__c.File_Name__c}" />
+	    <apex:inputHidden id="dbgPatientId" value="{!Medical_Record__c.Patient__c}" />
+	    <apex:inputHidden id="medRecKey" value="{!Medical_Record__c.Name}" />
+	    <apex:inputHidden id="docKey" value="{!docKey}" />
+	    <apex:inputHidden id="S3_Doc_Key" value="{!Medical_Record__c.S3_Doc_Key__c}"/>
+		<script  type="text/javascript">
+			var contentTypeId = "{!$Component.contentType}";
+			var medRecNameId = "{!$Component.medRecKey}";
+			var s3DocKeyId = "{!$Component.S3_Doc_Key}";
+			var fileNameId = "{!$Component.fileName}";
+			var docKeyId = "{!$Component.docKey}";
+			document.getElementById('{!$Component.hiddenServerURL}').value = '{!$Api.Enterprise_Server_URL_140}';			
+		</script>	    
+		
+		</apex:actionRegion>
+	</apex:form>
+
+<script>
+	{!mimeMapJS}
+	function onFileChange( path ) {
+		var re = /(?:\.([^.]+))?$/;
+		var parts = re.exec(path);
+		var ext = parts!=null && parts.length==2 ? parts[1] : null;
+		if (ext == null) return;
+		document.getElementById(contentTypeId).value = extnToMimeTypeMap[ext];
+		document.getElementById(medRecNameId).value = document.getElementById('medicalRecordName').value;
+		var fileName = path.split(path.indexOf("\\")>0?"\\":"/").pop();
+		document.getElementById(fileNameId).value = fileName;
+		document.getElementById('key').value = document.getElementById(docKeyId).value + '.' + ext;
+		document.getElementById(s3DocKeyId).value = document.getElementById('key').value;
+		saveMedRec();
+	}  
+</script>
+
+
+	<form action="https://s3.amazonaws.com/{!bucket}" method="post" enctype="multipart/form-data">
+		<input type="hidden"  id="key" name="key" value="{!Medical_Record__c.S3_Doc_Key__c}" /> <input 
+		type="hidden" name="AWSAccessKeyId" value="{!key}" /> <input 
+		type="hidden"  name="policy" value="{!policy}" /> <input 
+		type="hidden"  name="signature" value="{!signedPolicy}" /> <input type="hidden"  name="acl" value="public-read" />
+		
+		<!-- input type="hidden"  name="Content-Type" value="{Medical_Record__c.Content_Type__c}" 
+		input type="hidden" name="success_action_redirect" value="https://{!serverURL}/{.id}" -->
+	
+	<apex:pageBlock title="Medical Record Upload" mode="edit">
+		<apex:pageBlockButtons >
+			<input class="btn" type="submit" value="Upload" />
+		</apex:pageBlockButtons>
+
+	  <apex:pageBlockSection columns="1">
+		<apex:pageBlockSectionItem >
+			<apex:outputLabel value="Medical Record Name"/>
+			<input id="medicalRecordName"/>
+		</apex:pageBlockSectionItem>
+
+			<apex:pageBlockSectionItem >
+
+				<apex:outputLabel value="File to upload" />
+				<input type="file" size="50" name="file" onChange="onFileChange(this.value)" />
+			</apex:pageBlockSectionItem>
+
+		</apex:pageBlockSection>
+	</apex:pageBlock></form>
+</apex:page>

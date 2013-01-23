@@ -1,4 +1,9 @@
 <apex:page controller="patientPortalController" showheader="false" sidebar="false" standardstylesheets="true">
+    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
+    <script>
+        var j$ = jQuery.noConflict();
+    </script>
     <style>
         .detailslbox{
                 background-color: white;
@@ -30,6 +35,36 @@
                 /*zoom: 1;*/
             }
             
+        .uploadlbox{
+                background-color: white;
+                border-style: solid;
+                border-width: 2px;
+                border-color: #000;
+                left: 50%;
+                padding:10px;
+                position: absolute;
+                z-index: 9999;
+                width: 500px;
+                margin-left: -250px;
+                top:130px;
+                //top:50px;
+            }
+             
+            .uploadbox{
+                /*display: none;*/ 
+                position: absolute;
+                top: 0;/* must be 0 ideally*/
+                left: 0;/* must be 0 ideally */
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                z-index:1001;
+                -moz-opacity: 0.5;
+                opacity:.50;
+                filter: alpha(opacity=50);
+                /*zoom: 1;*/
+            }
+            
             .link {
                 text-decoration:underline;
             }
@@ -37,9 +72,20 @@
                 text-decoration:none;
             }
     </style>
+    <script>
+        function showUpload() {
+        	document.getElementById('uploadIframe').src = '/apex/medicalRecordUpload';
+            j$("[id='"+outerUploadId+"']").show();
+        }
+        function hideUpload() {
+            j$("[id='"+outerUploadId+"']").hide();
+            rerenderMedRecs();
+        }
+    </script>
     
     <body style="width:800px;">
         <apex:form >
+    <apex:actionFunction name="rerenderMedRecs" action="{!load}" reRender="medRecsPnl,testpnl"/> 
             <div style="width:800px;padding-top:10px;">
                 <table style="width:599px; cell-padding:5px;">
                     <tr>
@@ -103,21 +149,25 @@
 					</apex:outputPanel>
                 </apex:outputpanel>
                 
-                <apex:outputpanel rendered="{!currentpage == 'Medical Records'}">
-                     <apex:commandbutton action="{!uploadDicom}" value="Upload DICOM Study"></apex:commandbutton><br/><br/>
-                     <apex:commandbutton action="{!uploadDocument}" value="Upload Document"></apex:commandbutton><br/>                  
+                <apex:outputpanel id="medRecsPnl" rendered="{!currentpage == 'Medical Records'}">
+                     <!-- apex:commandbutton action="{!uploadDicom}" value="Upload DICOM Study"></apex:commandbutton><br/><br/> -->
+                     <button class="btn" type="button" onclick="showUpload();">Upload Document</button><br/>                  
                     <br/><br/><br/>
                      
-                    No medical history on file? Submit one now.<br/>
-                    <ul>
-                        <li><a href="http://www.clicktools.com/survey?iv=fmmbu0f12racg" target="_Blank">General (working)</a></li>
-                        <li>Weight loss surgery</li>
-                        <li>Cardiology</li>
-                        <li>ccsvi</li>
-                        <li>Stem cell</li>
-                    </ul>
-                    <br/>
-                    <apex:outputtext value="{!patient.Id}"/>
+                    <apex:pageblocktable value="{!medicalRecords}" var="t">
+                    	<apex:column >
+                    		<apex:facet name="header">Name</apex:facet>
+                    		<apex:outputfield value="{!t.name}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">File Name</apex:facet>
+                    		<apex:outputfield value="{!t.File_Name__c}"/>
+                    	</apex:column>
+                    	<apex:column >
+                    		<apex:facet name="header">View</apex:facet>
+                    		<a target="_blank" href="http://connect.ajaxdocumentviewer.com/?key=K881661317312013132735&document=http://nuehealthtestbucket.s3-website-us-east-1.amazonaws.com/{!URLENCODE(t.S3_Doc_Key__c)}&viewerheight=600&viewerwidth=800&toolbarHeight=24&toolbarColor=00AF33">View</a>
+                    	</apex:column>
+                    </apex:pageblocktable>
                 </apex:outputpanel>
                 
                 <apex:outputpanel rendered="{!currentpage == 'Your Travel'}">
@@ -125,7 +175,6 @@
     
                     Ask a question, make special requests for your air travel, share your itinerary with friends and families-- <br/><br/><br/>
                     
-                    [messages]
                     <br/><Br/><br/>
                     Your Itineraries<Br/><Br/>
                     <apex:pageblocktable value="{!treatmentList}" var="t">
@@ -206,9 +255,6 @@
                     including an introduction to your treatment team and specialists, information about the hospital,
                     pre-surgical instructions, and details about your procedure, any medical devices involved and more.<br/><br/><br/>
                     
-                    From your patient care coordinator:<br/>
-                    [list]<Br/><Br/><Br/>
-                    
                     Treatment:<br/>
                     <apex:pageblocktable value="{!treatmentList}" var="t">
                          <apex:column >
@@ -255,8 +301,6 @@
                         </apex:column>
                     </apex:pageblocktable><br/><br/><br/>
                     
-                    Treatment Team:<br/>
-                    [list]<br/><br/><br/>
                 </apex:outputpanel>
                 
             </apex:pageblock>
@@ -343,5 +387,19 @@
                 </div>
             </apex:outputpanel>
         </apex:outputpanel>
+        <apex:outputPanel layout="block" id="outerUpload" style="display:none;">
+            <apex:outputPanel layout="block" styleClass="uploadbox"/>
+            <apex:outputpanel styleClass="uploadlbox" layout="block">
+                <div>
+				<iframe height="400px" id="uploadIframe" name="uploadIframe" src="about:blank" width="100%"></iframe>
+                </div>
+                <div align="center">
+                    <apex:form >
+                        <a href="javascript:hideUpload();">Close</a>
+                    </apex:form>
+                </div>
+            </apex:outputpanel>
+        </apex:outputpanel>
+        <script>var outerUploadId = "{!$Component.outerUpload}";</script>
     </body>
 </apex:page>
