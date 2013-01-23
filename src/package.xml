@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -76,6 +76,10 @@
         <members>Nuehealth_PRM/Travel_Arrangements_for_Your_Upcoming_Surgery</members>
         <members>Nuehealth_PRM/We_Have_Received_Your_Medical_Profile</members>
         <members>Nuehealth_PRM/Your_Travel_Itinerary_is_Ready</members>
+        <members>Nuehealth_PRM/Received_Medical_Travel_Inquiry</members>
+        <members>Nuehealth_PRM/Nuehealth_Send_Quote_to_Patient</members>
+        <members>Nuehealth_PRM/Nuehealth_Post_op_from_PCC</members>
+        <members>Nuehealth_PRM/Nuehealth_Passport_needed</members>
         <name>EmailTemplate</name>
     </types>
     <types>
@@ -133,3 +137,4 @@
     </types>
     <version>26.0</version>
 </Package>
+

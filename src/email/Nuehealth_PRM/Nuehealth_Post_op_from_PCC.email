@@ -1,0 +1,139 @@
+<messaging:emailTemplate subject="Welcome Home from Nuehealth" recipientType="Contact" relatedToType="Patient__c">
+<messaging:plainTextEmailBody >
+Dear {!recipient.name},
+
+Welcome home. I hope your trip and procedure went well and met all your expectations. In the next week you will be hearing from Health Travel Guides’ staff physician to follow-up on your medical experience and answer any questions you might have now that you are home. If you should need to contact her before then, you will find her contact information at the bottom of this letter.
+
+Please also feel free to email or call me with any feedback you have on your medical travel experience. We value your views and believe that only through listening to our patient’s comments can Health Travel Guides provide travelers with the best that medical travel can offer.
+
+If you have a story or testimonial you’d like to provide you can also visit our special patient testimonial web page, where you submit your story directly to the Health Travel Guides management team.
+
+Thanks again for working with Health Travel Guides. Remember, if you ever refer a patient to Health Travel Guides, we’ll send you a gift card worth $50 – consider it our gift of appreciation for your input in making Health Travel Guides the best option in medical travel.
+
+Warm regards,
+
+Your Patient Care Coordinator
+
+Leslie McDeavitt
+leslie@healthtravelguides.com
+Direct: 1-866-978-2573 ext. 119
+
+Dr. Janis Gruska
+Toll Free: 1-866-978-2573 ext. 126
+dr.janis@healthtravelguides.com  
+</messaging:plainTextEmailBody>
+<messaging:htmlEmailBody >
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:rn="http://schemas.rightnow.com/crm/document">
+<head>
+<title>HTG</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<style type="text/css" xml:space="preserve">
+/*<![CDATA[*/
+.style1 {
+        BORDER-RIGHT-WIDTH: 0px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px
+}
+.style2 {
+        FONT-SIZE: 15px
+}
+/*]]>*/
+</style>
+</head>
+<body>
+<table cellspacing="0" cellpadding="7" width="900">
+<tbody>
+<tr>
+<td align="middle">
+<table cellspacing="0" cellpadding="3" align="center">
+<tbody>
+<tr>
+<td style="FONT-FAMILY: Calibri, Arial, Helvetica, sans-serif; COLOR: #666666; FONT-SIZE: 10pt; FONT-WEIGHT: normal" align="middle"><a href="http://www.healthtravelguides.com/">Home</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264813&amp;ssid=130791&amp;vnf=1">About Medical Travel</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264817&amp;ssid=130795&amp;vnf=1">Locations</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264816&amp;ssid=130794&amp;vnf=1">Procedures</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264828&amp;ssid=130806&amp;vnf=1">Medical Loans</a>&#160; |&#160; <a href="http://healthtravelguides.custhelp.com/cgi-bin/healthtravelguides.cfg/php/enduser/std_adp.php?p_faqid=76">Physicians</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/default.aspx?p=DynamicModule&amp;pageid=268565&amp;ssid=136564&amp;vnf=1">Contact Us</a></td>
+</tr>
+</tbody>
+</table>
+<img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/mailing-header-htg.jpg" width="909" height="178" /></td>
+</tr>
+<tr>
+<td style="TEXT-ALIGN: justify; FONT-STYLE: normal; FONT-FAMILY: Calibri, Arial, Helvetica, sans-serif; COLOR: #333333; FONT-SIZE: 15px; VERTICAL-ALIGN: top; FONT-WEIGHT: normal">
+<p>Dear {!recipient.name},</p>
+<p>Welcome home. I hope your trip and procedure went well and met all your expectations. In the next week you will be hearing from Health Travel Guides’ staff physician to follow-up on your medical experience and answer any questions you might have now that you are home. If you should need to contact her before then, you will find her contact information at the bottom of this letter.</p>
+<p>Please also feel free to email or call me with any feedback you have on your medical travel experience. We value your views and believe that only through listening to our patient’s comments can Health Travel Guides provide travelers with the best that medical travel can offer.</p>
+<table cellspacing="0" cellpadding="0" align="center">
+<tbody>
+<tr>
+<td rowspan="3"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_l.jpg" width="25" height="127" /></td>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+<td rowspan="3"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_r.jpg" width="360" height="127" /></td>
+</tr>
+<tr>
+<td style="FONT-SIZE: 12px" height="101" width="300">If you have a story or testimonial you’d like to provide you can also visit our special <a href="https://healthtravelguides.custhelp.com/cgi-bin/healthtravelguides.cfg/php/enduser/doc_serve.php?&amp;5=83">patient testimonial web page</a>, where you submit your story directly to the Health Travel Guides management team.</td>
+</tr>
+<tr>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+</tr>
+</tbody>
+</table>
+<p>Thanks again for working with Health Travel Guides. Remember, if you ever refer a patient to Health Travel Guides, we’ll send you a gift card worth $50 – consider it our gift of appreciation for your input in making Health Travel Guides the best option in medical travel.</p>
+<p>Warm regards,</p>
+<table cellspacing="0" cellpadding="5" align="right">
+<tbody>
+<tr>
+<td>
+<table cellspacing="0" cellpadding="0" width="364" align="right">
+<tbody>
+<tr>
+<td rowspan="3" width="25"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_l.jpg" width="25" height="127" /></td>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+<td rowspan="3" width="25"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_r2.jpg" width="25" height="127" /></td>
+</tr>
+<tr>
+<td style="FONT-SIZE: 12px" height="101"><strong><span class="style2">Dr. Janis Gruska</span></strong><br />
+Toll Free: 1-866-978-2573 ext. 126<br />
+dr.janis@healthtravelguides.com</td>
+<td style="FONT-SIZE: 12px" height="101">&#160;</td>
+<td style="FONT-SIZE: 12px" height="101"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/img_stetoscope.jpg" width="90" height="79" /></td>
+</tr>
+<tr>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+<td style="BACKGROUND-IMAGE: url(http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg); BACKGROUND-REPEAT: repeat-x" height="13"><img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/banner_free-coffee_t-b.jpg" width="16" height="13" /></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td><a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=277177&amp;ssid=150514&amp;vnf=1"><img class="style1" alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/img_refer_a_friend.jpg" width="364" height="127" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>Your Patient Care Coordinator</p>
+<p>{!recipient.Owner.name}<br />
+{!recipient.Owner.email}<br />
+Direct: 1-866-978-2573 ext. 119<br />
+<img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/icon_toll-free_f.jpg" width="241" height="62" /><br />
+<img alt="Image" src="http://healthtravelguides.custhelp.com/rnt/rnw/img/enduser/logo_htg.jpg" width="121" height="75" /><br />
+<span style="FONT-FAMILY: Calibri, Arial, Helvetica, sans-serif; FONT-SIZE: 11px"><a href="http://www.healthtravelguides.com">www.HealthTravelGuides.com</a></span></p>
+<p></p>
+</td>
+</tr>
+<tr>
+<td style="BACKGROUND-COLOR: #feefcb" align="middle">
+<table cellspacing="0" cellpadding="3">
+<tbody>
+<tr>
+<td style="FONT-FAMILY: Calibri, Arial, Helvetica, sans-serif; COLOR: #666666; FONT-SIZE: 10pt; FONT-WEIGHT: normal"><a href="http://www.healthtravelguides.com/">Home</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264813&amp;ssid=130791&amp;vnf=1">About Medical Travel</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264817&amp;ssid=130795&amp;vnf=1">Locations</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264816&amp;ssid=130794&amp;vnf=1">Procedures</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=264828&amp;ssid=130806&amp;vnf=1">Medical Loans</a>&#160; |&#160; <a href="http://healthtravelguides.custhelp.com/cgi-bin/healthtravelguides.cfg/php/enduser/std_adp.php?p_faqid=76">Physicians</a>&#160; |&#160; <a href="http://www.healthtravelguides.com/default.aspx?p=DynamicModule&amp;pageid=268565&amp;ssid=136564&amp;vnf=1">Contact Us</a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>
