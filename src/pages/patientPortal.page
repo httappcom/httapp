@@ -1,9 +1,18 @@
-<apex:page controller="patientPortalController" showheader="false" sidebar="false" standardstylesheets="true">
+<apex:page controller="patientPortalController" showheader="false" sidebar="false" standardstylesheets="true"
+	title="{!prmConfig.Facilitator_Name__c}">
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
     <script>
         var j$ = jQuery.noConflict();
     </script>
+    <apex:stylesheet value="{!$Resource[prmConfig.Patient_Portal_CSS__c]}"/>
+<!--[if gte IE 9]>
+  <style type="text/css">
+    .gradient {
+       filter: none;
+    }
+  </style>
+<![endif]-->
     <style>
         .detailslbox{
                 background-color: white;
@@ -44,8 +53,8 @@
                 padding:10px;
                 position: absolute;
                 z-index: 9999;
-                width: 500px;
-                margin-left: -250px;
+                width: 600px;
+                margin-left: -300px;
                 top:130px;
                 //top:50px;
             }
@@ -83,21 +92,36 @@
         }
     </script>
     
-    <body style="width:800px;">
+    <body>
+    <div id="body-wrapper">
+<header>
+<div id="header">
+<img alt="" src="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zoTG&oid=00Dd0000000gLpp&lastMod=1358972216000" border="0"/><img alt="" height="166" src="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zoTV&oid=00Dd0000000gLpp&lastMod=1358972311000" width="335"/>
+</div>
+</header>
+<div class="clear"></div>
+    
         <apex:form >
-    <apex:actionFunction name="rerenderMedRecs" action="{!load}" reRender="medRecsPnl,testpnl"/> 
-            <div style="width:800px;padding-top:10px;">
-                <table style="width:599px; cell-padding:5px;">
-                    <tr>
-                        <td style="padding-left:25px;"><apex:commandlink value="Home" action="{!goToHome}"/></td>
-                        <td><apex:commandlink value="Medical Records" action="{!goToMedicalRecords}"/></td>
-                        <td><apex:commandlink value="Your Travel" action="{!goToYourTravel}"/></td>
-                        <td><apex:commandlink value="Have a Question?" action="{!goToHaveAQuestion}"/></td>
-                        <td><apex:commandlink value="Your Treatment" action="{!goToYourTreatment}"/></td>
-                    </tr>
-                </table>
-            </div><Br/>
-            <apex:pageblock title="{!currentPage}">
+    <apex:actionFunction name="rerenderMedRecs" action="{!load}" reRender="medRecsPnl"/> 
+    <apex:actionFunction name="refreshTreatments" action="{!load}" reRender="treatmentsPanel"/> 
+    <apex:actionFunction name="refreshTravel" action="{!load}" reRender="travelPanel"/> 
+    <apex:actionFunction name="goToHome" action="{!goToHome}"/> 
+    <apex:actionFunction name="goToMedicalRecords" action="{!goToMedicalRecords}"/> 
+    <apex:actionFunction name="goToYourTravel" action="{!goToYourTravel}"/> 
+    <apex:actionFunction name="goToHaveAQuestion" action="{!goToHaveAQuestion}"/> 
+    <apex:actionFunction name="goToYourTreatment" action="{!goToYourTreatment}"/> 
+<div id="menu">
+<apex:outputPanel layout="block" id="menuHome" styleClass="{!IF(currentpage == 'Home','menu-item-selected','menu-item')}" onclick="goToHome();">Home</apex:outputPanel>
+<apex:outputPanel layout="block" id="menuMedicalRec" styleClass="{!IF(currentpage == 'Medical Records','menu-item-selected','menu-item')}" onclick="goToMedicalRecords();">Medical Records</apex:outputPanel>
+<apex:outputPanel layout="block" id="menuTravel" styleClass="{!IF(currentpage == 'Your Travel','menu-item-selected','menu-item')}" onclick="goToYourTravel();">Your Travel</apex:outputPanel>
+<apex:outputPanel layout="block" id="menuQuestion" styleClass="{!IF(currentpage == 'Have a Question?','menu-item-selected','menu-item')}" onclick="goToHaveAQuestion();">Have a Question?</apex:outputPanel>
+<apex:outputPanel layout="block" id="menuTreatment" styleClass="{!IF(currentpage == 'Your Treatment','menu-item-selected','menu-item')}" onclick="goToYourTreatment();">Your Treatment</apex:outputPanel>
+</div>
+<div class="clear"></div>
+<div id="content-wrapper">
+    <div id="content">
+    
+            <apex:pageblock >
                 <apex:outputpanel rendered="{!currentpage == 'Portal User Error'}">
                     Your user has not been set up properly for the patient portal.<br/><br/>
                     Please contact Health Travel Guides for assistance. 
@@ -112,7 +136,7 @@
                     conversations with and instructions from your doctor, and more.<br/><Br/>
     
                     Keep all your important information related to your medical travel treatments in one place, whenever you need the information, it's here.<Br/><br/>
-					<c:messaging pId="{!patientId}" treatmentId="{!treatmentId}" /> 
+					<c:messaging pId="{!patientId}" treatmentId="{!treatmentId}" canAddCareTeamMember="false" /> 
                     
 					<apex:outputPanel rendered="false" >                    
                     <a href="#">Account Settings</a><br/><br/>      
@@ -170,13 +194,13 @@
                     </apex:pageblocktable>
                 </apex:outputpanel>
                 
-                <apex:outputpanel rendered="{!currentpage == 'Your Travel'}">
+                <apex:outputpanel id="travelPanel" rendered="{!currentpage == 'Your Travel'}">
                     If your medical treatment program involves travel, a Travel Concierge will plan your trip itinerary.<Br/><br/>
     
-                    Ask a question, make special requests for your air travel, share your itinerary with friends and families-- <br/><br/><br/>
+                    Ask a question, make special requests for your air travel, share your itinerary with friends and families-- <br/>
                     
-                    <br/><Br/><br/>
-                    Your Itineraries<Br/><Br/>
+                    <br/><br/>
+                    <apex:commandButton action="{!load}" value="refresh" rerender="travelPanel" immediate="true"/><br/><br/>
                     <apex:pageblocktable value="{!treatmentList}" var="t">
                     	<apex:column >
                     		<apex:facet name="header">Itinerary<br/>Number</apex:facet>
@@ -192,15 +216,15 @@
                     	</apex:column>
                     	<apex:column >
                     		<apex:facet name="header">Doctor</apex:facet>
-                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.doctor__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false}"/>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.doctor__c}"  rendered="{!t.treatment_quotes__r.size==1}"/>
                     	</apex:column>
                     	<apex:column >
                     		<apex:facet name="header">Hospital</apex:facet>
-                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.facility__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false}"/>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].procedure__r.facility__c}" rendered="{!t.treatment_quotes__r.size==1}"/>
                     	</apex:column>
                     	<apex:column >
                     		<apex:facet name="header">Price</apex:facet>
-                    		<apex:outputfield value="{!t.treatment_quotes__r[0].Total_Price__c}" rendered="{!ISBLANK(t.treatment_quotes__r) == false}"/>
+                    		<apex:outputfield value="{!t.treatment_quotes__r[0].Total_Price__c}" rendered="{!t.treatment_quotes__r.size==1}"/>
                     	</apex:column>
                     	<apex:column >
                     		<apex:facet name="header">Procedure<br/>Date</apex:facet> 
@@ -250,12 +274,12 @@
                 <a href="#">See all questions</a> 
                 </apex:outputpanel>
                 
-                <apex:outputpanel rendered="{!currentpage == 'Your Treatment'}">
+                <apex:outputpanel id="treatmentsPanel" rendered="{!currentpage == 'Your Treatment'}">
                     Your Treatment file will contain all of the essential information related to your treatment,
                     including an introduction to your treatment team and specialists, information about the hospital,
-                    pre-surgical instructions, and details about your procedure, any medical devices involved and more.<br/><br/><br/>
+                    pre-surgical instructions, and details about your procedure, any medical devices involved and more.<br/><br/>
                     
-                    Treatment:<br/>
+                    <apex:commandButton action="{!load}" value="refresh"  reRender="treatmentsPanel" immediate="true"/><br/><br/>
                     <apex:pageblocktable value="{!treatmentList}" var="t">
                          <apex:column >
                             <apex:facet name="header">Quote<br/>Number</apex:facet>
@@ -304,6 +328,8 @@
                 </apex:outputpanel>
                 
             </apex:pageblock>
+          </div>
+        </div>
         </apex:form>
         <apex:outputPanel layout="block" id="outerdetails" >
             <apex:outputPanel layout="block" styleClass="detailbox" rendered="{!showDetailBox == true}"/>
@@ -387,7 +413,7 @@
                 </div>
             </apex:outputpanel>
         </apex:outputpanel>
-        <apex:outputPanel layout="block" id="outerUpload" style="display:none;">
+        <apex:outputPanel layout="block" id="outerUpload" style="display:none; width:500px;">
             <apex:outputPanel layout="block" styleClass="uploadbox"/>
             <apex:outputpanel styleClass="uploadlbox" layout="block">
                 <div>
@@ -401,5 +427,6 @@
             </apex:outputpanel>
         </apex:outputpanel>
         <script>var outerUploadId = "{!$Component.outerUpload}";</script>
+    </div>
     </body>
 </apex:page>

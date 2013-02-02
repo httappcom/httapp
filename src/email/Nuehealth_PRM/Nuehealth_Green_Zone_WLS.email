@@ -1,0 +1,374 @@
+<messaging:emailTemplate subject="Introducing Green Zone Weight Loss Surgery" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content=
+    "HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+    <meta content="text/html; charset=us-ascii" http-equiv=
+    "Content-Type" />
+    <title>Nuehealth: Green Zone Weight Loss Surgery</title>
+  </head>
+  <body>
+      <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+    <table style="border: 4px solid #B8CCE7;" id="Outer" align=
+    "center" cellpadding="0" cellspacing="0" width="888">
+      <tbody>
+        <tr>
+          <td align="center">
+            <table cellspacing="1" width="800">
+              <tbody>
+                <tr>
+                  <td style=
+                  "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                  align="left" valign="top">
+                    <p align="center" style="margin-bottom: 1em">
+                      <strong><span class="auto-style1" style=
+                      "font-size: 32px;color: #065902">Introducing
+                      Green Zone Weight Loss
+                      Surgery</span></strong><br />
+                      <span class="style8" style=
+                      "font-size: 22px;text-align: center;color: #3F7FC8">
+                      <strong>Featuring Precision Restriction
+                      Technology</strong></span><br />
+                      <span class="auto-style3" style=
+                      "color: #065902;font-size: 20px"><em>Only at
+                      Featured Provider Hospital Angeles
+                      Tijuana</em></span>
+                    </p>
+                    <hr style=
+                    "color: #6BA6C9; margin-bottom: 40px;" />
+                    <p style="margin-bottom: 1em">
+                      Thank you for your inquiry about weight loss
+                      surgery with Nuehealth. We are proud to be
+                      able to offer our weight loss patients a
+                      truly exclusive opportunity to choose the
+                      newest advancement in weight loss surgery,
+                      featuring innovative Green Zone Precision
+                      Restriction Technology, available for Gastric
+                      Band, Gastric Plication, and Vertical Sleeve
+                      Gastrectomy.
+                    </p>
+                    <p class="auto-style3" style=
+                    "color: #065902;font-size: 20px;margin-bottom: 1em">
+                    <strong>What is Green Zone Technology?</strong>
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Green Zone weight loss surgery utilizes the
+                      EndoFLIP, a digital medical device from
+                      manufacturer <a href=
+                      "http://www.crospon.com/EndoFLIPTechnology.htm">
+                      CROSPON.</a> The EndoFLIP is an FDA approved
+                      device that uses non-radiographic imaging to
+                      measure cross sectional area and volume of
+                      the stomach and gastrointestinal tract in
+                      real time.
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      This means that there is no guessing about
+                      the &ldquo;right&rdquo; size for your band,
+                      sleeve or plication. EndoFLIP allows a
+                      surgeon to set a consistent band stoma
+                      diameter at surgery for every patient, which
+                      minimizes the risk of the band, pleat or
+                      staple line being too tight&hellip;.or too
+                      loose post-surgery.
+                    </p>
+                    <table cellpadding="3" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td>
+                             <c:Email_Template_Image document_Id="015d000000101Fg" alt="Diagram" height="302" width="410" />
+                          </td>
+                          <td width="50"></td>
+                          <td style=
+                          "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333">
+                          <p align="center" style=
+                          "margin-bottom: 1em">
+                               <c:Email_Template_Image document_Id="015d000000101Fv" alt="EndoFLIP" height="189" width="176" />
+                            </p>
+                            <p style="margin-bottom: 1em">
+                              Precise results mean quicker, more
+                              efficient weight loss, and less
+                              chance of complications. Band
+                              patients will need fewer adjustments,
+                              something to consider when planning
+                              for the type of surgery you will
+                              have. Patients in the Green Zone have
+                              the fewest problems and the best
+                              weight loss results.
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <table align="left" cellpadding="0"
+                    cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td style=
+                          "font-size: 12px; color: #808080; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; tahoma: ;,"
+                          align="center">
+                             <c:Email_Template_Image document_Id="015d000000101En" height="178" width="200" /><br />
+                            <strong>Dr. Lopez Corvala<br />
+                            <em>Gastroenterologist
+                            Surgeon</em></strong>
+                          </td>
+                          <td width="30"></td>
+                        </tr>
+                        <tr>
+                          <td height="80"></td>
+                          <td width="30"></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p class="auto-style3" style=
+                    "color: #065902;font-size: 20px;margin-bottom: 1em">
+                    <strong>Your Surgeon</strong>
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Dr. Lopez Corvala is widely regard as one of
+                      the leading weight-loss surgeons in the
+                      world. He has performed more than 6,000
+                      laparoscopic weight loss surgeries, including
+                      thousands of LAP-BANDS as well as other
+                      procedures, including pioneering the new
+                      restrictive procedure <a href=
+                      "http://www.healthtravelguides.com/Weight-Loss/GastricPlication">
+                      gastric plication</a>, the early results for
+                      which show faster and more intense weight
+                      loss than banding. Dr. Lopez Corvala is the
+                      only surgeon in Mexico who has been trained
+                      by CROSPON to use the EndoFLIP.
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Dr. Lopez Corvala and his team bring a
+                      remarkable depth of experience, sensitivity
+                      and dedication to the treatment of obesity
+                      disease. In the past two years alone, his
+                      team has helped more than 3,000 (a number
+                      that is continually growing!) American
+                      patients reclaim their lives through weight
+                      loss surgery. <a href=
+                      "https://healthtravelguides.custhelp.com/app/answers/detail/a_id/71/session/L2F2LzEvdGltZS8xMjk1OTAxMDA3L3NpZC9IWFBreVVraw=="
+                      target="_blank">Click here</a> to Read more
+                      about Dr. Lopez Corvala.
+                    </p>
+                    <table align="right" cellpadding="0"
+                    cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td width="30"></td>
+                          <td width="366">
+                             <c:Email_Template_Image document_Id="015d000000101Fq" alt="" height="332" width="366" />
+                            <p style=
+                            "font-size: 17px;color: #D98200;font-family: Georgia, &quot;Times New Roman&quot;, Times, serif;margin-bottom: 1em"
+                            align="center">
+                              The Green Zone Weight Loss<br />
+                              with EndoFLIP is exclusively
+                              featured<br />
+                              at Hospital Angeles Tijuana
+                            </p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p class="auto-style3" style=
+                    "color: #065902;font-size: 20px;margin-bottom: 1em">
+                    <strong>The Hospital</strong>
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Hospital Angeles Tijuana is located just
+                      minutes from downtown San Diego, in a
+                      bustling international commercial district
+                      that features amenities such as a cinema with
+                      films in English, retail shops and
+                      restaurants, including many familiar American
+                      brand names including Sam&rsquo;s Club and
+                      Starbucks.
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      The focus is on delivering top tier medical
+                      care. The hospital is equipped with the most
+                      modern technology and services - including
+                      state-of-the art operating rooms and the
+                      offices of more than 100 highly sought after
+                      specialists from around the world in
+                      cardiology, neurology, orthopedics and
+                      gastroenterology. <a href=
+                      "https://healthtravelguides.custhelp.com/app/answers/detail/a_id/82">
+                      Read more about Hospital Angeles.</a>
+                    </p>
+                    <p class="auto-style3" style=
+                    "color: #065902;font-size: 20px;margin-bottom: 1em">
+                    <strong>Your Medical Travel Package</strong>
+                    </p>
+                    <table cellpadding="0">
+                      <tbody>
+                        <tr>
+                          <td class="style9" style=
+                          "padding: 5px;border: 4px solid #C0C0C0;color: #F59603;font-size: 20px"
+                          align="center" width="160">
+                            <strong>BAND $5,900</strong>
+                          </td>
+                          <td width="10"></td>
+                          <td class="style9" style=
+                          "padding: 5px;border: 4px solid #C0C0C0;color: #F59603;font-size: 20px"
+                          align="center" width="160">
+                            <strong>Plication $7,500</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p style="margin-bottom: 1em">
+                      The Green Zone medical travel packages at
+                      Hospital Angeles Tijuana include the
+                      following:
+                    </p>
+                    <ul>
+                      <li>All surgeon and doctor fees
+                      </li>
+                      <li>1-2 nights hospital stay *
+                      </li>
+                      <li>Round trip ground transportation from
+                      airport to Angeles medical complex
+                      </li>
+                      <li style=
+                      "list-style: none; display: inline">
+                        <table align="right" cellpadding="4"
+                        cellspacing="0">
+                          <tbody>
+                            <tr>
+                              <td style=
+                              "font-size: 12px; color: #808080; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; tahoma: ;,"
+                              align="center" width="30"></td>
+                              <td style=
+                              "font-size: 12px; color: #808080; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; tahoma: ;,"
+                              align="center">
+                                <a href=
+                                "http://sitelet.nuehealth.com/webinar/index.html"
+                                target="_blank"> <c:Email_Template_Image document_Id="015d000000101G5" alt="" height="231" width="224" /></a><br />
+                                <a href="javascript:%20void()" onclick="alert('Coming Soon ...')"> <c:Email_Template_Image document_Id="015d000000101Fb" alt="Twitter" style="margin-bottom: 10px; margin-top: 10px;" /></a><br />
+                                <a href=
+                                "http://www.facebook.com/pages/Nuehealth/454923741213153">
+                                 <c:Email_Template_Image document_Id="015d000000101FW" alt="Facebook" /></a><br />
+                                <br />
+                                <br />
+                                <a href=
+                                "http://nuehealth.blogspot.com/"
+                                target="_blank"> <c:Email_Template_Image document_Id="015d000000101FR" alt="" /></a><br />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </li>
+                      <li>Travel coordination services for you and
+                      any travel companions
+                      </li>
+                      <li>Automatic registration in the Nuehealth
+                      Weight Loss Surgery Follow-Up Program
+                      </li>
+                      <li>Automatic registration in the Nuehealth
+                      referral program &ndash; earn referral awards
+                      when you recommend LAP-BAND with Nuehealth
+                      </li>
+                      <li>Automatic registration in the Nuehealth
+                      Patient Stories program &ndash; send us a
+                      video telling us how you are doing, and
+                      we&rsquo;ll send you a gift card!
+                      </li>
+                    </ul>
+                    <p style="margin-bottom: 1em">
+                      *varies according to procedure; please ask a
+                      Case Manager
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Want to learn more? Click on the link below
+                      to visit blogtalkradio and learn how the
+                      Green Zone band will improve your weight loss
+                      results.
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      <a href=
+                      "http://www.blogtalkradio.com/nuehealth"
+                      target="_blank"> <c:Email_Template_Image document_Id="015d000000100fT" alt="" height="159" width="495" /></a>
+                    </p>
+                    <p class="auto-style3" style=
+                    "color: #065902;font-size: 20px;margin-bottom: 1em">
+                    <strong>Medical Travel Process</strong>
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Medical travelers fly into either the San
+                      Diego or Tijuana airport. The Angeles shuttle
+                      service will pick you up at the airport and
+                      per your itinerary, deliver you either to
+                      your hotel or the hospital &ndash; a trip of
+                      about 15 minutes. If you stay at a hotel the
+                      night prior to surgery, the shuttle will pick
+                      you up and deliver you to the hospital for
+                      your procedure.
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Alternatively, you can spend the night before
+                      your procedure in the hospital at no
+                      additional charge, however you will not have
+                      &lsquo;in and out&rsquo; privileges once you
+                      check in to the hospital. Once Dr. Lopez
+                      Corvala has released you for travel, you will
+                      be transported to the airport for your
+                      departure home.
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Click link below to get started by completing
+                      an online medical profile.
+                    </p>
+                    <p align="center" style="margin-bottom: 1em">
+                      <a href=
+                      "https://healthtravelguides.custhelp.com/ci/documents/detail/5/23">
+                       <c:Email_Template_Image document_Id="015d0000001010n" height="61" width="250" style="border-width: 0" /></a>
+                    </p>
+                    <p class="auto-style3" style=
+                    "color: #065902;font-size: 20px;margin-bottom: 1em">
+                    <strong>Thanks For Working With
+                    Nuehealth</strong>
+                    </p>
+                    <p style="margin-bottom: 1em">
+                      Our mission is to remove barriers and borders
+                      to high quality global healthcare. We work
+                      with top surgeons and leading hospitals to
+                      provide US patients with access to the best
+                      in health care around the world. When you
+                      work with Nuehealth, you work with a team of
+                      people dedicated to ensuring you have the
+                      highest quality medical travel experience
+                      possible. It is our pleasure and privilege to
+                      work with you on your journey to better
+                      health. Please let us know how else we can be
+                      of assistance and we look forward to speaking
+                      with you very soon!
+                    </p>
+                    <p style="margin-bottom: 1em"></p><br />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="style7" align="center" style=
+    "text-align: center;margin-bottom: 1em">
+      <a href="http://sitelet.nuehealth.com/webinar/index.html"
+      target="_blank"> <c:Email_Template_Image document_Id="015d000000101Es" alt="" /></a>
+      <a href=
+      "http://www.zweenahealth.com/medical-tourism"> <c:Email_Template_Image document_Id="015d000000101F7" height="113" width="175" /></a> <a href=
+      "http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=268544&amp;ssid=136533&amp;vnf=1">
+       <c:Email_Template_Image document_Id="015d000000101F2" height="112" width="175" style="border-width: 0" /></a> <a href=
+      "https://healthtravelguides.custhelp.com/ci/documents/detail/2/600">
+       <c:Email_Template_Image document_Id="015d000000101Ex" alt="" height="112" width="175" style="border-width: 0" /></a>
+    </p>
+      <center><c:Email_Template_Footer /></center>
+  </body>
+</html>
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

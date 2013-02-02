@@ -684,6 +684,7 @@ public class PatientUtil {
         Database.SaveResult result = Database.Insert(u);    
         if (result.isSuccess()) {
             //send email to patient
+         
             messaging.Singleemailmessage msg = new messaging.singleEmailMessage();
             msg.setToAddresses(new list<string>{patient.email__c});
             msg.setSubject('Welcome to your Health Travel Guides Portal Account');
@@ -696,9 +697,18 @@ public class PatientUtil {
             plainbody+='Login page: http:\\\\htt.force.com\n\n';
             plainbody+=' After your first login, you will be required to change your password.\n\n';
             msg.setPlainTextBody(plainbody);
-            msg.setHtmlBody(plainbody.replace('\n','<br/>'));
-            
+            msg.setHtmlBody(plainbody.replace('\n','<br/>'));            
             messaging.sendemail(new list<Messaging.email>{msg});
+/* 
+				    Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+				    Treatment__c treatment = [Select Id, Patient__r.Id, Destination_Facility__c, CreatedDate From Treatment__c 
+				                              Where Patient__r.Id = :patient.Id Order By CreatedDate Desc];
+				    mail.setTargetObjectId(patient.Key_Contact__c);
+				    mail.setWhatId(treatment.Id);
+				    EmailTemplate et = [Select Id, DeveloperName, Name from EmailTemplate where Id = '00Xd0000000X9lb' ]; 
+				    mail.setTemplateId(et.Id);
+				    Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });  
+*/				                          
             system.resetPassword(u.id, true);               
         }                           
         else {

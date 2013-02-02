@@ -3,6 +3,7 @@
     <defaultLandingTab>standard-home</defaultLandingTab>
     <description>Patient Relationship Management App</description>
     <label>Nuehealth PRM</label>
+    <logo>PRM_Documents/Header_Logo.jpg</logo>
     <tab>Pipeline</tab>
     <tab>Patient__c</tab>
     <tab>Knowledge_Base__c</tab>

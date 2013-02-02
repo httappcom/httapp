@@ -29,7 +29,8 @@ public with sharing class MedicalRecordUploadController {
                             limit 1];
         patientId = plist[0].id;
 		record.Patient__c = patientId;
- 
+ 		
+ 		serverURL = URL.getSalesforceBaseUrl().toExternalForm();
     }
     
     public PageReference constructor(){
@@ -46,7 +47,11 @@ public with sharing class MedicalRecordUploadController {
 		policy  = '{ "expiration": "'+formattedexpire+'","conditions": [ {"bucket": "'+
     		credentials.Bucket__c +'" } ,{ "acl": "public-read" },'+
 //    	'{"success_action_redirect": "https://'+serverurl+'/'+record.id+'"},' +
-    	'["starts-with", "$key", ""] ]}';
+    	'["starts-with", "$com.salesforce.visualforce.viewstatecsrf", ""],'+
+    	'["starts-with", "$com.salesforce.visualforce.viewstatemac", ""],'+
+    	'["starts-with", "$success_action_redirect", ""],'+
+    	'["starts-with", "$com.salesforce.visualforce.viewstate", ""],'+
+    	' ["starts-with", "$key", ""] ]}';
 
 		docKey = S3Utils.genDocKey(patientId);
 Logger.info('docKey='+docKey);

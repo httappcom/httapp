@@ -65,7 +65,7 @@
     <fields>
         <fullName>Postal_Code__c</fullName>
         <externalId>false</externalId>
-        <label>Postal_Code</label>
+        <label>Postal Code</label>
         <length>20</length>
         <required>false</required>
         <type>Text</type>
@@ -74,7 +74,7 @@
     <fields>
         <fullName>State_or_Province__c</fullName>
         <externalId>false</externalId>
-        <label>State_or_Province</label>
+        <label>State or Province</label>
         <length>40</length>
         <required>false</required>
         <type>Text</type>

@@ -2,7 +2,7 @@
 	<apex:attribute name="height" description="Max Height in Pixels of this Component" type="Integer" />
 	<apex:attribute name="pId" description="Id of the Patient the component is on" type="Id" assignTo="{!patientId}" required="true" />
 	<apex:attribute name="treatmentId" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />
-
+	<apex:attribute name="canAddCareTeamMember" description="Boolean to determine if Add Care Team Member is available" type="Boolean" />
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/zenifiedChatterPageBase.css" />
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/ChatterFiles.css" />
 	<link type="text/css" rel="stylesheet" media="handheld,print,projection,screen,tty,tv" href="/sCSS/26.0/sprites/1354127940000/Theme3/default/chatterCore.css" />
@@ -16,9 +16,9 @@
 		<div>
 			<div class="chatterPage" >
 				<div id="chatterTab" class="threecolumn" >
-	
+
 					<!--  LEFT COLUMN -->
-					<apex:outputPanel layout="block" styleClass="leftContent" >
+					<apex:outputPanel layout="block" styleClass="leftContent" id="leftContent" >
 
 						<apex:outputPanel layout="none" styleClass="chatterUserStatus" >
 							<div class="chatterUserStatusTop">
@@ -42,22 +42,22 @@
 								<li class="feedTypeList hasIcon hasSubNav">
 									<div class="primaryNavSection">
 										<span class="icon"></span>
-										<a class="trigger" title="Feed" href="javascript:;" id="ext-gen41">Feed</a>
+										<a class="trigger" title="Feed" href="javascript:;" >Feed</a>
 									</div>
 									<div style="display: block;" class="subNavSection">
 										<ul>
 											<li class="{!if( selectedFilterBy == patientId || selectedFilterBy == null,'selected','')}">
-												<apex:commandLink value="Recent Items" styleClass="NEWS trigger" action="{!clearFilterBy}" />
+												<apex:commandLink value="Recent Items" styleClass="NEWS trigger" action="{!clearFilterBy}" reRender="leftContent,newfeed,newPost" />
 											</li>
 											<apex:repeat value="{!topicList}" var="t" >
 												<li class="{!if(t.Id == selectedFilterBy, 'selected','')}">
-													<apex:commandLink value="{!t.Name}" styleClass="NEWS trigger" action="{!selectFilterBy}" >
+													<apex:commandLink value="{!t.Name}" styleClass="NEWS trigger" action="{!selectFilterBy}" reRender="leftContent,newfeed,newPost" >
 														<apex:param value="{!t.Id}" name="selectedFilterBy" assignTo="{!selectedFilterBy}" />
 													</apex:commandLink>
 												</li>
 											</apex:repeat>
 											<li>
-												<apex:commandLink styleClass="NEWS trigger" value="Add New Topic" action="{!addNewTopic}" />
+												<apex:commandLink styleClass="NEWS trigger" value="Add New Topic" action="{!addNewTopic}" reRender="leftContent,newfeed,newPost" />
 											</li>
 										</ul>
 									</div>
@@ -71,13 +71,13 @@
 										<ul>
 											<apex:repeat value="{!careTeamMemberList}" var="t" >
 												<li class="{!if(t.Id == selectedFilterBy,'selected','')}">
-													<apex:commandLink value="{!t.Name}" styleClass="NEWS trigger" action="{!selectFilterBy}" >
+													<apex:commandLink value="{!t.Name}" styleClass="NEWS trigger" action="{!selectFilterBy}" reRender="leftContent,newfeed,newPost" >
 														<apex:param value="{!t.Id}" name="selectedFilterBy" assignTo="{!selectedFilterBy}" />
 													</apex:commandLink>
 												</li>
 											</apex:repeat>
 											<li>
-												<apex:commandLink styleClass="NEWS trigger" value="Add New Member" action="{!addNewCareTeamMember}" />
+												<apex:commandLink styleClass="NEWS trigger" value="Add New Member" action="{!addNewCareTeamMember}" reRender="leftContent,newfeed,newPost" rendered="{!canAddCareTeamMember}"/>
 											</li>
 										</ul>
 									</div>
@@ -100,29 +100,29 @@
 											<apex:outputPanel layout="block" styleClass="publishercontrols" >
 
 												<div id="contentButtonBar" class="cxcontentbuttonbar publisherFeedItemTypeChoices">
-													<apex:commandLink id="publisherAttachTextPost" styleClass="publisherattach publisherTextPost {!IF(mode=='Text','withArrowAttached','')}" action="{!selectTextMode}" >
+													<apex:commandLink id="publisherAttachTextPost" styleClass="publisherattach publisherTextPost {!IF(mode=='Text','withArrowAttached','')}" action="{!selectTextMode}" reRender="newPost" >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">Post</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
-													<apex:commandLink id="publisherAttachContentPost" styleClass="publisherattachContentPost publisherattach {!IF(mode=='FilePost','withArrowAttached','')}" action="{!selectFileMode}"  >
+													<apex:commandLink id="publisherAttachContentPost" styleClass="publisherattachContentPost publisherattach {!IF(mode=='FilePost','withArrowAttached','')}" action="{!selectFileMode}" reRender="newPost"  >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">File</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
-													<apex:commandLink id="publisherAttachLinkPost" styleClass="publisherattach publisherattachLinkPost {!IF(mode=='Link','withArrowAttached','')}" action="{!selectLinkMode}"  >
+													<apex:commandLink id="publisherAttachLinkPost" styleClass="publisherattach publisherattachLinkPost {!IF(mode=='Link','withArrowAttached','')}" action="{!selectLinkMode}" reRender="newPost"  >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">Link</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
-													<apex:commandLink id="publisherAttachTaskPost" styleClass="publisherattachPollPost publisherattach {!IF(mode=='Task','withArrowAttached','')}" action="{!selectTaskMode}" >
+													<apex:commandLink id="publisherAttachTaskPost" styleClass="publisherattachPollPost publisherattach {!IF(mode=='Task','withArrowAttached','')}" action="{!selectTaskMode}" reRender="newPost"  >
 														<img title="" class="publishericon" alt="" src="/s.gif" />
 														<span class="publisherattachtext">Task</span>
 														<span class="pArrow"></span>
 													</apex:commandLink>
 												</div>
  
-												<apex:outputPanel layout="block" styleClass="publisherWrapper {!mode}" >
+												<apex:outputPanel layout="block" styleClass="publisherWrapper {!mode}" id="newPost" >
 													<div class="contentPublisherSlideDown abovePublisher">
 
 														<apex:outputPanel layout="block" id="chatterTaskPost" styleClass="panel" rendered="{!mode == 'Task'}" >
@@ -132,7 +132,7 @@
 																		<tr>
 																			<th scope="row"><label for="taskSubject"><span class="requiredMark">*</span>Task Subject</label></th>
 																			<td>
-																				<div class="requiredInput" id="ext-gen4">
+																				<div class="requiredInput" >
 																					<div class="requiredBlock"></div>
 																					<apex:inputText value="{!newTask.Subject}" title="Task Subject" size="20" maxlength="1005" id="taskSubject" styleClass="fileFormInputElement" />
 																					<div class="errorMsg hidden" ></div>
@@ -193,7 +193,7 @@
 																				<div>
 																					<div class="requiredInput">
 																						<div class="requiredBlock"></div>
-																						<apex:inputFile value="{!newMessage.attachment.body}" fileName="{!newMessage.attachment.name}" />
+																						<!-- <apex:inputFile value="{!newMessage.attachment.body}" fileName="{!newMessage.attachment.name}" />  -->
 																						<div class="errorMsg hidden"></div>
 																					</div>
 																					<div class="uploadFileSizeLimit">
@@ -205,7 +205,7 @@
 																		<tr id="descRow">
 																			<th scope="row"><label for="filedesc">Description</label></th>
 																			<td>
-																				<div id="ext-gen9">
+																				<div>
 																					<apex:inputTextArea style="wrap:soft;" value="{!newMessage.body}" rows="4" id="filedesc" cols="60" styleClass="fileFormInputElement" />
 																					<div class="errorMsg hidden" id="ext-gen10"></div>
 																				</div>
@@ -259,7 +259,7 @@
 															</span>
 														</div>
 														<div class="bottomBarRight" > 
-															<apex:commandLink styleClass="zen-btn zen-highlightBtn" action="{!insertNewMessage}" id="publishersharebutton" value="Share" />
+															<apex:commandLink styleClass="zen-btn zen-highlightBtn" action="{!insertNewMessage}" id="publishersharebutton" value="Share" reRender="newFeed,newPost" />
 														</div>
 													</div>
 												</apex:outputPanel>
@@ -346,7 +346,7 @@
 																</div>
 																<span class="feeditemtext cxfeeditemtext">{!m.body}</span>
 
-																<apex:outputPanel layout="block" styleClass="linkPostLinkContainer">
+																<apex:outputPanel layout="block" styleClass="linkPostLinkContainer" rendered="{!m.messageType == 'Link'}">
 																	<span class="linkPostLinkTitle">
 																		<a class="linkPostLink" target="_blank" href="{!m.linkURL}">
 																			<img title="{!m.linkName}" alt="{!m.linkName}" src="/s.gif" />
@@ -394,7 +394,7 @@
 															</div>            
 															<div class="feeditemfooter">          
 																<span class="cxallfeedactions">
-																	<apex:commandLink action="{!m.addNewComment}" styleClass="feeditemactionlink cxaddcommentaction" >Comment</apex:commandLink>
+																	<apex:commandLink action="{!m.addNewComment}" styleClass="feeditemactionlink cxaddcommentaction" reRender="newFeed,newPost" >Comment</apex:commandLink>
 																	<span class="cxfeeditemcommentdot feeditemseparatingdot"> · </span>
 																</span>
 																<a class="feeditemtimestamp" title="Click for single-item view of this post." href="/{!m.recordId}"><apex:outputText value="{0,date,MMMMM d',' yyyy 'at' h:mm a}"><apex:param value="{!m.createdDateTime}" /></apex:outputText></a>

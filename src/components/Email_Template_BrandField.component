@@ -1,0 +1,7 @@
+<apex:component access="global" controller="EmailController" selfClosing="true">
+	<apex:attribute name="PRM_Config_field" description="The field on the PRM_Config object to use for the merge" 
+	                assignTo="{!PRM_Config_field}" type="String" required="true" access="global" /> 
+	<apex:attribute name="treatment_Id" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />
+	                               
+  <apex:outputField value="{!PRMConfig[PRM_Config_field]}" />
+</apex:component>

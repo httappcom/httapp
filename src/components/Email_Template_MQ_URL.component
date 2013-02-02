@@ -1,0 +1,6 @@
+<apex:component controller="EmailController" access="global">
+  <apex:attribute name="patient_Id" description="Patient ID of the recipient" 
+                assignTo="{!patientId}" type="Id" access="global" />
+  <apex:attribute name="treatment_Id" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />                
+  <a href="{!medProfileLinkURL}"><apex:componentBody ></apex:componentBody></a>
+</apex:component>

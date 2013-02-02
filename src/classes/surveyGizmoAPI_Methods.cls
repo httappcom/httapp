@@ -249,17 +249,17 @@ public with sharing class surveyGizmoAPI_Methods {
         }
     }
     
-    public static string encryptPatientId (string patientId) {
-        Blob b = crypto.encrypt('AES256', encodingUtil.base64Decode(AESKEY), encodingUtil.base64Decode(INITV), blob.valueOf(patientId.trim()));
+  public static string encryptPatientId (string patientId) {
+        Blob b = crypto.encrypt('AES256', encodingUtil.base64Decode(AESKEY), encodingUtil.base64Decode(INITV), encodingUtil.base64Decode(patientId.trim()));
         String s = encodingUtil.base64Encode(b);
         String f = encodingUtil.urlEncode(s,'UTF-8');
         return f;
     }
     
     public static string decryptPatientId (string encodedID) {
-        blob b = crypto.decrypt('AES256', encodingUtil.base64Decode(AESKEY), encodingUtil.base64Decode(INITV),encodingUtil.base64Decode(encodedID));
+        blob b = crypto.decrypt('AES256', encodingUtil.base64Decode(AESKEY), encodingUtil.base64Decode(INITV),encodingUtil.base64Decode(encodingutil.urldecode(encodedID,'UTF-8')));
         string patientID = EncodingUtil.base64Encode(b);
-        return patientID;
+        return patientID.substring(0,15);
     }
     
     public static surveyClass parseSurvey(string input) {

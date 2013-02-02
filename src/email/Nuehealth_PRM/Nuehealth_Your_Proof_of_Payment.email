@@ -1,0 +1,114 @@
+<messaging:emailTemplate subject="Your Proof of Payment" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content=
+    "HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+    <meta content="text/html; charset=us-ascii" http-equiv=
+    "Content-Type" />
+    <title>Your Proof of Payment</title>
+  </head>
+  <body>
+    <center>
+       <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align=
+      "center" cellpadding="0" cellspacing="0" width="875">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table cellspacing="1" width="800">
+                <tbody>
+                  <tr>
+                    <td style=
+                    "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                    align="left" valign="top">
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong><span class="auto-style1" style=
+                        "font-size: 32px;color: #6D6B6B">Your&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/> Proof of Payment</span></strong><br />
+                      </p>
+                      <table align="right" cellpadding="0"
+                      cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                              <br />
+                              <span class="style2" style=
+                              "font-size: 12px;color: #2D497D"><c:Email_Template_Image document_Id="015d000000100oF" height="362" width="300" /><br />
+                              <br /></span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em">
+                        Dear {!relatedTo.Patient__r.Patient_First_Name__c},
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Thank you for choosing&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/> for your medical travel needs. We
+                        have received and processed payment for
+                        your medical procedure. Details on your
+                        payment are below.
+                      </p>
+                      <table>
+                          <tr>
+                              <td>Patient Name:</td><td><apex:outputField value="{!relatedTo.Patient__r.Name}"/></td>
+                          </tr>
+                          <tr>
+                              <td>Procedure:</td><td><apex:outputField value="{!relatedTo.Procedure__c}" /></td>
+                          </tr>                          
+                          <tr>
+                              <td>Procedure Date:</td><td><apex:outputField value="{!relatedTo.Procedure_Date__c}" /></td>
+                          </tr>                          
+                          <tr>
+                              <td>Doctor:</td>
+<!--                              <td><apex:outputField value="{!relatedTo.Procedure__r.Doctor__r.Name}" /></td>
+-->
+<td></td>
+                          </tr>
+                          <tr>
+                              <td>Facility:</td><td><apex:outputField value="{!relatedTo.Destination_Facility__r.Name}" /></td>
+                          </tr> 
+                          <tr>
+<!--                          
+                              <td>Total Price:</td><td><apex:outputField value="{!relatedTo.Treatment_Quote__r.Total_Price__c}" /></td>
+-->
+<td></td>                              
+                          </tr>                           
+                      </table>
+                      <p style="margin-bottom: 1em">
+                        We look forward to providing you with the
+                        highest quality care and service during
+                        your visit to our facilities and medical
+                        providers. If you have any further
+                        questions please feel free to contact us at
+                        any time at at&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Call_Center_Number__c"/>.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Regards,
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p><br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table><br />
+      <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

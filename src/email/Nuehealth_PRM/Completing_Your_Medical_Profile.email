@@ -1,0 +1,99 @@
+<messaging:emailTemplate subject="Completing Your Medical Profile" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=us-ascii" http-equiv=
+    "Content-Type" />
+    <title>Completing Your Medical Profile</title>
+  </head>
+  <body>
+    <center>
+      <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align=
+      "center" cellpadding="0" cellspacing="0" width="875">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table cellspacing="1" width="800">
+                <tbody>
+                  <tr>
+                    <td style=
+                    "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                    align="left" valign="top">
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong><span class="auto-style1" style=
+                        "font-size: 32px;color: #6D6B6B">Completing Your Medical Profile</span></strong><br />
+                      </p>
+                      <table align="right" cellpadding="0"
+                      cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                              <c:Email_Template_Image document_Id="015d0000001010T" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em">
+                        Dear {!relatedTo.Patient__r.Patient_First_Name__c},
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Thank you for contacting&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/> for your medical travel needs.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        In order to provide you with a personalized
+                        treatment quote, we request that you
+                        complete our medical profile form. This
+                        will allow the medical team to review your
+                        specific health circumstances and needs.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        To get started, just click on the button
+                        below and complete the secure online health
+                        survey, which will be routed directly to
+                        the surgical team for evaluation.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        The profile takes about 15 minutes to
+                        complete. Please plan to finish it in one
+                        session; for data security reasons you will
+                        not be able to begin it and then return
+                        later to complete.
+                      </p>
+                      <p align="center" style="margin-bottom: 1em"><c:Email_Template_MQ_URL treatment_Id="{!relatedTo.Id}" patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image alt="Submit your medical profile - CLICK HERE" document_Id="015d0000001010n"/></c:Email_Template_MQ_URL></p>
+                      <p style="margin-bottom: 1em">
+                        <c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Closing_graph__c"/>
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Regards,
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c" />
+                            </td>
+                            <td width="44"></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p>
+                      <br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table><br />
+      <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -1,103 +1,89 @@
 <messaging:emailTemplate subject="Passport Needed for Your Medical Travel Trip" recipientType="Contact" relatedToType="Treatment__c">
     <messaging:htmlEmailBody >
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta content="text/html; charset=windows-1252" http-equiv="Content-Type" />
-<title>HTG</title>
-<style type="text/css">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html; charset=us-ascii" http-equiv="Content-Type" />
 
-.auto-style1 {
-    font-size: 32px;
-    color: #6D6B6B;
-}
-
-.auto-style4 {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 15px;
-}
-.auto-style5 {
-    color: #838483;
-}
-.auto-style6 {
-    color: #32849F;
-}
-
-.style1 {
-    border-width: 0px;
-}
-
-</style>
+  <title>Passport Needed for Your Medical Travel Trip</title>
 </head>
 
 <body>
-<center>
-<div align="center">
-        &nbsp;
-        <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1T&oid=00Dd0000000gLpp" />
-        </div>
-        <table align="center" width="888"><tbody><tr><td align="left">
-            <a href="http://healthtravelguides.com/AboutUs/ContactUs" target="_blank">
-                <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1Y&oid=00Dd0000000gLpp" height="22" width="70" /></a></td>
-        <td class="auto-style4" style="letter-spacing: 2px" align="right">
-        <strong><span class="auto-style5">Toll Free:</span>
-        <span class="auto-style6">1-866-978-2573</span></strong></td></tr></tbody></table>
-            
-<table style="border: 4px solid #B8CCE7;" id="Outer" align="center" cellpadding="0" cellspacing="0" width="875">
-    <tbody><tr>
-        <td align="center">
+  <center>
+    <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+    <table style="border: 4px solid #B8CCE7;" id="Outer" align="center" cellpadding="0"
+    cellspacing="0" width="875">
+      <tbody>
+        <tr>
+          <td align="center">
+            <table cellspacing="1" width="800">
+              <tbody>
+                <tr>
+                  <td style=
+                  "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                  align="left" valign="top">
+                    <p align="center" style="margin-bottom: 1em"><strong><span class=
+                    "auto-style1" style="font-size: 32px;color: #6D6B6B">Passport Needed
+                    for Your Upcoming Trip</span></strong><br /></p>
 
-<table cellspacing="1" width="800">
-            <tbody><tr>
-                <td style="text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333" align="left" valign="top">
-                <p align="center">
-                <strong><span class="auto-style1">Passport Needed for Your Medical Travel Trip</span></strong><br/>
-                </p>
-                
-                
-                
-                <table align="right" cellpadding="0" cellspacing="0">
-                    <tbody><tr>
-                        <td width="25">&nbsp;</td>
-                        <td align="center">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="25">&nbsp;</td>
-                        <td align="center" width="315">
-                                 </td>
-                    </tr>
-                    </tbody></table>
-                
-                <p>
-                Dear {!relatedTo.Patient__r.Name},
-                </p>
-                <p>Thank you for choosing Health Travel Guides for your medical travel needs. We look forward to providing you with the highest quality care and service during your visit to our facilities and medical providers in Mexico and beyond.</p>  
-                <p>This letter is to confirm that you will need a passport for your medical travel.  Please provide this to the passport office should they request proof of travel.</p>
-                <p>If you have any further questions please feel free to contact us at any time at 866-978-2573.</p>
+                    <table align="right" cellpadding="0" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td width="25"></td>
 
-                <p>
-                &nbsp;</p>
-                <p>
-                Regards,</p>
-                <p>
-                </p><table>
-                    <tbody><tr>
-                        <td>
-                         </td>
-                        <td width="44"><apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1E&oid=00Dd0000000gLpp" />&nbsp;</td>
-                        <td></td>
-                    </tr>
-                </tbody></table>
-                <p></p>
-                <br/>
-                </td>
-            </tr>
-            </tbody></table></td></tr></tbody></table>
-            <br/>
- <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg19&oid=00Dd0000000gLpp" height="48" width="654" /></center>
+                          <td align="center" width="315"><br />
+                          <br />
+                          <c:Email_Template_Image height="201" width="335" document_Id="015d0000000zs2G"/></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p style="margin-bottom: 1em">Dear {!relatedTo.Patient__r.Patient_First_Name__c},</p>
 
+                    <p style="margin-bottom: 1em">Thank you for choosing&#160;<c:Email_Template_BrandField PRM_Config_field="Facilitator_Name__c" treatment_Id="{!relatedTo.Id}"/> for your medical travel needs. We look forward to providing you
+                    with the highest quality care and service during your visit to our
+                    international facilities and medical providers.</p>
 
+                    <p style="margin-bottom: 1em">This letter is to confirm that you will
+                    need a passport for your medical travel. Please provide this letter
+                    to the passport office should they request proof of travel.</p>
 
+                    <p style="margin-bottom: 1em">Only the U.S. Department of State has
+                    the authority to grant, issue or verify United States passports. For
+                    more information on how to secure your passport, visit the <a href=
+                    "http://travel.state.gov/passport/passport_1738.html">U.S. Passport
+                    Services Office.</a></p>
 
-</body></html>        
+                    <p style="margin-bottom: 1em">If you have any questions, please
+                    contact your&#160;<c:Email_Template_BrandField PRM_Config_field="PCC_designation__c" treatment_Id="{!relatedTo.Id}"/> directly at&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Call_Center_Number__c"/>.</p>
+
+                    <p style="margin-bottom: 1em">Regards,</p>
+
+                    <p style="margin-bottom: 1em"></p>
+
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td><c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c"></c:Email_Template_Image></td>
+
+                          <td width="44"></td>
+
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <p style="margin-bottom: 1em"></p><br />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table><br />
+    <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+  </center>
+</body>
+</html>
+        
     </messaging:htmlEmailBody>
 </messaging:emailTemplate>

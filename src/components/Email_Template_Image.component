@@ -1,0 +1,14 @@
+<apex:component controller="EmailController" access="global" selfClosing="true">
+  <apex:attribute name="alt" description="Image alt text" type="String" />
+  <apex:attribute name="height" description="Image height" type="String" />
+  <apex:attribute name="width" description="Image width" type="String" />
+  <apex:attribute name="style" description="Image style" type="String" /> 
+  <apex:attribute name="document_Id" description="The Salesforce document ID which identifies the image" 
+                  assignTo="{!document_Id}" type="Id" access="global" />
+  <apex:attribute name="PRM_Config_field" description="The field on the PRM_Config object to use for the Document Id merge" 
+                  assignTo="{!PRM_Config_field}" type="String" access="global" />
+  <apex:attribute name="treatment_Id" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />                  
+                    
+  <apex:image alt="{!alt}" height="{!height}" width="{!width}" style="{!style}" url="{!image_url}" />
+  
+</apex:component>

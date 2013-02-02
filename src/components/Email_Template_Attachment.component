@@ -1,0 +1,10 @@
+<apex:component controller="EmailController" access="global">
+	<messaging:attachment renderAs="PDF" filename="testattachment.pdf">
+	  <html>
+	     <body>
+	       <h1>Test Attachment</h1>
+	       <p>This is the body of the attachment.</p>
+	     </body>
+	  </html>
+	</messaging:attachment>
+</apex:component>

@@ -603,103 +603,6 @@
                     </apex:pageBlockSection>
     </apex:pageBlockSection>
     <apex:tabPanel switchType="client" value="{!activeInteractionTab}">
-        <apex:tab label="Incidents" id="Incidents">
-        
-                        <apex:commandbutton action="{!newIncident}" value="New Incident"></apex:commandbutton>
-                        <apex:commandbutton action="{!saveIncident}" value="Save Incident"></apex:commandbutton>
-                        <apex:commandLink action="{!previousIncident}" rendered="{!hasPreviousIncident}"> Previous</apex:commandlink>&nbsp;
-                        <apex:commandLink action="{!nextIncident}" rendered="{!hasNextIncident}"> Next</apex:commandlink> 
-                        <apex:outputText value="          "></apex:outputText><apex:outputText value="{!incidentCurNumber} of {!incidentTotCount} Incidents  " rendered="{!!ISNULL(incidentCurNumber)}"></apex:outputText>                    
-                <apex:pageBlock title="Incident Detail">
-                    <apex:pageBlockSection columns="2">
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Incident Number" />
-                            <apex:outputText value="{!incidentName}" rendered="{!!ISNULL(incidentName)}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem rendered="{!!ISNULL(incidentName)}" />
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Contact Name" />
-                            <apex:inputField value="{!incident.Contact__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Status" />
-                            <apex:inputField value="{!incident.Status__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Account Name" />
-                            <apex:inputField value="{!incident.Account__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Due Date" />
-                            <apex:inputField value="{!incident.Due_Date__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Type" />
-                            <apex:inputField value="{!incident.Type__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Date Time Opened" />
-                            <apex:inputField value="{!incident.Date_Time_Opened__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Category" />
-                            <apex:inputField value="{!incident.Category__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Date Time Closed" />
-                            <apex:inputField value="{!incident.Date_Time_Closed__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Subject" />
-                            <apex:inputField value="{!incident.Subject__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Incident Owner" />
-                            <apex:outputField value="{!incident.CreatedById}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Contact Phone" />
-                            <apex:inputField value="{!incident.Contact_Phone__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Created By" />
-                            <apex:outputField value="{!incident.CreatedById}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Contact Email" />
-                            <apex:inputField value="{!incident.Contact_Email__c}" />
-                        </apex:pageblocksectionitem>
-                        <apex:pageblocksectionitem helpText=""> 
-                            <apex:outputLabel value="Last Modified By" />
-                            <apex:outputField value="{!incident.LastModifiedById}" />
-                        </apex:pageblocksectionitem>
-                        </apex:pageBlockSection>
-                        <div class="fieldheading">Open Activities</div>
-                        <div class="treatmentformwhite">
-                            <div class="fieldwrapper">
-                                <div class="fieldwrap"><div class="label"></div> <div class="item"></div></div>
-                            </div>
-                        </div>
-                        <div class="fieldheading">Activity History</div>
-                        <div class="treatmentformwhite">
-                            <div class="fieldwrapper">
-                                <div class="fieldwrap"><div class="label"></div> <div class="item"></div></div>
-                            </div>
-                        </div>
-                        <div class="fieldheading">Attachments</div>
-                        <div class="treatmentformwhite">
-                            <div class="fieldwrapper">
-                                <div class="fieldwrap"><div class="label"></div> <div class="item"></div></div>
-                            </div>
-                        </div>
-                        <div class="fieldheading">Incident History</div>
-                        <div class="treatmentformwhite">
-                            <div class="fieldwrapper">
-                                <div class="fieldwrap"><div class="label"></div> <div class="item"></div></div>
-                            </div>
-                        </div> 
-                    </apex:pageBlock>                                                     
-        </apex:tab>
         <apex:tab label="Medical Information">
             <apex:pageblock >
                 <div id="tab2box" class="tabbox" style="display:block;">
@@ -709,7 +612,7 @@
                             <div class="fieldheading"><div>Medical Profile</div><br/>
                                 <apex:commandbutton status="retrieveStatus" style="font-size:x-small;" value="Request Medical Profile" action="{!retrieveMedicalProfile}" rerender="interactionPanel"/>
                                 <apex:actionStatus startText="Retrieving..." stopText="" id="retrieveStatus"/>
-                                <br/><br/> <apex:outputlink style="font-size:x-small;" value="{!SURVEYURL}" target="_Blank">temp take survey link</apex:outputlink>
+                                <br/><br/> <apex:outputlink style="font-size:x-small;" value="{!SURVEYURL}" target="_Blank">Fill-in Medical Profile</apex:outputlink>
                             </div>
                         </div>
                     </apex:outputpanel>
@@ -1232,12 +1135,10 @@
                 </apex:pageblocksection>
                 <br/>
                 <apex:pageblocksection columns="1" collapsible="true" title="Messaging">
-                    <apex:form ><c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/></apex:form>
+                    <apex:form ><c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}" canAddCareTeamMember="true" /></apex:form>
                 </apex:pageblocksection>
                  <apex:pageblocksection columns="1" collapsible="true" title="Email">
-                    <apex:form >
-<!--                      <c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/> -->
-                    </apex:form>
+                      <c:Manual_Emails pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/>
                 </apex:pageblocksection>               
                 <div align="center">
                     <apex:form >

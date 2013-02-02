@@ -1,4 +1,6 @@
-public with sharing class patientPortalController {
+public without sharing class patientPortalController {
+
+	public PRM_Config__c prmConfig { get; private set; }
 
     public string currentPage {get;set;}
     public Patient__c patient {get;set;}
@@ -41,6 +43,7 @@ public with sharing class patientPortalController {
     }
     
     public patientPortalController () {
+    System.debug('patientPortalController constructor');
         recentActivities  = new list<recentActivity>();
 //        medicalRecords = new list<Medical_Profile__c>();
         travelList = new list<Travel__c>();
@@ -66,6 +69,8 @@ system.debug('USERID:' +userinfo.getUserId());
         }
         else currentPage ='Portal User Error'; 
         showDetailBox = false;
+        
+        loadPrmConfig();
     }
     
     public pagereference load() {
@@ -543,31 +548,7 @@ system.debug('USERID:' +userinfo.getUserId());
                                     tq.procedure__r.doctor__c,
                                     tq.procedure__r.facility__c 
                                 From Treatment_Quotes__r tq
-                                order by tq.lastmodifieddate desc),
-                            (Select i.Type__c,
-                                    i.Treatment__c,
-                                    i.SystemModstamp,
-                                    i.Subject__c,
-                                    i.Sub_Category__c,
-                                    i.Status__c,
-                                    i.Name,
-                                    i.LastModifiedDate,
-                                    i.LastModifiedById,
-                                    i.LastActivityDate,
-                                    i.IsDeleted,
-                                    i.Id,
-                                    i.Due_Date__c,
-                                    i.Date_Time_Opened__c,
-                                    i.Date_Time_Closed__c,
-                                    i.CreatedDate,
-                                    i.CreatedById,
-                                    i.Contact__c,
-                                    i.Contact_Phone__c,
-                                    i.Contact_Email__c,
-                                    i.Category__c,
-                                    i.Account__c 
-                                From Incidents__r i
-                                order by i.lastmodifieddate desc)    
+                                order by tq.lastmodifieddate desc)    
                     From Treatment__c t
                     where id
                     IN :treatmentIds
@@ -585,5 +566,10 @@ system.debug('USERID:' +userinfo.getUserId());
     
     public List<Medical_Record__c> getMedicalRecords() {
     	return patient.Medical_Records__r;
+    }
+    
+    private void loadPrmConfig() {
+    	PRM_Config__c[] config = [select Facilitator_Name__c, Banner_Image__c, Patient_Portal_CSS__c from PRM_Config__c limit 1];
+    	prmConfig = config.size()==1? config[0] : new PRM_Config__c();
     }
 }

@@ -56,6 +56,30 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Brand_Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Brand Description</label>
+        <length>2047</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Call_Center_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Call Center Number</label>
+        <required>false</required>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Check_in_call_timing__c</fullName>
+        <externalId>false</externalId>
+        <label>Check In Call Timing</label>
+        <length>64</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>City__c</fullName>
         <externalId>false</externalId>
         <label>City</label>
@@ -65,12 +89,29 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Closing_graph__c</fullName>
+        <externalId>false</externalId>
+        <label>Closing graph</label>
+        <length>511</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Comments__c</fullName>
         <externalId>false</externalId>
         <label>Comments</label>
         <length>3000</length>
         <type>LongTextArea</type>
         <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Contact_Link_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact Link URL</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Country__c</fullName>
@@ -108,10 +149,53 @@
         <unique>true</unique>
     </fields>
     <fields>
+        <fullName>Footer_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Footer Image</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Footer_Nav__c</fullName>
+        <externalId>false</externalId>
+        <label>Footer Nav</label>
+        <length>32768</length>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
         <fullName>Logo__c</fullName>
         <externalId>false</externalId>
         <label>Logo</label>
         <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Mission_Statement__c</fullName>
+        <externalId>false</externalId>
+        <label>Mission Statement</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>PCC_Team_Sig_Card__c</fullName>
+        <externalId>false</externalId>
+        <label>PCC Team Sig Card</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PCC_designation__c</fullName>
+        <externalId>false</externalId>
+        <label>PCC designation</label>
+        <length>64</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
@@ -123,6 +207,35 @@
         <length>3000</length>
         <type>Html</type>
         <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Provider_Network_Desc__c</fullName>
+        <externalId>false</externalId>
+        <label>Provider Network Desc</label>
+        <length>2047</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Referral_Offer__c</fullName>
+        <externalId>false</externalId>
+        <label>Referral Offer</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Response_time__c</fullName>
+        <description>Guaranteed response time in hours.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Guaranteed response time in hours.</inlineHelpText>
+        <label>Guaranteed response time</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Satisfaction_Survey_Link__c</fullName>

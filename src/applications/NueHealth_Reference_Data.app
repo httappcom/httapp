@@ -2,6 +2,7 @@
 <CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
     <defaultLandingTab>standard-home</defaultLandingTab>
     <label>NueHealth Reference Data</label>
+    <logo>PRM_Documents/Header_Logo.jpg</logo>
     <tab>Airline__c</tab>
     <tab>Hotel__c</tab>
     <tab>Medical_Facility__c</tab>

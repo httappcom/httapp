@@ -1,0 +1,5 @@
+<apex:component controller="EmailController"  access="global" selfClosing="true">
+   <apex:attribute name="treatment_Id" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />   
+  <c:Email_Template_BrandField treatment_Id="{!treatmentId}" PRM_Config_field="Footer_Nav__c" />
+  <c:Email_Template_Image treatment_Id="{!treatmentId}" PRM_Config_field="Footer_Image__c" height="48" width="654" />
+</apex:component>

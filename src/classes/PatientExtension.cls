@@ -276,6 +276,7 @@ Logger.info('saveTreatment');
         setQuoteInfo();
         loadProcedureList();
         incidents = treatmentWithChildren.Incidents__r;
+        loadOnsiteCoordinators();
     }
     
     public PageReference setTreatment() {
@@ -597,13 +598,16 @@ Logger.info('saveTreatment');
         Recovery_Nights_Required__c,
         Transportation_Included__c
         FROM Procedure__c where id = :procedureId];
-    onsiteCoordinators = new List<SelectOption>();
     if (procedures.size()>0) {
         procedure = procedures[0];
  Logger.info('procedure='+procedure);
     } else {
         procedure = null;
     }
+  }
+  
+  private void loadOnsiteCoordinators() {
+    onsiteCoordinators = new List<SelectOption>();
     if (treatment.Destination_Facility__c == null) {
         PRM_User__c[] prmUsers = [select User__c, User__r.Name from PRM_User__c  where
             Role__c in ('Primary Onsite Coordinator', 'Onsite Coordinator')];

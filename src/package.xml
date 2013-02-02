@@ -61,25 +61,70 @@
         <members>NueHealth_Images/img_doctors2.png</members>
         <members>PRM_Documents</members>
         <members>PRM_Documents/Header_Logo.jpeg</members>
+        <members>PRM_Documents/Header_Logo.jpg</members>
+        <members>Email_Template_Documents</members>
+        <members>Email_Template_Documents/ad_free_webcast_Nuehealth_png.png</members>
+        <members>Email_Template_Documents/ad_get_referral_png.png</members>
+        <members>Email_Template_Documents/ad_passport_png.png</members>
+        <members>Email_Template_Documents/ad_zweena_png.png</members>
+        <members>Email_Template_Documents/blogtalkradio_jpg.jpg</members>
+        <members>Email_Template_Documents/btn_facebook_150_jpg.jpg</members>
+        <members>Email_Template_Documents/btn_Follow_Our_Blog_nuehealth_png.png</members>
+        <members>Email_Template_Documents/btn_medical_profile_png.png</members>
+        <members>Email_Template_Documents/btn_patient_portal_png.png</members>
+        <members>Email_Template_Documents/btn_PersonalMedicalProfile_png.png</members>
+        <members>Email_Template_Documents/btn_twitter_150_jpg.jpg</members>
+        <members>Email_Template_Documents/diagram_jpg.jpg</members>
+        <members>Email_Template_Documents/Email_Button.png</members>
+        <members>Email_Template_Documents/footer_HTG_Connecting_Healthcare_Globally_w400_png.png</members>
+        <members>Email_Template_Documents/footer_htg_we_take_care.jpg</members>
+        <members>Email_Template_Documents/generic_htg_team.png</members>
+        <members>Email_Template_Documents/header_nuehealth.png</members>
+        <members>Email_Template_Documents/icons_tijuana_V_png.png</members>
+        <members>Email_Template_Documents/img_airplane1_png.png</members>
+        <members>Email_Template_Documents/img_call_center_rep_png.png</members>
+        <members>Email_Template_Documents/img_doctor_on_laptop_png.png</members>
+        <members>Email_Template_Documents/img_doctors2.png</members>
+        <members>Email_Template_Documents/img_endoflip_jpg.jpg</members>
+        <members>Email_Template_Documents/img_passport_png.png</members>
+        <members>Email_Template_Documents/img_procedures_jpg.jpg</members>
+        <members>Email_Template_Documents/img_stetoscope_on_docs_png.png</members>
+        <members>Email_Template_Documents/img_traveler3_png.png</members>
+        <members>Email_Template_Documents/img_woman_web_surfing_png.png</members>
+        <members>Email_Template_Documents/imgWeightLoss_png.png</members>
+        <members>Email_Template_Documents/Lopez_Corvala_png.png</members>
+        <members>Email_Template_Documents/pcc_card_nuehealth_pcc_team_png.png</members>
+        <members>Email_Template_Documents/webcasr_learn_more2_png.png</members>
         <name>Document</name>
     </types>
     <types>
         <members>Nuehealth_PRM</members>
+        <members>Nuehealth_PRM/Completing_Your_Medical_Profile</members>
         <members>Nuehealth_PRM/Final_Follow_Up</members>
+        <members>Nuehealth_PRM/Introducing_Travel_Concierge_Services</members>
         <members>Nuehealth_PRM/Itinerary_Available</members>
         <members>Nuehealth_PRM/MarketingProductInquiryResponse</members>
         <members>Nuehealth_PRM/Medical_Profile_Approved</members>
+        <members>Nuehealth_PRM/Nuehealth_Following_up_on_your_inquiry</members>
+        <members>Nuehealth_PRM/Nuehealth_Green_Zone_WLS</members>
+        <members>Nuehealth_PRM/Nuehealth_Medical_Profile_Approved</members>
+        <members>Nuehealth_PRM/Nuehealth_Passport_needed</members>
+        <members>Nuehealth_PRM/Nuehealth_Post_op_from_PCC</members>
+        <members>Nuehealth_PRM/Nuehealth_Send_Quote_to_Patient</members>
+        <members>Nuehealth_PRM/Nuehealth_Travel_Arrangements</members>
+        <members>Nuehealth_PRM/Nuehealth_Your_Proof_of_Payment</members>
+        <members>Nuehealth_PRM/Nuehealth_Your_Travel_Itinerary_is_Ready</members>
+        <members>Nuehealth_PRM/Nuhealth_Welcome_to_Patient_Portal</members>
+        <members>Nuehealth_PRM/Nuterra_Thank_you_for_contacting</members>
         <members>Nuehealth_PRM/Post_Op_30_day_Final_Email</members>
         <members>Nuehealth_PRM/Post_Treatment_Welcome_Home</members>
+        <members>Nuehealth_PRM/Received_Medical_Profile</members>
+        <members>Nuehealth_PRM/Received_Medical_Travel_Inquiry</members>
         <members>Nuehealth_PRM/Thank_You_MQ</members>
         <members>Nuehealth_PRM/Thank_You_New_Treatment</members>
         <members>Nuehealth_PRM/Travel_Arrangements_for_Your_Upcoming_Surgery</members>
         <members>Nuehealth_PRM/We_Have_Received_Your_Medical_Profile</members>
         <members>Nuehealth_PRM/Your_Travel_Itinerary_is_Ready</members>
-        <members>Nuehealth_PRM/Received_Medical_Travel_Inquiry</members>
-        <members>Nuehealth_PRM/Nuehealth_Send_Quote_to_Patient</members>
-        <members>Nuehealth_PRM/Nuehealth_Post_op_from_PCC</members>
-        <members>Nuehealth_PRM/Nuehealth_Passport_needed</members>
         <name>EmailTemplate</name>
     </types>
     <types>

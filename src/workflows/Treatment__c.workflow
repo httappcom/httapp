@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
     <alerts>
+        <fullName>Email_Introducing_Travel_Concierge_Services</fullName>
+        <description>Email: Introducing Travel Concierge Services</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Introducing_Travel_Concierge_Services</template>
+    </alerts>
+    <alerts>
+        <fullName>Email_Patient_Checkin</fullName>
+        <description>Email: Patient Checkin</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Patient_Checkin</template>
+    </alerts>
+    <alerts>
+        <fullName>Email_Share_Your_Medical_Travel_Story</fullName>
+        <description>Email: Share Your Medical Travel Story</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Share_Your_Medical_Travel_Story</template>
+    </alerts>
+    <alerts>
+        <fullName>Email_Welcome_Home</fullName>
+        <description>Email: Welcome Home</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Welcome_Home</template>
+    </alerts>
+    <alerts>
         <fullName>Post_Op_30day_Final_Email</fullName>
         <description>Post Op 30day Final Email</description>
         <protected>false</protected>
@@ -42,7 +86,7 @@
             <type>email</type>
         </recipients>
         <senderType>CurrentUser</senderType>
-        <template>Nuehealth_PRM/Itinerary_Available</template>
+        <template>Nuehealth_PRM/Nuehealth_Your_Travel_Itinerary_is_Ready</template>
     </alerts>
     <fieldUpdates>
         <fullName>At_Provider</fullName>
@@ -235,6 +279,43 @@
         </workflowTimeTriggers>
     </rules>
     <rules>
+        <fullName>Follow-up Program</fullName>
+        <active>false</active>
+        <criteriaItems>
+            <field>Treatment__c.Sub_Stage__c</field>
+            <operation>equals</operation>
+            <value>Treatment In Progress</value>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Email_Patient_Checkin</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
+            <timeLength>10</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Email_Share_Your_Medical_Travel_Story</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
+            <timeLength>30</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Email_Welcome_Home</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
         <fullName>Itinerary Available</fullName>
         <actions>
             <name>Treatment_Itinerary_Email_to_Patient</name>
@@ -341,6 +422,10 @@
     </rules>
     <rules>
         <fullName>Travel Itinerary Stage</fullName>
+        <actions>
+            <name>Email_Introducing_Travel_Concierge_Services</name>
+            <type>Alert</type>
+        </actions>
         <actions>
             <name>Intialize_Travel_Phase</name>
             <type>FieldUpdate</type>

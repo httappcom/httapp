@@ -1,0 +1,138 @@
+<messaging:emailTemplate subject="Introducing Travel Concierge Services" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=us-ascii" http-equiv=
+    "Content-Type" />
+    <title>Introducing Travel Concierge Services</title>
+  </head>
+  <body>
+    <center>
+       <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align=
+      "center" cellpadding="0" cellspacing="0" width="875">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table cellspacing="1" width="800">
+                <tbody>
+                  <tr>
+                    <td style=
+                    "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                    align="left" valign="top">
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong><span class="auto-style1" style=
+                        "font-size: 32px;color: #6D6B6B">Introducing Travel Concierge Services</span></strong><br />
+                      </p>
+                      <table align="right" cellpadding="0"
+                      cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center"></td>
+                          </tr>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                               <c:Email_Template_Image document_Id="015d000000101OJ" height="173" width="374" /><br />
+                              <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em">
+                        Dear {!relatedTo.Patient__r.Patient_First_Name__c},
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        If you are receiving this letter it means
+                        you have received and signed your medical
+                        travel quote. Congratulations!
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        This letter is to introduce you to Travel
+                        Concierge Services. Shortly, your assigned
+                        itinerary coordinator will contact you to
+                        finalize your medical travel planning, and
+                        make sure that you are prepared for your
+                        upcoming trip.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Although your patient care coordinator will
+                        always be available to you, your Travel
+                        Concierge Services coordinator will act as
+                        your primary contact as you prepare for
+                        your trip, until you arrive at your
+                        destination for treatment.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        <strong>If you would like assistance
+                        booking air and hotel, please prepare for
+                        your communication with Travel Concierge
+                        Services:</strong>
+                      </p>
+                      <ul>
+                        <li>Know your travel dates</li>
+                        <li>Have all traveler names and birth dates handy</li>
+                        <li>List any special travel needs or wants (such as non-stop flights only)</li>
+                      </ul>
+                      <p style="margin-bottom: 1em">
+                        <strong>Following are some guidelines as to
+                        what you can expect from Travel Concierge
+                        Services:</strong>
+                      </p>
+                      <ul>
+                        <li>All patients are contacted by a their
+                        personal travel coordinator within five
+                        days of receiving a surgery date
+                        confirmation.
+                        </li>
+                        <li>All patients will receive a final
+                        itinerary 72 hours before departure.
+                        </li>
+                        <li>Airfare and hotel stay are an
+                        additional cost that is not part of your
+                        medical travel package, however, your
+                        travel coordinator will gladly manage all
+                        booking arrangements on your behalf.
+                        </li>
+                        <li>We recommend all patients schedule your
+                        arrival between 8am and 6pm local time.
+                        </li>
+                      </ul>
+                      <p style="margin-bottom: 1em">
+                        We look forward to speaking with you and
+                        finalizing your medical travel trip
+                        itinerary.
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <p style="margin-bottom: 1em">
+                        Regards,
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c" />
+                            </td>
+                            <td width="44"></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p><br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table><br />
+      <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

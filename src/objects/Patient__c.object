@@ -498,6 +498,17 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Patient_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Patient_Last_Name__c</fullName>
         <externalId>false</externalId>
         <label>Patient Last Name</label>

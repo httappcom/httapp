@@ -61,6 +61,8 @@
     <label>Medical Profile Header</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>Patient__c</columns>
+        <columns>NAME</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

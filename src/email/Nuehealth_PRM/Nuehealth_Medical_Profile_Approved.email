@@ -1,0 +1,82 @@
+<messaging:emailTemplate subject="Your Medical Profile is Approved" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="Content-Type" />
+    <title>Your Medical Profile is Approved</title>
+  </head>
+  <body>
+    <center>
+    <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align="center" width="875"
+      cellpadding="0" cellspacing="0">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table width="800" cellspacing="1">
+                <tbody>
+                  <tr>
+                    <td style="text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                    align="left" valign="top">
+                      <table align="right" cellpadding="0" cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                              <br />
+                              <br />
+                              <c:Email_Template_Image height="404" width="250" document_Id="015d0000000zsPo"/>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong>
+                          <span class="auto-style1"
+                          style="font-size: 32px;color: #6D6B6B">Your Medical Profile is Approved</span>
+                        </strong>
+                        <br />
+                      </p>
+                      <p style="margin-bottom: 1em">Dear
+                      {!relatedTo.Patient__r.Patient_First_Name__c},</p>
+                      <p style="margin-bottom: 1em">Congratulations, your medical profile
+                      has been approved by the medical team for surgery! The next step is
+                      to confirm your spot on the surgeon&#8217;s calendar. Please let your&#160;<c:Email_Template_BrandField PRM_Config_field="PCC_designation__c" /> know
+                      when you would like to schedule your procedure.</p>
+                      <p style="margin-bottom: 1em">
+                        <strong>Thanks again for choosing&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c" />!</strong>
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        <c:Email_Template_BrandField PRM_Config_field="Mission_Statement__c" treatment_Id="{!relatedTo.Id}" />
+                      </p>
+                      <p style="margin-bottom: 1em">Regards,</p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <c:Email_Template_Image PRM_Config_field="PCC_Team_Sig_Card__c" treatment_Id="{!relatedTo.Id}" />
+                            </td>
+                            <td width="44"></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p>
+                      <br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -275,7 +275,7 @@ public without sharing class messaging_Controller {
 	}
 
 	public PageReference clearFilterBy(){
-		selectedFilterBy = patientId;
+		selectedFilterBy = null;
 		newCareTeamMember = null;
 		newMessage = new messageWrapper();
 		newTopic = null;

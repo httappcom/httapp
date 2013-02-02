@@ -1,109 +1,90 @@
 <messaging:emailTemplate subject="We Have Received Your Medical Travel Inquiry" recipientType="Contact" relatedToType="Treatment__c">
 <messaging:htmlEmailBody >
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<meta content="text/html; charset=windows-1252" http-equiv="Content-Type"/>
-<title>HTG</title>
-<style type="text/css">
-
-.auto-style1 {
-    font-size: 32px;
-    color: #6D6B6B;
-}
-
-.auto-style4 {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 15px;
-}
-.auto-style5 {
-    color: #838483;
-}
-.auto-style6 {
-    color: #32849F;
-}
-
-.style1 {
-    border-width: 0px;
-}
-
-</style>
-</head>
-
-<body>
-<center>
-<div align="center">
-        &nbsp;
-        <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1T&oid=00Dd0000000gLpp" />
-        </div>
-        <table align="center" width="888"><tbody><tr><td align="left">
-            <a href="http://healthtravelguides.com/AboutUs/ContactUs" target="_blank">
-                <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1Y&oid=00Dd0000000gLpp" height="22" width="70" /></a></td>
-        <td class="auto-style4" style="letter-spacing: 2px" align="right">
-        <strong><span class="auto-style5">Toll Free:</span>
-        <span class="auto-style6">1-866-978-2573</span></strong></td></tr></tbody></table>
-            
-<table style="border: 4px solid #B8CCE7;" id="Outer" align="center" cellpadding="0" cellspacing="0" width="875">
-    <tbody><tr>
-        <td align="center">
-
-<table cellspacing="1" width="800">
-            <tbody><tr>
-                <td style="text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333" align="left" valign="top">
-                <p align="center">
-                <strong><span class="auto-style1">We Have Received Your Medical Travel Inquiry</span></strong><br/>
-                </p>
-                
-                
-                
-                <table align="right" cellpadding="0" cellspacing="0">
-                    <tbody><tr>
-                        <td width="25">&nbsp;</td>
-                        <td align="center">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="25">&nbsp;</td>
-                        <td align="center" width="315">
-                                 <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1n&oid=00Dd0000000gLpp" height="242" width="321" /></td>
-                    </tr>
-                    </tbody></table>
-                
-                <p>
-                Dear {!relatedTo.Patient__r.Name},
-                </p>
-                <p>
-                Thank you for contacting&nbsp; us with your medical travel inquiry</p>
-                <p>
-                Nuehealth is the premier resource for meeting the complete needs of the medical traveler. Our goal is to reduce the cost and improve access to health care for millions of U.S. and international patients. We work with healthcare providers to bring you the best in medical and dental care from around the world. Our connected, cloud-based, collaborative platform allows care teams, providers and patients to seamlessly communicate, and offers patients a secure place to manage their healthcare information. When you work with Nuehealth, you work with a team of people dedicated to ensuring you have the highest quality medical travel experience possible.</p>
-                <p>
-                A Nuehealth Patient Care Coordinator has been assigned 
-                to work on your request, and should be in touch within 24 business hours. Thank you for 
-                contacting Nuehealth. It is our pleasure assisting with 
-                your medical travel needs. We look forward to speaking with you 
-                very soon!</p>
-                <p>
-                &nbsp;</p>
-                <p>
-                Regards,</p>
-                <p>
-                </p><table>
-                    <tbody><tr>
-                        <td>
-                         <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg1E&oid=00Dd0000000gLpp" /></td>
-                        <td width="44">&nbsp;</td>
-                        <td></td>
-                    </tr>
-                </tbody></table>
-                <p></p>
-                <br/>
-                </td>
-            </tr>
-            </tbody></table></td></tr></tbody></table>
-            <br/>
- <apex:image value="https://c.na14.content.force.com/servlet/servlet.ImageServer?id=015d0000000zg19&oid=00Dd0000000gLpp" height="48" width="654" /></center>
-
-
-
-</body></html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=us-ascii" http-equiv=
+    "Content-Type" />
+    <title>We Have Received Your Medical Travel Inquiry</title>
+  </head>
+  <body>
+    <center>
+       <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align=
+      "center" cellpadding="0" cellspacing="0" width="875">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table cellspacing="1" width="800">
+                <tbody>
+                  <tr>
+                    <td style=
+                    "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333"
+                    align="left" valign="top">
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong><span class="auto-style1" style=
+                        "font-size: 32px;color: #6D6B6B">We Have Received Your Medical Travel Inquiry</span></strong><br />
+                      </p>
+                      <table align="right" cellpadding="0"
+                      cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center"></td>
+                          </tr>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                               <c:Email_Template_Image document_Id="015d0000000zg1n" height="242" width="321" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em">
+                        Dear {!relatedTo.Patient__r.Patient_First_Name__c},
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Thank you for contacting us with your
+                        medical travel inquiry.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        <c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Brand_description__c"/>
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        A&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/>&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_designation__c"/> has been assigned to work on
+                        your request, and should be in touch within&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Response_time__c"/>
+                        business hours. Thank you for contacting&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/>. It is our pleasure
+                        assisting with your medical travel needs.
+                        We look forward to speaking with you very
+                        soon!
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <p style="margin-bottom: 1em">
+                        Regards,
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td><c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c" /></td>
+                            <td width="44"></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p>
+                     <br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table><br />
+    <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
 
 </messaging:htmlEmailBody>
 </messaging:emailTemplate>
