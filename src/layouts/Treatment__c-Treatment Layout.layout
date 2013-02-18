@@ -67,6 +67,10 @@
                 <behavior>Readonly</behavior>
                 <field>Treatment_Name__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Approval_State__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -233,6 +237,12 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <miniLayout>
+        <fields>Treatment_Name__c</fields>
+        <fields>Procedure_Date__c</fields>
+        <fields>Procedure_Category__c</fields>
+        <fields>Procedure__c</fields>
+    </miniLayout>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.WHO_NAME</fields>
@@ -254,10 +264,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Procedure_Line_Item__c.Treatment__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <fields>Expiration_Date__c</fields>
         <fields>CREATED_DATE</fields>
         <relatedList>Treatment_Quote__c.Treatment__c</relatedList>
@@ -275,18 +281,7 @@
         <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
-        <fields>NAME</fields>
-        <fields>CREATED_DATE</fields>
-        <relatedList>Incident__c.Treatment__c</relatedList>
-        <sortField>CREATED_DATE</sortField>
-        <sortOrder>Desc</sortOrder>
-    </relatedLists>
-    <relatedLists>
         <relatedList>RelatedNoteList</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Satisfaction_Survey__c.Treatment__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
@@ -302,6 +297,14 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Communication__c.Treatment__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Survey_Header__c.Treatment__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>UILookup__c.Treatment__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

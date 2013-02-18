@@ -26,10 +26,10 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                              <c:Email_Template_Image document_Id="015d0000000zz2c" alt="" height="248" width="335" /><br />
+                              <c:Email_Template_Image document_Name="img_woman_web_surfing_png" alt="" height="248" width="335" /><br />
                               <br />
                               <br />
-                              <c:Email_Template_Portal_URL patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image document_Id="015d0000000zz2s" alt="Patient Portal" /></c:Email_Template_Portal_URL><br />
+                              <c:Email_Template_Portal_URL patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image document_Name="btn_patient_portal_png" alt="Patient Portal" /></c:Email_Template_Portal_URL><br />
                               <br />
                               <br />
                               <br />
@@ -38,13 +38,13 @@
                           </tr>
                         </tbody>
                       </table>
-                      <p align="center">
+                      <p align="center"  style="margin-bottom: 1em">
                         <strong><span class="auto-style1" style=
                         "font-size: 32px;color: #6D6B6B">Welcome to
                         your&#160;<c:Email_Template_BrandField PRM_Config_field="Facilitator_Name__c" treatment_Id="{!relatedTo.Id}" /> Patient
                         Portal</span></strong><br />
                       </p>
-                      <p>
+                      <p style="margin-bottom: 1em">
                         It sounds futuristic, but your&#160;<c:Email_Template_BrandField PRM_Config_field="Facilitator_Name__c"  treatment_Id="{!relatedTo.Id}" /> Patient Portal is just a
                         personal website where you can manage all
                         of the information related to medical
@@ -53,7 +53,7 @@
                         treatment in one place, whenever you need
                         the information, it's here!
                       </p>
-                      <p>
+                      <p style="margin-bottom: 1em">
                         Access your&#160;<c:Email_Template_BrandField PRM_Config_field="Facilitator_Name__c"  treatment_Id="{!relatedTo.Id}" /> Patient
                         Portal from any browser, and use it to
                         communicate efficiently and securely with
@@ -63,7 +63,7 @@
                         receiving instructions from your doctor to
                         reviewing your travel information.
                       </p>
-                      <p>
+                      <p style="margin-bottom: 1em">
                         If you are just beginning your medical
                         travel process, visit the Medical Records
                         tab and choose the appropriate medical
@@ -73,14 +73,14 @@
                         be provided to your doctor to review prior
                         to scheduling your procedure.
                       </p>
-                      <p>
+                      <p style="margin-bottom: 1em">
                         <c:Email_Template_BrandField PRM_Config_field="Closing_graph__c"  treatment_Id="{!relatedTo.Id}" />
                       </p>
                       <p>
                         If you have any questions, please contact
                         your&#160;<c:Email_Template_BrandField PRM_Config_field="PCC_designation__c"  treatment_Id="{!relatedTo.Id}" /> directly at&#160;<c:Email_Template_BrandField PRM_Config_field="Call_Center_Number__c"  treatment_Id="{!relatedTo.Id}" />.
                       </p>
-                      <p>
+                      <p style="margin-bottom: 1em">
                         Regards,
                       </p>
                       <table>

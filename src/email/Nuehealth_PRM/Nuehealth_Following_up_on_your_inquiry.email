@@ -35,7 +35,7 @@
                         <tr>
                           <td width="25">&nbsp;</td>
 
-                          <td><c:Email_Template_Image document_Id="015d0000000zvXB"/><br />
+                          <td><c:Email_Template_Image document_Name="img_call_center_rep_png"/><br />
                           &nbsp;</td>
                         </tr>
                       </tbody>
@@ -50,7 +50,7 @@
                     surgical team will review and respond regarding next steps, usually
                     in under 48 hours.</p>
 
-                    <p align="center" style="margin-bottom: 1em"><c:Email_Template_MQ_URL treatment_Id="{!relatedTo.Id}" patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image alt="Submit your medical profile - CLICK HERE" document_Id="015d0000000zvXG"/></c:Email_Template_MQ_URL></p>
+                    <p align="center" style="margin-bottom: 1em"><c:Email_Template_MQ_URL treatment_Id="{!relatedTo.Id}" patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image alt="Submit your medical profile - CLICK HERE" document_Name="btn_medical_profile_png"/></c:Email_Template_MQ_URL></p>
 
 
                     <p>Please feel free to contact us if you have any questions about the

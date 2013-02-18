@@ -34,7 +34,7 @@
                             <td align="center" width="315">
                               <br />
                               <span class="style2" style=
-                              "font-size: 12px;color: #2D497D"><c:Email_Template_Image document_Id="015d000000100oF" height="362" width="300" /><br />
+                              "font-size: 12px;color: #2D497D"><c:Email_Template_Image document_Name="imgWeightLoss_png" height="362" width="300" /><br />
                               <br /></span>
                             </td>
                           </tr>
@@ -49,32 +49,7 @@
                         your medical procedure. Details on your
                         payment are below.
                       </p>
-                      <table>
-                          <tr>
-                              <td>Patient Name:</td><td><apex:outputField value="{!relatedTo.Patient__r.Name}"/></td>
-                          </tr>
-                          <tr>
-                              <td>Procedure:</td><td><apex:outputField value="{!relatedTo.Procedure__c}" /></td>
-                          </tr>                          
-                          <tr>
-                              <td>Procedure Date:</td><td><apex:outputField value="{!relatedTo.Procedure_Date__c}" /></td>
-                          </tr>                          
-                          <tr>
-                              <td>Doctor:</td>
-<!--                              <td><apex:outputField value="{!relatedTo.Procedure__r.Doctor__r.Name}" /></td>
--->
-<td></td>
-                          </tr>
-                          <tr>
-                              <td>Facility:</td><td><apex:outputField value="{!relatedTo.Destination_Facility__r.Name}" /></td>
-                          </tr> 
-                          <tr>
-<!--                          
-                              <td>Total Price:</td><td><apex:outputField value="{!relatedTo.Treatment_Quote__r.Total_Price__c}" /></td>
--->
-<td></td>                              
-                          </tr>                           
-                      </table>
+                      <c:Email_Template_Treatment_Summary treatment_Id="{!relatedTo.Id}" />
                       <p style="margin-bottom: 1em">
                         We look forward to providing you with the
                         highest quality care and service during

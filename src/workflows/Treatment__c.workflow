@@ -45,17 +45,6 @@
         <template>Nuehealth_PRM/Welcome_Home</template>
     </alerts>
     <alerts>
-        <fullName>Post_Op_30day_Final_Email</fullName>
-        <description>Post Op 30day Final Email</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Patient_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>Nuehealth_PRM/Post_Op_30_day_Final_Email</template>
-    </alerts>
-    <alerts>
         <fullName>Post_Treatment_Welcome_Home</fullName>
         <description>Post Treatment Welcome Home</description>
         <protected>false</protected>
@@ -371,10 +360,6 @@
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
         <workflowTimeTriggers>
-            <actions>
-                <name>Post_Op_30day_Final_Email</name>
-                <type>Alert</type>
-            </actions>
             <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
             <timeLength>30</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>

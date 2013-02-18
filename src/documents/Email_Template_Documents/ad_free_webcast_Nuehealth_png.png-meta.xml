@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Document xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Ad graphic for Nuehealth webcasts.</description>
     <internalUseOnly>false</internalUseOnly>
+    <keywords>ad</keywords>
     <name>ad_free-webcast_Nuehealth.png</name>
     <public>true</public>
 </Document>

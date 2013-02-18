@@ -38,15 +38,6 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
-        <fullName>Banner_Image__c</fullName>
-        <externalId>false</externalId>
-        <label>Banner Image</label>
-        <length>18</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Brand_Description__c</fullName>
         <externalId>false</externalId>
         <label>Brand Description</label>
@@ -87,6 +78,15 @@
         <visibleLines>15</visibleLines>
     </fields>
     <fields>
+        <fullName>Email_Template_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Email Template Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Facilitator_Name__c</fullName>
         <externalId>false</externalId>
         <label>Facilitator Name</label>
@@ -99,7 +99,7 @@
         <fullName>Footer_Image__c</fullName>
         <externalId>false</externalId>
         <label>Footer Image</label>
-        <length>18</length>
+        <length>255</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
@@ -116,7 +116,7 @@
         <fullName>Logo__c</fullName>
         <externalId>false</externalId>
         <label>Logo</label>
-        <length>18</length>
+        <length>255</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
@@ -135,7 +135,7 @@
         <externalId>false</externalId>
         <inlineHelpText>Signature card used for emails originating from the PCC team.</inlineHelpText>
         <label>PCC Team Sig Card</label>
-        <length>18</length>
+        <length>255</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
@@ -158,6 +158,15 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Patient_Portal_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Portal Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Patient_Portal_CSS__c</fullName>
         <externalId>false</externalId>
         <label>Patient Portal CSS</label>
@@ -167,12 +176,29 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Patient_Portal_Welcome_Message__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Portal Welcome Message</label>
+        <length>1000</length>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
         <fullName>Provider_Network_Desc__c</fullName>
         <externalId>false</externalId>
         <label>Provider Network Desc</label>
         <length>2047</length>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Provider_Portal_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Provider Portal Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Referral_Offer__c</fullName>
@@ -201,6 +227,15 @@
         <label>Satisfaction Survey Link</label>
         <required>false</required>
         <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Survey_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Survey Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Twitter_Widget__c</fullName>

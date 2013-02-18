@@ -60,6 +60,32 @@
         <type>Currency</type>
     </fields>
     <fields>
+        <fullName>Approval_State__c</fullName>
+        <externalId>false</externalId>
+        <label>Approval State</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Not Required</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Awaiting Approval</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Approved</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Denied</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Arrival_Time__c</fullName>
         <externalId>false</externalId>
         <formula>Travel__r.Travel_Start__c</formula>
@@ -1508,6 +1534,13 @@ OR( AND( ISPICKVAL( Phase__c , &apos;(1) Inquiry&apos;) , ISPICKVAL( Stage__c , 
 ISPICKVAL( Patient_Not_Committed_Reason__c , &quot;&quot;) )</errorConditionFormula>
         <errorDisplayField>Patient_Not_Committed_Reason__c</errorDisplayField>
         <errorMessage>&apos;Patient Not Committed Reason&apos; is required when stage is &apos;Lost&apos;</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Payment_Type_Required</fullName>
+        <active>true</active>
+        <errorConditionFormula>ISPICKVAL( Payment_Type__c, &apos;&apos;)</errorConditionFormula>
+        <errorDisplayField>Payment_Type__c</errorDisplayField>
+        <errorMessage>Please enter a Payment Type.</errorMessage>
     </validationRules>
     <validationRules>
         <fullName>Stage_Required</fullName>

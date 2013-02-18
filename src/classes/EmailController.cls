@@ -36,6 +36,35 @@ public with sharing class EmailController {
   {
   	return treatment;
   }
+   public Id treatmentSummaryId; 
+   public void setTreatmentSummaryId(Id i)
+    {
+      treatmentId = i;
+      setTreatmentSummary(i);
+    }
+  public Id getTreatmentSummaryId()    
+    {
+      return treatmentId;
+    }  
+  public Treatment__c treatmentSummary;
+  public void setTreatmentSummary(Id i)
+  {
+    treatmentSummary = [Select Patient__r.Name,
+                               Procedure_Date__c,                                
+                               Destination_Facility__r.Name,
+                               (Select  Total_Price__c,
+                                        Procedure__r.Name,
+                                        Procedure__r.Details__c,
+                                        Procedure__r.Doctor__r.Name,
+                                        Procedure__r.Facility__r.Name 
+                                from Treatment_Quotes__r Order By CreatedDate DESC LIMIT 1)
+                         From Treatment__c Where Id = :i ];                        
+  }
+  public Treatment__c getTreatmentSummary()
+  {
+    return treatmentSummary;
+  }  
+  
 	public static String Instance {
 	    public get {
 	        if (Instance == null) {
@@ -57,27 +86,26 @@ public with sharing class EmailController {
   public String medProfileLinkURL;
   public String getmedProfileLinkURL()
   { 
-  	return surveyGizmoAPI_Methods.generateMedicalProfileLink(patientId);
+  	return surveyGizmoUtil.generateMedicalProfileLink(patientId);
   }
    public String patientPortalURL;
   public String getPatientPortalURL()
   { 
-  	String linkurl = '';    
+  	return 'https://' + getPatientPortalDomain();
+  }
+  public static String getPatientPortalDomain() {
   	List<Site> patientPortal = [Select MasterLabel, Subdomain From Site Where MasterLabel = 'Patient Portal' ];
-    String patientPortalSubdomain = patientPortal[0].Subdomain;  	
-  	linkurl += 'https://' + patientPortalSubdomain;
-    linkurl +=  '.' + Instance;
-    linkurl +=  '.force.com';
-    return linkurl;
+    String patientPortalSubdomain = patientPortal.size()>0?patientPortal[0].Subdomain:'';  	
+  	return patientPortalSubdomain + '.' + Instance + '.force.com';
   }
-  public Id document_Id;
-  public void setDocument_Id(Id i)
+  public String document_Name;
+  public void setDocument_Name(String s)
   {
-  	document_Id = i;
+  	document_Name = s;
   }
-  public Id getDocument_Id()
+  public Id getDocument_Name()
   {
-  	return document_Id;
+  	return document_Name;
   }
   public String PRM_Config_field;
   public void setPRM_Config_field(String s)
@@ -91,14 +119,19 @@ public with sharing class EmailController {
   public String getimage_url()
   {
     string linkurl = '';
-    if ( (document_Id == null) && (PRM_Config_field != null) )
+    if ( (document_Name == null) && (PRM_Config_field != null) )
     {
-    	document_Id = getPRM_field_value();
+    	document_Name = getPRM_field_value();
     }
-    string oid = userinfo.getOrganizationId();
-    linkurl += 'https://' + Instance;
-    linkurl += '.salesforce.com/servlet/servlet.ImageServer?id=' + document_Id;
-    linkurl += '&oid=' + oid;
+    Logger.info('document_Name: '+document_Name);    
+    Document[] documents = [Select Id From Document Where DeveloperName = : document_Name];
+    if (documents.size()>0) {
+	    Id document_Id = documents[0].Id;
+    	string oid = userinfo.getOrganizationId();
+    	linkurl += 'https://' + Instance;
+    	linkurl += '.salesforce.com/servlet/servlet.ImageServer?id=' + document_Id;
+    	linkurl += '&oid=' + oid;
+    }
     return linkurl;
   }  
   private void cachePRMConfig()
@@ -152,7 +185,10 @@ public with sharing class EmailController {
 	        queryString = queryString.subString(0, queryString.length() - 1); 
 	        queryString += ' FROM Medical_Facility__c WHERE Id = \'' + treatment.Destination_Facility__c + '\'';
 	        Logger.info('queryString: ' + queryString);
-	        medicalFacility = Database.query(queryString);
+	        Medical_Facility__c[] facilities = Database.query(queryString);
+	        if (facilities.size()>0) {
+		        medicalFacility = facilities[0];
+	        }
 	        for (String field : MedFacility_field_names)
 	        {
 	        	if (medicalFacility.get(field) != null)
@@ -213,7 +249,8 @@ public with sharing class EmailController {
     {
       List<EmailTemplate> et = new List<EmailTemplate>();
       et = [Select Id, DeveloperName, Name from EmailTemplate where DeveloperName = :prmt.Name];
-      options.add(new SelectOption(et[0].Id, et[0].Name));
+      String optionText = et[0].Name + ' (' + prmt.Email_Type__c + ')';
+      options.add(new SelectOption(et[0].Id, optionText));
     }
   	return options;
   }

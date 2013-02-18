@@ -1,6 +1,3 @@
 <apex:page >
-<p>Be sure to tip your <c:Email_Template_BrandField PRM_Config_field="PCC_designation__c"/> after your trip.</p>
-<p><c:Email_Template_BrandField PRM_Config_field="Facilitator_Name__c" /></p>
-<p><c:Email_Template_BrandField PRM_Config_field="Footer_Nav__c" /></p>
- <p><c:Email_Template_MQ_URL PatientId="a08d000000JUSFf"><c:Email_Template_Image alt="Submit your medical profile - CLICK HERE" document_Id="015d0000000zvXG"/></c:Email_Template_MQ_URL></p>
+<c:Email_Template_Header treatment_Id="a0Fd000000FEh2qEAD" />                   
 </apex:page>

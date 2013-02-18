@@ -1,0 +1,52 @@
+<apex:component controller="SurveyResponseController" allowDML="true" layout="none" id="surveyResponse" >
+    <apex:attribute name="surveyId" description="Id of the survey" type="ID" assignTo="{!surveyHeaderId}" required="true"/>
+<style>
+</style>
+    <div class='tab-content'>
+    <div class='static-survey'>
+        <ul>
+        <apex:repeat var="pg" value="{!surveyPages}">
+        <li class="response-box">
+            <h3><apex:outputText value="{!pg.title}"/></h3>
+            <apex:repeat var="pgQ" value="{!pg.questions}">
+              <apex:outputPanel layout="block" rendered="{!pgQ.qGroup != null}">
+                <strong class="question-title"><apex:outputText value="{!pgQ.title}"/></strong>
+                <div class="question-response-group">
+                    <apex:repeat var="grpQ" value="{!pgQ.qGroup.questions}">
+                        <div class="question-response">
+                            <strong class="question-title"><apex:outputText value="{!grpQ.title}"/></strong>
+                            <ul class="question-answers">
+                    <apex:outputPanel layout="block" rendered="{!grpQ.multitextAnswers != null}">
+                      <apex:repeat var="mtA" value="{!grpQ.multitextAnswers}">
+                        <li><apex:outputText value="{!mtA.title}"/> :&nbsp;<apex:outputText value="{!mtA.answer}"/></li>
+                      </apex:repeat>                    
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" rendered="{!grpQ.multitextAnswers == null}">
+                              <li><div><apex:outputText value="{!grpQ.answer}"/></div></li>
+                    </apex:outputPanel>
+                            </ul>
+                        </div>
+                    </apex:repeat>
+                </div>
+              </apex:outputPanel>
+              <apex:outputPanel layout="block" rendered="{!pgQ.qGroup == null}">
+                <div class="question-response"><strong class="question-title"><apex:outputText value="{!pgQ.title}"/></strong>
+                  <ul class="question-answers">
+                    <apex:outputPanel layout="block" rendered="{!pgQ.multitextAnswers != null}">
+                      <apex:repeat var="mtA" value="{!pgQ.multitextAnswers}">
+                        <li><apex:outputText value="{!mtA.title}"/> : <apex:outputText value="{!mtA.answer}"/></li>
+                      </apex:repeat>                    
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" rendered="{!pgQ.multitextAnswers == null}">
+                            <li><div><apex:outputText value="{!pgQ.answer}"/></div></li>
+                    </apex:outputPanel>
+                  </ul>
+                </div>            
+              </apex:outputPanel>
+            </apex:repeat>
+        </li>       
+        </apex:repeat>
+        </ul>
+    </div>
+    </div>
+</apex:component>

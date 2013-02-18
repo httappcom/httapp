@@ -1,6 +1,7 @@
 <apex:page standardController="Patient__c" extensions="PatientExtension" contentType="text/html" action="{!checkOnEchoSign}">
 
     <apex:stylesheet value="{!URLFOR($Resource.KenResources, '/stylesheets/sfstyle.css')}"/>
+    <apex:stylesheet value="{!$Resource.SurveyResponse}"/>
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/stylesheets/liquid-slider-0.1.css')}"/>
     <apex:form ><apex:actionFunction name="loadEmailBox" action="{!showEmailForm}" rerender=""/></apex:form>
     
@@ -265,7 +266,7 @@
             </apex:outputPanel>
         </apex:panelGrid>
         <apex:pageblocksection title="Contact Details" id="pbs_Patient" columns="2">
-            <apex:commandbutton action="{!savePatient}" value="Save Patient"/>
+            <apex:commandbutton action="{!saveTreatment}" value="Save Patient" rerender="errMsgs,mainPanel,treatmentList"/>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Patient Care Coordinator"/>
                 <apex:outputField value="{!patient.Ownerid}"/>
@@ -280,7 +281,7 @@
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="First Name"/>
-                    <apex:inputField id="First_Name" value="{!patient.Patient_First_Name__c}"  taborderhint="20"/>
+                    <apex:inputField id="First_Name" value="{!patient.Patient_First_Name__c}"  taborderhint="20" required="true"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="City"/>
@@ -288,51 +289,51 @@
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Last Name"/>
-                <apex:inputField value="{!patient.Patient_Last_Name__c}"  taborderhint="30" style="width: 200px;" />
+                <apex:inputField value="{!patient.Patient_Last_Name__c}"  taborderhint="30" style="width: 200px;" required="true"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="State/Province"/>
                 <apex:inputField value="{!patient.State__c}"  taborderhint="100"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Email"/>
-                <apex:inputField value="{!patient.Email__c}"  taborderhint="40"/>
+                <apex:outputLabel value="Payment Type"/>
+                <apex:inputField value="{!treatment.Payment_Type__c}" taborderhint="600" required="true"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Zip/Postal Code"/>
                 <apex:inputField value="{!patient.Postal_Code__c}"  taborderhint="110"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Primary Phone"/>
-                <apex:inputField value="{!patient.Phone__c}"  taborderhint="50"/>
+                <apex:outputLabel value="Email"/>
+                <apex:inputField value="{!patient.Email__c}"  taborderhint="40"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Country"/>
                 <apex:inputField value="{!patient.Country__c}"  taborderhint="120"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Alternate Phone"/>
-                <apex:inputField value="{!patient.Mobile__c}"  taborderhint="60"/>
-            </apex:pageblocksectionitem>
-            <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Preferred Language"/>
-                <apex:inputField value="{!patient.Preferred_Language__c}"  taborderhint="130"/>
-            </apex:pageblocksectionitem>
-            <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Payment Type"/>
-                <apex:inputField value="{!treatment.Payment_Type__c}" taborderhint="600"/>
+                <apex:outputLabel value="Primary Phone"/>
+                <apex:inputField value="{!patient.Phone__c}"  taborderhint="50"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Date of Birth"/>
                 <apex:inputField value="{!patient.Date_of_Birth__c}"  taborderhint="132"/>
             </apex:pageblocksectionitem>
-             <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Last Communication"/>
-                <apex:inputTextarea rows="3" cols="50" value="{!patient.Last_Communication__c}" />
+            <apex:pageblocksectionitem helpText=""> 
+                <apex:outputLabel value="Alternate Phone"/>
+                <apex:inputField value="{!patient.Mobile__c}"  taborderhint="60"/>
             </apex:pageblocksectionitem>
              <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Gender"/>
                 <apex:inputField value="{!patient.Gender__c}" taborderhint="135"/>
+            </apex:pageblocksectionitem>
+            <apex:pageblocksectionitem helpText=""> 
+                <apex:outputLabel value="Preferred Language"/>
+                <apex:inputField value="{!patient.Preferred_Language__c}"  taborderhint="130"/>
+            </apex:pageblocksectionitem>
+             <apex:pageblocksectionitem helpText=""> 
+                <apex:outputLabel value="Last Communication"/>
+                <apex:inputTextarea rows="3" cols="50" value="{!patient.Last_Communication__c}" />
             </apex:pageblocksectionitem>
             <apex:outputtext value=""/>
             <apex:pageblocksectionitem >
@@ -366,7 +367,7 @@
         <apex:pageblocksection title="Treatment {!treatment.Name}" id="pbs_Treatment" columns="2">
             <apex:pageBlockSectionItem >
                 <apex:outputPanel >
-                    <apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel"/>
+                    <apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel, errMsgs" disabled="{!patient.id==null}"/>
                     <apex:actionStatus startText="saving..."  stopText="" id="treatmentSaveStatus"/>
                     <apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!ISNULL(treatmentId)}"/>
                 </apex:outputPanel>
@@ -491,7 +492,7 @@
     <apex:pageblocksection title="Inquiry" id="pbs_Inquiry" columns="1" rendered="{!inquiryFlag}">
         <apex:pageBlockSectionItem >
             <apex:outputPanel >
-                    <apex:commandbutton action="{!saveTreatment}" value="Save Inquiry Changes" status="inquirySaveStatus" rerender="mainPanel"/>
+                    <apex:commandbutton action="{!saveTreatment}" value="Save Inquiry Changes" status="inquirySaveStatus" rerender="mainPanel" disabled="{!patient.id==null}"/>
                     <apex:actionStatus startText="saving..."  stopText="" id="inquirySaveStatus"/>
             </apex:outputPanel>
         </apex:pageBlockSectionItem>
@@ -605,49 +606,34 @@
     <apex:tabPanel switchType="client" value="{!activeInteractionTab}">
         <apex:tab label="Medical Information">
             <apex:pageblock >
+            Medical Profile Id= {!MedicalProfileId}
                 <div id="tab2box" class="tabbox" style="display:block;">
-                    
-                    <apex:outputpanel rendered="{!ISBLANK(medicalProfile)==true}">    
+                    <apex:outputpanel >    
                          <div class="treatmentfieldwrapper">
                             <div class="fieldheading"><div>Medical Profile</div><br/>
-                                <apex:commandbutton status="retrieveStatus" style="font-size:x-small;" value="Request Medical Profile" action="{!retrieveMedicalProfile}" rerender="interactionPanel"/>
-                                <apex:actionStatus startText="Retrieving..." stopText="" id="retrieveStatus"/>
+                                <apex:commandbutton status="retrieveStatus" style="font-size:x-small;" value="Request Medical Profile" action="{!retrieveMedicalProfile}" /><!-- rerender="surveyResultsPnl" -->
+                                <apex:actionStatus startText=" Retrieving..." stopText="" id="retrieveStatus"/>
                                 <br/><br/> <apex:outputlink style="font-size:x-small;" value="{!SURVEYURL}" target="_Blank">Fill-in Medical Profile</apex:outputlink>
                             </div>
                         </div>
                     </apex:outputpanel>
-                    <apex:outputpanel rendered="{!ISBLANK(medicalProfile)==false}">    
-                     <div class="treatmentfieldwrapper">
-                        <div class="fieldheading">
-                            Medical Profile&nbsp;-&nbsp;{!medicalProfile.name}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                            <apex:outputlink style="font-size:x-small;" value="/apex/surveyPDF?id={!medicalProfile.id}&type=m" target="_Blank">View PDF</apex:outputlink>
-                            <div style="float:right; padding-bottom:5px;"><apex:actionStatus startText="Retrieving..." stopText="" id="refreshStatus"/><apex:commandbutton status="refreshStatus" style="font-size:x-small;" value="Request Update" action="{!retrieveMedicalProfile}" rerender="interactionPanel"/></div>
-                        </div>
-                        <div class="treatmentformwhite">
-                            <div class="fieldwrapper">
-                                <apex:pageblocktable value="{!medicalProfileQuestions}" var="q">
-                                    <apex:column >
-                                        <apex:facet name="header">Question</apex:facet>
-                                        <apex:outputtext value="{!q.Full_Question_Text__c}" escape="false"/>
-                                    </apex:column>
-                                    <apex:column >
-                                        <apex:facet name="header">Answer</apex:facet>
-                                        <apex:outputtext value="{!q.Answer__c}" escape="false"/>
-                                    </apex:column>
-                                </apex:pageblocktable>
-                            </div>
-                        </div>                                              
-                    </div>
-                    </apex:outputpanel>
+                    <apex:outputPanel id="surveyResultsPnl">
+                        <c:SurveyResponse surveyId="{!MedicalProfileId}"/>
+                    </apex:outputPanel>
                 </div>  
                 </apex:pageblock>  
             </apex:tab>
             <apex:tab label="Insurance" id="InsuranceInfo" rendered="{!treatment.Payment_Type__c == 'Insurance'}">
                 <apex:outputPanel >
-                    <apex:commandbutton status="saveInsStatus" action="{!saveTreatment}" value="Save Insurance Info" rerender="errMsgs"></apex:commandbutton>
+                    <apex:commandbutton status="saveInsStatus" action="{!saveTreatment}" value="Save Insurance Info" rerender="errMsgs" disabled="{!patient.id==null}"></apex:commandbutton>
                     <apex:actionStatus startText="saving..."  stopText="" id="saveInsStatus"/>
                 </apex:outputPanel>
                 <apex:pageBlockSection title="Policy Info">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Insurance Network"/>
+                        <apex:inputfield value="{!patient.Insurance_Network__c}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem />
                     <apex:pageBlockSectionItem >
                         <apex:outputLabel value="Verification Date"/>
                         <apex:inputfield value="{!patient.Ins_Verification_Date__c}"/>
@@ -897,7 +883,7 @@
         <apex:pageblocksection title="Travel" columns="1">
             <apex:pageblocksectionitem >    
                 <apex:outputPanel >
-                    <apex:commandbutton action="{!saveTreatment}" value="Save Travel Changes" status="inquirySaveStatus" rerender="mainPanel"/>
+                    <apex:commandbutton action="{!saveTreatment}" value="Save Travel Changes" status="inquirySaveStatus" rerender="mainPanel"  disabled="{!patient.id==null}"/>
                     <apex:actionStatus startText="saving..."  stopText="" id="inquirySaveStatus"/>
                     &nbsp;&nbsp;<a href="{!itineraryURL}" target="_blank">View Itinerary</a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:showEmailForm('itinerary');" >Email Itinerary</a>

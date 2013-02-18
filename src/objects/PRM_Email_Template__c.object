@@ -58,6 +58,10 @@
                 <fullName>Medical Record</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Autofire</fullName>
+                <default>false</default>
+            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <type>Picklist</type>

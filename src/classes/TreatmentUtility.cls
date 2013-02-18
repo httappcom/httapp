@@ -2,10 +2,10 @@ public with sharing class TreatmentUtility {
 
   private static Set<id> patientIds;
   private static Map<Id, Patient__c> patientMap;
-	public static Map<String,User> orgDefaultUsers;
+    public static Map<String,User> orgDefaultUsers;
 
-	static String travelConcierge = 'Travel Concierge';
-	static String medicalInformationOfficer = 'Medical Information Officer';
+    static String travelConcierge = 'Travel Concierge';
+    static String medicalInformationOfficer = 'Medical Information Officer';
 
 
   public static void beforeInsert (List<Treatment__c> treatments) {
@@ -15,78 +15,62 @@ public with sharing class TreatmentUtility {
   }
 
 
-	public static Care_Team_Member__c careTeamMember_Compiler(Id treatmentId, Id userId, String role){
-		Care_Team_Member__c cmt = new Care_Team_Member__c();
-		cmt.Treatment__c = treatmentId;
-		cmt.Role__c = role;
-		cmt.User__c = userId;
-		return cmt;	
-	}
+    public static Map<String,User> populateOrgDefaultUsers(){
+        Map<String,User> results = new Map<String,User>();
+        for ( User u : [Select Email, Id, IsActive, Name, Username, Medical_Information_Officer__c, Travel_Concierge__c from User where IsActive = true and ( Travel_Concierge__c = true or Medical_Information_Officer__c = true )]){
+            if ( u.Travel_Concierge__c ){
+                results.put(travelConcierge,u);
+            } else
+            if ( u.Medical_Information_Officer__c ){
+                results.put(medicalInformationOfficer,u);
+            }
+        }
+        return results;
+    }
 
-	public static Map<String,User> populateOrgDefaultUsers(){
-		Map<String,User> results = new Map<String,User>();
-		for ( User u : [Select Email, Id, IsActive, Name, Username, Medical_Information_Officer__c, Travel_Concierge__c from User where IsActive = true and ( Travel_Concierge__c = true or Medical_Information_Officer__c = true )]){
-			if ( u.Travel_Concierge__c ){
-				results.put(travelConcierge,u);
-			} else
-			if ( u.Medical_Information_Officer__c ){
-				results.put(medicalInformationOfficer,u);
-			}
-		}
-		return results;
-	}
+    public static void afterInsert (List<Treatment__c> treatments){
+        patientIds = new Set<Id>();
+        List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
+        List<Topic__c> topicInserts = new List<Topic__c>();
 
-	public static void afterInsert (List<Treatment__c> treatments){
-		patientIds = new Set<Id>();
-		List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
-		List<Topic__c> topicInserts = new List<Topic__c>();
+        for ( Treatment__c treatment : treatments ){
+            if ( treatment.Patient__c != null ){
+                patientIds.add(treatment.Patient__c);
+            }
+        }
+        patientMap = populatePatientMap(patientIds);
+        orgDefaultUsers = populateOrgDefaultUsers();
 
-		for ( Treatment__c treatment : treatments ){
-			if ( treatment.Patient__c != null ){
-				patientIds.add(treatment.Patient__c);
-			}
-		}
-		patientMap = populatePatientMap(patientIds);
-		orgDefaultUsers = populateOrgDefaultUsers();
+        for ( Treatment__c treatment : treatments ){
+            if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ){
+                Patient__c thisPatient = patientMap.get(treatment.Patient__c);
 
-		for ( Treatment__c treatment : treatments ){
-			if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ){
-				Patient__c thisPatient = patientMap.get(treatment.Patient__c);
+                careTeamMemberInserts.add( new Care_Team_Member__c( Treatment__c = treatment.id, Role__c = 'PCC', User__c = treatment.OwnerId));
+                if ( thisPatient.Portal_User__c != null ){
+                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = thisPatient.Portal_User__c, Role__c = 'Patient'));
+                }
+                if ( treatment.Onsite_Coordinator__c != null ){
+                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = treatment.Onsite_Coordinator__c, Role__c = 'Onsite Coordinator'));
+                }
+                if ( orgDefaultUsers != null && orgDefaultUsers.containsKey(medicalInformationOfficer) ){
+                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = orgDefaultUsers.get(medicalInformationOfficer).Id, Role__c = 'Medical Information Officer'));
+                }
+                if ( orgDefaultUsers != null &&  orgDefaultUsers.containsKey(travelConcierge) ){
+                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = orgDefaultUsers.get(travelConcierge).Id, Role__c = 'Travel Concierge'));
+                }
 
-				careTeamMemberInserts.add( careTeamMember_Compiler(treatment.Id, treatment.OwnerId, 'PCC')) ;
-				if ( thisPatient.Portal_User__c != null ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, thisPatient.Portal_User__c, 'Patient'));
-				}
-				if ( treatment.Onsite_Coordinator__c != null ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, treatment.Onsite_Coordinator__c, 'Onsite Coordinator'));
-				}
-				if ( orgDefaultUsers != null && orgDefaultUsers.containsKey(medicalInformationOfficer) ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, orgDefaultUsers.get(medicalInformationOfficer).Id, 'Medical Information Officer'));
-				}
-				if ( orgDefaultUsers != null &&  orgDefaultUsers.containsKey(travelConcierge) ){
-					careTeamMemberInserts.add(careTeamMember_Compiler(treatment.Id, orgDefaultUsers.get(travelConcierge).Id, 'Travel Concierge'));
-				}
+                topicInserts.add(new Topic__c(Name = 'Treatment', Treatment__c = treatment.Id, Patient__c = thisPatient.Id));
 
-				Topic__c t = new Topic__c();
-				t.Name = 'Treatment';
-				t.Treatment__c = treatment.Id;
-				t.Patient__c = thisPatient.Id;
-				topicInserts.add(t);
+                if ( treatment.Travel__c != null ) {
+                    topicInserts.add(new Topic__c(Name = 'Travel', Treatment__c = treatment.Id, Patient__c = thisPatient.Id));
+                }
 
-				if ( treatment.Travel__c != null ){
-					Topic__c travel = new Topic__c();
-					travel.Name = 'Travel';
-					travel.Treatment__c = treatment.Id;
-					travel.Patient__c = thisPatient.Id;
-					topicInserts.add(travel);
-				}
-
-			}
-			
-		}
-		insert topicInserts;
-		insert careTeamMemberInserts;
-	}
+            }
+            
+        }
+        insert topicInserts;
+        insert careTeamMemberInserts;
+    }
     
   public static void beforeUpdate(List<Treatment__c> treatments,
     Map<Id, Treatment__c> oldTreatmentMap) {
@@ -95,17 +79,17 @@ public with sharing class TreatmentUtility {
     }
   }
 
-	public static void afterUpdate(List<Treatment__c> newTreatments, List<Treatment__c> oldTreatments ){
-		List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
-		for ( Integer i=0; i<newTreatments.size(); i++ ){
-			if ( newTreatments[i].OwnerId != oldTreatments[i].OwnerId ){
-				careTeamMemberInserts.add( careTeamMember_Compiler(newTreatments[i].Id,newTreatments[i].OwnerId,'PCC') );
-			}
-		}
-		if ( careTeamMemberInserts.size() > 0 ){
-			insert careTeamMemberInserts;
-		}
-	}
+    public static void afterUpdate(List<Treatment__c> newTreatments, List<Treatment__c> oldTreatments ){
+        List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
+        for ( Integer i=0; i<newTreatments.size(); i++ ){
+            if ( newTreatments[i].OwnerId != oldTreatments[i].OwnerId ){
+                careTeamMemberInserts.add( new Care_Team_Member__c(Treatment__c = newTreatments[i].Id, User__c = newTreatments[i].OwnerId, Role__c = 'PCC') );
+            }
+        }
+        if ( careTeamMemberInserts.size() > 0 ){
+            insert careTeamMemberInserts;
+        }
+    }
 
     
   private static Map<Id, Patient__c> populatePatientMap(Set<Id> pPatientIds) {
@@ -237,17 +221,4 @@ public with sharing class TreatmentUtility {
       }  
    } 
    
-   public static list<Satisfaction_Survey_Question__c> querySatisfactionSurveyQuestions(string headerid){
-        return  [select id, 
-                        name, 
-                        answer__c, 
-                        boolean_answer__c, 
-                        comment__c, 
-                        full_question_text__c, 
-                        order__c, 
-                        satisfaction_survey__c 
-                from Satisfaction_Survey_Question__c 
-                where Satisfaction_Survey__c = :headerid 
-                order by order__c];
-   }  
 }

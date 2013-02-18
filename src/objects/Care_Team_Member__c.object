@@ -91,6 +91,10 @@
                 <fullName>Travel Concierge</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Insurance Agent</fullName>
+                <default>false</default>
+            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <trackHistory>false</trackHistory>

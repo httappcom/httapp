@@ -81,6 +81,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Key_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Key Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Medical Professionals</relationshipLabel>
+        <relationshipName>Medical_Professionals</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Last_Name__c</fullName>
         <externalId>false</externalId>
         <label>Last Name</label>
@@ -109,6 +120,23 @@
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Role__c</fullName>
+        <externalId>false</externalId>
+        <label>Role</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Doctor</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>Specialty__c</fullName>

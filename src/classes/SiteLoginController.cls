@@ -6,8 +6,17 @@ global with sharing class SiteLoginController {
     global String password {get; set;}
 
     global PageReference login() {
+   Logger.info('SiteLoginController');
+   system.debug('SiteLoginController');
     	username = (username.contains('@'))?username:username+'@patient.htt.com';
-        return Site.login(username, password, '/patientPortal');
+        PageReference pr = null;
+        try {
+       		pr = Site.login(username, password, '/patientPortal');
+        } catch (Exception ex) {
+   Logger.info('SiteLoginController exception '+ex.getMessage());
+   system.debug('SiteLoginController exception '+ex.getMessage());
+        }
+        return pr;
     }
     
    	global SiteLoginController () {}

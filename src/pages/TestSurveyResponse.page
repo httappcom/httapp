@@ -1,0 +1,4 @@
+<apex:page >
+    <apex:stylesheet value="{!$Resource.SurveyResponse}"/>
+    <c:SurveyResponse surveyId="a0Pd0000005LEy5EAG"/>
+</apex:page>

@@ -1,0 +1,10 @@
+<apex:component >
+	<style>
+	div#body-wrapper{
+		width:100%; height:100%;
+		background:transparent url('{!$Resource.bgglobeconnect}') no-repeat scroll 10px 10px;
+		margin: auto;
+		text-align:center;
+	}
+	</style>
+</apex:component>

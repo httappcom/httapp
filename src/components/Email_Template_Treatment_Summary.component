@@ -1,0 +1,33 @@
+<apex:component controller="EmailController" access="global" selfClosing="true" >
+  <apex:attribute name="treatment_Id" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentSummaryId}" />
+	<table>
+	    <tr>
+	        <td>Patient Name:</td><td>{!treatmentSummary.Patient__r.Name}</td>
+	    </tr>
+	    <tr>
+	        <td>Procedure:</td><td>{!treatmentSummary.Treatment_Quotes__r[0].Procedure__r.Name} ({!treatmentSummary.Treatment_Quotes__r[0].Procedure__r.Name})</td>
+	    </tr>                          
+	    <tr>
+	        <td>Procedure Date:</td><td>
+	                                   <apex:outputText value="{0,date,EEE', 'MM'/'dd'/'yyyy}">
+	                                       <apex:param value="{!treatmentSummary.Procedure_Date__c}" />
+	                                     </apex:outputText>
+	                                </td>
+	    </tr>                          
+	    <tr>
+	        <td>Doctor:</td>
+	        <td>{!treatmentSummary.Treatment_Quotes__r[0].Procedure__r.Doctor__r.Name}</td>
+	    </tr>
+	    <tr>
+	        <td>Facility:</td><td>{!treatmentSummary.Treatment_Quotes__r[0].Procedure__r.Facility__r.Name}</td>
+	    </tr> 
+	    <tr>	    
+	        <td>Total Price:</td>
+	        <td>$
+	           <apex:outputText value="{0, number, ###,###,###,##0}">
+	             <apex:param value="{!treatmentSummary.Treatment_Quotes__r[0].Total_Price__c}" />
+	           </apex:outputText>
+	        </td>                        
+	    </tr>                           
+	</table>
+</apex:component>

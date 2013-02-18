@@ -34,7 +34,7 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                               <c:Email_Template_Image document_Id="015d000000101OJ" height="173" width="374" /><br />
+                               <c:Email_Template_Image document_Name="img_airplane1_png" height="173" width="374" /><br />
                               <br />
                             </td>
                           </tr>

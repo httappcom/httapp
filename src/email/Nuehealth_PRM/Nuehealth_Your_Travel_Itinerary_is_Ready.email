@@ -29,7 +29,7 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                              <c:Email_Template_Image document_Id="015d000000100s2" height="201" width="335" />
+                              <c:Email_Template_Image document_Name="img_traveler3_png" height="201" width="335" />
                             </td>
                           </tr>
                         </tbody>

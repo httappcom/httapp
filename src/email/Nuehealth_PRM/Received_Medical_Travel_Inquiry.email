@@ -34,7 +34,7 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                               <c:Email_Template_Image document_Id="015d0000000zg1n" height="242" width="321" />
+                               <c:Email_Template_Image document_Name="img_doctors2" height="242" width="321" />
                             </td>
                           </tr>
                         </tbody>

@@ -59,7 +59,7 @@ return '';
         } 
   }
   
-  public static PageReference sendQuoteToEchosign(Treatment__c treatment) 
+  public static void sendQuoteToEchosign(Treatment__c treatment) 
   {
     
     treatment = queryTreatmentForEchosignDoc(treatment);
@@ -104,21 +104,19 @@ return '';
             update treatment.Treatment_Quotes__r[0];
             treatment.Sub_Stage__c = 'Quote In Process';
             update treatment;
-        }  
+        }
     }
     catch(CalloutException ce)
     {
        Logger.info(ce.getStackTraceString());
        ServerLogUtility.updateServerLog('EchoSign', ce.getmessage());
-       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Error, 'Unable to send to EchoSign - Please try later or contact an administrator.'));
+       throw new NueException('Unable to send to EchoSign - Please try later or contact an administrator.');
     }   
     catch(Exception e)
     {
        Logger.info(e.getStackTraceString());
-       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
        throw e;
     }
-    return null;
   }
   
   public static Treatment__c pollEchoSignDocInfo(Treatment__c treatment, Treatment_Quote__c quote)
@@ -166,4 +164,29 @@ return '';
     
     return null;
   }
+
+	public static void debugDocQuery() {  
+  //R8PA8YX525RXTX
+        String echoSignSetting = 'Nuehealth';
+      	String apiKey = echoSignAPI__c.getValues(echoSignSetting).API_Key__c;
+        apiEchosign.EchoSignDocumentService15HttpPort echoSignDoc = new apiEchosign.EchoSignDocumentService15HttpPort();
+        dto15ApiEchosign.DocumentInfo echoSignDocInfo = new dto15ApiEchosign.DocumentInfo();
+        try 
+        {           
+          echoSignDocInfo = echoSignDoc.getDocumentInfo(apiKey, 'R8PA8YX525RXTX');
+          Logger.info('Echosign debugDocQuery worked.');
+        }
+        catch(CalloutException ce)
+        {
+           Logger.info(ce.getStackTraceString());
+           ServerLogUtility.updateServerLog('EchoSign', ce.getmessage());
+           throw new NueException('Echosign communication failure.');
+        }   
+        catch(Exception e)
+        {
+           Logger.info(e.getStackTraceString());
+           ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
+           throw e;
+        }
+	}
 }

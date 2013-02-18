@@ -32,7 +32,7 @@
 
                           <td align="center" width="315"><br />
                           <br />
-                          <c:Email_Template_Image height="201" width="335" document_Id="015d0000000zs2G"/></td>
+                          <c:Email_Template_Image height="201" width="335" document_Name="img_passport_png"/></td>
                         </tr>
                       </tbody>
                     </table>

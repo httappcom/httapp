@@ -126,9 +126,9 @@
     </fields>
     <fields>
         <fullName>Procedure__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Treatment Detail</label>
+        <label>Procedure</label>
         <referenceTo>Procedure__c</referenceTo>
         <relationshipLabel>Treatment Quotes</relationshipLabel>
         <relationshipName>Treatment_Quotes</relationshipName>

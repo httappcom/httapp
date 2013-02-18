@@ -51,6 +51,42 @@
         <name>Dashboard</name>
     </types>
     <types>
+        <members>Email_Template_Documents</members>
+        <members>Email_Template_Documents/Email_Button.png</members>
+        <members>Email_Template_Documents/Lopez_Corvala_png.png</members>
+        <members>Email_Template_Documents/ad_free_webcast_Nuehealth_png.png</members>
+        <members>Email_Template_Documents/ad_get_referral_png.png</members>
+        <members>Email_Template_Documents/ad_passport_png.png</members>
+        <members>Email_Template_Documents/ad_zweena_png.png</members>
+        <members>Email_Template_Documents/blogtalkradio_jpg.jpg</members>
+        <members>Email_Template_Documents/btn_Follow_Our_Blog_nuehealth_png.png</members>
+        <members>Email_Template_Documents/btn_PersonalMedicalProfile_png.png</members>
+        <members>Email_Template_Documents/btn_facebook_150_jpg.jpg</members>
+        <members>Email_Template_Documents/btn_medical_profile_png.png</members>
+        <members>Email_Template_Documents/btn_patient_portal_png.png</members>
+        <members>Email_Template_Documents/btn_twitter_150_jpg.jpg</members>
+        <members>Email_Template_Documents/diagram_jpg.jpg</members>
+        <members>Email_Template_Documents/footer_HTG_Connecting_Healthcare_Globally_w400_png.png</members>
+        <members>Email_Template_Documents/footer_htg_we_take_care.jpg</members>
+        <members>Email_Template_Documents/generic_htg_team.png</members>
+        <members>Email_Template_Documents/header_nuehealth.png</members>
+        <members>Email_Template_Documents/icons_tijuana_V_png.png</members>
+        <members>Email_Template_Documents/imgWeightLoss_png.png</members>
+        <members>Email_Template_Documents/img_airplane1_png.png</members>
+        <members>Email_Template_Documents/img_call_center_rep_png.png</members>
+        <members>Email_Template_Documents/img_doctor1_png.png</members>
+        <members>Email_Template_Documents/img_doctor_on_laptop_png.png</members>
+        <members>Email_Template_Documents/img_doctors2.png</members>
+        <members>Email_Template_Documents/img_endoflip_jpg.jpg</members>
+        <members>Email_Template_Documents/img_passport_png.png</members>
+        <members>Email_Template_Documents/img_procedures_jpg.jpg</members>
+        <members>Email_Template_Documents/img_stetoscope_on_docs_png.png</members>
+        <members>Email_Template_Documents/img_tell_your_story_jpg.jpg</members>
+        <members>Email_Template_Documents/img_traveler3_png.png</members>
+        <members>Email_Template_Documents/img_welcome_home_balloons_jpg.jpg</members>
+        <members>Email_Template_Documents/img_woman_web_surfing_png.png</members>
+        <members>Email_Template_Documents/pcc_card_nuehealth_pcc_team_png.png</members>
+        <members>Email_Template_Documents/webcasr_learn_more2_png.png</members>
         <members>NueHealth_Images</members>
         <members>NueHealth_Images/Email_Button.png</members>
         <members>NueHealth_Images/NGA_Banner.png</members>
@@ -59,42 +95,10 @@
         <members>NueHealth_Images/generic_htg_team.png</members>
         <members>NueHealth_Images/header_nuehealth.png</members>
         <members>NueHealth_Images/img_doctors2.png</members>
-        <members>PRM_Documents</members>
         <members>PRM_Documents/Header_Logo.jpeg</members>
         <members>PRM_Documents/Header_Logo.jpg</members>
-        <members>Email_Template_Documents</members>
-        <members>Email_Template_Documents/ad_free_webcast_Nuehealth_png.png</members>
-        <members>Email_Template_Documents/ad_get_referral_png.png</members>
-        <members>Email_Template_Documents/ad_passport_png.png</members>
-        <members>Email_Template_Documents/ad_zweena_png.png</members>
-        <members>Email_Template_Documents/blogtalkradio_jpg.jpg</members>
-        <members>Email_Template_Documents/btn_facebook_150_jpg.jpg</members>
-        <members>Email_Template_Documents/btn_Follow_Our_Blog_nuehealth_png.png</members>
-        <members>Email_Template_Documents/btn_medical_profile_png.png</members>
-        <members>Email_Template_Documents/btn_patient_portal_png.png</members>
-        <members>Email_Template_Documents/btn_PersonalMedicalProfile_png.png</members>
-        <members>Email_Template_Documents/btn_twitter_150_jpg.jpg</members>
-        <members>Email_Template_Documents/diagram_jpg.jpg</members>
-        <members>Email_Template_Documents/Email_Button.png</members>
-        <members>Email_Template_Documents/footer_HTG_Connecting_Healthcare_Globally_w400_png.png</members>
-        <members>Email_Template_Documents/footer_htg_we_take_care.jpg</members>
-        <members>Email_Template_Documents/generic_htg_team.png</members>
-        <members>Email_Template_Documents/header_nuehealth.png</members>
-        <members>Email_Template_Documents/icons_tijuana_V_png.png</members>
-        <members>Email_Template_Documents/img_airplane1_png.png</members>
-        <members>Email_Template_Documents/img_call_center_rep_png.png</members>
-        <members>Email_Template_Documents/img_doctor_on_laptop_png.png</members>
-        <members>Email_Template_Documents/img_doctors2.png</members>
-        <members>Email_Template_Documents/img_endoflip_jpg.jpg</members>
-        <members>Email_Template_Documents/img_passport_png.png</members>
-        <members>Email_Template_Documents/img_procedures_jpg.jpg</members>
-        <members>Email_Template_Documents/img_stetoscope_on_docs_png.png</members>
-        <members>Email_Template_Documents/img_traveler3_png.png</members>
-        <members>Email_Template_Documents/img_woman_web_surfing_png.png</members>
-        <members>Email_Template_Documents/imgWeightLoss_png.png</members>
-        <members>Email_Template_Documents/Lopez_Corvala_png.png</members>
-        <members>Email_Template_Documents/pcc_card_nuehealth_pcc_team_png.png</members>
-        <members>Email_Template_Documents/webcasr_learn_more2_png.png</members>
+        <members>NueHealth_Images/NueHealth_Logo.jpg</members>
+        <members>NueHealth_Images/NueHealthLogo.jpg</members>
         <name>Document</name>
     </types>
     <types>
@@ -116,14 +120,17 @@
         <members>Nuehealth_PRM/Nuehealth_Your_Travel_Itinerary_is_Ready</members>
         <members>Nuehealth_PRM/Nuhealth_Welcome_to_Patient_Portal</members>
         <members>Nuehealth_PRM/Nuterra_Thank_you_for_contacting</members>
+        <members>Nuehealth_PRM/Patient_Checkin</members>
         <members>Nuehealth_PRM/Post_Op_30_day_Final_Email</members>
         <members>Nuehealth_PRM/Post_Treatment_Welcome_Home</members>
         <members>Nuehealth_PRM/Received_Medical_Profile</members>
         <members>Nuehealth_PRM/Received_Medical_Travel_Inquiry</members>
+        <members>Nuehealth_PRM/Share_Your_Medical_Travel_Story</members>
         <members>Nuehealth_PRM/Thank_You_MQ</members>
         <members>Nuehealth_PRM/Thank_You_New_Treatment</members>
         <members>Nuehealth_PRM/Travel_Arrangements_for_Your_Upcoming_Surgery</members>
         <members>Nuehealth_PRM/We_Have_Received_Your_Medical_Profile</members>
+        <members>Nuehealth_PRM/Welcome_Home</members>
         <members>Nuehealth_PRM/Your_Travel_Itinerary_is_Ready</members>
         <name>EmailTemplate</name>
     </types>
@@ -131,26 +138,43 @@
         <members>Account-Medical Facility</members>
         <members>Airline__c-Airline Layout</members>
         <members>Airport__c-Airport Layout</members>
+        <members>Care_Team_Member__c-Care Team Member Layout</members>
+        <members>Communication__c-Communication Layout</members>
         <members>Contact-Medical Professional</members>
         <members>Hotel__c-Hotel Layout</members>
-        <members>Incident__c-Incident Layout</members>
         <members>Instruction__c-Instruction Layout</members>
+        <members>Insurance_Network_User__c-Insurance Network User Layout</members>
+        <members>Insurance_Network__c-Insurance Network Layout</members>
         <members>Knowledge_Base__c-Knowledge Base Layout</members>
+        <members>Med_Facility_Email_Template__c-Med Facility Email Template Layout</members>
+        <members>Med_Facility_Med_Profile_L__c-Med Facility Med Profile Link Layout</members>
+        <members>Medical_Facility_User__c-Medical Facility User Layout</members>
         <members>Medical_Facility__c-Medical Facility Layout</members>
         <members>Medical_Professional__c-Medical Professional Layout</members>
         <members>Medical_Profile__c-Medical Profile Layout</members>
+        <members>Medical_Record__c-Medical Record Layout</members>
         <members>Message_Header__c-Message Header Layout</members>
         <members>Message_User__c-Message User Layout</members>
         <members>Message__c-Message Layout</members>
+        <members>PRM_Config__c-PRM Config Layout</members>
+        <members>PRM_Email_Template__c-PRM Email Template Layout</members>
+        <members>PRM_Medical_Profile_Link__c-PRM Medical Profile Layout</members>
+        <members>PRM_User__c-PRM User Layout</members>
         <members>Patient__c-Patient Layout</members>
         <members>Payment__c-Payment Layout</members>
         <members>Procedure_Line_Item__c-Procedure Line Item Layout</members>
         <members>Procedure_Price__c-Procedure Price Layout</members>
         <members>Procedure__c-Procedure Layout</members>
+        <members>Referral_Source__c-Referral Source Layout</members>
+        <members>Server_Log__c-Server Log Layout</members>
+        <members>Survey_Header__c-Survey Header Layout</members>
+        <members>Survey_Question__c-Survey Question Layout</members>
+        <members>Topic__c-Topic Layout</members>
         <members>Travel__c-Travel Layout</members>
         <members>Treatment_Quote__c-Interaction Quote Layout</members>
         <members>Treatment__c-Treatment Layout</members>
         <members>User-User Layout</members>
+        <members>Survey_Instance__c-Notification Layout</members>
         <name>Layout</name>
     </types>
     <types>
@@ -158,6 +182,7 @@
         <name>PermissionSet</name>
     </types>
     <types>
+        <members>Guest</members>
         <members>patientPortal</members>
         <name>Profile</name>
     </types>

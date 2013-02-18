@@ -11,19 +11,46 @@ public without sharing class messaging_Controller {
 		return patientId;
 	}
 
-	public Id treatmentId {
-		get;
-		set{
-			treatmentId = value;
-//			if ( patientId == null && treatmentId != null ){
-//				List<Treatment__c> t = [Select Id, Patient__c from Treatment__c where Id =:treatmentId limit 1];
-//				patientId = t[0].Patient__c;
-//			}
-		}
-	}
-
+  public Id treatmentId; 
+   public void setTreatmentId(Id i)
+    {
+      treatmentId = i;
+      setTreatment(treatmentId);
+    }
+  public Id getTreatmentId()    
+    {
+      return treatmentId;
+    }
+  public static Treatment__c treatment;
+  public void setTreatment(Id i)
+  {
+    treatment = [Select Id, Destination_Facility__c, OwnerId From Treatment__c Where Id = :i ];
+  }
+  public Treatment__c getTreatment()
+  {
+    return treatment;
+  }
 	public messageWrapper newMessage {get;set;}
-
+	List<Care_Team_Member__c> careTeamMembers = new List<Care_Team_Member__c>();
+	List<Care_Team_Member__c> careTeamCandidates = new List<Care_Team_Member__c>();
+  String[] addedCareTeamMembers = new String[]{};
+  String[] removedCareTeamMembers = new String[]{};
+  public String[] getaddedCareTeamMembers()
+  {
+  	return this.addedCareTeamMembers;
+  }
+  public void setAddedCareTeamMembers(String[] addedMembers)
+  {
+  	this.addedCareTeamMembers = addedMembers;
+  }
+  public String[] getremovedCareTeamMembers()
+  {
+    return this.removedCareTeamMembers;
+  }
+  public void setRemovedCareTeamMembers(String[] removedMembers)
+  {
+    this.removedCareTeamMembers = removedMembers;
+  }  
 	public class commentWrapper{
 		public Id RelatedRecordId {get;set;}
 		public Id ParentId {get;set;}
@@ -151,7 +178,7 @@ public without sharing class messaging_Controller {
 	public PageReference insertNewCareTeamMember(){
 		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
 			insert newCareTeamMember;
-			newCareTeamMember = null;
+//			newCareTeamMember = null;
 		} else {
 			
 		}
@@ -223,7 +250,7 @@ public without sharing class messaging_Controller {
 	}
 
 	public List<Care_Team_Member__c> getCareTeamMemberList() {
-		return [Select Id, Name from Care_Team_Member__c where Treatment__c =:treatmentId order by Name];
+		return [Select Id, Name, User__c, Role__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name];
 	}
 
 	public String messagingAlert {get;set;}
@@ -308,5 +335,213 @@ public without sharing class messaging_Controller {
 		}
 		return s;
 	}
+  public PageReference addCareTeamMembers()
+  {
+  	Logger.info('addedCareTeamMembers: ' + addedCareTeamMembers);    
+    for (String m : addedCareTeamMembers)
+    {
+      for (Integer i = 0; i < careTeamCandidates.size(); i++)
+      {
+        if (careTeamCandidates[i].User__c == m)
+        {
+          careTeamMembers.add(careTeamCandidates[i]);
+          newCareTeamMember = careTeamCandidates[i];
+          insertNewCareTeamMember();
+          careTeamCandidates.remove(i); 
+        }
+      }
+    }    
+  	return null;
+  }
+	public PageReference closeNewTeamMember()
+	{
+		newCareTeamMember = null;
+		return null;
+	}  
+  public PageReference removeCareTeamMembers()
+  {        	
+    for (String m : removedCareTeamMembers)
+    {
+      
+      for (Care_Team_Member__c ctm : careTeamMembers)
+      {
+      	if (ctm.Id == m) 
+      	{      
+      		Care_Team_Member__c newCareTeamMbr = new Care_Team_Member__c();
+      		newCareTeamMbr = ctm.clone(false,true); 		
+      		careTeamCandidates.add(newCareTeamMbr);
+      		delete ctm;      		
+      	}
+      }     
+      Integer i = 0;
+      while (i < careTeamMembers.size())
+      {
+      	if(careTeamMembers.get(i).Id == m) { careTeamMembers.remove(i); }
+      	else { i++; }      	
+      } 
+    }         
+    return null;
+  }  
+  
+  private void addMedicalFacilityUsers()
+  {
+    if (treatment.Destination_Facility__c != null)
+    {
+      List<Medical_Facility_User__c> medFacilityUsers = [ Select Id, User__r.Name, User__r.Id, User__r.Email 
+                             from Medical_Facility_User__c 
+                             Where Medical_Facility__c = :treatment.Destination_Facility__c ];
+      for (Medical_Facility_User__c u : medFacilityUsers)
+      {
+        Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
+        careTeamCandidate.User__c = u.User__r.Id;
+        careTeamCandidate.Role__c = 'PCC';
+        careTeamCandidate.Treatment__c = treatmentId;       
+        careTeamCandidate.Email__c = u.User__r.Email;
+        careTeamCandidate.Name = u.User__r.Name;
+        careTeamCandidates.add(careTeamCandidate);
+      }                            
+    }  	
+  } 
+  private void addPRMConfigUsers()
+  {
+    PRM_Config__c prmConfig = [Select ID from PRM_Config__c Limit 1];
+    List<PRM_User__c> prmUsers = [ Select ID, User__r.Name, User__r.Id, User__r.Email, Role__c 
+                                    From PRM_User__c Where PRM_Config__c = :prmConfig.Id ];
+    for (PRM_User__c u : prmUsers )
+    {
+      Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
+      careTeamCandidate.User__c = u.User__r.Id;
+      if (u.Role__c == 'PCC') 
+        { careTeamCandidate.Role__c = 'PCC'; }
+      else if ((u.Role__c == 'Primary Onsite Coordinator') || (u.Role__c == 'Onsite Coordinator')) 
+        { careTeamCandidate.Role__c = 'Onsite Coordinator'; } 
+      careTeamCandidate.Treatment__c = treatmentId;       
+      careTeamCandidate.Email__c = u.User__r.Email;
+      careTeamCandidate.Name = u.User__r.Name;
+      careTeamCandidates.add(careTeamCandidate);
+    }  	
+  }   
+  private void addMedProfessionalUsers()
+  {
+  	List<Medical_Professional__c> doctors = new List<Medical_Professional__c>();  
+  	if (treatment.Destination_Facility__c != null)
+  	{
+      doctors = [ Select Key_Contact__c 
+                  From Medical_Professional__c 
+                  Where Medical_Facility__c = :treatment.Destination_Facility__c 
+                    And Role__c = 'Doctor'
+                    And Key_Contact__c != NULL];
+  	}
+  	else
+  	{
+      doctors = [ Select Key_Contact__c 
+                  From Medical_Professional__c 
+                  Where Role__c = 'Doctor'
+                    And Key_Contact__c != NULL];  		
+  	}
+  	List<Id> contactIds = new List<Id>();
+  	for (Medical_Professional__c d : doctors)
+  	{
+  		contactIds.add(d.Key_Contact__c);
+  	}
+  	List<User> doctorUsers = new List<User>();
+  	doctorUsers = [Select Id, Email, Name from User Where User.ContactId IN : contactIds];
+    for (User u : doctorUsers )
+      {
+        Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
+        careTeamCandidate.User__c = u.Id;
+        careTeamCandidate.Role__c = 'Doctor';  
+        careTeamCandidate.Treatment__c = treatmentId;       
+        careTeamCandidate.Email__c = u.Email;
+        careTeamCandidate.Name = u.Name;
+        careTeamCandidates.add(careTeamCandidate);
+      }
+  }                                           
+  
+  private void addInsuranceNetworkUsers()
+  {
+  	Patient__c patient = [Select Name, Insurance_Network__c from Patient__c Where Id = : patientId];
+  	if (patient.Insurance_Network__c != null)
+  	{
+  	 Id insuranceNetwork = patient.Insurance_Network__c;
+  	 List<Insurance_Network_User__c> inUsers = [Select Id, 
+  	                                             Insurance_Contact__r.Id, 
+  	                                             Insurance_Contact__r.Name, 
+  	                                             Insurance_Contact__r.Email
+  	                                             from Insurance_Network_User__c
+  	                                             Where Insurance_Network__c = :insuranceNetwork ];
+     for (Insurance_Network_User__c u : inUsers )
+	    {
+	      Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
+	      careTeamCandidate.User__c = u.Insurance_Contact__r.Id;
+        careTeamCandidate.Role__c = 'Insurance Agent';  
+	      careTeamCandidate.Treatment__c = treatmentId;       
+	      careTeamCandidate.Email__c = u.Insurance_Contact__r.Email;
+	      careTeamCandidate.Name = u.Insurance_Contact__r.Name;
+	      careTeamCandidates.add(careTeamCandidate);
+	    }   	                                             
+  	}
+  }
+  public List<Care_Team_Member__c> getCareTeamCandidates()
+  {
+    addMedicalFacilityUsers();
+    addPRMConfigUsers();
+    addMedProfessionalUsers();
+    addInsuranceNetworkUsers();
+    Set<Id> userIdSet = new Set<Id>();
+    List<Care_Team_Member__c> resultList = new List<Care_Team_Member__c>();
+    if (careTeamMembers.isEmpty() == true)
+    {
+    	careTeamMembers = getCareTeamMemberList();
+    }
+    Logger.info('careTeamMembers: ' + careTeamMembers);
+    for (Care_Team_Member__c ctm : careTeamMembers)
+    {
+    	userIdSet.add(ctm.User__c);
+    }
 
+    for (Care_Team_Member__c u : careTeamCandidates)
+    {
+      if (userIdSet.add(u.User__c)) {resultList.add(u);} //to remove duplicates and Users already in care team
+    }
+    careTeamCandidates.clear();
+    Logger.info('resultList: ' + resultList);
+    careTeamCandidates = resultList.deepClone(true); 
+    Logger.info('careTeamCandidates: ' + careTeamCandidates);
+    return careTeamCandidates;
+  }  
+  public List<SelectOption> getCareTeamCandidateNames()
+  {
+  	if (careTeamCandidates.isEmpty() == true)
+  	{
+  		careTeamCandidates = getCareTeamCandidates();
+  	}
+  	Logger.info('careTeamCandidates: '+careTeamCandidates);
+  	List<SelectOption> options = new List<SelectOption>();
+    for (Care_Team_Member__c candidate: careTeamCandidates)
+    {
+      options.add(new SelectOption(candidate.User__c, candidate.Name));
+    }  	
+  	return options;
+  }
+  public List<SelectOption> getCareTeamMemberNames()
+  {
+   if (careTeamMembers.isEmpty() == true)
+    {
+      careTeamMembers = getCareTeamMemberList();
+    }
+    List<SelectOption> options = new List<SelectOption>(); 
+    Boolean disabled = false; 	
+  	for(Care_Team_Member__c u : careTeamMembers)
+  	{
+  		disabled = false;
+  	  if ( (u.Role__c == 'Patient') || (treatment.OwnerId == u.User__c) )
+  		{
+  			disabled = true;
+  			Logger.info('Disabled User: ' + u.Name);
+  		}  		
+  		options.add(new SelectOption(u.Id, u.Name, disabled));
+  	}
+    return options;
+  }  
 }

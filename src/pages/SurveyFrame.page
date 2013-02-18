@@ -1,0 +1,23 @@
+<apex:page showHeader="false" sideBar="false" controller="SurveyFrameController" action="{!onload}">
+<head>
+  <script>
+function autoResize(id){
+    var newheight;
+    var newwidth;
+
+    if(document.getElementById){
+        newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;
+        newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth;
+    }
+
+    document.getElementById(id).height= (newheight) + "px";
+    document.getElementById(id).width= (newwidth) + "px";
+}
+  </script>
+</head>
+<body>
+Survey Frame: {!surveyURL}<br/>
+<iframe id="surveyFrame" name="surveyFrame" src="{!surveyURL}" width="100%" height="3000px" onload="parent.scrollTo(0,0);autoResize('surveyFrame');"></iframe>
+<!-- apex:iframe id="surveyFrame" src="{!surveyURL}" height="2000px"/> -->
+</body>
+</apex:page>

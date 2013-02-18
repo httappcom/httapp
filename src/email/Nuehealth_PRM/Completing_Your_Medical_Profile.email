@@ -30,7 +30,7 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                              <c:Email_Template_Image document_Id="015d0000001010T" />
+                              <c:Email_Template_Image document_Name="img_stetoscope_on_docs_png" />
                             </td>
                           </tr>
                         </tbody>
@@ -61,7 +61,7 @@
                         not be able to begin it and then return
                         later to complete.
                       </p>
-                      <p align="center" style="margin-bottom: 1em"><c:Email_Template_MQ_URL treatment_Id="{!relatedTo.Id}" patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image alt="Submit your medical profile - CLICK HERE" document_Id="015d0000001010n"/></c:Email_Template_MQ_URL></p>
+                      <p align="center" style="margin-bottom: 1em"><c:Email_Template_MQ_URL treatment_Id="{!relatedTo.Id}" patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image alt="Submit your medical profile - CLICK HERE" document_Name="btn_PersonalMedicalProfile_png"/></c:Email_Template_MQ_URL></p>
                       <p style="margin-bottom: 1em">
                         <c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Closing_graph__c"/>
                       </p>

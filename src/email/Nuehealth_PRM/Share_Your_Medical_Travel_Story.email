@@ -1,0 +1,82 @@
+<messaging:emailTemplate subject="Share Your Medical Travel Story with Us" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy for Linux/x86 (vers 25 March 2009), see www.w3.org" />
+    <meta content="text/html; charset=us-ascii" http-equiv="Content-Type" />
+    <title>Share Your Medical Travel Story with Us</title>
+  </head>
+  <body>
+    <center>
+       <c:Email_Template_Header treatment_Id="{!relatedTo.Id}" />
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align="center" cellpadding="0" cellspacing="0" width="875">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table cellspacing="1" width="800">
+                <tbody>
+                  <tr>
+                    <td style="text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333" align="left" valign=
+                    "top">
+                      <table align="right" cellpadding="0" cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315"></td>
+                          </tr>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                              <c:Email_Template_Image document_Name="img_tell_your_story_jpg" height="296" width="266" /><br />
+                              <br />
+                              <a href="https://healthtravelguides.custhelp.com/ci/documents/detail/2/600"><c:Email_Template_Image document_Name="ad_get_referral_png" height="145" width="225" /></a><br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong><span class="auto-style1" style="font-size: 32px;color: #6D6B6B">Share Your Medical Travel<br />
+                        Story with Us</span></strong><br />
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Dear {!relatedTo.Patient__r.Patient_First_Name__c},
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Thank you for choosing&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/> for your medical needs. We hope we have provided you with service that exceeded your expectations.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Please take a moment to provide us with your candid feedback about your medical travel experience. We&rsquo;d love to hear why you chose to travel for your procedure, and what
+                        your experience was like with your physician and the facility you visited.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Your feedback may help others as they research medical travel as an option for their medical care needs.
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <p style="margin-bottom: 1em">
+                        Regards,
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p><br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table><br />
+      <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

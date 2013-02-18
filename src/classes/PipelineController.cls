@@ -6,13 +6,11 @@ public with sharing class PipelineController {
   public List<Treatment__c> treatments {get; set; }
   public List<Payment__c> Payments {get;set; }    
   public List<Task> tasks{get;set;}    
-  public List<Incident__c> incidents { get; set; } 
   public List<Message__c> messages {get; set; }
      
   public List<Treatment__c> allTreatments {get; set; }    
   public List<Payment__c> allPayments {get;set; }
   public List<Task> allTasks{get;set;}    
-  public List<Incident__c> allIncidents { get; set; } 
   public List<Message__c> allMessages {get; set; }
       
   public ApexPages.StandardSetController pcon{get;set;} 
@@ -36,12 +34,10 @@ public with sharing class PipelineController {
     this.active = new List<Treatment__c>();      
     this.allTreatments  = new List<Treatment__c>();
     this.allTasks = new List<Task>();        
-    this.allIncidents = new List<Incident__c>(); 
     this.allPayments =   new List<Payment__c>();     
          
     this.treatments = new List<Treatment__c>();        
-    this.tasks = new List<Task>();   
-    this.incidents = new List<Incident__c>();
+    this.tasks = new List<Task>();
     this.payments = new List<Payment__c>();
     this.messages = new List<Message__c>();
     try {
@@ -53,7 +49,6 @@ public with sharing class PipelineController {
     for (Treatment__c r : active) {
 /*      if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
       if(p.Payments__r.size()>0)   for (Payment__c pay : p.Payments__r) allPayments.add(pay); 
-//      if(p.Incidents__r.size()>0)  for (Incident__c i : p.Incidents__r) allIncidents.add(i); 
       if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);*/       
     }                 
     System.debug('treatments list '+alltreatments);  
@@ -66,10 +61,6 @@ public with sharing class PipelineController {
     pcon.setPageSize(this.curPageSize); 
     this.payments= pcon.getRecords();      
      
-    System.debug('incidentslist '+allIncidents);        
-    icon = new ApexPages.StandardSetController(allIncidents); 
-    icon.setPageSize(this.curPageSize); 
-    this.incidents = icon.getRecords();      
 
    /* System.debug('Tasks List'+allTasks);        
     taskcon = new ApexPages.StandardSetController(allTasks); 
@@ -150,10 +141,6 @@ public with sharing class PipelineController {
   public void previousPayments(){ pcon.previous();  payments= pcon.getRecords();}
   public void nextPayments()    { pcon.next();      payments= pcon.getRecords();  }
   
-  public void firstIncidents()   { icon.first();    incidents = icon.getRecords();  }
-  public void lastIncidents()    { icon.previous(); incidents = icon.getRecords();}
-  public void previousIncidents(){ icon.previous(); incidents = icon.getRecords();}  
-  public void nextIncidents()    { icon.next();     incidents = icon.getRecords();  }
   
   public void firstTasks()   { taskcon.first();     tasks = taskcon.getRecords(); }
   public void lastTasks()    { taskcon.last();      tasks = taskcon.getRecords(); }

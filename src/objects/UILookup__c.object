@@ -48,6 +48,17 @@
         <required>false</required>
         <type>Lookup</type>
     </fields>
+    <fields>
+        <fullName>Treatment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Treatment</label>
+        <referenceTo>Treatment__c</referenceTo>
+        <relationshipLabel>UILookups</relationshipLabel>
+        <relationshipName>UILookups</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
     <label>UILookup</label>
     <nameField>
         <label>UILookup Name</label>

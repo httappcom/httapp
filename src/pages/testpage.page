@@ -1,4 +1,0 @@
-<apex:page controller="testpage_controller" action="{!onload}">
-<!-- <apex:outputfield value="{!c.description}"/> -->
-test complete
-</apex:page>

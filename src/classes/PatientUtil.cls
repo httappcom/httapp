@@ -47,6 +47,7 @@ public class PatientUtil {
                        Ins_Authorization_Num__c,
                        Ins_Comments__c,
                        Mobile__c,
+                       Insurance_Network__c,
                        Patient_Stage__c,
                        Phone__c,
                        Postal_Code__c,
@@ -214,14 +215,8 @@ public class PatientUtil {
                       from Payments__r),
                       (select Id,
                               Name,
-                              CreatedById,
-                              CreatedDate,
-                              IsDeleted,
-                              LastModifiedById, 
-                              LastModifiedDate,
                               Patient__c,
-                              SystemModstamp,
-                              Profile_Id__c       
+                              Survey_Id__c
                       from Survey_Headers__r)
                 from Patient__c 
                 where id = :pPatientId];
@@ -313,30 +308,7 @@ public class PatientUtil {
                               Travel__r.Departure_Airline__c,
                               Travel__r.Departure_Airport_Code__c,
                               Travel__r.Departure_Flight_No__c,                              
-                              Travel__r.Notes__c,                                
-                      (Select Id, 
-                              Name,                       
-                              CreatedDate, 
-                              CreatedById,
-                              LastModifiedById, 
-                              LastModifiedDate,
-                              Treatment__c ,
-                              Treatment__r.Name,
-                              Contact__r.Name,
-                              Account__r.Name,
-                              Contact_Email__c,
-                              Contact_Phone__c,
-                              Date_Time_Closed__c,
-                              Date_Time_Opened__c,                              
-                              Status__c,
-                              Category__c,
-                              Sub_Category__c,
-                              Subject__c,
-                              Type__c,
-                              Due_Date__c , 
-                              Contact__c,
-                               Account__c                                                      
-                       From Incidents__r),
+                              Travel__r.Notes__c,
                       (SELECT Id,
                               Name,
                               CreatedById, 
@@ -418,6 +390,7 @@ public class PatientUtil {
                        Ins_Comments__c,
                        Mobile__c,
                        Patient_Stage__c,
+                       Insurance_Network__c,
                        Phone__c,
                        Postal_Code__c,
                        Preferred_Language__c,
@@ -551,23 +524,9 @@ public class PatientUtil {
                               LastModifiedDate,
                               Patient__c,
                               SystemModstamp,
-                              Profile_Id__c       
+                              Survey_Id__c       
                       from Survey_Headers__r)
                 from Patient__c];
-    }
-    
-    public static list<Medical_Profile_Question__c> queryMedicalProfileQuestions(string headerID){
-        return  [select id, 
-                        name, 
-                        answer__c, 
-                        boolean_answer__c, 
-                        comment__c, 
-                        full_question_text__c, 
-                        medical_profile_header__c, 
-                        order__c 
-                from Medical_Profile_Question__c 
-                where Medical_Profile_Header__c = :headerid
-                order by order__c];
     }
     
     public static void verifyPortalAccessAtInteractionPhase(
@@ -592,6 +551,9 @@ public class PatientUtil {
             if (newlist[i].Phase__c == '(2) Interaction' 
                     && patientKeyContactMap.get(newlist[i].Patient__c) == null) {
                 createPatientPortalUser(newlist[i].patient__c);
+            } else if (newlist[i].Phase__c == '(2) Interaction' && oldlist[i].Phase__c != '(2) Interaction') {
+            	String keyContact = patientKeyContactMap.get(newlist[i].Patient__c);
+            	createPortalUserIfNeeded( newlist[i].Patient__c, keyContact );
             }
         }
     }
@@ -635,6 +597,14 @@ public class PatientUtil {
         futureCreatePortalUser(patient.id);
     }
     
+    public static void createPortalUserIfNeeded( ID patientId, String keyContact ) {
+    	if (keyContact == null) return;
+    	User[] users = [select id from User where ContactId = :keyContact];
+    	if (users.size()==0) {
+   system.debug('User missing - creating portal user...');
+    		futureCreatePortalUser(patientId);
+    	}
+    }
     /**
      * mWicherski@mkpartners.com
      * futureCreatePortalUser
@@ -684,7 +654,7 @@ public class PatientUtil {
         Database.SaveResult result = Database.Insert(u);    
         if (result.isSuccess()) {
             //send email to patient
-         
+/*          
             messaging.Singleemailmessage msg = new messaging.singleEmailMessage();
             msg.setToAddresses(new list<string>{patient.email__c});
             msg.setSubject('Welcome to your Health Travel Guides Portal Account');
@@ -699,16 +669,25 @@ public class PatientUtil {
             msg.setPlainTextBody(plainbody);
             msg.setHtmlBody(plainbody.replace('\n','<br/>'));            
             messaging.sendemail(new list<Messaging.email>{msg});
-/* 
+*/
+
 				    Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 				    Treatment__c treatment = [Select Id, Patient__r.Id, Destination_Facility__c, CreatedDate From Treatment__c 
 				                              Where Patient__r.Id = :patient.Id Order By CreatedDate Desc];
 				    mail.setTargetObjectId(patient.Key_Contact__c);
 				    mail.setWhatId(treatment.Id);
-				    EmailTemplate et = [Select Id, DeveloperName, Name from EmailTemplate where Id = '00Xd0000000X9lb' ]; 
+				    EmailTemplate et = [Select Id, DeveloperName, Name from EmailTemplate where DeveloperName = 'Welcome_to_Patient_Portal' ]; 
 				    mail.setTemplateId(et.Id);
-				    Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });  
-*/				                          
+	system.debug('Sending email: mail='+mail);
+	try {
+				    Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+	system.debug('Send email Succeeded.');
+	} catch (Exception ex) {
+		system.debug('******************************* SendEmail Exception **************************************');
+		system.debug(ex.getStackTraceString());
+		throw ex;
+	}  
+                                        
             system.resetPassword(u.id, true);               
         }                           
         else {

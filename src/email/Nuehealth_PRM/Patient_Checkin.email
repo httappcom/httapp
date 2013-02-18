@@ -1,0 +1,78 @@
+<messaging:emailTemplate subject="Patient Check-In" recipientType="Contact" relatedToType="Treatment__c">
+<messaging:htmlEmailBody >
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta content="text/html; charset=us-ascii" http-equiv="Content-Type" />
+    <title>Patient Check-In</title>
+  </head>
+  <body>
+    <center>
+    <c:Email_Template_Header treatment_Id="{!relatedTo.Id}"/>
+      <table style="border: 4px solid #B8CCE7;" id="Outer" align="center" cellpadding="0" cellspacing="0" width="875">
+        <tbody>
+          <tr>
+            <td align="center">
+              <table cellspacing="1" width="800">
+                <tbody>
+                  <tr>
+                    <td style="text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333" align="left" valign=
+                    "top">
+                      <table align="right" cellpadding="0" cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td width="25"></td>
+                            <td align="center" width="315">
+                               <c:Email_Template_Image document_Name="img_doctor1_png" height="417" width="250" /><br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p align="center" style="margin-bottom: 1em">
+                        <strong><span class="auto-style1" style="font-size: 32px;color: #6D6B6B"><c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/> Patient Check-In</span></strong><br />
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Dear {!relatedTo.Patient__r.Patient_First_Name__c},
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Welcome back from your medical travel experience with&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/>. We&rsquo;d like to touch base to see how you are feeling and to answer any questions you might
+                        have about your medical procedure now that you are home.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        Please make sure you are following any directions provided by your surgeon. If you have any questions or concerns, no matter how big or small, please feel free to contact me
+                        via email or phone.
+                      </p>
+                      <p style="margin-bottom: 1em">
+                        We hope you are recovering well and feeling good. Expect a phone call from a member of the&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_designation__c"/> team 
+                        within&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Check_in_call_timing__c"/> of returning home from your procedure.
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <p style="margin-bottom: 1em">
+                        Regards,
+                      </p>
+                      <p style="margin-bottom: 1em"></p>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <c:Email_Template_Image treatment_Id="{!relatedTo.Id}" PRM_Config_field="PCC_Team_Sig_Card__c" />
+                            </td>
+                            <td width="44"></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <p style="margin-bottom: 1em"></p><br />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table><br />
+      <c:Email_Template_Footer treatment_Id="{!relatedTo.Id}" />
+    </center>
+  </body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

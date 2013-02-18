@@ -386,6 +386,19 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <type>Phone</type>
     </fields>
     <fields>
+        <fullName>Insurance_Network__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Insurance Network</label>
+        <referenceTo>Insurance_Network__c</referenceTo>
+        <relationshipLabel>Patients</relationshipLabel>
+        <relationshipName>Patients</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Key_Contact__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -853,6 +866,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <fullName>All</fullName>
         <columns>Email__c</columns>
         <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

@@ -135,6 +135,10 @@
                 <behavior>Edit</behavior>
                 <field>Patient_Id__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Insurance_Network__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -253,6 +257,12 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <miniLayout>
+        <fields>Name</fields>
+        <fields>Medical_Profile_Type__c</fields>
+        <fields>Insurance_Network__c</fields>
+        <fields>City__c</fields>
+    </miniLayout>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>
         <fields>TASK.WHO_NAME</fields>
@@ -286,7 +296,7 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Medical_Profile_Header__c.Patient__c</relatedList>
+        <relatedList>Survey_Header__c.Patient__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>

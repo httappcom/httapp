@@ -77,14 +77,14 @@
                       <tbody>
                         <tr>
                           <td>
-                             <c:Email_Template_Image document_Id="015d000000101Fg" alt="Diagram" height="302" width="410" />
+                             <c:Email_Template_Image document_Name="diagram_jpg" alt="Diagram" height="302" width="410" />
                           </td>
                           <td width="50"></td>
                           <td style=
                           "text-align: justify; font-family: Calibri, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: normal; font-style: normal; color: #333333">
                           <p align="center" style=
                           "margin-bottom: 1em">
-                               <c:Email_Template_Image document_Id="015d000000101Fv" alt="EndoFLIP" height="189" width="176" />
+                               <c:Email_Template_Image document_Name="img_endoflip_jpg" alt="EndoFLIP" height="189" width="176" />
                             </p>
                             <p style="margin-bottom: 1em">
                               Precise results mean quicker, more
@@ -108,7 +108,7 @@
                           <td style=
                           "font-size: 12px; color: #808080; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; tahoma: ;,"
                           align="center">
-                             <c:Email_Template_Image document_Id="015d000000101En" height="178" width="200" /><br />
+                             <c:Email_Template_Image document_Name="Lopez_Corvala_png" height="178" width="200" /><br />
                             <strong>Dr. Lopez Corvala<br />
                             <em>Gastroenterologist
                             Surgeon</em></strong>
@@ -159,7 +159,7 @@
                         <tr>
                           <td width="30"></td>
                           <td width="366">
-                             <c:Email_Template_Image document_Id="015d000000101Fq" alt="" height="332" width="366" />
+                             <c:Email_Template_Image document_Name="icons_tijuana_V_png" alt="" height="332" width="366" />
                             <p style=
                             "font-size: 17px;color: #D98200;font-family: Georgia, &quot;Times New Roman&quot;, Times, serif;margin-bottom: 1em"
                             align="center">
@@ -246,16 +246,16 @@
                               align="center">
                                 <a href=
                                 "http://sitelet.nuehealth.com/webinar/index.html"
-                                target="_blank"> <c:Email_Template_Image document_Id="015d000000101G5" alt="" height="231" width="224" /></a><br />
-                                <a href="javascript:%20void()" onclick="alert('Coming Soon ...')"> <c:Email_Template_Image document_Id="015d000000101Fb" alt="Twitter" style="margin-bottom: 10px; margin-top: 10px;" /></a><br />
+                                target="_blank"> <c:Email_Template_Image document_Name="webcasr_learn_more2_png" alt="" height="231" width="224" /></a><br />
+                                <a href="javascript:%20void()" onclick="alert('Coming Soon ...')"> <c:Email_Template_Image document_Name="btn_twitter_150_jpg" alt="Twitter" style="margin-bottom: 10px; margin-top: 10px;" /></a><br />
                                 <a href=
                                 "http://www.facebook.com/pages/Nuehealth/454923741213153">
-                                 <c:Email_Template_Image document_Id="015d000000101FW" alt="Facebook" /></a><br />
+                                 <c:Email_Template_Image document_Name="btn_facebook_150_jpg" alt="Facebook" /></a><br />
                                 <br />
                                 <br />
                                 <a href=
                                 "http://nuehealth.blogspot.com/"
-                                target="_blank"> <c:Email_Template_Image document_Id="015d000000101FR" alt="" /></a><br />
+                                target="_blank"> <c:Email_Template_Image document_Name="btn_Follow_Our_Blog_nuehealth_png" alt="" /></a><br />
                               </td>
                             </tr>
                           </tbody>
@@ -290,7 +290,7 @@
                     <p style="margin-bottom: 1em">
                       <a href=
                       "http://www.blogtalkradio.com/nuehealth"
-                      target="_blank"> <c:Email_Template_Image document_Id="015d000000100fT" alt="" height="159" width="495" /></a>
+                      target="_blank"> <c:Email_Template_Image document_Name="blogtalkradio_jpg" alt="" height="159" width="495" /></a>
                     </p>
                     <p class="auto-style3" style=
                     "color: #065902;font-size: 20px;margin-bottom: 1em">
@@ -324,7 +324,7 @@
                     <p align="center" style="margin-bottom: 1em">
                       <a href=
                       "https://healthtravelguides.custhelp.com/ci/documents/detail/5/23">
-                       <c:Email_Template_Image document_Id="015d0000001010n" height="61" width="250" style="border-width: 0" /></a>
+                       <c:Email_Template_Image document_Name="btn_PersonalMedicalProfile_png" height="61" width="250" style="border-width: 0" /></a>
                     </p>
                     <p class="auto-style3" style=
                     "color: #065902;font-size: 20px;margin-bottom: 1em">
@@ -358,13 +358,13 @@
     <p class="style7" align="center" style=
     "text-align: center;margin-bottom: 1em">
       <a href="http://sitelet.nuehealth.com/webinar/index.html"
-      target="_blank"> <c:Email_Template_Image document_Id="015d000000101Es" alt="" /></a>
+      target="_blank"> <c:Email_Template_Image document_Name="ad_free_webcast_Nuehealth_png" alt="" /></a>
       <a href=
-      "http://www.zweenahealth.com/medical-tourism"> <c:Email_Template_Image document_Id="015d000000101F7" height="113" width="175" /></a> <a href=
+      "http://www.zweenahealth.com/medical-tourism"> <c:Email_Template_Image document_Name="ad_zweena_png" height="113" width="175" /></a> <a href=
       "http://www.healthtravelguides.com/Default.aspx?p=DynamicModule&amp;pageid=268544&amp;ssid=136533&amp;vnf=1">
-       <c:Email_Template_Image document_Id="015d000000101F2" height="112" width="175" style="border-width: 0" /></a> <a href=
+       <c:Email_Template_Image document_Name="ad_passport_png" height="112" width="175" style="border-width: 0" /></a> <a href=
       "https://healthtravelguides.custhelp.com/ci/documents/detail/2/600">
-       <c:Email_Template_Image document_Id="015d000000101Ex" alt="" height="112" width="175" style="border-width: 0" /></a>
+       <c:Email_Template_Image document_Name="ad_get_referral_png" alt="" height="112" width="175" style="border-width: 0" /></a>
     </p>
       <center><c:Email_Template_Footer /></center>
   </body>

@@ -47,15 +47,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Banner_Image__c</fullName>
-        <externalId>false</externalId>
-        <label>Banner Image</label>
-        <length>18</length>
-        <required>false</required>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Brand_Description__c</fullName>
         <externalId>false</externalId>
         <label>Brand Description</label>
@@ -139,6 +130,15 @@
         <visibleLines>15</visibleLines>
     </fields>
     <fields>
+        <fullName>Email_Template_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Email Template Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>External_Id__c</fullName>
         <caseSensitive>false</caseSensitive>
         <externalId>true</externalId>
@@ -152,7 +152,7 @@
         <fullName>Footer_Image__c</fullName>
         <externalId>false</externalId>
         <label>Footer Image</label>
-        <length>18</length>
+        <length>255</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
@@ -186,7 +186,7 @@
         <fullName>PCC_Team_Sig_Card__c</fullName>
         <externalId>false</externalId>
         <label>PCC Team Sig Card</label>
-        <length>18</length>
+        <length>255</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>
@@ -209,12 +209,38 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Patient_Portal_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Portal Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Patient_Portal_Welcome_Message__c</fullName>
+        <externalId>false</externalId>
+        <label>Patient Portal Welcome Message</label>
+        <length>1000</length>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
         <fullName>Provider_Network_Desc__c</fullName>
         <externalId>false</externalId>
         <label>Provider Network Desc</label>
         <length>2047</length>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Provider_Portal_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Provider Portal Banner Image</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Referral_Offer__c</fullName>
@@ -256,6 +282,15 @@
         <externalId>false</externalId>
         <label>State or Province</label>
         <length>30</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Survey_Banner_Image__c</fullName>
+        <externalId>false</externalId>
+        <label>Survey Banner Image</label>
+        <length>255</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>

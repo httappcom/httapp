@@ -5,7 +5,7 @@ public with sharing class MedicalRecordUtility {
   {
   	public String getContent(String urlCommand, Map<String, String> urlParameters)
   	{    
-  		List<mphRxAPI__c> mphRxSetting = mphRxAPI__c.getAll().values();
+/*  		List<mphRxAPI__c> mphRxSetting = mphRxAPI__c.getAll().values();
   		String result = null;
   		if (! mphRxSetting.isempty())
   		{
@@ -48,12 +48,13 @@ public with sharing class MedicalRecordUtility {
 		    }
 
   		}
-  		return (String.isEmpty(result) ? null : result);   		
+  		return (String.isEmpty(result) ? null : result);*/
+  		return '';   		
   	}
   }
   private static List<Medical_Record__c> deserializeMphRxRecordsList(String JSONinput)
   {
-  	Map<String, Object> recordsMap = (Map<String, Object>) JSON.deserializeUntyped(JSONinput);
+/*  	Map<String, Object> recordsMap = (Map<String, Object>) JSON.deserializeUntyped(JSONinput);
     Set<String> keys = new Set<String>();
     keys = recordsMap.keySet();
 	  for (String s : keys)
@@ -84,8 +85,8 @@ public with sharing class MedicalRecordUtility {
     	mr.Description__c = (String)objectMap.get('description');
     	medicalRecords.add(mr);
       Logger.info('Object: ' + mr);
-    }
-  	return medicalRecords;
+    }*/
+  	return null; //medicalRecords;
   }
   private static List<String> deserializeMphRxDataReturn(String JSONInput)
   {
@@ -95,7 +96,7 @@ public with sharing class MedicalRecordUtility {
   	   {"error":[{"code":2,"text":"Missing Mandatory Parameter"}]}
   	
   	*/
-  	Map<String, Object> messageMap = (Map<String, Object>) JSON.deserializeUntyped(JSONInput);
+/*  	Map<String, Object> messageMap = (Map<String, Object>) JSON.deserializeUntyped(JSONInput);
   	Integer returnCode = null;
   	String returnText = '';
   	List<String> returnList = new List<String>();
@@ -110,12 +111,12 @@ public with sharing class MedicalRecordUtility {
   			returnList.add(String.valueof(returnCode));
   			returnList.add(returnText);
   		}
-  	}
-    return returnList;
+  	}*/
+    return null;//returnList;
   }
   public static String createMphRxPatientRecord(Patient__c patient)
   {
-  	String mphRxPatientID = '';
+/*  	String mphRxPatientID = '';
   	List<String> mphRxNewPatientResult = new List<String>();
     Map<String, String> parameters = new Map<String, String>();
     if (! String.isEmpty(patient.Patient_First_Name__c)) {  parameters.put('patientFirstName', patient.Patient_First_Name__c); }
@@ -145,14 +146,14 @@ public with sharing class MedicalRecordUtility {
   		if (String.isEmpty(errorMessage)) { errorMessage = 'Unknown Error.'; }
   		errorMessage = 'Error creating new patient: ' + errorMessage;
   		ServerLogUtility.updateServerLog('MphRx', errorMessage);
-  	}
-  	return mphRxPatientID;
+  	}*/
+  	return null;//mphRxPatientID;
   }
   public static String getUploadDicomURL(Patient__c patient)
   {
 /*sample return {"success":[{"code":0,"text":"https://srsna.mphrx.com/connectwebapp/VStudy/uploadDicomWidget?sessionId=5E4FCD22A714F11DABA67573C95C66A7"}]}
 */
-    List<String> getURLResult = new List<String>();
+/*    List<String> getURLResult = new List<String>();
     String uploadDicomURL = '';
     Map<String, String> parameters = new Map<String, String>();
     parameters.put('patientId', patient.MphRx_Patient_ID__c);
@@ -168,18 +169,18 @@ public with sharing class MedicalRecordUtility {
       if (String.isEmpty(errorMessage)) { errorMessage = 'Unknown Error.'; }
       errorMessage = 'Error getting URL for DICOM upload: ' + errorMessage;
       ServerLogUtility.updateServerLog('MphRx', errorMessage);
-    }
-    return uploadDicomURL;
+    }*/
+    return null;//uploadDicomURL;
   }
   public static void testMphRx()
   {
- 	Patient__c[] testPatients = [SELECT Id, Patient_First_Name__c, Patient_Last_Name__c, Country__c, State__c, Date_of_Birth__c FROM Patient__c limit 1];
+/* 	Patient__c[] testPatients = [SELECT Id, Patient_First_Name__c, Patient_Last_Name__c, Country__c, State__c, Date_of_Birth__c FROM Patient__c limit 1];
 	if (testPatients.size()==1) {
 //	 	testPatients[0].Gender__c = 'Female';
 // 		Logger.info('Patient created with ID: ' + createMphRxPatientRecord(testPatients[0]));
 	
- 	testPatients[0].MphRx_Patient_ID__c = '61';
-  }  	
- 	Logger.info('URL for DICOM upload: ' + getUploadDicomURL(testPatients[0]));
+ 	testPatients[0].MphRx_Patient_ID__c = '61';*/
+//  }  	
+// 	Logger.info('URL for DICOM upload: ' + getUploadDicomURL(testPatients[0]));
   }  
 }

@@ -1,0 +1,1 @@
+public class NueException extends Exception {}

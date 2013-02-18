@@ -1,56 +1,46 @@
 public without sharing class patientPortalController {
 
-	public PRM_Config__c prmConfig { get; private set; }
+    public static String quotePdfURL = null;
+    public static String itineraryPdfURL = null;
+    static {
+    	PageReference pr = Page.Quote;
+        quotePdfURL = pr.getUrl();
+        
+        pr = Page.travelitineraryPdf;
+        itineraryPdfURL = pr.getUrl();
+    }
+    public PRM_Config__c prmConfig { get; private set; }
 
     public string currentPage {get;set;}
     public Patient__c patient {get;set;}
-    public boolean showDetailBox {get;set;}
-    public string showDetailID {get;set;}
     public string patientid {get;set;}
-    public map<id,sObject> detailMap {get;set;}
-    public sObject showDetailRecord{get;set;}
-    public string showDetailRecordType{get;set;}
 
-    public Treatment__c detailTreatment {get;set;}
     public Id treatmentId {get;set;}
-    public Task detailTask {get;set;}
-    public Travel__c detailTravel {get;set;}
-    public Payment__c detailPayment {get;set;}
-//    public Medical_Profile__c detailMedicalRecord {get;set;}
-    public Incident__c detailIncident {get;set;}
-    public Treatment_Quote__c detailTreatmentQuote {get;set;}
 
-    public string tempstring {get;set;} // placeholder string to be deleted once portal built out more
-    public Attachment tempfile {get;set;} // placeholder file to be deleted once portal built out more
+    public list<TreatmentRow> treatmentList {get; private set;}
+    public Medical_Facility__c destinationFacility {get; private set; }
     
-    public list<recentActivity> recentActivities {get;set;}
-    public list<Travel__c> travelList {get;set;}
-    public list<Treatment__c> treatmentList {get;set;}
-    public list<Treatment_Quote__c> treatmentQuoteList {get;set;}
+    public class TreatmentRow {
+    	public Treatment__c treatment {get; private set; }
+    	public String quoteURL { get; private set; }
+    	public String itineraryURL { get; private set; }
+    	public TreatmentRow( Treatment__c treatment ) {
+    		this.treatment = treatment;
+    		if (treatment.treatment_quotes__r.size()>0) {
+    			quoteURL = patientPortalController.quotePdfURL + '?id=' + treatment.treatment_quotes__r[0].id;
+    			itineraryURL = patientPortalController.itineraryPdfURL + '?id=' + treatment.treatment_quotes__r[0].id;
+    		}
+    	}
+    }
     
     public string selectedItinerary {get;set;}
     
-    public class recentActivity {
-        public string subject {get;set;}
-        public string reference {get;set;}
-        public string status {get;set;}
-        public string dateCreated {get;set;}
-        public datetime lastModified {get;set;}
-        public string index {get;set;}
-        public string relatedTreatment {get;set;}
-         
-        public recentActivity () {}
-    }
-    
     public patientPortalController () {
-    System.debug('patientPortalController constructor');
-        recentActivities  = new list<recentActivity>();
+ system.debug('patientPortalController');
 //        medicalRecords = new list<Medical_Profile__c>();
-        travelList = new list<Travel__c>();
-        treatmentList = new list<Treatment__c>();
-        treatmentQuoteList = new list<Treatment_Quote__c>();
+        loadPrmConfig();
+        treatmentList = new list<TreatmentRow>();
  
-system.debug('USERID:' +userinfo.getUserId());    
         User u = [select id, contactid from User where id = :userinfo.getUserId()];
         
         list<Patient__c> plist = [select id 
@@ -62,144 +52,34 @@ system.debug('USERID:' +userinfo.getUserId());
         if (apexPages.currentPage().getparameters().get('devPatID') != null) {
             patientid = apexPages.currentPage().getparameters().get('devPatID');
             load();
-        }
-        else if (plist != null && plist.size() > 0) {
+        } else if (plist != null && plist.size() > 0) {
             patientid = plist[0].id;
             load();
-        }
-        else currentPage ='Portal User Error'; 
-        showDetailBox = false;
+        } else currentPage ='Portal User Error'; 
         
-        loadPrmConfig();
     }
     
     public pagereference load() {
-    	Logger.info('load, patientId: '+patientid);
+  system.debug('load');
         patient = queryPatientRelatedDesc(patientid);
-		if ( patient.Treatments__r.size() > 0 ){
-	        treatmentId = patient.Treatments__r[0].Id;
-		}
-		system.debug('PATIENT: ' +patient);
-        detailMap = new map<id,sobject>();
-        buildRecentActivity();
+        if ( patient.Treatments__r.size() > 0 ){
+            treatmentId = patient.Treatments__r[0].Id;
+        }
+        loadTreatmentInfo();
         return null;
     }
     
-    public pagereference buildRecentActivity() {
-        recentActivities = new list<recentActivity>();
-/*        for (Medical_Profile__c mp : patient.Medical_Profiles__r) {
-            recentActivity r = new recentActivity();
-            r.lastModified = mp.LastModifiedDate;
-            r.subject = 'Medical Profile';
-            r.reference = mp.name;
-            r.status = '';
-            r.dateCreated = string.valueof(mp.CreatedDate);
-            sortInsertRecentActivity(r);
-            r.index = mp.id;
-            r.relatedTreatment ='';
-            detailMap.put(mp.id,mp);
+    public void loadTreatmentInfo() {
+  system.debug('loadTreatmentInfo');
+        Treatment__c[] treatments = queryTreatmentRelatedDesc(patient.treatments__r);
+        for (Treatment__c treatment : treatments) {
+        	treatmentList.add(new TreatmentRow(treatment));
         }
- */       
-        for (Task t : patient.tasks) {
-            recentActivity r = new recentActivity();
-            r.lastModified = t.LastModifiedDate;
-            r.subject = 'Task';
-            r.reference = t.subject;
-            r.status = '';
-            r.dateCreated = string.valueof(t.CreatedDate);          
-            sortInsertRecentActivity(r);
-            r.index = t.id;
-            r.relatedTreatment ='';
-            detailMap.put(t.id,t);
+  system.debug('loadTreatmentInfo 2 prmConfig='+prmConfig);
+        if (treatmentList.size()>0 && treatmentList[0].treatment.Destination_Facility__c != null && treatmentList[0].treatment.Destination_Facility__r.Patient_Portal_Banner_Image__c != null) {
+        	destinationFacility = treatmentList[0].treatment.Destination_Facility__r;
+  system.debug('loadTreatmentInfo 3');
         }
-        
-        for (Payment__c p : patient.payments__r) {
-            recentActivity r = new recentActivity();
-            r.lastModified = p.LastModifiedDate;
-            r.subject = 'Payment';
-            r.reference = p.name;
-            r.status = '';
-            r.dateCreated = string.valueof(p.CreatedDate);
-            sortInsertRecentActivity(r);
-            r.index = p.id;
-            r.relatedTreatment ='';
-            detailMap.put(p.id,p);
-        }
-        
-        set<id> treatmentIds = new set<id>();
-        for (Treatment__c t : patient.treatments__r) {
-            recentActivity r = new recentActivity();
-            r.lastModified = t.LastModifiedDate;
-            r.subject = 'Treatment';
-            r.reference = t.name;
-            r.status = '';
-            r.dateCreated = string.valueof(t.CreatedDate);
-            sortInsertRecentActivity(r);
-            r.index = t.id;
-            r.relatedTreatment ='';
-            detailMap.put(t.id,t);
-            treatmentIds.add(t.id);
-        } 
-        
-        treatmentList = queryTreatmentRelatedDesc(treatmentIDs);
-        map<id,Treatment__c> treatmentMap = new map<id,Treatment__c>();
-        for (Treatment__c t : treatmentList) {
-            treatmentMap.put(t.id,t);
-        }
-        
-        for (string s : treatmentMap.keySet()) {
-            recentActivity r = new recentActivity();
-           
-            for (Incident__c i : treatmentMap.get(s).Incidents__r) {
-                r = new recentActivity();
-                r.lastModified = i.LastModifiedDate;
-                r.subject = 'Incident';
-                r.reference = i.name;
-                r.status = '';
-                r.dateCreated = string.valueof(i.CreatedDate);
-                sortInsertRecentActivity(r);
-                r.index = i.id;
-                r.relatedTreatment = i.name;
-                detailMap.put(i.id,i);
-            }
-            
-            for (Treatment_Quote__c tq : treatmentMap.get(s).Treatment_Quotes__r) {
-                r = new recentActivity();
-                r.lastModified = tq.LastModifiedDate;
-                r.subject = 'Treatment Quote';
-                r.reference = tq.name;
-                r.status = '';
-                r.dateCreated = string.valueof(tq.CreatedDate);
-                sortInsertRecentActivity(r);
-                r.index = tq.id;
-                r.relatedTreatment = tq.name;
-                detailMap.put(tq.id,tq);
-                /*NEED TO DO LAST 10 TQ INTO TQ LIST FOR ITINERARY DISPLAY*/
-                
-            }
-        }
-        return null;
-    }
-    
-    public pagereference sortInsertRecentActivity (recentActivity r) {
-        if (recentActivities.size() > 0) {
-            recentActivities.add(r);
-            for (integer i = recentActivities.size()-1; i >=0 ; i--) { //reverse
-                if (r.lastModified > recentActivities[i].lastModified) {
-                    for (integer j = recentActivities.size()-1; j> i+1; j--) {
-                        recentActivities[j] = recentActivities[j-1];
-                    }
-                    break;
-                }
-                else break; //if not more recent than last element in list, leave at end
-            }
-        }
-        else recentActivities.add(r);
-        
-        if (recentActivities.size() > 10) {
-            recentActivities.remove(10); //10th index is 11th item
-        }
-        return null;
     }
     
     public pagereference goToHome(){ 
@@ -207,11 +87,6 @@ system.debug('USERID:' +userinfo.getUserId());
         return null;
     }
     
-    public pagereference goToMessaging(){
-        currentPage = 'Messaging';
-        return null;
-    }
-
     public pagereference goToMedicalRecords(){
         currentPage = 'Medical Records';
         return null;
@@ -222,59 +97,11 @@ system.debug('USERID:' +userinfo.getUserId());
         return null;
     }
     
-    public pagereference goToHaveAQuestion() {
-        currentPage = 'Have a Question?';
-        return null;
-    }
-    
     public pagereference goToYourTreatment (){
         currentPage = 'Your Treatment'; 
         return null;
     }
 
-    public pagereference showDetails(){
-        if (showDetailBox==false) {
-            if (apexpages.currentpage().getparameters().get('showDetailID')!= null){
-                showDetailID = apexpages.currentpage().getparameters().get('showDetailID');
-            }
-            showDetailRecord = detailMap.get(showDetailId);
-
-            if (showDetailRecord instanceof Treatment__c){
-                showDetailRecordType = 'Treatment';
-                detailTreatment = (Treatment__c)showDetailRecord;
-            }   
-            else if (showDetailRecord instanceof Task){
-                showDetailRecordType = 'Task';
-                detailTask = (Task)showDetailRecord;
-            }
-            else if (showDetailRecord instanceof Travel__c){
-                showDetailRecordType = 'Travel';
-                detailTravel = (Travel__c)showDetailRecord;
-            }
-            else if (showDetailRecord instanceof Payment__c){
-                showDetailRecordType = 'Payment';
-                detailPayment = (Payment__c)showDetailRecord;
-            }
-/*            else if (showDetailRecord instanceof Medical_Profile__c){
-                showDetailRecordType = 'Medical Record';
-                detailMedicalRecord = (Medical_Profile__c)showDetailRecord;
-            }*/
-            else if (showDetailRecord instanceof Incident__c){
-                showDetailRecordType = 'Incident';
-                detailIncident = (Incident__c)showDetailRecord;
-            }
-            else if (showDetailRecord instanceof Treatment_Quote__c){
-                showDetailRecordType = 'Treatment Quote';
-                detailTreatmentQuote = (Treatment_Quote__c)showDetailRecord;
-            }
-            else showDetailRecordType = 'Undefined';
-            
-            showDetailBox = true;
-        }
-        else showDetailBox = false;
-        return null;
-    }
-    
     public pagereference getItineraryPDF() {
         if (apexpages.currentpage().getParameters().get('selectedItinerary') != null) {
             selectedItinerary = apexpages.currentpage().getParameters().get('selectedItinerary');       
@@ -284,67 +111,6 @@ system.debug('USERID:' +userinfo.getUserId());
         p.getParameters().put('id',selectedItinerary);
         p.setRedirect(true);
         return p;
-    }
-    
-    @isTest (seealldata=true)
-    public static void patientPortalTest (){
-        User u = new User(
-            lastname='test',
-            alias='test',
-            email='test@test.com',
-            username='patientportal@test.com',
-            CommunityNickname ='tester',
-            timeZoneSidKey='America/Los_Angeles',
-            localeSidKey='en_US',
-            emailencodingkey='UTF-8',
-            profileid=[select id from Profile limit 1].id,
-            languagelocalekey='en_US'
-            );
-        insert u;
-        
-        Patient__c p = new Patient__c(name='testp');
-        insert p;
-        
-        Travel__c testTravel = new Travel__c();
-        insert testTravel;
-
-        Treatment__c treatmentTest = new treatment__c();
-        treatmentTest.Travel__c = testTravel.Id;
-        insert treatmentTest;
-        
-        Task taskTest = new Task();
-        taskTest.Subject = 'test';
-        taskTest.Status = 'None';
-        taskTest.WhatId = p.id;
-        insert taskTest;
-        
-        
-        Payment__c paymentTest = new Payment__c();
-        paymentTest.Patient__c = p.id;
-        paymentTest.Treatment__c = treatmentTest.id;
-        insert paymentTest;
-
-/*        Medical_Profile__c MRTest = new Medical_Profile__c();
-        MRTest.Patient__c = p.id;
-        MRTest.Treatment__c = treatmentTest.id;
-        insert MRTest;
-*/        
-        Treatment_Quote__c quoteTest = new Treatment_Quote__c();
-        quoteTest.Treatment__c = treatmentTest.id;
-        insert quoteTest;
-                
-        system.runAs(u) {
-            Pagereference pg = Page.patientPortal;
-            pg.getParameters().put('devPatID',p.id);
-            test.setCurrentPage(pg);
-            patientPortalController pcont = new patientPortalController();
-            pcont.goToHome();
-            pcont.goToMedicalRecords();
-            pcont.goToYourTravel();
-            pcont.goToHaveAQuestion();
-            pcont.goToYourTreatment();
-            pcont.showDetails();
-        }
     }
     
     public Patient__c queryPatientRelatedDesc(string patientId) {
@@ -471,7 +237,7 @@ system.debug('USERID:' +userinfo.getUserId());
                 where id = :patientId];
     }
     
-    public list<Treatment__c> queryTreatmentRelatedDesc(set<id> treatmentIds) {
+    public list<Treatment__c> queryTreatmentRelatedDesc(Treatment__c[] treatments) {
         return 
             [ Select    t.Treatment_Summary__c,
                         t.Travel__c,
@@ -490,6 +256,7 @@ system.debug('USERID:' +userinfo.getUserId());
                         t.Preferred_Travel_Date_From__c,
                         t.Preferred_Form_of_Contact__c,
                         t.Destination_Facility__c,
+                        t.Destination_Facility__r.Patient_Portal_Banner_Image__c,
                         t.Phase__c,
                         t.Payment_Type__c,
                         t.Patient__c,
@@ -551,25 +318,89 @@ system.debug('USERID:' +userinfo.getUserId());
                                 order by tq.lastmodifieddate desc)    
                     From Treatment__c t
                     where id
-                    IN :treatmentIds
+                    IN :treatments
                     order by t.Procedure_Date__c desc
             ];
     }
-    public PageReference uploadDicom()
-    {
-    	return null;
-    }
     public PageReference uploadDocument()
     {
-    	return null;
+        return null;
     }
     
     public List<Medical_Record__c> getMedicalRecords() {
-    	return patient.Medical_Records__r;
+        return patient.Medical_Records__r;
     }
     
     private void loadPrmConfig() {
-    	PRM_Config__c[] config = [select Facilitator_Name__c, Banner_Image__c, Patient_Portal_CSS__c from PRM_Config__c limit 1];
-    	prmConfig = config.size()==1? config[0] : new PRM_Config__c();
+ system.debug('loadPrmConfig');
+        PRM_Config__c[] config = [select 
+        	Patient_Portal_Banner_Image__c,
+        	Patient_Portal_Welcome_Message__c,
+        	Facilitator_Name__c, 
+        	Patient_Portal_CSS__c 
+        	from PRM_Config__c limit 1];
+ system.debug('config='+config);
+//Fix banner reference        
+        prmConfig = config.size()==1? config[0] : new PRM_Config__c();
     }
+    
+    public PageReference portalTypeRedirect()
+    {
+    	Logger.info('Checking for redirect.');
+    	Profile[] userProfile = [Select Id from Profile Where Name = 'providerPortal'];
+    	if (userProfile.size() > 0)
+    	{
+    		Id profileId = userProfile[0].id;
+    		if (UserInfo.getProfileId() == profileId)
+    		{
+	        PageReference providerPortalPage = new PageReference('/DoctorPortal');
+	        providerPortalPage.setRedirect(true);
+	        return providerPortalPage;    			
+    		}
+    	}
+      return null;
+    }
+        
+    @isTest (seealldata=true)
+    public static void patientPortalTest (){
+        User u = new User(
+            lastname='test',
+            alias='test',
+            email='test@test.com',
+            username='patientportal@test.com',
+            CommunityNickname ='tester',
+            timeZoneSidKey='America/Los_Angeles',
+            localeSidKey='en_US',
+            emailencodingkey='UTF-8',
+            profileid=[select id from Profile limit 1].id,
+            languagelocalekey='en_US'
+            );
+        insert u;
+        
+        Patient__c p = new Patient__c(name='testp');
+        insert p;
+        
+        Travel__c testTravel = new Travel__c();
+        insert testTravel;
+
+        Treatment__c treatmentTest = new treatment__c();
+        treatmentTest.Travel__c = testTravel.Id;
+        insert treatmentTest;
+        
+        Treatment_Quote__c quoteTest = new Treatment_Quote__c();
+        quoteTest.Treatment__c = treatmentTest.id;
+        insert quoteTest;
+                
+        system.runAs(u) {
+            Pagereference pg = Page.patientPortal;
+            pg.getParameters().put('devPatID',p.id);
+            test.setCurrentPage(pg);
+            patientPortalController pcont = new patientPortalController();
+            pcont.goToHome();
+            pcont.goToMedicalRecords();
+            pcont.goToYourTravel();
+            pcont.goToYourTreatment();
+        }
+    }
+    
 }
