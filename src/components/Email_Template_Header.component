@@ -7,7 +7,7 @@
 			<tbody>
 				<tr>
 				  <td align="left">
-				    <a href="{!PRMConfig.contact_Link_URL__c}" target="_blank"><c:Email_Template_Image height="22" width="70" document_Name="Email_Button"/></a>
+				    <a href="{!PRMConfig.contact_Link_URL__c}" target="_blank"><c:Email_Template_Image height="22" width="70" resource_URL="{!URLFOR($Resource.Email_Images, 'email.png')}"/></a>
 				  </td>
 			   	<td style="letter-spacing: 2px;font-family: &quot;Segoe UI&quot;, Tahoma, Geneva, Verdana, sans-serif;font-size: 15px" align="right">
 				    <strong>

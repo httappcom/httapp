@@ -34,7 +34,7 @@
                             <td align="center" width="315">
                               <br />
                               <span class="style2" style=
-                              "font-size: 12px;color: #2D497D"><c:Email_Template_Image document_Name="imgWeightLoss_png" height="362" width="300" /><br />
+                              "font-size: 12px;color: #2D497D"><c:Email_Template_Image resource_URL="{!URLFOR($Resource.Email_Images, 'imgWeightLoss.png')}" height="362" width="300" /><br />
                               <br /></span>
                             </td>
                           </tr>

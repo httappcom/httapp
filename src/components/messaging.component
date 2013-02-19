@@ -23,7 +23,7 @@
                                         </span>
                                     </a>
                                 </div>
-                                <div class="chatterUserStatusName st_align-center">
+                                <div class="chatterUserStatusName st_chatterUserStatusName">
                                     <a title="{!$User.FirstName} {!$User.LastName}" href="/_ui/core/userprofile/UserProfilePage?u={!$User.Id}">{!$User.FirstName} {!$User.LastName}</a>
                                 </div>
                                 <div class="chatter-clear">&nbsp;</div>
@@ -119,11 +119,11 @@
                                                     <div class="contentPublisherSlideDown abovePublisher">
 
                                                         <apex:outputPanel layout="block" id="chatterTaskPost" styleClass="panel" rendered="{!mode == 'Task'}" >
-                                                            <div class="panelBody clear">
+                                                            <div class="panelBody clear st_margin-bottom">
                                                                 <table class="postInput">
                                                                     <tbody>
                                                                         <tr>
-                                                                            <th scope="row"><label for="taskSubject"><span class="requiredMark">*</span>Task Subject</label></th>
+                                                                            <th scope="row" class="st_padding-right"><label for="taskSubject"><span class="requiredMark">*</span>Task Subject</label></th>
                                                                             <td>
                                                                                 <div class="requiredInput" >
                                                                                     <div class="requiredBlock"></div>
@@ -268,22 +268,20 @@
                                             <div class="clearingBox"></div>
 
                                             <apex:outputPanel layout="block" >
-                                                <apex:outputPanel layout="block" styleClass="panelBody clear" rendered="{!newTopic != null}" >
+                                                <apex:outputPanel layout="block" styleClass="panelBody st_panelBody clear" rendered="{!newTopic != null}" >
                                                     <table class="postInput">
                                                         <tbody>
                                                             <tr>
-                                                                <th scope="row"><label for="topicName"><span class="requiredMark">*</span>Topic Name</label></th>
+                                                                <th scope="row" class="st_padding-right"><label for="topicName"><span class="requiredMark">*</span>Topic Name</label></th>
                                                                 <td>
                                                                     <div class="requiredInput" >
                                                                         <div class="requiredBlock"></div>
                                                                         <apex:inputField id="topicName" value="{!newTopic.Name}" />
                                                                     </div>
                                                                 </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row" colspan="2" >
+                                                                <td class="st_button_small">
                                                                     <apex:commandLink value="Save" action="{!insertNewTopic}" />
-                                                                </th>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>

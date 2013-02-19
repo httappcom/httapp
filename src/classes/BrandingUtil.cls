@@ -27,7 +27,7 @@ public with sharing class BrandingUtil {
     linkurl += '&oid=' + oid;
     return linkurl;  	
   }  
-  private String queryPatientPortalURL()
+  private static String queryPatientPortalURL()
   {
       List<Site> patientPortal = [Select Subdomain From Site Where MasterLabel = 'Patient Portal' ];
       String patientPortalSubdomain = patientPortal.size()>0?patientPortal[0].Subdomain:'';   
@@ -36,7 +36,7 @@ public with sharing class BrandingUtil {
       patientPortalLink += Instance + '.force.com';
       return patientPortalLink;  	
   }
-  public String getPatientPortalLink()
+  public static String patientPortalLink()
   {
   	PortalLinks__c pl = PortalLinks__c.getInstance('Default');
   	if (pl == null)

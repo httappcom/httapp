@@ -8,13 +8,63 @@ border-radius:10px !important;
 .st_padding-top{
 	padding-top: 25px;
 }
+th.st_padding-right{
+	padding-right: 25px;
+}
+
+.st_margin-bottom{
+	margin-bottom: 25px;
+}
 
 .st_margin-auto{
 	margin: auto !important;
 }
-.st_align-center{
-	text-align:center;
+.st_chatterUserStatusName{
+	text-align:center !important;
+	margin-top:10px !important;
 }
+.st_chatterUserStatusName a{
+	text-decoration:none !important;
+	font-weight:bold;
+}
+.st_panelBody{
+	margin-bottom:25px;
+}
+.st_button_small a{
+	font-size:12px !important;
+	text-decoration:none !important;
+	font-weight:bold !important;
+	padding:2px 10px;
+	color:#000000 !important;
+	border: 1px silver solid;
+	border-radius:5px;
+}
+.st_button_small a:hover{
+	text-decoration:underline!important;
+	background-color:#d2effc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .zen .zen-page {
 min-width:989px;
@@ -8978,7 +9028,6 @@ border:none!important;
 
 .chatter-avatar img {
 border:none!important;
-padding-bottom:10px;
 }
 
 .chatter-avatar .chatter-avatarStyle {

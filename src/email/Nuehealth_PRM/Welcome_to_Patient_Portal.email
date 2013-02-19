@@ -26,10 +26,10 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                              <c:Email_Template_Image document_Name="img_woman_web_surfing_png" alt="" height="248" width="335" /><br />
+                              <c:Email_Template_Image resource_URL="{!URLFOR($Resource.Email_Images, 'img_woman-web-surfing.png')}" alt="" height="248" width="335" /><br />
                               <br />
                               <br />
-                              <c:Email_Template_Portal_URL patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image document_Name="btn_patient_portal_png" alt="Patient Portal" /></c:Email_Template_Portal_URL><br />
+                              <c:Email_Template_Portal_URL patient_Id="{!relatedTo.Patient__r.Id}"><c:Email_Template_Image resource_URL="{!URLFOR($Resource.Email_Images, 'btn_patient-portal.png')}" alt="Patient Portal" /></c:Email_Template_Portal_URL><br />
                               <br />
                               <br />
                               <br />

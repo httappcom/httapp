@@ -28,7 +28,7 @@
                             <td align="center" width="315">
                               <br />
                               <br />
-                              <c:Email_Template_Image document_Name="img_traveler3_png" height="263" width="343" />
+                              <c:Email_Template_Image resource_URL="{!URLFOR($Resource.Email_Images, 'img_traveler3.png')}" height="263" width="343" />
                             </td>
                           </tr>
                         </tbody>

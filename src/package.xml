@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -90,6 +90,8 @@
         <members>NueHealth_Images</members>
         <members>NueHealth_Images/Email_Button.png</members>
         <members>NueHealth_Images/NGA_Banner.png</members>
+        <members>NueHealth_Images/NueHealthLogo.jpg</members>
+        <members>NueHealth_Images/NueHealth_Logo.jpg</members>
         <members>NueHealth_Images/NueHealth_Test_Image.png</members>
         <members>NueHealth_Images/footer_htg_we_take_care.jpg</members>
         <members>NueHealth_Images/generic_htg_team.png</members>
@@ -97,8 +99,6 @@
         <members>NueHealth_Images/img_doctors2.png</members>
         <members>PRM_Documents/Header_Logo.jpeg</members>
         <members>PRM_Documents/Header_Logo.jpg</members>
-        <members>NueHealth_Images/NueHealth_Logo.jpg</members>
-        <members>NueHealth_Images/NueHealthLogo.jpg</members>
         <name>Document</name>
     </types>
     <types>
@@ -131,6 +131,7 @@
         <members>Nuehealth_PRM/Travel_Arrangements_for_Your_Upcoming_Surgery</members>
         <members>Nuehealth_PRM/We_Have_Received_Your_Medical_Profile</members>
         <members>Nuehealth_PRM/Welcome_Home</members>
+        <members>Nuehealth_PRM/Welcome_to_Patient_Portal</members>
         <members>Nuehealth_PRM/Your_Travel_Itinerary_is_Ready</members>
         <name>EmailTemplate</name>
     </types>
@@ -168,13 +169,13 @@
         <members>Referral_Source__c-Referral Source Layout</members>
         <members>Server_Log__c-Server Log Layout</members>
         <members>Survey_Header__c-Survey Header Layout</members>
+        <members>Survey_Instance__c-Notification Layout</members>
         <members>Survey_Question__c-Survey Question Layout</members>
         <members>Topic__c-Topic Layout</members>
         <members>Travel__c-Travel Layout</members>
         <members>Treatment_Quote__c-Interaction Quote Layout</members>
         <members>Treatment__c-Treatment Layout</members>
         <members>User-User Layout</members>
-        <members>Survey_Instance__c-Notification Layout</members>
         <name>Layout</name>
     </types>
     <types>
@@ -207,4 +208,3 @@
     </types>
     <version>26.0</version>
 </Package>
-

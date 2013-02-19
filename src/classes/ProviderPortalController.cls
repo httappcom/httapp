@@ -22,6 +22,9 @@ public without sharing class ProviderPortalController {
     public Id commTreatmentId {get;set;}
 
     public list<TreatmentRow> treatmentList {get; private set;}
+    public List<SelectOption> patientSelectList { get; private set; }
+    private Map <ID, List<SelectOption>> patientToTreatmentSelectListMap = null;
+    public List<SelectOption> treatmentSelectList { get; private set; }
     public Medical_Facility__c destinationFacility {get; private set; }
     private User user = null;
     public Treatment__c currentTreatment { get; private set; }
@@ -84,18 +87,22 @@ Stage or Sub Stage
   system.debug('load');
   		try {
         	loadTreatmentList();
-        	if (treatmentList != null && treatmentList.size()>0) {
-        		commPatientId = treatmentList[0].treatment.Patient__c;
-        		commTreatmentId = treatmentList[0].treatment.id;
-        	}
   		} catch (Exception e) {
   			system.debug('Exception='+e);
   			system.debug(e.getStackTraceString());
   		}
         return null;
     }
+    public PageReference commPatientChanged() {
+    	treatmentSelectList = patientToTreatmentSelectListMap.get(commPatientId);
+    	return null;
+    }
     
+    public PageReference commTreatmentChanged() {
+    	return null;
+    }
     public void loadTreatmentList() {
+    	patientToTreatmentSelectListMap = new Map <ID, List<SelectOption>>();
         treatmentList = new list<TreatmentRow>();
   system.debug('loadTreatmentList user.id='+user.id);
   		Care_Team_Member__c[] members = [select 
@@ -112,8 +119,23 @@ Stage or Sub Stage
   			currentTreatment = members[0].Treatment__r;
   		}
   		Set<ID> patientIds = new Set<ID>();
+  		patientSelectList = new List<SelectOption>();
+  		treatmentSelectList = new List<SelectOption>();
   		for (Care_Team_Member__c member : members) {
+  system.debug('loadTreatment Patient='+member.Treatment__r.Patient__r.Name);
   			patientIds.add(member.Treatment__r.Patient__c);
+  			patientSelectList.add(new SelectOption(member.Treatment__r.Patient__c, member.Treatment__r.Patient__r.Name));
+  			List<SelectOption> tList = patientToTreatmentSelectListMap.get(member.Treatment__r.Patient__c);
+  			if (tList == null) {
+  				tList = new List<SelectOption>();
+  				patientToTreatmentSelectListMap.put(member.Treatment__r.Patient__c, tList);
+  			}
+  			tList.add(new SelectOption(member.Treatment__c, member.Treatment__r.Name));
+  		}
+  		patientSelectList = SelectOptionUtil.sort(patientSelectList);
+  		for (ID patientId : patientToTreatmentSelectListMap.keySet()) {
+  			List<SelectOption> tList = patientToTreatmentSelectListMap.get(patientId);
+	  		patientToTreatmentSelectListMap.put(patientId, SelectOptionUtil.sort(tList));
   		}
   system.debug('patientIds='+patientIds);
   		loadPatientMap( patientIds );
@@ -123,6 +145,11 @@ Stage or Sub Stage
   			TreatmentRow row = new TreatmentRow( member.Treatment__r, patient );
   			treatmentList.add(row);
   		}
+       	if (treatmentList != null && treatmentList.size()>0) {
+       		commPatientId = treatmentList[0].treatment.Patient__c;
+       		commPatientChanged();
+       		commTreatmentId = treatmentList[0].treatment.id;
+       	}
   system.debug('loadTreatmentInfo 2');
     }
     

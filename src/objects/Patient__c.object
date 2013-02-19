@@ -592,18 +592,6 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <type>Phone</type>
     </fields>
     <fields>
-        <fullName>Portal_User__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Portal User</label>
-        <referenceTo>User</referenceTo>
-        <relationshipName>Patients</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Postal_Code__c</fullName>
         <externalId>false</externalId>
         <label>Postal Code</label>

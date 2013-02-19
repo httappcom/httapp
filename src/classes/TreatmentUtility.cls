@@ -28,39 +28,20 @@ public with sharing class TreatmentUtility {
         return results;
     }
 
-    public static void afterInsert (List<Treatment__c> treatments){
+    public static void afterInsert (List<Treatment__c> treatments) {
         patientIds = new Set<Id>();
-        List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
-        List<Topic__c> topicInserts = new List<Topic__c>();
-
         for ( Treatment__c treatment : treatments ){
             if ( treatment.Patient__c != null ){
                 patientIds.add(treatment.Patient__c);
             }
         }
         patientMap = populatePatientMap(patientIds);
-        orgDefaultUsers = populateOrgDefaultUsers();
-
+    	updateCareTeamMembers( treatments, true );
+        List<Topic__c> topicInserts = new List<Topic__c>();
         for ( Treatment__c treatment : treatments ){
-            if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ){
+            if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ) {
                 Patient__c thisPatient = patientMap.get(treatment.Patient__c);
-
-                careTeamMemberInserts.add( new Care_Team_Member__c( Treatment__c = treatment.id, Role__c = 'PCC', User__c = treatment.OwnerId));
-                if ( thisPatient.Portal_User__c != null ){
-                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = thisPatient.Portal_User__c, Role__c = 'Patient'));
-                }
-                if ( treatment.Onsite_Coordinator__c != null ){
-                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = treatment.Onsite_Coordinator__c, Role__c = 'Onsite Coordinator'));
-                }
-                if ( orgDefaultUsers != null && orgDefaultUsers.containsKey(medicalInformationOfficer) ){
-                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = orgDefaultUsers.get(medicalInformationOfficer).Id, Role__c = 'Medical Information Officer'));
-                }
-                if ( orgDefaultUsers != null &&  orgDefaultUsers.containsKey(travelConcierge) ){
-                    careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, User__c = orgDefaultUsers.get(travelConcierge).Id, Role__c = 'Travel Concierge'));
-                }
-
                 topicInserts.add(new Topic__c(Name = 'Treatment', Treatment__c = treatment.Id, Patient__c = thisPatient.Id));
-
                 if ( treatment.Travel__c != null ) {
                     topicInserts.add(new Topic__c(Name = 'Travel', Treatment__c = treatment.Id, Patient__c = thisPatient.Id));
                 }
@@ -69,7 +50,6 @@ public with sharing class TreatmentUtility {
             
         }
         insert topicInserts;
-        insert careTeamMemberInserts;
     }
     
   public static void beforeUpdate(List<Treatment__c> treatments,
@@ -79,28 +59,69 @@ public with sharing class TreatmentUtility {
     }
   }
 
-    public static void afterUpdate(List<Treatment__c> newTreatments, List<Treatment__c> oldTreatments ){
-        List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
-        for ( Integer i=0; i<newTreatments.size(); i++ ){
-            if ( newTreatments[i].OwnerId != oldTreatments[i].OwnerId ){
-                careTeamMemberInserts.add( new Care_Team_Member__c(Treatment__c = newTreatments[i].Id, User__c = newTreatments[i].OwnerId, Role__c = 'PCC') );
+    public static void afterUpdate(List<Treatment__c> newTreatments ) {
+ system.debug('afterUpdate');
+        patientIds = new Set<Id>();
+        for ( Treatment__c treatment : newTreatments ){
+            if ( treatment.Patient__c != null ){
+                patientIds.add(treatment.Patient__c);
             }
         }
-        if ( careTeamMemberInserts.size() > 0 ){
-            insert careTeamMemberInserts;
-        }
+ system.debug('patientIds='+patientIds);
+        patientMap = populatePatientMap(patientIds);
+    	updateCareTeamMembers( newTreatments, false );
     }
 
+	private static void updateCareTeamMembers( List<Treatment__c> treatments, Boolean isInsert ) {
+system.debug('updateCareTeamMembers');
+        List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
+
+		Set<ID> treatmentIds = new Set<ID>();
+        for ( Treatment__c treatment : treatments ){
+            if ( treatment.Patient__c != null ){
+            	treatmentIds.add(treatment.id);
+            }
+        }
+        if (isInsert) {
+	        orgDefaultUsers = populateOrgDefaultUsers();
+        }
+
+  system.debug('treatmentIds X='+treatmentIds);
+		loadCareTeamMemberMap( treatmentIds );
+
+        for ( Treatment__c treatment : treatments ){
+            if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ) {
+                Patient__c thisPatient = patientMap.get(treatment.Patient__c);
+
+				checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'PCC', treatment.OwnerId );
+                if ( treatment.Onsite_Coordinator__c != null ) {
+					checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'Onsite Coordinator', treatment.Onsite_Coordinator__c );
+                }
+                if (isInsert) {
+	                if ( orgDefaultUsers != null && orgDefaultUsers.containsKey(medicalInformationOfficer) ) {
+						checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'Medical Information Officer', orgDefaultUsers.get(medicalInformationOfficer).Id );
+        	        }
+            	    if ( orgDefaultUsers != null &&  orgDefaultUsers.containsKey(travelConcierge) ) {
+					checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'Travel Concierge', orgDefaultUsers.get(travelConcierge).id );
+                	}
+                }
+            }
+            
+        }
+        if (careTeamMemberInserts.size()>0) {
+	        insert careTeamMemberInserts;
+        }
+	}
     
   private static Map<Id, Patient__c> populatePatientMap(Set<Id> pPatientIds) {
     if (pPatientIds != null && pPatientIds.size() > 0) {
       return new Map<Id, Patient__c>([select Time_Zone__c,
+      										 Key_Contact__c,
                                              Street__c,
                                              State__c,
                                              Salutation__c,
                                              Preferred_Language__c,
                                              Postal_Code__c,
-                                             Portal_User__c,
                                              Phone__c,
                                              Patient_Stage__c,
                                              Mobile__c,
@@ -113,16 +134,8 @@ public with sharing class TreatmentUtility {
                                              Advocate_Phone__c,
                                              Advocate_Name__c,
                                              Advocate_Email__c,
-                                             SystemModstamp,
-                                             OwnerId,
                                              Name,
-                                             LastModifiedDate,
-                                             LastModifiedById,
-                                             LastActivityDate,
-                                             IsDeleted,
-                                             Id,
-                                             CreatedDate,
-                                             CreatedById
+                                             Id
                                       from Patient__c
                                       where Id IN :pPatientIds]);
     } else {
@@ -221,4 +234,36 @@ public with sharing class TreatmentUtility {
       }  
    } 
    
+   	private static Map<String, Id> careTeamMemberMap = null;
+   	private static void loadCareTeamMemberMap( Set<ID> treatmentIds ) {
+   		Care_Team_Member__c[] members = [SELECT Role__c, User__c, Treatment__c FROM Care_Team_Member__c where treatment__c in :treatmentIds];
+   		careTeamMemberMap = new Map<String, Id>();
+   		for (Care_Team_Member__c member : members) {
+   			String key = member.Treatment__c + '+' + member.Role__c + '+' + member.User__c;
+   			careTeamMemberMap.put( key, member.id );
+   		}
+   	}
+   	private static Boolean careTeamMemberExists( ID treatmentId, String role, Id userId) {
+		String key = treatmentId + '+' + role + '+' + userId;
+   		return careTeamMemberMap.get(key) != null;
+   	}
+   	
+   	private static void checkCareTeamMembership( List<Care_Team_Member__c> members, ID treatmentId, String role, ID userId ) {
+   		if (!careTeamMemberExists( treatmentId, role, userId)) {
+            members.add( new Care_Team_Member__c( Treatment__c = treatmentId, Role__c = role, User__c = userId));
+   		}
+   	}
+
+	public static Map<ID, ID> contactToUserMap = null;
+	public static void loadContactToUserMap(Set<ID> contacts) {
+system.debug('contacts='+contacts);
+		User[] users = [select id, ContactId from User where ContactId in :contacts];
+system.debug('users='+users);
+		contactToUserMap = new Map<ID, ID>();
+		for (User user : users) {
+			contactToUserMap.put(user.ContactId, user.id);
+		}
+	}
+
+
 }

@@ -66,7 +66,7 @@
     	</apex:actionFunction> 
     	<apex:actionFunction name="approveTreatment" action="{!approveTreatment}" reRender="pbsPatientDashboard"> 
         	<apex:param name="treatmentId" assignTo="{!treatmentId}" value="" /> 
-    	</apex:actionFunction> 
+    	</apex:actionFunction>
     	<apex:actionFunction name="denyTreatment" action="{!denyTreatment}" reRender="pbsPatientDashboard"> 
         	<apex:param name="treatmentId" assignTo="{!treatmentId}" value="" /> 
     	</apex:actionFunction> 
@@ -88,7 +88,30 @@
                 </apex:outputpanel>
 
 				<apex:pageBlockSection id="pbsCollaboration" collapsible="true" title="Collaboration" rendered="{!!ISNULL(commPatientId) && !ISNULL(commTreatmentId)}">
+				  <apex:panelGrid columns="1">
+				  <apex:actionRegion >
+				      	<apex:actionFunction name="commPatientChanged" action="{!commPatientChanged}" reRender="pbsCollaboration"/>
+				      	<apex:actionFunction name="commTreatmentChanged" action="{!commPatientChanged}" reRender="pbsCollaboration"/>
+				  
+						<apex:outputPanel id="commPanel1" layout="block">
+						  <apex:outputPanel rendered="{!!ISNULL(patientSelectList) && patientSelectList.size>0}">
+							<apex:outputLabel value="Patient"/>&nbsp;
+							<apex:selectList value="{!commPatientId}" multiselect="false" onchange="commPatientChanged();" size="1">
+            					<apex:selectOptions value="{!patientSelectList}"/>
+        					</apex:selectList>&nbsp;&nbsp;&nbsp;
+        				  </apex:outputPanel>
+						  <apex:outputPanel rendered="{!!ISNULL(treatmentSelectList) && treatmentSelectList.size>0}">
+							<apex:outputLabel value="Treatment"/>&nbsp;
+							<apex:selectList value="{!commTreatmentId}" multiselect="false" onchange="commTreatmentChanged();" size="1">
+            					<apex:selectOptions value="{!treatmentSelectList}"/>
+        					</apex:selectList>
+						  </apex:outputPanel>
+						</apex:outputPanel>
+					</apex:actionRegion>
+					<div>
 					<c:messaging pId="{!commPatientId}" treatmentId="{!commTreatmentId}" canAddCareTeamMember="false" />
+					</div>
+					</apex:panelGrid>
 				</apex:pageBlockSection>
 				                
 				<apex:pageBlockSection id="pbsPatientDashboard" collapsible="true" title="Patient Dashboard">
@@ -112,11 +135,11 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Treatment</apex:facet>
-                            <apex:outputField value="{!t.treatment.Name}"/>
+                            <apex:outputText value="{!t.treatment.Name & ' (' & t.treatment.Procedure__c & ')'}"/>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Medical Profile</apex:facet>
-                            <apex:outputPanel >
+                            <apex:outputPanel rendered="{!!ISNULL(t.patient.Survey_Headers__r) && t.patient.Survey_Headers__r.size>0}">
                             	<a href="javascript:showSurveyResults('{!t.patient.Survey_Headers__r[0].id}')">View</a>
                             </apex:outputPanel>
                         </apex:column>

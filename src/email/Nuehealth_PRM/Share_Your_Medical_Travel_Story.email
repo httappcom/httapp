@@ -27,9 +27,9 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                              <c:Email_Template_Image document_Name="img_tell_your_story_jpg" height="296" width="266" /><br />
+                              <c:Email_Template_Image height="296" width="266" resource_URL="{!URLFOR($Resource.Email_Images, 'img_tell-your-story.jpg')}" /><br />
                               <br />
-                              <a href="https://healthtravelguides.custhelp.com/ci/documents/detail/2/600"><c:Email_Template_Image document_Name="ad_get_referral_png" height="145" width="225" /></a><br />
+                              <a href="https://healthtravelguides.custhelp.com/ci/documents/detail/2/600"><c:Email_Template_Image resource_URL="{!URLFOR($Resource.Email_Images, 'ad_get-referral.png')}" height="145" width="225" /></a><br />
                             </td>
                           </tr>
                         </tbody>

@@ -2,14 +2,14 @@
   <apex:composition template="{!$Site.Template}">
     <apex:define name="body">
       <center>
-        <apex:panelGrid bgcolor="white" columns="1">
+        <apex:panelGrid columns="1">
           <br/>
           <br/>
           <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer">
             <br/>
             <apex:outputPanel layout="block" styleClass="topPanel">
               <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="3">
-                <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/clock.png')}"/>
+                <apex:image url="{!$Resource.loginGlobePlaceholder}"/>
                 <apex:image url="{!URLFOR($Resource.SiteSamples, 'img/warning.gif')}"/>
                 <apex:panelGroup >
                   <apex:outputText styleClass="title" value="{!$Label.site.page_not_found_detail}">

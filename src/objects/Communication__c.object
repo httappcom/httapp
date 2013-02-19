@@ -92,11 +92,12 @@
     </fields>
     <fields>
         <fullName>From_User__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>From User</label>
-        <referenceTo>User</referenceTo>
-        <relationshipName>Communications</relationshipName>
+        <referenceTo>Care_Team_Member__c</referenceTo>
+        <relationshipLabel>Communications (From User)</relationshipLabel>
+        <relationshipName>Communications1</relationshipName>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <type>Lookup</type>

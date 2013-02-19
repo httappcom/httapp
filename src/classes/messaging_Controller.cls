@@ -3,54 +3,51 @@ public without sharing class messaging_Controller {
 	a User associated with 1 medical facility should not be able to interact with a user from another medical facility
 */
 
+	private id thisUserCareTeamId;
+	
 	public Id patientId;
-	public void setPatientId(Id i){
+	public void setPatientId(Id i) {
 		patientId = i;
 	}
 	public Id getPatientId(){
 		return patientId;
 	}
 
-  public Id treatmentId; 
-   public void setTreatmentId(Id i)
-    {
-      treatmentId = i;
-      setTreatment(treatmentId);
+	public Id treatmentId; 
+   	public void setTreatmentId(Id i) {
+    	treatmentId = i;
+    	setTreatment(treatmentId);
     }
-  public Id getTreatmentId()    
-    {
-      return treatmentId;
+    
+  	public Id getTreatmentId() {
+    	return treatmentId;
     }
-  public static Treatment__c treatment;
-  public void setTreatment(Id i)
-  {
-    treatment = [Select Id, Destination_Facility__c, OwnerId From Treatment__c Where Id = :i ];
-  }
-  public Treatment__c getTreatment()
-  {
-    return treatment;
-  }
+  	public static Treatment__c treatment;
+  	public void setTreatment(Id i) {
+    	treatment = [Select Id, Destination_Facility__c, OwnerId From Treatment__c Where Id = :i ];
+  	}
+  	public Treatment__c getTreatment() {
+    	return treatment;
+  	}
+  	
 	public messageWrapper newMessage {get;set;}
 	List<Care_Team_Member__c> careTeamMembers = new List<Care_Team_Member__c>();
 	List<Care_Team_Member__c> careTeamCandidates = new List<Care_Team_Member__c>();
-  String[] addedCareTeamMembers = new String[]{};
-  String[] removedCareTeamMembers = new String[]{};
-  public String[] getaddedCareTeamMembers()
-  {
-  	return this.addedCareTeamMembers;
-  }
-  public void setAddedCareTeamMembers(String[] addedMembers)
-  {
-  	this.addedCareTeamMembers = addedMembers;
-  }
-  public String[] getremovedCareTeamMembers()
-  {
-    return this.removedCareTeamMembers;
-  }
-  public void setRemovedCareTeamMembers(String[] removedMembers)
-  {
-    this.removedCareTeamMembers = removedMembers;
-  }  
+  	String[] addedCareTeamMembers = new String[]{};
+  	String[] removedCareTeamMembers = new String[]{};
+  	public String[] getaddedCareTeamMembers() {
+  		return this.addedCareTeamMembers;
+  	}
+  	public void setAddedCareTeamMembers(String[] addedMembers) {
+  		this.addedCareTeamMembers = addedMembers;
+  	}
+  	public String[] getremovedCareTeamMembers() {
+    	return this.removedCareTeamMembers;
+  	}
+  	public void setRemovedCareTeamMembers(String[] removedMembers) {
+    	this.removedCareTeamMembers = removedMembers;
+  	}
+  	
 	public class commentWrapper{
 		public Id RelatedRecordId {get;set;}
 		public Id ParentId {get;set;}
@@ -199,18 +196,20 @@ public without sharing class messaging_Controller {
 			c.Link_Name__c = newMessage.linkName;
 		}
 		c.Type__c = mode;
-		if ( newMessage.parentId != null ){
-			if ( string.valueOf(newMessage.parentId).subString(0,3) == 'a0T' ){
+		if ( newMessage.parentId != null ) {
+			String objectType = newMessage.parentId.getSObjectType()+''; 
+			if ( objectType == 'Topic__c' ){
 				c.Topic__c = newMessage.parentId;
 			} else
-			if ( string.valueOf(newMessage.parentId).subString(0,3) == 'a08' ){
+			if ( objectType == 'Patient__c' ){
 				c.Patient__c = newMessage.parentId;
 			} else
-			if ( string.valueOf(newMessage.parentId).subString(0,3) == 'a0F' ){
+			if ( objectType == 'Treatment__c' ){
 				c.Treatment__c = newMessage.parentId;
 			} else
-			if ( string.valueOf(newMessage.parentId).subString(0,3) == 'a03' ){
+			if ( objectType == 'Care_Team_Member__c' ){
 				c.Care_Team_Member__c = newMessage.parentId;
+				c.From_User__c = thisUserCareTeamId;
 			}
 			insert c;
 			if ( mode == 'ContentPost' ){
@@ -238,8 +237,12 @@ public without sharing class messaging_Controller {
 			for ( Topic__c t : [Select Id, Name, Patient__c from Topic__c where Patient__c = :patientId order by Name]){
 				options.add(new SelectOption(t.Id,t.Name));
 			}
-			for ( Care_Team_Member__c c : [Select Id, Name from Care_Team_Member__c where Treatment__c =:treatmentId order by Name]){
+			thisUserCareTeamId = null;
+			for ( Care_Team_Member__c c : [Select Id, Name, User__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name]){
 				options.add(new SelectOption(c.Id,c.Name));
+				if (c.User__c == userInfo.getUserId()) {
+					thisUserCareTeamId = c.Id;
+				}
 			}
 		}
 		return options;
@@ -261,17 +264,22 @@ public without sharing class messaging_Controller {
 
 	List<messageWrapper> MessageList;
 	public List<messageWrapper> getMessageList(){
+system.debug('getMessageList called selectedFilterBy='+selectedFilterBy);
 		String queryString = 'SELECT ';
 		queryString += 'Id, Body__c, Communication__c, Communication__r.Name, CreatedById, CreatedBy.Name, CreatedDate, File_Id__c, File_Name__c, Link_Name__c, Link_Url__c, Patient__c, Patient__r.Name, Title__c, Topic__c, Topic__r.Name, Type__c, ';
 		queryString += '(SELECT Id, Body__c, Communication__c, CreatedDate, CreatedBy.Name FROM Communications__r order BY CreatedDate LIMIT 10) ';
 		queryString += ' FROM Communication__c ';
 		queryString += ' where ';
 		if ( selectedFilterBy != null && selectedFilterBy instanceOf Id){
-			queryString += 'Topic__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-			queryString += 'Treatment__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-			queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-			queryString += 'Patient__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-			queryString += 'CreatedById = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' ';
+			if (selectedFilterBy == this.thisUserCareTeamId) {
+				//Private Message from this User
+				queryString += 'From_User__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' ';
+			} else {
+				queryString += 'Topic__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
+				queryString += 'Treatment__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
+				queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
+				queryString += 'Patient__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' ';
+			}
 		} else 
 		if ( patientId != null ){
 			queryString += 'Patient__c = \''+String.escapeSingleQuotes(patientId) +'\' or ';
@@ -284,6 +292,7 @@ public without sharing class messaging_Controller {
 		queryString += ' order by CreatedDate DESC';
 		queryString += ' limit 20';
 		MessageList = new List<messageWrapper>();
+system.debug('qry='+queryString);
 		for ( Communication__c n : database.query(queryString) ){
 			MessageList.add(new messageWrapper(n));
 		}
@@ -292,6 +301,7 @@ public without sharing class messaging_Controller {
 
 	
 	public PageReference selectFilterBy(){
+system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
 		if ( selectedFilterBy == null && apexPages.currentPage().getParameters().get('selectedFilterBy') != null ){
 			selectedFilterBy = apexPages.currentPage().getParameters().get('selectedFilterBy');
 		}
@@ -335,24 +345,22 @@ public without sharing class messaging_Controller {
 		}
 		return s;
 	}
-  public PageReference addCareTeamMembers()
-  {
-  	Logger.info('addedCareTeamMembers: ' + addedCareTeamMembers);    
-    for (String m : addedCareTeamMembers)
-    {
-      for (Integer i = 0; i < careTeamCandidates.size(); i++)
-      {
-        if (careTeamCandidates[i].User__c == m)
-        {
-          careTeamMembers.add(careTeamCandidates[i]);
-          newCareTeamMember = careTeamCandidates[i];
-          insertNewCareTeamMember();
-          careTeamCandidates.remove(i); 
-        }
-      }
-    }    
-  	return null;
-  }
+	
+	public PageReference addCareTeamMembers() {
+  		Logger.info('addedCareTeamMembers: ' + addedCareTeamMembers);    
+    	for (String m : addedCareTeamMembers) {
+      		for (Integer i = 0; i < careTeamCandidates.size(); i++) {
+        		if (careTeamCandidates[i].User__c == m) {
+          			careTeamMembers.add(careTeamCandidates[i]);
+          			newCareTeamMember = careTeamCandidates[i];
+          			insertNewCareTeamMember();
+          			careTeamCandidates.remove(i); 
+        		}
+      		}
+    	}
+  		return null;
+  	}
+  	
 	public PageReference closeNewTeamMember()
 	{
 		newCareTeamMember = null;

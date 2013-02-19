@@ -98,14 +98,14 @@ public with sharing class EmailController {
     String patientPortalSubdomain = patientPortal.size()>0?patientPortal[0].Subdomain:'';  	
   	return patientPortalSubdomain + '.' + Instance + '.force.com';
   }
-  public String document_Name;
-  public void setDocument_Name(String s)
+  public String resource_URL;
+  public void setResource_URL(String s)
   {
-  	document_Name = s;
+  	resource_URL = s;
   }
-  public Id getDocument_Name()
+  public Id getResource_URL()
   {
-  	return document_Name;
+  	return resource_URL;
   }
   public String PRM_Config_field;
   public void setPRM_Config_field(String s)
@@ -119,18 +119,17 @@ public with sharing class EmailController {
   public String getimage_url()
   {
     string linkurl = '';
-    if ( (document_Name == null) && (PRM_Config_field != null) )
+    if (PRM_Config_field != null)
     {
-    	document_Name = getPRM_field_value();
+	    	string oid = userinfo.getOrganizationId();
+	    	linkurl += 'https://' + Instance;
+	    	linkurl += '.salesforce.com/servlet/servlet.ImageServer?id=' + getPRM_field_value();
+	    	linkurl += '&oid=' + oid;
     }
-    Logger.info('document_Name: '+document_Name);    
-    Document[] documents = [Select Id From Document Where DeveloperName = : document_Name];
-    if (documents.size()>0) {
-	    Id document_Id = documents[0].Id;
-    	string oid = userinfo.getOrganizationId();
-    	linkurl += 'https://' + Instance;
-    	linkurl += '.salesforce.com/servlet/servlet.ImageServer?id=' + document_Id;
-    	linkurl += '&oid=' + oid;
+    else if (resource_URL != null)
+    {
+    	linkurl += BrandingUtil.patientPortalLink();
+    	linkurl += resource_URL;
     }
     return linkurl;
   }  

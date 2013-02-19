@@ -32,7 +32,7 @@
 
                           <td align="center" width="315"><br />
                           <br />
-                          <c:Email_Template_Image height="201" width="335" document_Name="img_passport_png"/></td>
+                          <c:Email_Template_Image height="201" width="335" resource_URL="{!URLFOR($Resource.Email_Images, 'img_passport.png')}" /></td>
                         </tr>
                       </tbody>
                     </table>

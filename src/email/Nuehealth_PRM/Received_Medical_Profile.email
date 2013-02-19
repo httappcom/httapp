@@ -34,7 +34,7 @@
                           <tr>
                             <td width="25"></td>
                             <td align="center" width="315">
-                               <c:Email_Template_Image document_Name="img_stetoscope_on_docs_png" height="201" width="335" /><br />
+                               <c:Email_Template_Image resource_URL="{!URLFOR($Resource.Email_Images, 'img_stetoscope-on-docs.png')}" height="201" width="335" /><br />
                               <br />
                             </td>
                           </tr>

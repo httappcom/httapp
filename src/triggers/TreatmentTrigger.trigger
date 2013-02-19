@@ -8,6 +8,10 @@ trigger TreatmentTrigger on Treatment__c (before insert, before update, after in
 		TreatmentUtility.afterInsert(trigger.new);
 	}
     
+	if ( trigger.isAfter && trigger.isUpdate ){
+		TreatmentUtility.afterUpdate(trigger.new);
+	}
+    
 	if (trigger.isBefore && trigger.isupdate){
 		TreatmentUtility.beforeUpdate(Trigger.new, Trigger.oldMap);
 	}
