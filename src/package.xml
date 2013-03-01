@@ -17,7 +17,8 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>*</members>
+        <members>NueHealth_Reference_Data</members>
+        <members>Nuehealth_PRM</members>
         <name>CustomApplication</name>
     </types>
     <types>
@@ -34,28 +35,59 @@
         <name>CustomLabels</name>
     </types>
     <types>
-        <members>*</members>
+        <members>Airline__c</members>
+        <members>Airport__c</members>
+        <members>Branding__c</members>
+        <members>Care_Team_Member__c</members>
+        <members>Communication__c</members>
+        <members>External_Contact__c</members>
+        <members>Hotel__c</members>
+        <members>Instruction__c</members>
+        <members>Insurance_Network_User__c</members>
+        <members>Insurance_Network__c</members>
+        <members>Knowledge_Base__c</members>
+        <members>Med_Facility_Email_Template__c</members>
+        <members>Med_Facility_Med_Profile_L__c</members>
+        <members>Medical_Facility_User__c</members>
+        <members>Medical_Facility__c</members>
+        <members>Medical_Professional__c</members>
+        <members>Medical_Profile_Surveys__c</members>
+        <members>Medical_Record__c</members>
+        <members>Message_Header__c</members>
+        <members>Message_User__c</members>
+        <members>Message__c</members>
+        <members>My_Message_Settings__c</members>
+        <members>PRM_Config__c</members>
+        <members>PRM_Email_Template__c</members>
+        <members>PRM_Medical_Profile_Link__c</members>
+        <members>PRM_User__c</members>
+        <members>Partner__c</members>
+        <members>Patient__c</members>
+        <members>Payment__c</members>
+        <members>PortalLinks__c</members>
+        <members>Procedure__c</members>
+        <members>Referral_Source__c</members>
+        <members>S3_Credentials__c</members>
+        <members>Server_Log__c</members>
+        <members>Survey_Header__c</members>
+        <members>Survey_Instance__c</members>
+        <members>Survey_Question__c</members>
+        <members>Topic__c</members>
+        <members>Travel__c</members>
+        <members>Treatment_Quote__c</members>
+        <members>Treatment__c</members>
+        <members>UILookup__c</members>
+        <members>echoSignAPI__c</members>
         <name>CustomObject</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>CustomSite</name>
     </types>
     <types>
         <members>*</members>
         <name>CustomTab</name>
     </types>
     <types>
-        <members>NueHealth_Dashboards</members>
-        <members>NueHealth_Dashboards/Pipeline</members>
-        <name>Dashboard</name>
-    </types>
-    <types>
         <members>Email_Template_Documents</members>
         <members>Email_Template_Documents/Email_Button.png</members>
         <members>Email_Template_Documents/Lopez_Corvala_png.png</members>
-        <members>Email_Template_Documents/ad_free_webcast_Nuehealth_png.png</members>
-        <members>Email_Template_Documents/ad_get_referral_png.png</members>
         <members>Email_Template_Documents/ad_passport_png.png</members>
         <members>Email_Template_Documents/ad_zweena_png.png</members>
         <members>Email_Template_Documents/blogtalkradio_jpg.jpg</members>
@@ -88,27 +120,16 @@
         <members>Email_Template_Documents/pcc_card_nuehealth_pcc_team_png.png</members>
         <members>Email_Template_Documents/webcasr_learn_more2_png.png</members>
         <members>NueHealth_Images</members>
-        <members>NueHealth_Images/Email_Button.png</members>
         <members>NueHealth_Images/NGA_Banner.png</members>
         <members>NueHealth_Images/NueHealthLogo.jpg</members>
-        <members>NueHealth_Images/NueHealth_Logo.jpg</members>
         <members>NueHealth_Images/NueHealth_Test_Image.png</members>
-        <members>NueHealth_Images/footer_htg_we_take_care.jpg</members>
-        <members>NueHealth_Images/generic_htg_team.png</members>
-        <members>NueHealth_Images/header_nuehealth.png</members>
-        <members>NueHealth_Images/img_doctors2.png</members>
-        <members>PRM_Documents/Header_Logo.jpeg</members>
-        <members>PRM_Documents/Header_Logo.jpg</members>
+        <members>NueHealth_Images/Nuehealth_Quote_Template_Header.png</members>
         <name>Document</name>
     </types>
     <types>
         <members>Nuehealth_PRM</members>
         <members>Nuehealth_PRM/Completing_Your_Medical_Profile</members>
-        <members>Nuehealth_PRM/Final_Follow_Up</members>
         <members>Nuehealth_PRM/Introducing_Travel_Concierge_Services</members>
-        <members>Nuehealth_PRM/Itinerary_Available</members>
-        <members>Nuehealth_PRM/MarketingProductInquiryResponse</members>
-        <members>Nuehealth_PRM/Medical_Profile_Approved</members>
         <members>Nuehealth_PRM/Nuehealth_Following_up_on_your_inquiry</members>
         <members>Nuehealth_PRM/Nuehealth_Green_Zone_WLS</members>
         <members>Nuehealth_PRM/Nuehealth_Medical_Profile_Approved</members>
@@ -118,32 +139,24 @@
         <members>Nuehealth_PRM/Nuehealth_Travel_Arrangements</members>
         <members>Nuehealth_PRM/Nuehealth_Your_Proof_of_Payment</members>
         <members>Nuehealth_PRM/Nuehealth_Your_Travel_Itinerary_is_Ready</members>
-        <members>Nuehealth_PRM/Nuhealth_Welcome_to_Patient_Portal</members>
         <members>Nuehealth_PRM/Nuterra_Thank_you_for_contacting</members>
         <members>Nuehealth_PRM/Patient_Checkin</members>
-        <members>Nuehealth_PRM/Post_Op_30_day_Final_Email</members>
         <members>Nuehealth_PRM/Post_Treatment_Welcome_Home</members>
         <members>Nuehealth_PRM/Received_Medical_Profile</members>
         <members>Nuehealth_PRM/Received_Medical_Travel_Inquiry</members>
         <members>Nuehealth_PRM/Share_Your_Medical_Travel_Story</members>
-        <members>Nuehealth_PRM/Thank_You_MQ</members>
-        <members>Nuehealth_PRM/Thank_You_New_Treatment</members>
-        <members>Nuehealth_PRM/Travel_Arrangements_for_Your_Upcoming_Surgery</members>
-        <members>Nuehealth_PRM/We_Have_Received_Your_Medical_Profile</members>
         <members>Nuehealth_PRM/Welcome_Home</members>
         <members>Nuehealth_PRM/Welcome_to_Patient_Portal</members>
-        <members>Nuehealth_PRM/Your_Travel_Itinerary_is_Ready</members>
+        <members>Nuehealth_PRM/Welcome_to_Provider_Portal</members>
         <name>EmailTemplate</name>
     </types>
     <types>
-        <members>Account-Medical Facility</members>
         <members>Airline__c-Airline Layout</members>
         <members>Airport__c-Airport Layout</members>
         <members>Care_Team_Member__c-Care Team Member Layout</members>
         <members>Communication__c-Communication Layout</members>
-        <members>Contact-Medical Professional</members>
+        <members>External_Contact__c-External Contact Layout</members>
         <members>Hotel__c-Hotel Layout</members>
-        <members>Instruction__c-Instruction Layout</members>
         <members>Insurance_Network_User__c-Insurance Network User Layout</members>
         <members>Insurance_Network__c-Insurance Network Layout</members>
         <members>Knowledge_Base__c-Knowledge Base Layout</members>
@@ -152,19 +165,12 @@
         <members>Medical_Facility_User__c-Medical Facility User Layout</members>
         <members>Medical_Facility__c-Medical Facility Layout</members>
         <members>Medical_Professional__c-Medical Professional Layout</members>
-        <members>Medical_Profile__c-Medical Profile Layout</members>
         <members>Medical_Record__c-Medical Record Layout</members>
-        <members>Message_Header__c-Message Header Layout</members>
-        <members>Message_User__c-Message User Layout</members>
-        <members>Message__c-Message Layout</members>
         <members>PRM_Config__c-PRM Config Layout</members>
         <members>PRM_Email_Template__c-PRM Email Template Layout</members>
         <members>PRM_Medical_Profile_Link__c-PRM Medical Profile Layout</members>
         <members>PRM_User__c-PRM User Layout</members>
         <members>Patient__c-Patient Layout</members>
-        <members>Payment__c-Payment Layout</members>
-        <members>Procedure_Line_Item__c-Procedure Line Item Layout</members>
-        <members>Procedure_Price__c-Procedure Price Layout</members>
         <members>Procedure__c-Procedure Layout</members>
         <members>Referral_Source__c-Referral Source Layout</members>
         <members>Server_Log__c-Server Log Layout</members>
@@ -183,17 +189,9 @@
         <name>PermissionSet</name>
     </types>
     <types>
-        <members>Guest</members>
         <members>patientPortal</members>
+        <members>providerPortal</members>
         <name>Profile</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ReportType</name>
-    </types>
-    <types>
-        <members>Medical_Information_Officers</members>
-        <name>Role</name>
     </types>
     <types>
         <members>*</members>
@@ -201,7 +199,6 @@
     </types>
     <types>
         <members>Patient__c</members>
-        <members>Task</members>
         <members>Travel__c</members>
         <members>Treatment__c</members>
         <name>Workflow</name>

@@ -48,8 +48,6 @@
             }
             
     </style>
-    <script>
-    </script>
     
     <body>
     <div id="body-wrapper">
@@ -91,7 +89,7 @@
 				  <apex:panelGrid columns="1">
 				  <apex:actionRegion >
 				      	<apex:actionFunction name="commPatientChanged" action="{!commPatientChanged}" reRender="pbsCollaboration"/>
-				      	<apex:actionFunction name="commTreatmentChanged" action="{!commPatientChanged}" reRender="pbsCollaboration"/>
+				      	<apex:actionFunction name="commTreatmentChanged" action="{!commTreatmentChanged}" reRender="pbsCollaboration"/>
 				  
 						<apex:outputPanel id="commPanel1" layout="block">
 						  <apex:outputPanel rendered="{!!ISNULL(patientSelectList) && patientSelectList.size>0}">
@@ -115,6 +113,7 @@
 				</apex:pageBlockSection>
 				                
 				<apex:pageBlockSection id="pbsPatientDashboard" collapsible="true" title="Patient Dashboard">
+					<apex:commandButton action="{!load}" value="Refresh" style="color:black;"/><br/>
                     <apex:pageblocktable value="{!treatmentList}" var="t">
                         <apex:column >
                             <apex:facet name="header">Patient</apex:facet>
@@ -143,12 +142,12 @@
                             	<a href="javascript:showSurveyResults('{!t.patient.Survey_Headers__r[0].id}')">View</a>
                             </apex:outputPanel>
                         </apex:column>
-                        <apex:column >
+                        <!-- apex:column >
                             <apex:facet name="header">Medical Records</apex:facet>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Upload Medical Record</apex:facet>
-                        </apex:column>
+                        </apex:column> -->
                         <apex:column >
                             <apex:facet name="header">Approval</apex:facet>
                             <apex:outputPanel >

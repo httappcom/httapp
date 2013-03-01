@@ -64,7 +64,7 @@ public with sharing class careTeam_Controller {
 		get {
 			if ( careTeamMemberList == null || careTeamMemberList.size() == 0){
 				careTeamMemberList = new List<careTeamMemberWrapper>();
-				for ( Care_Team_Member__c c : [Select Id, Role__c, Treatment__c, User__c, User__r.FullPhotoUrl, User__r.Name from Care_Team_Member__c where Treatment__c = :treatmentId order by Name]){
+				for ( Care_Team_Member__c c : [Select Id, Treatment__c, Role__c, User__c, User__r.FullPhotoUrl, User__r.Name from Care_Team_Member__c where Treatment__c = :treatmentId order by Name]){
 					careTeamMemberList.add(new careTeamMemberWrapper(c));
 				}
 			}
@@ -81,9 +81,8 @@ public with sharing class careTeam_Controller {
 	}
 
 	public PageReference insertNewCareTeamMember(){
-		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
-			insert newCareTeamMember;
-			newCareTeamMember = null;
+		if ( newCareTeamMember.User__c != null /* && newCareTeamMember.Role__c != null*/ ) {
+			CareTeamUtil.addMembersToCareTeam( new List<Care_Team_Member__c>{newCareTeamMember});
 		} else {
 			
 		}

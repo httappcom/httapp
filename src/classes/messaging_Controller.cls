@@ -8,6 +8,10 @@ public without sharing class messaging_Controller {
 	public Id patientId;
 	public void setPatientId(Id i) {
 		patientId = i;
+system.debug('setting patient to '+i);
+    	careTeamMemberCache = null;
+		clearFilterBy();
+		mode = 'TextPost';
 	}
 	public Id getPatientId(){
 		return patientId;
@@ -16,6 +20,10 @@ public without sharing class messaging_Controller {
 	public Id treatmentId; 
    	public void setTreatmentId(Id i) {
     	treatmentId = i;
+system.debug('setting treatment to '+i);
+    	careTeamMemberCache = null;
+		clearFilterBy();
+		mode = 'TextPost';
     	setTreatment(treatmentId);
     }
     
@@ -146,7 +154,8 @@ public without sharing class messaging_Controller {
 	} 
 
 	public String mode {get;set;}
-	public String selectedFilterBy {get;set;}
+	public String topicId {get;set;}
+	public ID memberId {get; set; }
 	public Care_Team_Member__c newCareTeamMember {get;set;}
 	public Topic__c newTopic {get;set;}
 	public Task newTask {get;set;}
@@ -173,8 +182,9 @@ public without sharing class messaging_Controller {
 	}
 	
 	public PageReference insertNewCareTeamMember(){
-		if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ){
-			insert newCareTeamMember;
+		if ( newCareTeamMember.User__c != null /*&& newCareTeamMember.Role__c != null*/ ) {
+			CareTeamUtil.addMembersToCareTeam( new List<Care_Team_Member__c>{newCareTeamMember});
+			careTeamMemberCache = null;
 //			newCareTeamMember = null;
 		} else {
 			
@@ -226,7 +236,7 @@ public without sharing class messaging_Controller {
 
 	public PageReference insertNewTopic(){
 		insert newTopic;
-		selectedFilterBy = newTopic.Id;
+		topicId = newTopic.Id;
 		newTopic = null;
 		return null;
 	}
@@ -237,11 +247,9 @@ public without sharing class messaging_Controller {
 			for ( Topic__c t : [Select Id, Name, Patient__c from Topic__c where Patient__c = :patientId order by Name]){
 				options.add(new SelectOption(t.Id,t.Name));
 			}
-			thisUserCareTeamId = null;
-			for ( Care_Team_Member__c c : [Select Id, Name, User__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name]){
-				options.add(new SelectOption(c.Id,c.Name));
-				if (c.User__c == userInfo.getUserId()) {
-					thisUserCareTeamId = c.Id;
+			for ( Care_Team_Member__c c : getCareTeamMemberList()){
+				if (c.User__c != userInfo.getUserId()) {
+					options.add(new SelectOption(c.Id,c.Name));
 				}
 			}
 		}
@@ -252,10 +260,6 @@ public without sharing class messaging_Controller {
 		return [Select Id, Name, Treatment__c, Treatment__r.Treatment_Name__c, Patient__c from Topic__c where Patient__c = :patientId order by Name];
 	}
 
-	public List<Care_Team_Member__c> getCareTeamMemberList() {
-		return [Select Id, Name, User__c, Role__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name];
-	}
-
 	public String messagingAlert {get;set;}
 	public PageReference pollNewsFeed(){
 //		queryNewsFeed();
@@ -264,30 +268,32 @@ public without sharing class messaging_Controller {
 
 	List<messageWrapper> MessageList;
 	public List<messageWrapper> getMessageList(){
-system.debug('getMessageList called selectedFilterBy='+selectedFilterBy);
+		if (treatmentId == null) return null;
+system.debug('getMessageList called topicId='+topicId+', memberId='+memberId+', thisUserCareTeamId='+thisUserCareTeamId);
+		if (thisUserCareTeamId == null) getCareTeamMemberList();
+system.debug('thisUserCareTeamId 2='+thisUserCareTeamId);
 		String queryString = 'SELECT ';
 		queryString += 'Id, Body__c, Communication__c, Communication__r.Name, CreatedById, CreatedBy.Name, CreatedDate, File_Id__c, File_Name__c, Link_Name__c, Link_Url__c, Patient__c, Patient__r.Name, Title__c, Topic__c, Topic__r.Name, Type__c, ';
 		queryString += '(SELECT Id, Body__c, Communication__c, CreatedDate, CreatedBy.Name FROM Communications__r order BY CreatedDate LIMIT 10) ';
 		queryString += ' FROM Communication__c ';
 		queryString += ' where ';
-		if ( selectedFilterBy != null && selectedFilterBy instanceOf Id){
-			if (selectedFilterBy == this.thisUserCareTeamId) {
+		if (memberId != null && topicId == null) {
+			if (memberId == this.thisUserCareTeamId) {
 				//Private Message from this User
-				queryString += 'From_User__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' ';
+				queryString += 'From_User__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' or ';
+				queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' ';
 			} else {
-				queryString += 'Topic__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-				queryString += 'Treatment__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-				queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' or ';
-				queryString += 'Patient__c = \''+String.escapeSingleQuotes(selectedFilterBy) +'\' ';
+				queryString += '(From_User__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' and ';
+				queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(memberId) +'\') or ';
+				queryString += '(From_User__c = \''+String.escapeSingleQuotes(memberId) +'\' and ';
+				queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\')  ';
 			}
-		} else 
-		if ( patientId != null ){
-			queryString += 'Patient__c = \''+String.escapeSingleQuotes(patientId) +'\' or ';
-			queryString += 'Treatment__r.Patient__c = \''+String.escapeSingleQuotes(patientId) +'\' or ';
-			queryString += 'Topic__r.Treatment__r.Patient__c = \''+String.escapeSingleQuotes(patientId) +'\' or ';
-			queryString += 'Care_Team_Member__r.Treatment__r.Patient__c = \''+String.escapeSingleQuotes(patientId) +'\' ';
+		} else if (memberId == null && topicId == null) {
+			queryString += 'From_User__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' or ';
+			queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' or ';
+			queryString += 'Topic__r.Treatment__c = \''+String.escapeSingleQuotes(treatmentId) +'\' ';
 		} else {
-			queryString += 'CreatedById = \''+ userInfo.getUserId() + '\' ';
+			queryString += 'Topic__c = \''+String.escapeSingleQuotes(topicId) +'\' ';
 		}
 		queryString += ' order by CreatedDate DESC';
 		queryString += ' limit 20';
@@ -300,19 +306,26 @@ system.debug('qry='+queryString);
 	}
 
 	
-	public PageReference selectFilterBy(){
-system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
-		if ( selectedFilterBy == null && apexPages.currentPage().getParameters().get('selectedFilterBy') != null ){
-			selectedFilterBy = apexPages.currentPage().getParameters().get('selectedFilterBy');
-		}
-		newMessage.ParentId = selectedFilterBy;
+	public PageReference selectTopicFilter(){
+system.debug('selectFilterBy action topicId='+topicId);
+		newMessage.ParentId = topicId;
+		memberId = null;
+		newTopic = null;
+		newCareTeamMember = null;
+		return null;
+	}
+
+	public PageReference selectMemberFilter(){
+		newMessage.ParentId = memberId;
+		topicId = null;
 		newTopic = null;
 		newCareTeamMember = null;
 		return null;
 	}
 
 	public PageReference clearFilterBy(){
-		selectedFilterBy = null;
+		topicId = null;
+		memberId = null;
 		newCareTeamMember = null;
 		newMessage = new messageWrapper();
 		newTopic = null;
@@ -404,7 +417,6 @@ system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
         careTeamCandidate.User__c = u.User__r.Id;
         careTeamCandidate.Role__c = 'PCC';
         careTeamCandidate.Treatment__c = treatmentId;       
-        careTeamCandidate.Email__c = u.User__r.Email;
         careTeamCandidate.Name = u.User__r.Name;
         careTeamCandidates.add(careTeamCandidate);
       }                            
@@ -424,7 +436,6 @@ system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
       else if ((u.Role__c == 'Primary Onsite Coordinator') || (u.Role__c == 'Onsite Coordinator')) 
         { careTeamCandidate.Role__c = 'Onsite Coordinator'; } 
       careTeamCandidate.Treatment__c = treatmentId;       
-      careTeamCandidate.Email__c = u.User__r.Email;
       careTeamCandidate.Name = u.User__r.Name;
       careTeamCandidates.add(careTeamCandidate);
     }  	
@@ -460,13 +471,12 @@ system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
         careTeamCandidate.User__c = u.Id;
         careTeamCandidate.Role__c = 'Doctor';  
         careTeamCandidate.Treatment__c = treatmentId;       
-        careTeamCandidate.Email__c = u.Email;
         careTeamCandidate.Name = u.Name;
         careTeamCandidates.add(careTeamCandidate);
       }
   }                                           
   
-  private void addInsuranceNetworkUsers()
+/*  private void addInsuranceNetworkUsers()
   {
   	Patient__c patient = [Select Name, Insurance_Network__c from Patient__c Where Id = : patientId];
   	if (patient.Insurance_Network__c != null)
@@ -482,20 +492,19 @@ system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
 	    {
 	      Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
 	      careTeamCandidate.User__c = u.Insurance_Contact__r.Id;
-        careTeamCandidate.Role__c = 'Insurance Agent';  
+          careTeamCandidate.Role__c = 'Insurance Agent';  
 	      careTeamCandidate.Treatment__c = treatmentId;       
-	      careTeamCandidate.Email__c = u.Insurance_Contact__r.Email;
 	      careTeamCandidate.Name = u.Insurance_Contact__r.Name;
 	      careTeamCandidates.add(careTeamCandidate);
 	    }   	                                             
   	}
-  }
+  }*/
   public List<Care_Team_Member__c> getCareTeamCandidates()
   {
     addMedicalFacilityUsers();
     addPRMConfigUsers();
     addMedProfessionalUsers();
-    addInsuranceNetworkUsers();
+//    addInsuranceNetworkUsers();
     Set<Id> userIdSet = new Set<Id>();
     List<Care_Team_Member__c> resultList = new List<Care_Team_Member__c>();
     if (careTeamMembers.isEmpty() == true)
@@ -551,5 +560,22 @@ system.debug('selectFilterBy action selectedFilterBy='+selectedFilterBy);
   		options.add(new SelectOption(u.Id, u.Name, disabled));
   	}
     return options;
-  }  
+  }
+  
+  private List<Care_Team_Member__c> careTeamMemberCache = null;
+  public List<Care_Team_Member__c> getCareTeamMemberList() {
+  	if (treatmentId==null) return null;
+ system.debug('getCareTeamMemberList treatmentId='+treatmentId);
+  	if (careTeamMemberCache == null) {
+  		careTeamMemberCache = [Select Id, Name, User__c, Role__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name];
+ system.debug('userInfo.getUserId()='+userInfo.getUserId());
+ system.debug('careTeamMemberCache='+careTeamMemberCache);
+  		for (Care_Team_Member__c m : careTeamMemberCache) {
+  			if (m.User__c == userInfo.getUserId()) {
+				thisUserCareTeamId = m.Id;
+  			}
+  		}
+  	}
+  	return careTeamMemberCache;
+  }
 }

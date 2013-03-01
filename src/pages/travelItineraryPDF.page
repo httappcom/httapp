@@ -63,35 +63,35 @@
 					<apex:outputfield value="{!treatmentQuote.procedure__r.facility__r.Country__c}"/>
 					<br/><br/>
 					<apex:outputlabel value="On-site Coordinator:" style="font-weight:bold;"/><br/>
-					<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_Coordinator__r.name}"/><br/>
+					<apex:outputtext value="{!onsiteCoordinatorName}"/><br/>
 					<apex:outputtext >
 						<apex:outputtext value="Phone: "/>
-						<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_coordinator__r.phone}"/><br/>
+						<apex:outputtext value="{!onsiteCoordinatorPhone}"/><br/>
 					</apex:outputtext>
 					<apex:outputtext >
 						<apex:outputtext value="Mobile: " />
-						<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_coordinator__r.mobilephone}"/><br/>
+						<apex:outputtext value="{!onsiteCoordinatorMobilePhone}"/><br/>
 					</apex:outputtext>
-					<apex:outputfield value="{!treatmentQuote.treatment__r.onsite_coordinator__r.email}"/>
+					<apex:outputtext value="{!onsiteCoordinatorEmail}"/>
 					<br/>		
 					<br/>
 					<apex:outputlabel value="EMERGENCY CONTACTS" style="text-decoration:underline; padding-bottom:10px;"/><br/>
 					<apex:outputlabel value="Patient Care Coordinator:" style="font-weight:bold;"/><br/>
-					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.createdby.name}"/><br/>
-					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.createdby.phone}"/><br/>
-					<apex:outputfield value="{!treatmentQuote.treatment__r.patient__r.createdby.email}"/>
+					<apex:outputtext value="{!ownername}"/><br/>
+					<apex:outputtext value="{!ownerphone}"/><br/>
+					<apex:outputtext value="{!owneremail}"/>
 					<br/>---<br/><br/>
 					<apex:outputlabel value="Travel Logistics Manager:" style="font-weight:bold;"/><br/>
-					<apex:outputfield value="{!TravelConcierge.name}"/><br/>
+					<apex:outputText value="{!TravelConciergeName}"/><br/>
 					<apex:outputtext >
 						<apex:outputtext value="Phone: "/>
-						<apex:outputfield value="{!TravelConcierge.phone}"/><br/>
+						<apex:outputText value="{!TravelConciergePhone}"/><br/>
 					</apex:outputtext>
 					<apex:outputtext >
 						<apex:outputtext value="Mobile: "/>
-						<apex:outputfield value="{!TravelConcierge.mobilephone}"/><br/>
+						<apex:outputText value="{!TravelConciergeMobilephone}"/><br/>
 					</apex:outputtext>
-					<apex:outputfield value="{!TravelConcierge.email}"/>
+					<apex:outputText value="{!TravelConciergeEmail}"/>
 				</td>
 				<td width="10"></td>
 				<td colspan="2" valign="middle">

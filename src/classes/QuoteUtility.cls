@@ -7,7 +7,7 @@ public with sharing class QuoteUtility {
       if(pQuoteId == null) {          
         return null;
       } else {           
-        return [Select id, 
+        return [Select id,
                         Total_Price__c,
                         Treatment__r.Name,
                         Treatment__r.Procedure__c, 
@@ -59,68 +59,68 @@ return '';
         } 
   }
   
-  public static void sendQuoteToEchosign(Treatment__c treatment) 
-  {
+	public static void sendQuoteToEchosign(Treatment__c treatment) {
+system.debug('Sending Quote to echosign');
     
-    treatment = queryTreatmentForEchosignDoc(treatment);
-    String echoSignSetting = 'Nuehealth';
-    String apiKey = echoSignAPI__c.getValues(echoSignSetting).API_Key__c;   
+//    	treatment = queryTreatmentForEchosignDoc(treatment);
+    	String echoSignSetting = 'Nuehealth';
+    	String apiKey = echoSignAPI__c.getValues(echoSignSetting).API_Key__c;   
         
-    //Set up SenderInfo object
-    dtoApiEchosign.SenderInfo quoteSenderInfo = new dtoApiEchosign.SenderInfo();
-    User u = [Select Id, EchoSign_Acct_Email__c from User where Id = :UserInfo.getUserId()];
-    quoteSenderInfo.email = u.EchoSign_Acct_Email__c == null ? echoSignAPI__c.getValues(echoSignSetting).Email__c : u.EchoSign_Acct_Email__c ;
-    //Set up DocumentCreationInfo object
-    dtoApiEchosign.DocumentCreationInfo quoteDocCrInfo = new dtoApiEchosign.DocumentCreationInfo();
-    quoteDocCrInfo.name = getQuoteDocumentFilename(treatment);
-    //Set up RecipientInfo object - part of DocumentCreationInfo object
-    dto14ApiEchosign.RecipientInfo quoteDocRecInfo = new dto14ApiEchosign.RecipientInfo();
-    quoteDocRecInfo.email = treatment.Patient__r.Email__c;
-    Logger.info('quoteDocRecInfo.email = ' + quoteDocRecInfo.email);
-    quoteDocRecInfo.role = 'SIGNER';
-    dto14ApiEchosign.ArrayOfRecipientInfo quoteDocRecipients = new dto14ApiEchosign.ArrayOfRecipientInfo();
-    quoteDocRecipients.RecipientInfo = new List<dto14ApiEchosign.RecipientInfo>();
-      quoteDocRecipients.RecipientInfo.add(quoteDocRecInfo);
-    quoteDocCrInfo.recipients = quoteDocRecipients;
-    dtoApiEchosign.FileInfo quoteDocFileInfo = new dtoApiEchosign.FileInfo();
-    quoteDocFileInfo.fileName = quoteDocCrInfo.name;
-    quoteDocFileInfo.file = getQuoteDocumentBinary(treatment);
-    quoteDocFileInfo.mimeType = 'application/pdf';
-    dtoApiEchosign.ArrayOfFileInfo quoteDocFileInfoArray = new dtoApiEchosign.ArrayOfFileInfo();
-    quoteDocFileInfoArray.FileInfo = new List<dtoApiEchosign.FileInfo>();
-    quoteDocFileInfoArray.FileInfo.add(quoteDocFileInfo);
-    quoteDocCrInfo.fileInfos = quoteDocFileInfoArray;
-    quoteDocCrInfo.signatureType = 'ESIGN';
-    quoteDocCrInfo.signatureFlow = 'SENDER_SIGNATURE_NOT_REQUIRED';
-    quoteDocCrInfo.message = 'Please review your attached Nuehealth medical treatment quote.';
-    apiEchosign.EchoSignDocumentService15HttpPort echoSignDoc = new apiEchosign.EchoSignDocumentService15HttpPort();
-    try 
-    {
-        dtoApiEchosign.ArrayOfDocumentKey echosignResults = echoSignDoc.sendDocument(apiKey, quoteSenderInfo, quoteDocCrInfo);
-        if (echosignResults.DocumentKey[0].documentKey != null)
-        {
-            Logger.info('Document key returned: ' + echosignResults.DocumentKey[0].documentKey);
-            treatment.Treatment_Quotes__r[0].echosignDocKey__c = echosignResults.DocumentKey[0].documentKey;
-            update treatment.Treatment_Quotes__r[0];
-            treatment.Sub_Stage__c = 'Quote In Process';
-            update treatment;
-        }
-    }
-    catch(CalloutException ce)
-    {
-       Logger.info(ce.getStackTraceString());
-       ServerLogUtility.updateServerLog('EchoSign', ce.getmessage());
-       throw new NueException('Unable to send to EchoSign - Please try later or contact an administrator.');
-    }   
-    catch(Exception e)
-    {
-       Logger.info(e.getStackTraceString());
-       throw e;
-    }
-  }
+    	//Set up SenderInfo object
+    	dtoApiEchosign.SenderInfo quoteSenderInfo = new dtoApiEchosign.SenderInfo();
+    	User u = [Select Id, EchoSign_Acct_Email__c from User where Id = :UserInfo.getUserId()];
+    	quoteSenderInfo.email = u.EchoSign_Acct_Email__c == null ? echoSignAPI__c.getValues(echoSignSetting).Email__c : u.EchoSign_Acct_Email__c ;
+    	//Set up DocumentCreationInfo object
+    	dtoApiEchosign.DocumentCreationInfo quoteDocCrInfo = new dtoApiEchosign.DocumentCreationInfo();
+    	quoteDocCrInfo.name = getQuoteDocumentFilename(treatment);
+    	//Set up RecipientInfo object - part of DocumentCreationInfo object
+    	dto14ApiEchosign.RecipientInfo quoteDocRecInfo = new dto14ApiEchosign.RecipientInfo();
+    	quoteDocRecInfo.email = treatment.Patient__r.Email__c;
+    	Logger.info('quoteDocRecInfo.email = ' + quoteDocRecInfo.email);
+    	quoteDocRecInfo.role = 'SIGNER';
+    	dto14ApiEchosign.ArrayOfRecipientInfo quoteDocRecipients = new dto14ApiEchosign.ArrayOfRecipientInfo();
+    	quoteDocRecipients.RecipientInfo = new List<dto14ApiEchosign.RecipientInfo>();
+      	quoteDocRecipients.RecipientInfo.add(quoteDocRecInfo);
+    	quoteDocCrInfo.recipients = quoteDocRecipients;
+    	dtoApiEchosign.FileInfo quoteDocFileInfo = new dtoApiEchosign.FileInfo();
+    	quoteDocFileInfo.fileName = quoteDocCrInfo.name;
+    	quoteDocFileInfo.file = getQuoteDocumentBinary(treatment);
+    	quoteDocFileInfo.mimeType = 'application/pdf';
+    	dtoApiEchosign.ArrayOfFileInfo quoteDocFileInfoArray = new dtoApiEchosign.ArrayOfFileInfo();
+    	quoteDocFileInfoArray.FileInfo = new List<dtoApiEchosign.FileInfo>();
+    	quoteDocFileInfoArray.FileInfo.add(quoteDocFileInfo);
+    	quoteDocCrInfo.fileInfos = quoteDocFileInfoArray;
+    	quoteDocCrInfo.signatureType = 'ESIGN';
+    	quoteDocCrInfo.signatureFlow = 'SENDER_SIGNATURE_NOT_REQUIRED';
+    	quoteDocCrInfo.message = 'Please review your attached Nuehealth medical treatment quote.';
+    	IF (treatment.Treatment_Quotes__r[0].Expiration_Date__c != null) {
+    		Date today = Date.today();
+	    	quoteDocCrInfo.daysUntilSigningDeadline = today.daysBetween(treatment.Treatment_Quotes__r[0].Expiration_Date__c);
+    	}
+    	apiEchosign.EchoSignDocumentService15HttpPort echoSignDoc = new apiEchosign.EchoSignDocumentService15HttpPort();
+    	try {
+        	dtoApiEchosign.ArrayOfDocumentKey echosignResults = echoSignDoc.sendDocument(apiKey, quoteSenderInfo, quoteDocCrInfo);
+        	if (echosignResults.DocumentKey[0].documentKey != null) {
+  system.debug('got echosign doc key='+echosignResults.DocumentKey[0].documentKey);
+            	Logger.info('Document key returned: ' + echosignResults.DocumentKey[0].documentKey);
+            	treatment.Treatment_Quotes__r[0].echosignDocKey__c = echosignResults.DocumentKey[0].documentKey;
+            	update treatment.Treatment_Quotes__r[0];
+            	treatment.Quote_Status__c = PickListDefines.QuoteStatus.AwaitingSignature;
+   system.debug('Updating quote status to awaiting signature, key='+echosignResults.DocumentKey[0].documentKey);
+//            	update treatment; //Assume treatment updated by function caller
+        	}
+    	} catch(CalloutException ce) {
+       		Logger.info(ce.getStackTraceString());
+       		ServerLogUtility.updateServerLog('EchoSign', ce.getmessage());
+       		throw new NueException('Unable to send to EchoSign - Please try later or contact an administrator.');
+    	} catch(Exception e) {
+       		Logger.info(e.getStackTraceString());
+       		throw e;
+    	}
+  	}
   
-  public static Treatment__c pollEchoSignDocInfo(Treatment__c treatment, Treatment_Quote__c quote)
-  {
+	public static Treatment__c pollEchoSignDocInfo(Treatment__c treatment, Treatment_Quote__c quote) {
+		system.debug('pollEchoSignDocInfo');
     if ( (quote.echosignDocKey__c != null) && (quote.Doc_Signed_Timestamp__c == null) )
     {
         String echoSignSetting = 'Nuehealth';
@@ -144,7 +144,7 @@ return '';
         }
         if (echoSignDocInfo.status == 'SIGNED')
         {
-            treatment.Sub_Stage__c = 'Quote Signed';
+            treatment.Quote_Status__c = PickListDefines.QuoteStatus.Signed;
             update treatment;
             for ( dto15ApiEchosign.DocumentHistoryEvent docEvent : echoSignDocInfo.events.DocumentHistoryEvent)
             {
@@ -155,9 +155,14 @@ return '';
               }
             } 
         }
-        else if (echoSignDocInfo.status == 'ABORTED' || echosignDocInfo.status == 'EXPIRED')
+        else if (echoSignDocInfo.status == 'ABORTED')
         {
-            treatment.Sub_Stage__c = 'Quote Rejected';
+            treatment.Quote_Status__c = PickListDefines.QuoteStatus.Rejected;
+            update treatment;
+        }
+        else if (echosignDocInfo.status == 'EXPIRED')
+        {
+            treatment.Quote_Status__c = PickListDefines.QuoteStatus.Expired;
             update treatment;
         }
     }
@@ -165,7 +170,7 @@ return '';
     return null;
   }
 
-	public static void debugDocQuery() {  
+	public static void debugDocQuery() {
   //R8PA8YX525RXTX
         String echoSignSetting = 'Nuehealth';
       	String apiKey = echoSignAPI__c.getValues(echoSignSetting).API_Key__c;

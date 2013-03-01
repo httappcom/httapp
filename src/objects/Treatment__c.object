@@ -40,6 +40,40 @@
     <enableHistory>false</enableHistory>
     <enableReports>true</enableReports>
     <fields>
+        <fullName>Active_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Active Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Active</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Not Responding</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unconverted - not interested</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unconverted - bad information</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Unconverted - rejected</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Additional_Amount__c</fullName>
         <externalId>false</externalId>
         <label>Additional Amount</label>
@@ -58,6 +92,14 @@
         <scale>2</scale>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Approval_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Approval Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Approval_State__c</fullName>
@@ -206,6 +248,24 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Engagement_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Engagement Type</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Treatment</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Consult</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Final_Departure_Date__c</fullName>
         <externalId>false</externalId>
         <formula>Travel__r.Travel_End__c</formula>
@@ -229,6 +289,14 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Financing Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Fire_Surgical_Report_Task__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Fire Surgical Report Task</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Checkbox</type>
     </fields>
@@ -305,20 +373,73 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Insurance_Network_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Insurance Network Contact</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Treatments1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Interaction_Phase_Complete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Interaction Phase Complete</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Lead_Entry__c</fullName>
+        <externalId>false</externalId>
+        <label>Lead Entry</label>
+        <length>64</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Medical_Profile_Received__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Medical Profile Received</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Medical_Profile_Required__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Medical Profile Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Medical_Records_Received__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Medical Records Received</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Medical_Records_Required__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Medical Records Required</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Next_Follow_Up__c</fullName>
         <externalId>false</externalId>
         <label>Next Follow Up</label>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <type>DateTime</type>
-    </fields>
-    <fields>
-        <fullName>On_Hold__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <label>On Hold</label>
-        <trackFeedHistory>false</trackFeedHistory>
-        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>On_Site_Recovery_Period__c</fullName>
@@ -428,19 +549,19 @@
         <label>Phase</label>
         <picklist>
             <picklistValues>
-                <fullName>(1) Inquiry</fullName>
+                <fullName>Inquiry</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>(2) Interaction</fullName>
+                <fullName>Interaction</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>(3) Travel</fullName>
+                <fullName>Travel</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>(4) Post-Op</fullName>
+                <fullName>Post-Op</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -1169,10 +1290,111 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Quote_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Quote Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Preparing Quote</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quote Complete</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Awaiting Signature</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quote Signed</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Revising Quote</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quote Rejected</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Quote Expired</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Referral_Source__c</fullName>
         <externalId>false</externalId>
         <label>Referral Source</label>
         <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Referrer_Phone__c</fullName>
+        <description>Phone number of person referring patient.</description>
+        <externalId>false</externalId>
+        <label>Referrer Phone</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Referrer__c</fullName>
+        <description>Name of person referring the patient.</description>
+        <externalId>false</externalId>
+        <label>Referrer</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Referring_Provider_Fax__c</fullName>
+        <externalId>false</externalId>
+        <label>Referring Provider Fax</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Referring_Provider_NPI__c</fullName>
+        <description>NPI Number or Tax ID</description>
+        <externalId>false</externalId>
+        <label>Referring Provider NPI</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Referring_Provider_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Referring Provider Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Referring_Provider_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>Referring Provider Phone</label>
+        <length>255</length>
         <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
@@ -1215,6 +1437,32 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Responses__c</fullName>
+        <externalId>false</externalId>
+        <label>Responses</label>
+        <picklist>
+            <picklistValues>
+                <fullName>1</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>2</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>3</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>4</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
         <fullName>Stage__c</fullName>
         <externalId>false</externalId>
         <label>Stage</label>
@@ -1222,80 +1470,93 @@
             <controllingField>Phase__c</controllingField>
             <picklistValues>
                 <fullName>New</fullName>
-                <controllingFieldValues>(1) Inquiry</controllingFieldValues>
+                <controllingFieldValues>Inquiry</controllingFieldValues>
                 <default>true</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Responding</fullName>
-                <controllingFieldValues>(1) Inquiry</controllingFieldValues>
+                <fullName>Providing Treatment Information</fullName>
+                <controllingFieldValues>Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Lost</fullName>
-                <controllingFieldValues>(1) Inquiry</controllingFieldValues>
+                <fullName>Medical Information</fullName>
+                <controllingFieldValues>Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Contact Established</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
+                <fullName>Treatment Approval</fullName>
+                <controllingFieldValues>Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Interested but not Responding</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
+                <fullName>Quoting</fullName>
+                <controllingFieldValues>Interaction</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Interested but Hold for Later</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Treatment Approval Requested</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Treatment Approved</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>No Treatment</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Treatment Approved/Quoting</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Consult</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Patient Lost</fullName>
-                <controllingFieldValues>(2) Interaction</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Travel Itinerary</fullName>
-                <controllingFieldValues>(3) Travel</controllingFieldValues>
+                <fullName>Itinerary</fullName>
+                <controllingFieldValues>Travel</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
                 <fullName>At Provider</fullName>
-                <controllingFieldValues>(3) Travel</controllingFieldValues>
+                <controllingFieldValues>Travel</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Ongoing Relationship</fullName>
-                <controllingFieldValues>(4) Post-Op</controllingFieldValues>
+                <fullName>Trip Reschedule</fullName>
+                <controllingFieldValues>Travel</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Relationship Terminated</fullName>
-                <controllingFieldValues>(4) Post-Op</controllingFieldValues>
+                <fullName>Trip Canceled</fullName>
+                <controllingFieldValues>Travel</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>In-market Rehab</fullName>
+                <controllingFieldValues>Post-Op</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Treatment Closed-Claim Pending</fullName>
+                <controllingFieldValues>Post-Op</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Relationship Marketing</fullName>
+                <controllingFieldValues>Post-Op</controllingFieldValues>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>SubStage_Visibility__c</fullName>
+        <externalId>false</externalId>
+        <label>SubStage Visibility</label>
+        <picklist>
+            <controllingField>Stage__c</controllingField>
+            <picklistValues>
+                <fullName>Show</fullName>
+                <controllingFieldValues>At Provider</controllingFieldValues>
+                <controllingFieldValues>In-market Rehab</controllingFieldValues>
+                <controllingFieldValues>Itinerary</controllingFieldValues>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Hide</fullName>
+                <controllingFieldValues>Medical Information</controllingFieldValues>
+                <controllingFieldValues>New</controllingFieldValues>
+                <controllingFieldValues>Providing Treatment Information</controllingFieldValues>
+                <controllingFieldValues>Quoting</controllingFieldValues>
+                <controllingFieldValues>Relationship Marketing</controllingFieldValues>
+                <controllingFieldValues>Treatment Approval</controllingFieldValues>
+                <controllingFieldValues>Treatment Closed-Claim Pending</controllingFieldValues>
+                <controllingFieldValues>Trip Canceled</controllingFieldValues>
+                <controllingFieldValues>Trip Reschedule</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
@@ -1310,129 +1571,18 @@
         <picklist>
             <controllingField>Stage__c</controllingField>
             <picklistValues>
-                <fullName>Response 1</fullName>
-                <controllingFieldValues>Responding</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Response 2</fullName>
-                <controllingFieldValues>Responding</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Response 3</fullName>
-                <controllingFieldValues>Responding</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Response 4</fullName>
-                <controllingFieldValues>Responding</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Could Not Recontact</fullName>
-                <controllingFieldValues>Lost</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Patient Not Interested</fullName>
-                <controllingFieldValues>Lost</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Bad Information</fullName>
-                <controllingFieldValues>Lost</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Patient Providing Medical Information</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Medical Information Requested</fullName>
-                <controllingFieldValues>Contact Established</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Treatment Approval Requested</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Treatment Approved</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>No Treatment</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Consult Requested</fullName>
-                <controllingFieldValues>Consult</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Consult Booked</fullName>
-                <controllingFieldValues>Consult</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Consult Further Booking</fullName>
-                <controllingFieldValues>Consult</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Consult No Further Booking</fullName>
-                <controllingFieldValues>Consult</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>No Show or Cancelled</fullName>
-                <controllingFieldValues>Consult</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Quote Complete - Send to Echosign</fullName>
-                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Quote In Process</fullName>
-                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Quote Signed</fullName>
-                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Quote Revision</fullName>
-                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Quote Rejected</fullName>
-                <controllingFieldValues>Treatment Approved/Quoting</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
                 <fullName>Trip Preparation</fullName>
-                <controllingFieldValues>Travel Itinerary</controllingFieldValues>
+                <controllingFieldValues>Itinerary</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Treatment Itinerary Available</fullName>
-                <controllingFieldValues>Travel Itinerary</controllingFieldValues>
+                <fullName>Itinerary Completed</fullName>
+                <controllingFieldValues>Itinerary</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Reschedule Trip</fullName>
-                <controllingFieldValues>Travel Itinerary</controllingFieldValues>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Trip Cancelled</fullName>
-                <controllingFieldValues>Travel Itinerary</controllingFieldValues>
+                <fullName>Admissions</fullName>
+                <controllingFieldValues>At Provider</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
@@ -1451,22 +1601,45 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Check Payment Status</fullName>
+                <fullName>Reconcile and Release</fullName>
                 <controllingFieldValues>At Provider</controllingFieldValues>
+                <controllingFieldValues>In-market Rehab</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Start Follow up</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Financial Reconciliation</fullName>
+                <fullName>Rehab in Progress</fullName>
+                <controllingFieldValues>In-market Rehab</controllingFieldValues>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Surgical_Report_Attached__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Surgical Report Attached</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Task_Specifiers__c</fullName>
+        <externalId>false</externalId>
+        <label>Task Specifiers</label>
+        <length>1000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Travel_Phase_Completed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Travel Phase Completed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Travel__c</fullName>
@@ -1502,6 +1675,8 @@
     <label>Treatment</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>CREATED_DATE</columns>
+        <columns>Treatment_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>
@@ -1514,27 +1689,6 @@
     <pluralLabel>Treatments</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
-    <validationRules>
-        <fullName>Cant_change_substage_while_quote_pending</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND(
- $Profile.Id != &quot;00ed00000015XPu&quot; ,  
-ISCHANGED( Sub_Stage__c ),
-ISPICKVAL(  PRIORVALUE( Sub_Stage__c ) , &apos;Quote In Process&apos; ), 
-NOT ISPICKVAL(  Sub_Stage__c  , &apos;Quote In Process&apos; )
-)</errorConditionFormula>
-        <errorDisplayField>Sub_Stage__c</errorDisplayField>
-        <errorMessage>Can&apos;t change Sub-stage until patient signs quote, or quote expires.</errorMessage>
-    </validationRules>
-    <validationRules>
-        <fullName>Patient_Not_Committed_required_if_lost</fullName>
-        <active>true</active>
-        <errorConditionFormula>AND(  
-OR( AND( ISPICKVAL( Phase__c , &apos;(1) Inquiry&apos;) , ISPICKVAL( Stage__c , &apos;Lost&apos;)), AND(ISPICKVAL( Phase__c , &apos;(2) Interaction&apos;) , ISPICKVAL( Stage__c , &apos;Patient Lost&apos;))),  
-ISPICKVAL( Patient_Not_Committed_Reason__c , &quot;&quot;) )</errorConditionFormula>
-        <errorDisplayField>Patient_Not_Committed_Reason__c</errorDisplayField>
-        <errorMessage>&apos;Patient Not Committed Reason&apos; is required when stage is &apos;Lost&apos;</errorMessage>
-    </validationRules>
     <validationRules>
         <fullName>Payment_Type_Required</fullName>
         <active>true</active>

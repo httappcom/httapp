@@ -2,10 +2,7 @@ public with sharing class TreatmentUtility {
 
   private static Set<id> patientIds;
   private static Map<Id, Patient__c> patientMap;
-    public static Map<String,User> orgDefaultUsers;
-
-    static String travelConcierge = 'Travel Concierge';
-    static String medicalInformationOfficer = 'Medical Information Officer';
+  private static Map<Id, String> taskSpecifiersCache = new Map<Id, String>();
 
 
   public static void beforeInsert (List<Treatment__c> treatments) {
@@ -13,20 +10,6 @@ public with sharing class TreatmentUtility {
         treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
     }
   }
-
-
-    public static Map<String,User> populateOrgDefaultUsers(){
-        Map<String,User> results = new Map<String,User>();
-        for ( User u : [Select Email, Id, IsActive, Name, Username, Medical_Information_Officer__c, Travel_Concierge__c from User where IsActive = true and ( Travel_Concierge__c = true or Medical_Information_Officer__c = true )]){
-            if ( u.Travel_Concierge__c ){
-                results.put(travelConcierge,u);
-            } else
-            if ( u.Medical_Information_Officer__c ){
-                results.put(medicalInformationOfficer,u);
-            }
-        }
-        return results;
-    }
 
     public static void afterInsert (List<Treatment__c> treatments) {
         patientIds = new Set<Id>();
@@ -55,25 +38,71 @@ public with sharing class TreatmentUtility {
   public static void beforeUpdate(List<Treatment__c> treatments,
     Map<Id, Treatment__c> oldTreatmentMap) {
     for (Treatment__c treatment : treatments ) {
+    	if (treatment.Task_Specifiers__c != null) {
+    		taskSpecifiersCache.put(treatment.id, treatment.Task_Specifiers__c);
+   			treatment.Task_Specifiers__c = null;
+    	}
         treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
+        if (treatment.Stage__c == PickListDefines.Stage.TreatmentApproval && 
+          	(treatment.Approval_State__c == null || treatment.Approval_State__c == '' || 
+          	 treatment.Approval_State__c == PickListDefines.ApprovalState.NotRequired)) {
+           	treatment.Approval_State__c = PickListDefines.ApprovalState.AwaitingApproval;
+        }
+        Treatment__c origTreatment = oldTreatmentMap.get(treatment.id);
+        if (origTreatment.Approval_State__c != PickListDefines.ApprovalState.Approved &&
+        	treatment.Approval_State__c == PickListDefines.ApprovalState.Approved) {
+        		treatment.Approval_Date__c = Date.today();
+        }
+        if (treatment.Approval_State__c != PickListDefines.ApprovalState.Approved) {
+        	treatment.Approval_Date__c = null;
+        }
     }
   }
 
-    public static void afterUpdate(List<Treatment__c> newTreatments ) {
- system.debug('afterUpdate');
+    public static void afterUpdate(Map<ID,Treatment__c> oldMap, List<Treatment__c> newTreatments ) {
         patientIds = new Set<Id>();
-        for ( Treatment__c treatment : newTreatments ){
+		List<ID> treatmentIds = new List<ID>();
+		for (Treatment__c treatment: newTreatments) {
+			treatmentIds.add(treatment.id);
+		}
+        loadExpandedTreatmentCache( treatmentIds );
+        MessagingUtil.loadCareTeamMemberMap( treatmentIds );
+        List<Communication__c> communications = new List<Communication__c>();
+        List<Task> tasks = new List<Task>();
+        for ( Treatment__c treatment : newTreatments ) {
+        	String taskSpecifier = taskSpecifiersCache.get(treatment.id);
+        	if (taskSPecifier != null) {
+	        	List<Task> taskList = TaskUtility.parseTreatmentTasks(taskSpecifier, treatment);
+				if (taskList.size()>0) tasks.addAll(taskList);
+        	}
+        	Treatment__c expandedTreatment = getExpandedTreatment( treatment.id );
+        	Treatment__c origTreatment = oldMap.get(treatment.id);
             if ( treatment.Patient__c != null ){
                 patientIds.add(treatment.Patient__c);
             }
-        }
- system.debug('patientIds='+patientIds);
+            if (treatment.Payment_Type__c == PickListDefines.PaymentType.Insurance &&
+            	expandedTreatment!=null) {
+            	if (!origTreatment.Surgical_Report_Attached__c && treatment.Surgical_Report_Attached__c) {
+            		Communication__c comm = MessagingUtil.createPrivateMessage( treatment.id, 
+            			treatment.OwnerId, expandedTreatment.Insurance_Network_Contact__c, 
+            			'The surgical report for '+expandedTreatment.Patient__r.Name+' has been attached.' );
+            		if (comm != null) communications.add(comm);
+            	}
+            }
+            
+		}
         patientMap = populatePatientMap(patientIds);
     	updateCareTeamMembers( newTreatments, false );
+    	
+    	if (communications.size()>0) {
+    		insert communications;
+    	}
+    	if (tasks.size()>0) {
+    		insert tasks;
+    	}
     }
 
 	private static void updateCareTeamMembers( List<Treatment__c> treatments, Boolean isInsert ) {
-system.debug('updateCareTeamMembers');
         List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
 
 		Set<ID> treatmentIds = new Set<ID>();
@@ -82,35 +111,33 @@ system.debug('updateCareTeamMembers');
             	treatmentIds.add(treatment.id);
             }
         }
-        if (isInsert) {
-	        orgDefaultUsers = populateOrgDefaultUsers();
-        }
-
-  system.debug('treatmentIds X='+treatmentIds);
-		loadCareTeamMemberMap( treatmentIds );
 
         for ( Treatment__c treatment : treatments ){
             if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ) {
                 Patient__c thisPatient = patientMap.get(treatment.Patient__c);
 
-				checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'PCC', treatment.OwnerId );
+				careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.PCC, User__c = treatment.OwnerId));
                 if ( treatment.Onsite_Coordinator__c != null ) {
-					checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'Onsite Coordinator', treatment.Onsite_Coordinator__c );
+					careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.OnsiteCoordinator, User__c = treatment.Onsite_Coordinator__c));
+                }
+                if ( treatment.Payment_Type__c == PickListDefines.PaymentType.Insurance &&
+                	 treatment.Insurance_Network_Contact__c != null ) {
+					careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.InsuranceAgent, User__c = treatment.Insurance_Network_Contact__c));
                 }
                 if (isInsert) {
-	                if ( orgDefaultUsers != null && orgDefaultUsers.containsKey(medicalInformationOfficer) ) {
-						checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'Medical Information Officer', orgDefaultUsers.get(medicalInformationOfficer).Id );
+                	User medicalInformationOfficer = DefaultUsersUtil.getMedicalInformationOfficer();
+	                if ( medicalInformationOfficer != null) {
+						careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.MedicalInformationOfficer, User__c = medicalInformationOfficer.Id));
         	        }
-            	    if ( orgDefaultUsers != null &&  orgDefaultUsers.containsKey(travelConcierge) ) {
-					checkCareTeamMembership( careTeamMemberInserts, treatment.id, 'Travel Concierge', orgDefaultUsers.get(travelConcierge).id );
+					User travelConcierge = DefaultUsersUtil.getTravelConcierge();
+            	    if ( travelConcierge != null ) {
+						careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.TravelConcierge, User__c = travelConcierge.id));
                 	}
                 }
             }
             
         }
-        if (careTeamMemberInserts.size()>0) {
-	        insert careTeamMemberInserts;
-        }
+        CareTeamUtil.addMembersToCareTeam(careTeamMemberInserts);
 	}
     
   private static Map<Id, Patient__c> populatePatientMap(Set<Id> pPatientIds) {
@@ -177,6 +204,7 @@ system.debug('updateCareTeamMembers');
                         Response_SLA__c, 
                         Stage__c,
                         Sub_Stage__c,
+                        Quote_Status__c,
                         Patient_Not_Committed_Reason__c
                     from Treatment__c 
                     where id = :pTreatmentId];               
@@ -217,6 +245,7 @@ system.debug('updateCareTeamMembers');
                         Response_SLA__c, 
                         Stage__c,
                         Sub_Stage__c,
+                        Quote_Status__c,
                         Patient_Not_Committed_Reason__c */
                         Patient__r.Name,
                         Patient__r.Owner.Name,
@@ -234,36 +263,39 @@ system.debug('updateCareTeamMembers');
       }  
    } 
    
-   	private static Map<String, Id> careTeamMemberMap = null;
-   	private static void loadCareTeamMemberMap( Set<ID> treatmentIds ) {
-   		Care_Team_Member__c[] members = [SELECT Role__c, User__c, Treatment__c FROM Care_Team_Member__c where treatment__c in :treatmentIds];
-   		careTeamMemberMap = new Map<String, Id>();
-   		for (Care_Team_Member__c member : members) {
-   			String key = member.Treatment__c + '+' + member.Role__c + '+' + member.User__c;
-   			careTeamMemberMap.put( key, member.id );
-   		}
-   	}
-   	private static Boolean careTeamMemberExists( ID treatmentId, String role, Id userId) {
-		String key = treatmentId + '+' + role + '+' + userId;
-   		return careTeamMemberMap.get(key) != null;
-   	}
-   	
-   	private static void checkCareTeamMembership( List<Care_Team_Member__c> members, ID treatmentId, String role, ID userId ) {
-   		if (!careTeamMemberExists( treatmentId, role, userId)) {
-            members.add( new Care_Team_Member__c( Treatment__c = treatmentId, Role__c = role, User__c = userId));
-   		}
-   	}
-
 	public static Map<ID, ID> contactToUserMap = null;
 	public static void loadContactToUserMap(Set<ID> contacts) {
-system.debug('contacts='+contacts);
 		User[] users = [select id, ContactId from User where ContactId in :contacts];
-system.debug('users='+users);
 		contactToUserMap = new Map<ID, ID>();
 		for (User user : users) {
 			contactToUserMap.put(user.ContactId, user.id);
 		}
 	}
 
-
+	private static Map<ID, Treatment__c> expandedTreatmentCache = null;
+	private static void loadExpandedTreatmentCache( List<ID> treatmentIds ) {
+		if (expandedTreatmentCache==null) {
+			if (treatmentIds.size()>0) {
+				expandedTreatmentCache = new Map<ID, Treatment__c>([
+					select id, Onsite_Coordinator__c, Insurance_Network_Contact__c, 
+						Travel__r.Travel_End__c,
+						Patient__r.Name from Treatment__c where id in :treatmentIds]);
+			}
+		}
+	}
+	private static Treatment__c getExpandedTreatment( ID treatmentId ) {
+		return expandedTreatmentCache.get( treatmentId );
+	}
+	
+/*	private static Task createAttachSurgicalReportTask( Treatment__c treatment ) {
+		if (treatment == null || treatment.Travel__r.Travel_End__c == null) return null;
+		Task surgRepTask = new Task();
+		surgRepTask.ActivityDate = treatment.Travel__r.Travel_End__c.date();
+		surgRepTask.OwnerId = treatment.Onsite_Coordinator__c;
+		surgRepTask.Subject = 'Attach Surgical Report to Treatment';
+		surgRepTask.Description = 'Attach Surgical Report to Treatment';
+		surgRepTask.Status = 'Not Started';
+		surgRepTask.WhatId = treatment.id;
+		return surgRepTask;		
+	}*/
 }

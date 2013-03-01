@@ -2,6 +2,6 @@
 <CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
     <label>Pipeline</label>
     <mobileReady>false</mobileReady>
-    <motif>Custom85: Real Estate Sign</motif>
-    <page>PipelineWithData</page>
+    <motif>Custom26: Flag</motif>
+    <page>Pipeline</page>
 </CustomTab>

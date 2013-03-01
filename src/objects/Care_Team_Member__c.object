@@ -38,12 +38,48 @@
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
     <fields>
-        <fullName>Email__c</fullName>
+        <fullName>External_Contact__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
-        <label>Email</label>
+        <label>External Contact</label>
+        <referenceTo>External_Contact__c</referenceTo>
+        <relationshipLabel>Care Team Members</relationshipLabel>
+        <relationshipName>Care_Team_Members</relationshipName>
         <required>false</required>
         <trackHistory>false</trackHistory>
-        <type>Email</type>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>200</length>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>FormulaExternalId__c</fullName>
+        <externalId>false</externalId>
+        <formula>Treatment__c &amp; &apos;+&apos; &amp; IF(!ISNULL( User__c ), User__c,  IF(!ISNULL( Medical_Professional__c ), Medical_Professional__c ,  External_Contact__r.Name ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>FormulaExternalId</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>FormulaName__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(!ISNULL( User__c ),  User__r.FirstName &amp; &apos; &apos; &amp; User__r.LastName ,  IF(!ISNULL( Medical_Professional__r.Name ), Medical_Professional__c ,   External_Contact__c  ))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>FormulaName</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -113,18 +149,6 @@
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>UniqueId__c</fullName>
-        <description>TreatmentId : UserId</description>
-        <externalId>false</externalId>
-        <inlineHelpText>TreatmentId : UserId</inlineHelpText>
-        <label>UniqueId</label>
-        <length>37</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>User__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -136,6 +160,17 @@
         <type>Lookup</type>
     </fields>
     <label>Care Team Member</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Treatment__c</columns>
+        <columns>User__c</columns>
+        <columns>FormulaExternalId__c</columns>
+        <columns>FormulaName__c</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <label>Care Team Member Name</label>
         <trackHistory>false</trackHistory>

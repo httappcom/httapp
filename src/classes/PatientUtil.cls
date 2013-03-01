@@ -10,10 +10,6 @@ public class PatientUtil {
       } else {
         return [Select id, 
                        Name,
-                       CreatedBy.Name,
-                       CreatedDate,
-                       LastModifiedById,
-                       LastModifiedDate,
                        Owner.Name,
                        Advocate_Email__c,
                        Advocate_Name__c,
@@ -64,12 +60,9 @@ public class PatientUtil {
                        Key_Contact__c,
                        Medical_Profile_Type__c,
                        Medical_Profile_Type__r.Name,
+                       Email_Receipt_Allowed__c,
                        (select id, 
                                Name,
-                               CreatedById,
-                               CreatedDate,                                                             
-                               LastModifiedById,
-                               LastModifiedDate,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -99,6 +92,7 @@ public class PatientUtil {
                                Response_SLA__c, 
                                Stage__c,
                                Sub_Stage__c,
+                               Quote_Status__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
                                Request_Summary__c,
@@ -106,13 +100,9 @@ public class PatientUtil {
                                Primary_Campaign__c,
                                Related_Campaign__c,
                                Treatment_Summary__c,
-                               On_Hold__c,
+                               Active_Status__c,
                               Travel__r.Id,
                               Travel__r.Name,
-                              Travel__r.CreatedById,
-                              Travel__r.CreatedDate,
-                              Travel__r.LastModifiedById,
-                              Travel__r.LastModifiedDate,
                               Travel__r.Airfare_Coordination_Needed__c,
                               //Companion__c,
                               Travel__r.Extra_Local_Concier__c,
@@ -155,11 +145,7 @@ public class PatientUtil {
                                CallDisposition,
                                CallType,
                                Description,
-                               CreatedById,
-                               CreatedDate,
                                ActivityDate,
-                               LastModifiedById,
-                               LastModifiedDate,
                                Who.Name,
                                Priority,
                                What.Name,
@@ -168,10 +154,6 @@ public class PatientUtil {
                        from Tasks order by CreatedDate desc),
                      /*(select id,
                                Name,
-                              CreatedById,
-                              CreatedDate,
-                              LastModifiedById,
-                              LastModifiedDate,
                               Owner.Name,
                               Body_Rich_Text__c,
                               Body__c,
@@ -188,13 +170,11 @@ public class PatientUtil {
                               To_Name__c,
                               To__c
                       from Messages__r), */ //todo fix the message relationship                                                                    
-                      (select Id,
+/*                      (select Id,
                               Name,
                               Benefit_Percentage__c,
                               Claim_Address__c,
                               Co_pay__c,
-                              CreatedById,
-                              CreatedDate, 
                               Deductible__c,
                               IsDeleted,
                               Dependent_Coverage__c,
@@ -202,17 +182,14 @@ public class PatientUtil {
                               Fax_Number_Medical_Reviews__c,
                               Group__c,
                               Insurance_Contact__c,
-                              LastModifiedById, 
-                              LastModifiedDate,
                               Name_of_Insurance__c,
                               Patient__c,
                               Payment_Type__c,
                               Policy_ID__c, 
-                              SystemModstamp,
                               Treatment__c,
                               Verification_Date__c,
                               Verification_Phone_Number__c 
-                      from Payments__r),
+                      from Payments__r),*/
                       (select Id,
                               Name,
                               Patient__c,
@@ -222,17 +199,25 @@ public class PatientUtil {
                 where id = :pPatientId];
       }
    }
-   
+
+	public static List<Insurance_Network_User__c> getInsuranceNetworkContacts( ID insuranceNetworkId ) {
+		if (insuranceNetworkId==null) return null;
+		Insurance_Network__c[] networks = [SELECT Id, 
+			(SELECT Id,Name,Insurance_Contact__c, Insurance_Contact__r.Name FROM Insurance_Network_Users__r order by Name) 
+				FROM Insurance_Network__c where id = :insuranceNetworkId];
+		return networks.size()==0?null:networks[0].Insurance_Network_Users__r;
+	}
+	
   public static List<Treatment__c> getTreatmentsWithChildren(Id patientId) { 
       if(patientId == null) {          
         return null;
       } else {
-        return [Select id, 
+        return [Select id,
                                Name,
-                               CreatedById,
-                               CreatedDate,                                                             
-                               LastModifiedById,
-                               LastModifiedDate,
+                         	   Surgical_Report_Attached__c,
+                               Approval_State__c,
+                               Approval_Date__c,
+                               Insurance_Network_Contact__c,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -248,7 +233,6 @@ public class PatientUtil {
                                On_Site_Recovery_Period__c,
                                Patient__r.Original_Number_Rank__c,
                                Patient__c,
-                               Patient__r.Email__c,
                                Onsite_Coordinator__c,
                                Onsite_Coordinator__r.Email,
                                Payment_Type__c, 
@@ -262,20 +246,25 @@ public class PatientUtil {
                                Response_SLA__c, 
                                Stage__c,
                                Sub_Stage__c,
+                               Quote_Status__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
+                               Patient__r.Email__c,
                                Request_Summary__c,
                                Next_Follow_Up__c,
                                Primary_Campaign__c,
                                Related_Campaign__c,
                                Treatment_Summary__c,
-                               On_Hold__c,
+                               Active_Status__c,
+                               Medical_Profile_Required__c,
+                               Medical_Profile_Received__c,
+                               Medical_Records_Required__c,
+                               Medical_Records_Received__c,
+                               Engagement_Type__c,
+                               Responses__c,
+                               SubStage_Visibility__c,
                               Travel__r.Id,
                               Travel__r.Name,
-                              Travel__r.CreatedById,
-                              Travel__r.CreatedDate,
-                              Travel__r.LastModifiedById,
-                              Travel__r.LastModifiedDate,
                               Travel__r.Airfare_Coordination_Needed__c,
                               //Companion__c,
                               Travel__r.Extra_Local_Concier__c,
@@ -311,18 +300,14 @@ public class PatientUtil {
                               Travel__r.Notes__c,
                       (SELECT Id,
                               Name,
-                              CreatedById, 
-                              CreatedDate, 
                               IsDeleted, 
                               Description__c, 
                               Discount_Amount__c, 
-                              Expiration_Date__c, 
-                              LastModifiedById, 
-                              LastModifiedDate, 
-                              Status__c, 
+                              Expiration_Date__c,
                               Sub_Total__c, 
-                              SystemModstamp, 
-                              Total_Price__c, 
+                              Total_Price__c,
+                              echosignDocKey__c,
+                              Doc_Signed_Timestamp__c,
                               Treatment__c,
                               Treatment__r.Onsite_Coordinator__c,
                               Treatment__r.Onsite_Coordinator__r.Email,
@@ -352,10 +337,6 @@ public class PatientUtil {
   public static List<Patient__c> queryPatientListAll() {
         return [Select id, 
                        Name,
-                       CreatedById,
-                       CreatedDate,
-                       LastModifiedById,
-                       LastModifiedDate,
                        Owner.Name,
                        Advocate_Email__c,
                        Advocate_Name__c,
@@ -405,12 +386,9 @@ public class PatientUtil {
                        Key_Contact__c,
                        Medical_Profile_Type__c,
                        Medical_Profile_Type__r.Name,
+                       Email_Receipt_Allowed__c,
                        (select id, 
                                Name,
-                               CreatedById,
-                               CreatedDate,                               
-                               LastModifiedById,
-                               LastModifiedDate,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -440,6 +418,7 @@ public class PatientUtil {
                                Response_SLA__c, 
                                Stage__c,
                                Sub_Stage__c,
+                               Quote_Status__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
                                Request_Summary__c,                               
@@ -455,11 +434,7 @@ public class PatientUtil {
                                CallDisposition,
                                CallType,
                                Description,
-                               CreatedById,
-                               CreatedDate,
                                ActivityDate,
-                               LastModifiedById,
-                               LastModifiedDate,
                                Who.Name,
                                Priority,
                                What.Name,
@@ -468,10 +443,6 @@ public class PatientUtil {
                        from Tasks order by CreatedDate desc),
                      /*(select id,
                                Name,
-                              CreatedBy.Name,
-                              CreatedDate,
-                              LastModifiedById,
-                              LastModifiedDate,
                               Owner.Name,
                               Body_Rich_Text__c,
                               Body__c,
@@ -488,13 +459,11 @@ public class PatientUtil {
                               To_Name__c,
                               To__c
                       from Messages__r), */ //todo fix the message relationship                                                                    
-                      (select Id,
+/*                      (select Id,
                               Name,
                               Benefit_Percentage__c,
                               Claim_Address__c,
                               Co_pay__c,
-                              CreatedById,
-                              CreatedDate, 
                               Deductible__c,
                               IsDeleted,
                               Dependent_Coverage__c,
@@ -502,28 +471,20 @@ public class PatientUtil {
                               Fax_Number_Medical_Reviews__c,
                               Group__c,
                               Insurance_Contact__c,
-                              LastModifiedById, 
-                              LastModifiedDate,
                               Name_of_Insurance__c,
                               Patient__c,
                               Payment_Type__c,
                               Policy_ID__c, 
-                              SystemModstamp,
                               Treatment__c,
                               Verification_Date__c,
                               Verification_Phone_Number__c ,
                               Treatment__r.Name,
                               Patient__r.Name                                                           
-                      from Payments__r),
+                      from Payments__r),*/
                       (select Id,
                               Name,
-                              CreatedById,
-                              CreatedDate,
                               IsDeleted,
-                              LastModifiedById, 
-                              LastModifiedDate,
                               Patient__c,
-                              SystemModstamp,
                               Survey_Id__c       
                       from Survey_Headers__r)
                 from Patient__c];
@@ -548,10 +509,10 @@ public class PatientUtil {
         
         
         for(integer i=0; i<newlist.size(); i++) {
-            if (newlist[i].Phase__c == '(2) Interaction' 
+            if (newlist[i].Phase__c == PickListDefines.Phase.Interaction 
                     && patientKeyContactMap.get(newlist[i].Patient__c) == null) {
                 createPatientPortalUser(newlist[i].patient__c);
-            } else if (newlist[i].Phase__c == '(2) Interaction' && oldlist[i].Phase__c != '(2) Interaction') {
+            } else if (newlist[i].Phase__c == PickListDefines.Phase.Interaction && oldlist[i].Phase__c != PickListDefines.Phase.Interaction) {
             	String keyContact = patientKeyContactMap.get(newlist[i].Patient__c);
             	createPortalUserIfNeeded( newlist[i].Patient__c, keyContact );
             }
@@ -635,7 +596,7 @@ public class PatientUtil {
         u.firstname = patient.patient_First_name__c;
         u.lastname = patient.patient_last_name__c;
         u.Alias = username.substring(0,5)+username.substring(username.length()-2,username.length());
-        u.Username = username+='@patient.htt.com';
+        u.Username = username+='@patient.nuehealth.com';
         u.Email = patient.email__c;
         u.CommunityNickname = username; 
         u.TimeZoneSidKey = 'America/Tijuana';

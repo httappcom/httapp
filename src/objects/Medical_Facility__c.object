@@ -149,6 +149,15 @@
         <unique>true</unique>
     </fields>
     <fields>
+        <fullName>Facilitator_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Facilitator Name</label>
+        <length>128</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Footer_Image__c</fullName>
         <externalId>false</externalId>
         <label>Footer Image</label>
@@ -238,6 +247,15 @@
         <externalId>false</externalId>
         <label>Provider Portal Banner Image</label>
         <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Quote_Itinerary_Header__c</fullName>
+        <externalId>false</externalId>
+        <label>Quote/Itinerary Header</label>
+        <length>18</length>
         <required>false</required>
         <type>Text</type>
         <unique>false</unique>

@@ -2,6 +2,7 @@
     title="{!prmConfig.Facilitator_Name__c}" action="{!portalTypeRedirect}">
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-1.8.2.min.js')}"/>
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
+    <apex:stylesheet value="{!$Resource.SurveyResponse}"/>
     <script>
         var j$ = jQuery.noConflict();
     </script>
@@ -15,6 +16,36 @@
   </style>
 <![endif]-->
     <style>
+        .surveyResultsLBox{
+                background-color: white;
+                border-style: solid;
+                border-width: 2px;
+                border-color: #000;
+                left: 50%;
+                padding:10px;
+                position: absolute;
+                z-index: 9999;
+                width: 900px;
+                margin-left: -250px;
+                top:130px;
+                //top:50px;
+            }
+             
+            .surveyResultsBox{
+                /*display: none;*/ 
+                position: absolute;
+                top: 0;/* must be 0 ideally*/
+                left: 0;/* must be 0 ideally */
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                z-index:1001;
+                -moz-opacity: 0.5;
+                opacity:.50;
+                filter: alpha(opacity=50);
+                /*zoom: 1;*/
+            }
+            
         .uploadlbox{
                 background-color: white;
                 border-style: solid;
@@ -79,6 +110,9 @@
     <apex:actionFunction name="goToMedicalRecords" action="{!goToMedicalRecords}"/> 
     <apex:actionFunction name="goToYourTravel" action="{!goToYourTravel}"/> 
     <apex:actionFunction name="goToYourTreatment" action="{!goToYourTreatment}"/> 
+    	<apex:actionFunction name="showSurveyResults" action="{!showSurveyResults}" reRender="surveyResultsPanel"> 
+        	<apex:param name="surveyId" assignTo="{!surveyId}" value="" /> 
+    	</apex:actionFunction> 
 
 <div id="menu" class="clearfix">
 <apex:outputPanel layout="block" id="menuHome" styleClass="{!IF(currentpage == 'Home','menu-item-selected','menu-item')}" onclick="goToHome();">Home</apex:outputPanel>
@@ -106,10 +140,13 @@
                 </apex:outputpanel>
                 
                 <apex:outputpanel id="medRecsPnl" rendered="{!currentpage == 'Medical Records'}">
-                     <button class="btn" type="button" onclick="showUpload();">Upload Document</button><br/>                  
-                    <br/><br/><br/>
+                     <!--  button class="btn" type="button" onclick="showUpload();">Upload Document</button><br/>-->                  
+                    <br/><br/>
+                    <apex:outputPanel rendered="{!!ISNULL(patient.Survey_Headers__r) && patient.Survey_Headers__r.size>0}">
+                       	<a href="javascript:showSurveyResults('{!patient.Survey_Headers__r[0].id}')">View Medical Profile</a>
+                    </apex:outputPanel>
                      
-                    <apex:pageblocktable value="{!medicalRecords}" var="t">
+                    <!-- apex:pageblocktable value="{!medicalRecords}" var="t">
                         <apex:column >
                             <apex:facet name="header">Name</apex:facet>
                             <apex:outputfield value="{!t.name}"/>
@@ -122,7 +159,7 @@
                             <apex:facet name="header">View</apex:facet>
                             <a target="_blank" href="http://connect.ajaxdocumentviewer.com/?key=K881661317312013132735&document=http://nuehealthtestbucket.s3-website-us-east-1.amazonaws.com/{!URLENCODE(t.S3_Doc_Key__c)}&viewerheight=600&viewerwidth=800&toolbarHeight=24&toolbarColor=00AF33">View</a>
                         </apex:column>
-                    </apex:pageblocktable>
+                    </apex:pageblocktable> -->
                 </apex:outputpanel>
                 
                 <apex:outputpanel id="travelPanel" rendered="{!currentpage == 'Your Travel'}">
@@ -163,13 +200,9 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Printable<br/>Version</apex:facet>
-                            <apex:commandlink value="View" action="{!getItineraryPDF}" target="_Blank">
+                            <apex:commandlink value="View" action="{!getItineraryPDF}" target="_Blank" rendered="{!t.treatment.Phase__c==travelPhase}">
                                 <apex:param name="selectedItinerary" value="{!t.treatment.treatment_quotes__r[0].id}" assignTo="{!selectedItinerary}"/>
                             </apex:commandlink> 
-                        </apex:column>
-                        <apex:column >
-                            <apex:facet name="header">Email</apex:facet>
-                            <apex:outputlink value="#">Send</apex:outputlink>
                         </apex:column>
                     </apex:pageblocktable>
                     <br/>
@@ -244,5 +277,24 @@
         </apex:outputpanel>
         <script>var outerUploadId = "{!$Component.outerUpload}";</script>
     </div>
+        <apex:outputPanel layout="block" id="surveyResultsPanel" >
+            <apex:outputPanel layout="block" styleClass="surveyResultsBox" rendered="{!displaySurveyResults}" />
+            <apex:outputpanel styleClass="surveyResultsLBox" layout="block" rendered="{!displaySurveyResults}" >
+                <div align="center">
+                    <apex:form >
+                        <apex:commandLink value="Close" action="{!hideSurveyResults}" reRender="surveyResultsPanel"  />
+                    </apex:form>
+                </div>
+                <div align="center">
+                    <apex:outputtext style="font-weight:bold;" value="Medical Profile Results"/><br/><br/>
+                </div>
+				<c:SurveyResponse surveyId="{!surveyId}"/>
+                <div align="center">
+                    <apex:form >
+                        <apex:commandLink value="Close" action="{!hideSurveyResults}" reRender="surveyResultsPanel"  />
+                    </apex:form>
+                </div>
+            </apex:outputpanel>
+        </apex:outputpanel>
     </body>
 </apex:page>

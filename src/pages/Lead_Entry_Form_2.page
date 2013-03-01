@@ -1,0 +1,146 @@
+<apex:page controller="RequestQuoteController" showHeader="false" title="Patient Intake Form" >
+  <apex:stylesheet value="{!$Resource.QuoteRequestFormStyles}" />
+  <h1>Patient Intake Form</h1>
+    <apex:form >
+        <apex:pageMessages />
+        <div class="question">
+            <label>Payment Type:</label>
+            <apex:inputField value="{!treatment.Payment_Type__c}" required="true"/>
+        </div>    
+        <h2>Patient Information</h2>  
+        <div class="question">
+            <label>First Name:</label>
+            <apex:inputText value="{!patient.Patient_First_Name__c}"/>
+        </div>
+        <div class="question">
+            <label>Last Name:</label>
+            <apex:inputText value="{!patient.Patient_Last_Name__c}"/>
+        </div>
+        <div class="question">
+            <label>DOB:</label>
+            <apex:inputField value="{!patient.Date_of_Birth__c}"/>
+        </div>
+        <div class="question">
+          <label>Gender:</label>
+          <apex:inputField value="{!patient.Gender__c}"/>
+        </div>
+        <div class="question">
+          <label>Country of Residence:</label>
+          <apex:inputField value="{!patient.Country__c}"/>
+        </div>                     
+        <div class="question">
+          <label>Phone:</label>
+          <apex:inputText value="{!patient.Phone__c}"/>
+        </div>
+        <div class="question">
+          <label>Email:</label>
+          <apex:inputText value="{!patient.Email__c}"/>
+        </div>
+        <div class="question">
+          <label>Lanugage Preference:</label>
+          <apex:inputField value="{!patient.Preferred_Language__c}"/>
+        </div> 
+        <div class="question">
+          <label>Social Security (if applicable):</label>
+          <apex:inputField value="{!patient.Social_Security__c}"/>
+        </div>
+        <div class="question">
+          <label>Insurance ID#:</label>
+          <apex:inputText value="{!patient.Ins_Policy__c}"/>
+        </div>       
+        <div class="question">
+          <label>Reference#:</label>
+          <apex:inputText value="{!reference_number}"/>
+        </div>
+        <div class="question">
+          <label>Service authorized by insurance provider?</label>
+          <apex:selectRadio value="{!authorized_by_insurance}">
+              <apex:selectOption itemValue="Yes" itemLabel="Yes"></apex:selectOption>
+              <apex:selectOption itemValue="No" itemLabel="No"></apex:selectOption>
+          </apex:selectRadio>
+          <p>(Copy of Authorization will be requested. If you are a self-referred patient please disregard.)</p>          
+        </div>    
+      <h2>Guardian/Parent (if under 18)</h2>
+      <div class="question">
+          <label>Name and Phone #</label>
+          <apex:inputText value="{!guardian_info}"/>
+      </div>                                            
+      <div class="question">
+          <label>Additional Information</label>
+          <apex:inputTextarea value="{!guardian_additional}"/>
+      </div> 
+      <h2>Caller/Referring Channel</h2>
+        <div class="question">
+          <label>Name of Referral:</label>
+          <apex:inputText value="{!treatment.Referrer__c}"/>
+        </div>
+        <div class="question">
+          <label>Phone:</label>
+          <apex:inputText value="{!treatment.Referrer_Phone__c}"/>
+        </div>
+        <div class="question">
+          <label>Referral Source:</label>
+          <apex:inputField value="{!treatment.Referral_Source__c}"/>
+        </div>
+      <div class="question">
+          <label>Comments:</label>
+          <apex:inputTextarea value="{!caller_referral_comments}"/>
+      </div>                                 
+      <h2>Referring Provider (Hospital, clinic or physician)</h2>
+        <div class="question">
+          <label>Name:</label>
+          <apex:inputText value="{!treatment.Referring_Provider_Name__c}"/>
+        </div>
+        <div class="question">
+          <label>Phone:</label>
+          <apex:inputText value="{!treatment.Referring_Provider_Phone__c}"/>
+        </div>
+        <div class="question">
+          <label>Fax:</label>
+          <apex:inputText value="{!treatment.Referring_Provider_Fax__c}"/>
+        </div>
+        <div class="question">
+          <label>NPI #:</label>
+          <apex:inputText value="{!treatment.Referring_Provider_NPI__c}"/>
+        </div>                                       
+      <h2>Procedure/Treatment Requested</h2>
+      <div class="question">
+        <label>Procedure Category:</label>
+        <apex:inputField value="{!treatment.Procedure_Category__c}" />      
+      </div>
+      <div class="question">
+        <label>Procedure:</label>
+        <apex:inputfield value="{!treatment.Procedure__c}" />      
+      </div>
+      <div class="question">
+          <label>Preferred facility type and location:</label>
+          <apex:inputText value="{!treatment.Preferred_Destination__c}"/>
+      </div>
+      <div class="question">
+          <label>Medical Diagnosis:</label>
+          <apex:inputTextarea value="{!medical_diagnosis}"/>
+      </div>
+      <div class="question">
+          <label>Summary* of current symptoms and issues:</label>
+          <apex:inputTextarea value="{!symptom_summary}"/>
+          <p>*You will be asked to fill out an online medical history during the intake process.</p>
+      </div>          
+      <h2>Travel Preferences</h2>
+      <div class="question">
+          <label>Desired Treatment Time Frame:</label>
+          <apex:inputText value="{!time_frame}"/>
+      </div> 
+      <div class="question">
+          <label>Preferred treatment/procedure appointment:</label>
+          <apex:inputText value="{!preferred_appointment}"/>
+      </div>
+        <div class="question">
+          <label>Will member require travel concierge services?</label>
+          <apex:selectRadio value="{!concierge_needed}">
+              <apex:selectOption itemValue="Yes" itemLabel="Yes"></apex:selectOption>
+              <apex:selectOption itemValue="No" itemLabel="No"></apex:selectOption>
+          </apex:selectRadio>       
+        </div>                              
+      <apex:commandButton value="Submit" action="{!submitLead}"/>
+    </apex:form>
+</apex:page>

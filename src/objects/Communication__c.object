@@ -143,17 +143,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>To_User__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>To User</label>
-        <referenceTo>User</referenceTo>
-        <relationshipName>Communications1</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Topic__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>

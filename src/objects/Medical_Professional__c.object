@@ -82,7 +82,7 @@
     </fields>
     <fields>
         <fullName>Key_Contact__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <deleteConstraint>Restrict</deleteConstraint>
         <externalId>false</externalId>
         <label>Key Contact</label>
         <referenceTo>Contact</referenceTo>
@@ -102,7 +102,7 @@
     </fields>
     <fields>
         <fullName>Medical_Facility__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
+        <deleteConstraint>Restrict</deleteConstraint>
         <description>Determines branding for Doctor Portal similar to how Treatment Destination Facility determines branding for Patient Portal.</description>
         <externalId>false</externalId>
         <label>Medical Facility</label>

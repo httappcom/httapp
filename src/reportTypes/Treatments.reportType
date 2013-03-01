@@ -295,11 +295,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Status__c</field>
-            <table>Treatment__c.Treatment_Quotes__r</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>Sub_Total__c</field>
             <table>Treatment__c.Treatment_Quotes__r</table>
         </columns>

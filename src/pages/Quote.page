@@ -6,11 +6,11 @@
           	renderAs="pdf">
 <apex:stylesheet value="{!URLFOR($Resource.quoteResources, 'quote-styles.css')}"/>
 <div class="page">
-<apex:image id="headerImage" value="{!URLFOR($Resource.quoteResources, 'htg_header.jpg')}" width="700" height="153" />
+<c:Branded_Image treatment_Id="{!q.Treatment__c}" PRM_Config_field="Quote_Itinerary_Header__c" width="700" height="154" />
 
     <h1>Your Treatment Quote</h1>
     
-    <p>Thank you for contacting Health Travel Guides for a treatment quote.  We are happy to help you with your dental, medical, surgical or homeopathic wellness needs.</p>
+    <p>Thank you for contacting&#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="Facilitator_Name__c"/> for a treatment quote.  We are happy to help you with your dental, medical, surgical or homeopathic wellness needs.</p>
     
     <p>Your Treatment Quote: 
         <apex:outputText value=" ${0, number,###,###,###,###.##}">
@@ -18,7 +18,8 @@
         </apex:outputText>
     </p>
     
-    <p>Health Travel Guides is your guide to the best medical care around the world.  We take the guesswork out of obtaining high quality, affordable and innovative health care abroad.  We ensure a quality experience with a carefully selected network of top health care providers and specialists.  Your Case Manager is available any time with questions toll free 1-866-978-2573.</p>
+    <p><c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="Brand_Description__c"/></p>
+    <p>Your&#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="PCC_designation__c"/> is available any time with questions at &#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="Call_Center_Number__c"/></p>
     
     <div id="quoteTopSummary">
         <p>Health Traveler Name: {!q.Treatment__r.Patient__r.Name}</p>
@@ -48,29 +49,24 @@
     <h2>Refunds:</h2>
 
     <p>If you decide to cancel a scheduled procedure for any reason, or if you travel to a provider and are denied surgery for medical reasons, you are entitled to a full refund of your remaining balance less your deposit and any actual costs incurred <strong>(e.g. for medical shuttle transportation, pre-op testing or hospital stay).</strong>
-    </p>
-    <div class="signatureSection">
-        <div class="signatureLine">&#160;</div>
-        <p>Your signature here indicates full understanding and compliance with the HTG payment and refund terms and conditions.</p>
-    </div>
-    
+    </p> 
     <h2>Next Steps:</h2>
     
     <p>You may submit your signed Quote in one of the following ways:</p>
     <ol>
         <li>Electronically sign and file your acceptance of this Quote and Informed Consent. 
-Health Travel Guides is pleased to feature the secure electronic Echosign document review and approval service. We will store and make accessible to you at any time, free of charge, an electronic or printed copy of your Quote documentation.</li>
+&#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="Facilitator_Name__c"/> is pleased to feature the secure electronic Echosign document review and approval service. We will store and make accessible to you at any time, free of charge, an electronic or printed copy of your Quote documentation.</li>
         
-        <li>Review, review, print and sign, and return to Health Travel Guides using one of the following methods
+        <li>Review, review, print and sign, and return to&#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="Facilitator_Name__c"/> using one of the following methods
 
             <ul>
-                <li>Scan and attach your signed quote to an email to <a href="mailto:SecureQuote@HealthTravelGuides.com">SecureQuote@HealthTravelGuides.com</a>
+                <li>Scan and attach your signed quote to an email to us.
                 </li>
                 <li>Fax back to our Patient Services department at 1-206-203-0778</li>
             </ul>
         </li>
     </ol>
-    <p>Your Case Manager will contact you to finalize your payment plan and begin the travel planning portion of your medical travel trip.</p>
+    <p>Your&#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="PCC_designation__c"/> will contact you to finalize your payment plan and begin the travel planning portion of your medical travel trip.</p>
     <p><strong>Please Note:</strong>  Payment is required at the time that services are rendered. Failure to provide payment in full will result in a surcharge of 1.5% assessed monthly.  In addition, the patient is responsible for all costs of collection including reasonable attorneys fees incurred in the collection process.</p>
 
         <p>The Parties hereby agree and stipulate that in the event of a dispute, and regardless of whether or not the dispute matures into formal litigation or any alternative dispute procedure, and further regardless of whether or not a judgment is rendered or the matter is settled, the non-prevailing party will pay the attorneys fees and legal costs of the prevailing party.</p>
@@ -99,12 +95,12 @@ Health Travel Guides is pleased to feature the secure electronic Echosign docume
                     </tr>
                     <tr>
                         <td>Hospital Stay</td>
-                        <td>{!q.Number_of_Hospital_Nights__c} night{! IF ((q.Number_of_Hospital_Nights__c <> 1), 's', null)} included    </td>
+                        <td>{!q.Number_of_Hospital_Nights__c} night{! IF ((q.Number_of_Hospital_Nights__c != 1), 's', null)} included    </td>
                         <td>INCLUDED</td>
                     </tr>
                     <tr>
                         <td>Hotel Stay  </td>
-                        <td>{!q.Hotel_Nights_Included__c} night{! IF ((q.Hotel_Nights_Included__c <> 1), 's', null)} included</td>
+                        <td>{!q.Hotel_Nights_Included__c} night{! IF ((q.Hotel_Nights_Included__c != 1), 's', null)} included</td>
                         <td>INCLUDED</td>
                     </tr>
                     <tr>
@@ -165,4 +161,6 @@ Health Travel Guides is pleased to feature the secure electronic Echosign docume
                     <h3>Venue</h3>
                     
                     <p>You agree that this Agreement shall be governed by and construed in accordance with the law of the State of California. You further agree that any legal action or proceeding under or with respect to this Agreement only shall be brought in the courts of the State of California or the United States having jurisdiction in San Francisco County; and for the purpose of any such legal action or proceeding, you hereby submit to the jurisdiction of such courts. You hereby agree not to raise and waive any objection to or any defense based upon the venue of such courts and any objection or defense based upon an inconvenient form.  You also agree not to bring any legal action or proceeding under or with respect to this agreement outside San Francisco County, California.</p>
+                    
+                    <p>Your signature here indicates full understanding and compliance with the&#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="Facilitator_Name__c"/> payment and refund terms and conditions.</p>                    
                 </apex:page>

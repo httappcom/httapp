@@ -94,7 +94,7 @@ public with sharing class EmailController {
   	return 'https://' + getPatientPortalDomain();
   }
   public static String getPatientPortalDomain() {
-  	List<Site> patientPortal = [Select MasterLabel, Subdomain From Site Where MasterLabel = 'Patient Portal' ];
+  	List<Site> patientPortal = [Select Subdomain From Site Where MasterLabel = 'Patient Portal' ];
     String patientPortalSubdomain = patientPortal.size()>0?patientPortal[0].Subdomain:'';  	
   	return patientPortalSubdomain + '.' + Instance + '.force.com';
   }

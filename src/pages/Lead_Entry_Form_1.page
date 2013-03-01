@@ -1,0 +1,33 @@
+<apex:page controller="RequestQuoteController" showHeader="false" title="Request a Quote" >
+  <apex:stylesheet value="{!$Resource.QuoteRequestFormStyles}" />
+  <h1>Request a Quote</h1>
+    <apex:form >
+      <apex:pageMessages />
+      <div class="question">
+        <label>First Name:</label>
+        <apex:inputText value="{!patient.Patient_First_Name__c}"/>
+      </div>
+      <div class="question">
+        <label>Last Name:</label>
+        <apex:inputText value="{!patient.Patient_Last_Name__c}"/>
+      </div>
+      <div class="question">
+	      <label>Email:</label>
+	      <apex:inputText value="{!patient.Email__c}"/>
+	    </div>
+	    <div class="question">
+        <label>Coverage Type:</label>
+        <apex:inputField value="{!treatment.Payment_Type__c}" required="true"/>
+      </div>
+      <h2>Procedure you are inquiring about</h2>
+      <div class="question">
+        <label>Procedure Category:</label>
+        <apex:inputField value="{!treatment.Procedure_Category__c}" />      
+      </div>
+      <div class="question">
+        <label>Procedure:</label>
+        <apex:inputfield value="{!treatment.Procedure__c}" />      
+      </div>      
+      <apex:commandButton value="Request a Quote" action="{!requestQuote}"/>
+    </apex:form>
+</apex:page>

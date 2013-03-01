@@ -96,9 +96,9 @@ public with sharing class TravelUtility {
         
         list<Treatment__c> treatments = populateTreatmentMap(arrivalsTreatments).values(); 
         for (Treatment__c t : treatments) {
-            t.Phase__c = '(3) Travel';
-            t.stage__c = 'At Provider';
-            t.Sub_Stage__c = 'Treatment In Progress';
+            t.Phase__c = PickListDefines.Phase.Travel;
+            t.stage__c = PickListDefines.Stage.AtProvider;
+            t.Sub_Stage__c = PickListDefines.SubStage.TreatmentInProgress;
         }
         
         update treatments;*/

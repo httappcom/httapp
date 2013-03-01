@@ -8,7 +8,7 @@ global with sharing class SiteLoginController {
     global PageReference login() {
    Logger.info('SiteLoginController');
    system.debug('SiteLoginController');
-    	username = (username.contains('@'))?username:username+'@patient.htt.com';
+    	username = (username.contains('@'))?username:username+'@patient.nuehealth.com';
         PageReference pr = null;
         try {
        		pr = Site.login(username, password, '/patientPortal');

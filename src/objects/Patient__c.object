@@ -22,7 +22,7 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>New</actionName>
-        <content>PatientTabWithData</content>
+        <content>Patient</content>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
@@ -32,7 +32,7 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>View</actionName>
-        <content>PatientTabWithData</content>
+        <content>Patient</content>
         <skipRecordTypeSelect>false</skipRecordTypeSelect>
         <type>Visualforce</type>
     </actionOverrides>
@@ -140,6 +140,15 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Do Not Contact</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Email_Receipt_Allowed__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Email Receipt Allowed</label>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Checkbox</type>
@@ -679,6 +688,17 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Social_Security__c</fullName>
+        <externalId>false</externalId>
+        <label>Social Security Number</label>
+        <length>11</length>
+        <maskChar>X</maskChar>
+        <maskType>ssn</maskType>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>EncryptedText</type>
     </fields>
     <fields>
         <fullName>State__c</fullName>

@@ -3,8 +3,7 @@ public with sharing class MedicalRecordUtility {
 //  	private String testRecordsList = '{"medicalObjects": {"medicalObjects":[\n{\n"objectId": "VLcbStHf1d9S2X6Eugs0",\n"objectType": "someType",\n"description": "A medical record of some type.",\n"date": "1357685363000"\n},\n{\n"objectId": "tG3oIsLG7jqI4LEW5LR7",\n"objectType": "someOtherType",\n"description":  "A medical record of some other type.",\n"date": "1368359603000"\n}\n,\n{\n"objectId": "Wx4aUPVoF9MlujHxisyr",\n"objectType": "yetAnotherType",\n"description":  "A medical record of yet another type.",\n"date": "1374129681000"\n}\n]\n}\n}';
   private class MphRxCallout 
   {
-  	public String getContent(String urlCommand, Map<String, String> urlParameters)
-  	{    
+  	public String getContent(String urlCommand, Map<String, String> urlParameters) {    
 /*  		List<mphRxAPI__c> mphRxSetting = mphRxAPI__c.getAll().values();
   		String result = null;
   		if (! mphRxSetting.isempty())

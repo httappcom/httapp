@@ -201,6 +201,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Quote_Itinerary_Header__c</fullName>
+        <externalId>false</externalId>
+        <label>Quote/Itinerary Header</label>
+        <length>18</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Referral_Offer__c</fullName>
         <externalId>false</externalId>
         <label>Referral Offer</label>

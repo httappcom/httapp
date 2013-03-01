@@ -1,149 +1,170 @@
-<apex:page >
-
+<apex:page Controller="PipelineController" sidebar="false">
+ <apex:form > 
 <head>
 <title>Pipeline</title>
 <apex:includeScript value="http://ajax.googleapis.com/ajax/libs/jquery/1.4.0/jquery.min.js" />
 <apex:includeScript value="{!$Resource.sfscript}" />
  <apex:stylesheet value="{!$Resource.sfstyles}"/>
 </head>
+<style>
+    .redRow {
+        background-color:#FFA4A4;
+    }
+    .redRow:hover {}
+    
+    .blueRow {
+        background-color:#94B8FF;
+    }
+    
+    .blueRow:hover {}
+</style>
+    <apex:pageBlock >
+        <apex:pageBlockSection title="Patients" columns="1" collapsible="true">
+            <apex:pageBlockSectionItem >
+                <apex:outputPanel >
+                   <apex:commandLink action="{!firstTreatments}">First</apex:commandlink>&nbsp;&nbsp;
+                   <apex:commandLink action="{!previousTreatments}" rendered="{!hasPreviousTreatment}">Previous</apex:commandlink>&nbsp;&nbsp;
+                   <apex:commandLink action="{!nextTreatments}" rendered="{!hasNextTreatment}">Next</apex:commandlink>&nbsp;&nbsp;
+                   <apex:commandLink action="{!lastTreatments}">Last</apex:commandlink>
+                </apex:outputPanel>
+            </apex:pageBlockSectionItem>
+             <apex:pageBlockTable value="{!active}" var="r">
+                <apex:column value="{!r.Phase__c}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c == newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Stage__c}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.LastModifiedDate}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Procedure_Category__c}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/> 
+                <apex:column value="{!r.Procedure__c}" headerValue="Procedure" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Patient__c}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Next_Follow_Up__c}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.CreatedDate}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+                <apex:column value="{!r.Patient__r.Last_Communication__c}" styleClass="{!IF(((r.Phase__c==inquiryPhase && r.Stage__c ==newStage && r.lastmodifieddate <twoHoursAgo) || DATEVALUE(r.Next_Follow_Up__c) < TODAY()), 'redRow',IF((r.Next_Follow_Up__c >= NOW() && r.Next_Follow_Up__c <= next24Hours), 'blueRow',''))}"/>
+            </apex:pageBlockTable>   
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <!-- div style="clear:both"></div>
+    <div class="pipelinechartscol1">
+        <div class="pipelineHeading">Tasks</div>
+               <apex:selectList value="{!selectedTaskOption}" size="1" id="sidebardropdown" styleClass="sidebardropdown" onChange="onChangeCC(this.options[this.selectedIndex].value);">
+               <apex:selectOptions value="{!taskOptions}" />
+                   <apex:actionfunction name="onChangeCC" action="{!searchTask}" reRender="taskResult"/>
+               </apex:selectList>                         
+           <apex:outputPanel id="taskResult">                 
+             <table width="100%" border="0" cellspacing="0" cellpadding="0">  
+                <tr>
+                </tr>            
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Task</a></td>
+                </tr>
+              <apex:repeat value="{!tasks}" var="tvar">                 
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">{!tvar.what.Name}</a></td>
+                    <td valign="top"><a href="#"></a></td>
+                    <td valign="top"><a href="#">{!tvar.subject}</a></td>
+                </tr>   
+              </apex:repeat>
+           </table>
+          </apex:outputPanel>              
+    </div>  
+    <div class="pipelinechartscol2">
+        <div class="pipelineHeading">Incidents</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>  
+          <table width="50%">    
+          <td><apex:commandLink action="{!firstIncidents}">First</apex:commandlink></td>
+          <td><apex:commandLink action="{!previousIncidents}" rendered="{!hasPreviousIncident}">Previous</apex:commandlink></td>
+          <td><apex:commandLink action="{!nextIncidents}" rendered="{!hasNextIncident}">Next</apex:commandlink></td>
+          <td><apex:commandLink action="{!lastIncidents}">Last</apex:commandlink></td>
+          </table>
+        </td>
+    </tr>              
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Incidents</a></td>
+                </tr>
+              <apex:repeat value="{!incidents}" var="i">                 
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">{!i.Name}</a></td>
+                    <td valign="top"><a href="#">{!i.Treatment__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!i.Name}</a></td>
+                </tr>   
+              </apex:repeat>                                              
+            </table>
+    </div>      
+    <div style="clear:both"></div>
+    <div class="pipelinechartscol1">
+        <div class="pipelineHeading">Payment</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>  
+          <table widht="50%">    
+          <td><apex:commandLink action="{!firstPayments}">First</apex:commandlink></td>
+          <td><apex:commandLink action="{!previousPayments}" rendered="{!hasPreviousPayment}">Previous</apex:commandlink></td>
+          <td><apex:commandLink action="{!nextPayments}" rendered="{!hasNextPayment}">Next</apex:commandlink></td>
+          <td><apex:commandLink action="{!lastPayments}">Last</apex:commandlink></td>
+          </table>
+        </td>
+    </tr>              
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Payments</a></td>
+                </tr>
+              <apex:repeat value="{!payments}" var="p">                 
+                <tr class="chartdetailsodd">                 
+                    <td valign="top"><a href="#">{!p.Patient__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!p.Treatment__r.Name}</a></td>
+                    <td valign="top"><a href="#">{!p.Name}</a></td>
+                </tr>                      
+              </apex:repeat>                                                 
+            </table>
+    </div>  
+    <div class="pipelinechartscol2">
+        <div class="pipelineHeading">Care Team Invitations</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Invitation</a></td>
+                </tr>
+                <tr class="chartdetailsodd">
+                    <td valign="top"><a href="#">John Lockhart</a></td>
+                    <td valign="top"><a href="#">Hip Replacement</a></td>
+                    <td valign="top"><a href="#">Invitation 1</a></td>
+                </tr>   
+                <tr class="chartdetailseven">
+                    <td valign="top"><a href="#">Sally Smith</a></td>
+                    <td valign="top"><a href="#">Knee Surgery</a></td>
+                    <td valign="top"><a href="#">Invitation 2</a></td>
+                </tr>                               
+            </table>    
+    </div>  
+    <div style="clear:both"></div>  
+    <div class="pipelinechartsfull">
+        <div class="pipelineHeading">Questions &amp; Messaging</div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">  
+    <tr>
+        <td>  
+          <table widht="50%">             
+          <td><apex:commandLink action="{!firstMessages}">First</apex:commandlink></td>
+          <td><apex:commandLink action="{!previousMessages}" rendered="{!hasPreviousMessage}">Previous</apex:commandlink></td>
+          <td><apex:commandLink action="{!nextMessages}" rendered="{!hasNextMessage}">Next</apex:commandlink></td>
+          <td><apex:commandLink action="{!lastMessages}">Last</apex:commandlink></td>
+          </table>          
+        </td>
+    </tr>                       
+                <tr class="chartheader">
+                    <td valign="top"><a href="#">Patient</a></td>
+                    <td valign="top"><a href="#">Treatment</a></td>
+                    <td valign="top"><a href="#">Location</a></td>
+                    <td valign="top"><a href="#">Message</a></td>
+                    <td valign="top"><a href="#">Invitation</a></td>
+                </tr>
+            </table>
+    </div> -->
 
-<div class="wrapper">	
-	<div class="pipelinechartsfull">
-		<div class="pipelineHeading">Patients</div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr class="chartheader">
-					<td valign="top"><a href="#">Patient</a></td>
-					<td valign="top"><a href="#">Treatment</a></td>
-					<td valign="top"><a href="#">Location</a></td>
-					<td valign="top"><a href="#">Date</a></td>
-					<td valign="top"><a href="#">Phase</a></td>
-				</tr>
-				<tr class="chartdetailsodd">
-					<td valign="top"><a href="#">John Lockhart</a></td>
-					<td valign="top"><a href="#">Hip Replacement</a></td>
-					<td valign="top"><a href="#">Singapore</a></td>
-					<td valign="top"><a href="#">02/08/2012</a></td>
-					<td valign="top"><a href="#">Inquiry</a></td>
-				</tr>	
-				<tr class="chartdetailseven">
-					<td valign="top"><a href="#">Sally Smith</a></td>
-					<td valign="top"><a href="#">Knee Surgery</a></td>
-					<td valign="top"><a href="#">Australia</a></td>
-					<td valign="top"><a href="#">18/07/2012</a></td>
-					<td valign="top"><a href="#">Travel</a></td>
-				</tr>								
-			</table>
-		</div>
-	</div>
-	<div style="clear:both"></div>
-	<div class="pipelinechartscol1">
-		<div class="pipelineHeading">Tasks</div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr class="chartheader">
-					<td valign="top"><a href="#">Patient</a></td>
-					<td valign="top"><a href="#">Treatment</a></td>
-					<td valign="top"><a href="#">Task</a></td>
-				</tr>
-				<tr class="chartdetailsodd">
-					<td valign="top"><a href="#">John Lockhart</a></td>
-					<td valign="top"><a href="#">Hip Replacement</a></td>
-					<td valign="top"><a href="#">Task 1</a></td>
-				</tr>	
-				<tr class="chartdetailseven">
-					<td valign="top"><a href="#">Sally Smith</a></td>
-					<td valign="top"><a href="#">Knee Surgery</a></td>
-					<td valign="top"><a href="#">Task 2</a></td>
-				</tr>								
-			</table>
-	</div>	
-	<div class="pipelinechartscol2">
-		<div class="pipelineHeading">Incidents</div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr class="chartheader">
-					<td valign="top"><a href="#">Patient</a></td>
-					<td valign="top"><a href="#">Treatment</a></td>
-					<td valign="top"><a href="#">Incidents</a></td>
-				</tr>
-				<tr class="chartdetailsodd">
-					<td valign="top"><a href="#">John Lockhart</a></td>
-					<td valign="top"><a href="#">Hip Replacement</a></td>
-					<td valign="top"><a href="#">Incident 1</a></td>
-				</tr>	
-				<tr class="chartdetailseven">
-					<td valign="top"><a href="#">Sally Smith</a></td>
-					<td valign="top"><a href="#">Knee Surgery</a></td>
-					<td valign="top"><a href="#">Incidents 2</a></td>
-				</tr>								
-			</table>
-	</div>		
-	<div style="clear:both"></div>
-	<div class="pipelinechartscol1">
-		<div class="pipelineHeading">Payment</div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr class="chartheader">
-					<td valign="top"><a href="#">Patient</a></td>
-					<td valign="top"><a href="#">Treatment</a></td>
-					<td valign="top"><a href="#">Payments</a></td>
-				</tr>
-				<tr class="chartdetailsodd">
-					<td valign="top"><a href="#">John Lockhart</a></td>
-					<td valign="top"><a href="#">Hip Replacement</a></td>
-					<td valign="top"><a href="#">Payment 1</a></td>
-				</tr>	
-				<tr class="chartdetailseven">
-					<td valign="top"><a href="#">Sally Smith</a></td>
-					<td valign="top"><a href="#">Knee Surgery</a></td>
-					<td valign="top"><a href="#">Payment 2</a></td>
-				</tr>								
-			</table>
-	</div>	
-	<div class="pipelinechartscol2">
-		<div class="pipelineHeading">Care Team Invitations</div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr class="chartheader">
-					<td valign="top"><a href="#">Patient</a></td>
-					<td valign="top"><a href="#">Treatment</a></td>
-					<td valign="top"><a href="#">Invitation</a></td>
-				</tr>
-				<tr class="chartdetailsodd">
-					<td valign="top"><a href="#">John Lockhart</a></td>
-					<td valign="top"><a href="#">Hip Replacement</a></td>
-					<td valign="top"><a href="#">Invitation 1</a></td>
-				</tr>	
-				<tr class="chartdetailseven">
-					<td valign="top"><a href="#">Sally Smith</a></td>
-					<td valign="top"><a href="#">Knee Surgery</a></td>
-					<td valign="top"><a href="#">Invitation 2</a></td>
-				</tr>								
-			</table>	
-	</div>	
-	<div style="clear:both"></div>	
-	<div class="pipelinechartsfull">
-		<div class="pipelineHeading">Questions &amp; Messaging</div>
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr class="chartheader">
-					<td valign="top"><a href="#">Patient</a></td>
-					<td valign="top"><a href="#">Treatment</a></td>
-					<td valign="top"><a href="#">Location</a></td>
-					<td valign="top"><a href="#">Message</a></td>
-					<td valign="top"><a href="#">Invitation</a></td>
-				</tr>
-				<tr class="chartdetailsodd">
-					<td valign="top"><a href="#">John Lockhart</a></td>
-					<td valign="top"><a href="#">Hip Replacement</a></td>
-					<td valign="top"><a href="#">Singapore</a></td>
-					<td valign="top"><a href="#">Tom Smith</a></td>
-					<td valign="top"><a href="#">Sally Jones</a></td>
-				</tr>	
-				<tr class="chartdetailseven">
-					<td valign="top"><a href="#">Sally Smith</a></td>
-					<td valign="top"><a href="#">Knee Surgery</a></td>
-					<td valign="top"><a href="#">Australia</a></td>
-					<td valign="top"><a href="#">Lisa George</a></td>
-					<td valign="top"><a href="#">Paul Thompson</a></td>
-				</tr>								
-			</table>
-	</div>
-
-
+ </apex:form>  
 </apex:page>

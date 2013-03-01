@@ -2,19 +2,26 @@ public with sharing class ProviderUtil {
     
     public static void createProviderPortalUser (string medicalProfessionalID) 
     {
-    	
-        Medical_Professional__c medicalProfessional = [select Id,
-										                                        Name, 
-										                                        First_Name__c, 
-										                                        Last_Name__c, 
-										                                        Email__c 
-										                                    from Medical_Professional__c 
-										                                    where id = :medicalProfessionalID];
         
+        Medical_Professional__c medicalProfessional = [select Id,
+                                                                                Name, 
+                                                                                First_Name__c, 
+                                                                                Last_Name__c, 
+                                                                                Email__c,
+                                                                                Key_Contact__c
+                                                                            from Medical_Professional__c 
+                                                                            where id = :medicalProfessionalID];
+    Boolean createNewUser = false;
+        
+ if (medicalProfessional.Key_Contact__c == null)
+ {      
+        system.debug('creating account');
         Account a = new Account();
         a.name = medicalProfessional.Name;
         insert a;
+
         
+ system.debug('creating contact email = '+medicalProfessional.Email__c);
         Contact c = new Contact();
         c.firstname = medicalProfessional.First_Name__c;
         c.lastname = medicalProfessional.Last_Name__c;
@@ -24,13 +31,17 @@ public with sharing class ProviderUtil {
         insert c;
         
         medicalProfessional.Key_Contact__c = c.id;
-        update medicalProfessional;        
-        futureCreatePortalUser(medicalProfessionalID); 
+        update medicalProfessional;
+  system.debug('futureCreatePortalUser...');
+        createNewUser = true;
+ }
+        futureCreatePortalUser(medicalProfessionalID, createNewUser);
     }
  
     @future
-    public static void futureCreatePortalUser(string medicalProfessionalID) 
+    public static void futureCreatePortalUser(string medicalProfessionalID, boolean isNewDoctor) 
     { 
+      Logger.info('isnewDoctor: ' + isNewDoctor);
       Medical_Professional__c medicalProfessional = [select Id,
                                                             Name, 
                                                             First_Name__c, 
@@ -40,7 +51,9 @@ public with sharing class ProviderUtil {
                                                         from Medical_Professional__c 
                                                         where id = :medicalProfessionalID];
         
-        
+   try {
+      if (isNewDoctor == true)
+      {
         User u = new User();
         string username = medicalProfessional.First_Name__c.substring(0,1);
         username+=medicalProfessional.Last_Name__c;
@@ -50,9 +63,9 @@ public with sharing class ProviderUtil {
         u.firstname = medicalProfessional.First_Name__c;
         u.lastname = medicalProfessional.Last_Name__c;
         u.Alias = username.substring(0,5)+username.substring(username.length()-2,username.length());
-        u.Username = username+='@doctor.htt.com';
+        u.Username = username+='@doctor.nuehealth.com';
         u.Email = medicalProfessional.email__c;
-        u.CommunityNickname = username; 
+        u.CommunityNickname = username;
         u.TimeZoneSidKey = 'America/Tijuana';
         u.LocaleSidKey = 'en_US';
         u.EmailEncodingKey ='UTF-8';
@@ -61,6 +74,7 @@ public with sharing class ProviderUtil {
         u.ProfileId = [select id from Profile where name = 'providerPortal'].id;
         Database.SaveResult result = Database.Insert(u);    
         if (result.isSuccess()) {
+   system.debug('success creating doctor portal user');
             //send email to patient
 /*          
             messaging.Singleemailmessage msg = new messaging.singleEmailMessage();
@@ -80,15 +94,31 @@ public with sharing class ProviderUtil {
 */
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
         mail.setTargetObjectId(medicalProfessional.Key_Contact__c);
-//        mail.setWhatId(treatment.Id);
-        mail.setTemplateId([Select Id, DeveloperName, Name from EmailTemplate where Id = '00Xd0000000X9lb' ].Id);
+//        mail.setWhatId(medicalProfessionalID);
+        mail.setTemplateId([Select Id, DeveloperName, Name from EmailTemplate where DeveloperName  = 'Welcome_to_Provider_Portal' ].Id);
         Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });  
                                         
             system.resetPassword(u.id, true);               
         }                           
         else {
+              ServerLogUtility.updateServerLog('futureCreatePortalUser 1', result.getErrors()+'');
+
             //notify an admin of failure
         }
+      }
+      else //user already existed, but the email address has changed
+      { 
+        Logger.info('Key Contact: ' + medicalProfessional.Key_Contact__c);
+        User[] u = [Select ID from User Where ContactId = : medicalProfessional.Key_Contact__c];
+        if ( u.size() > 0 )
+        {
+         Logger.info('Resetting password for ' + u[0].Id);
+         system.resetPassword(u[0].Id, true);
+        } 
+      } 
+     } catch (Exception ex) {
+              ServerLogUtility.updateServerLog('futureCreatePortalUser 2', ex.getMessage());
+     }
     }        
 
 }

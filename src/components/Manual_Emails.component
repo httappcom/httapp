@@ -2,15 +2,15 @@
   <apex:attribute name="height" description="Max Height in Pixels of this Component" type="Integer" />
   <apex:attribute name="pId" description="Id of the Patient the component is on" type="Id" required="true" assignTo="{!patientId}" />
   <apex:attribute name="treatmentId" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}"/>
-	<apex:form >
+	<apex:form id="manualEmailForm">
 	  <p>Select an email template and click "Send Email" to send it to the patient:</p>
 	  <br />
 	  <apex:selectList value="{!eTemplate}" multiselect="false" size="1">
 	   <apex:selectOptions value="{!eTemplates}"/>
 	  </apex:selectList>
 	  <br /><br />
-	  <apex:commandButton value="Send Email" action="{!sendManualEmail}">
+	  <apex:commandButton value="Send Email" action="{!sendManualEmail}" status="manualEmailSendStatus" rerender="manualEmailForm">
 	  </apex:commandButton>
-	  <apex:actionStatus startText="Sending Email..."  stopText="" id="treatmentSaveStatus"/>
+	  <apex:actionStatus startText="Sending Email..." id="manualEmailSendStatus"/>
 	</apex:form>
 </apex:component>

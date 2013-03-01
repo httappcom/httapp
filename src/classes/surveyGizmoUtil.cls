@@ -312,8 +312,26 @@ public without sharing class surveyGizmoUtil {
   Logger.info('surveyName='+surveyName);
         string patientIDHash = encryptPatientId(patientId);
         string oid = userinfo.getOrganizationId();
-        PRM_Config__c prm = [select id, Survey_Banner_Image__c from PRM_Config__c limit 1];
-        string did = prm.Survey_Banner_Image__c;
+        string did = '';
+        Treatment__c[] treatments = [Select Destination_Facility__c from Treatment__c 
+                                     Where Patient__c = :patientId Order by CreatedDate DESC];
+        if (treatments.size() > 0)
+        {
+        	if (treatments[0].Destination_Facility__c != null)
+        	{
+        		Medical_Facility__c[] mfs = [Select Survey_Banner_Image__c from Medical_Facility__c 
+        		                              Where Id = :treatments[0].Destination_Facility__c];
+        		if (mfs.size() > 0)
+        		{
+        			if (mfs[0].Survey_Banner_Image__c != null) {did = mfs[0].Survey_Banner_Image__c;}
+        		} 
+        	}
+        }
+        if (did == '')
+        {
+          PRM_Config__c prm = [select id, Survey_Banner_Image__c from PRM_Config__c limit 1];
+          did = prm.Survey_Banner_Image__c;
+        }
         string serverinstance = System.URL.getSalesforceBaseUrl().getHost().substringbefore('-');
         
         

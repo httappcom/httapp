@@ -1,14 +1,33 @@
-public with sharing class travelItineraryPDF_Controller {
+public without sharing class travelItineraryPDF_Controller {
 
     public Treatment_Quote__c treatmentQuote {get;set;}
-    public User TravelConcierge {get;set;}
     public string language {get;set;}
+    public String travelConciergeName {get; private set; }
+    public String travelConciergePhone {get; private set; }
+    public String travelConciergeMobilePhone {get; private set; }
+    public String travelConciergeEmail {get; private set; }
+
+    public String onsiteCoordinatorName {get; private set; }
+    public String onsiteCoordinatorPhone {get; private set; }
+    public String onsiteCoordinatorMobilePhone {get; private set; }
+    public String onsiteCoordinatorEmail {get; private set; }
+
+    public String ownerName {get; private set; }
+    public String ownerPhone {get; private set; }
+    public String ownerEmail {get; private set; }
 
     public travelItineraryPDF_Controller(Apexpages.standardcontroller cont) {
         
         if (cont.getRecord() instanceof Treatment_Quote__c){
             treatmentQuote = getTreatmentQuote (cont.getId());
-            TravelConcierge = getTravelConcierge();
+            onsiteCoordinatorName = treatmentQuote.treatment__r.onsite_Coordinator__r.name;
+            onsiteCoordinatorPhone = treatmentQuote.treatment__r.onsite_Coordinator__r.phone;
+            onsiteCoordinatorMobilePhone = treatmentQuote.treatment__r.onsite_Coordinator__r.mobilePhone;
+            onsiteCoordinatorEmail = treatmentQuote.treatment__r.onsite_Coordinator__r.email;
+            ownerName = treatmentQuote.treatment__r.patient__r.createdby.name;
+            ownerPhone = treatmentQuote.treatment__r.patient__r.createdby.phone;
+            ownerEmail = treatmentQuote.treatment__r.patient__r.createdby.email;
+            getTravelConcierge();
             
             if(apexpages.currentPage().getparameters().get('lang')!=null){
                 language = apexpages.currentPage().getparameters().get('lang');
@@ -68,103 +87,19 @@ public with sharing class travelItineraryPDF_Controller {
                     where id = :treatmentid];
 }
     
-    public User getTravelConcierge() { //all fields
-        return [Select u.Name,
+    public void getTravelConcierge() { //all fields
+    	User[] travelConcierges = [Select u.Name,
                         u.Phone,
                         u.MobilePhone,
                         u.Email
-/*      u.WorkspaceId, 
-                        u.Username, 
-                        u.UserType, 
-                        u.UserRoleId, 
-                        u.UserPreferencesTaskRemindersCheckboxDefault, 
-                        u.UserPreferencesReminderSoundOff, 
-                        u.UserPreferencesOptOutOfTouch, 
-                        u.UserPreferencesHideCSNGetChatterMobileTask, 
-                        u.UserPreferencesHideCSNDesktopTask, 
-                        u.UserPreferencesEventRemindersCheckboxDefault,
-                        u.UserPreferencesEnableAutoSubForFeeds,
-                        u.UserPreferencesDisableSharePostEmail,
-                        u.UserPreferencesDisableProfilePostEmail,
-                        u.UserPreferencesDisableMessageEmail,
-                        u.UserPreferencesDisableMentionsPostEmail,
-                        u.UserPreferencesDisableLikeEmail,
-                        u.UserPreferencesDisableLaterCommentEmail,
-                        u.UserPreferencesDisableFollowersEmail,
-                        u.UserPreferencesDisableFileShareNotificationsForApi,
-                        u.UserPreferencesDisableChangeCommentEmail,
-                        u.UserPreferencesDisableBookmarkEmail,
-                        u.UserPreferencesDisableAllFeedsEmail,
-                        u.UserPreferencesDisProfPostCommentEmail,
-                        u.UserPreferencesDisMentionsCommentEmail,
-                        u.UserPreferencesDisCommentAfterLikeEmail,
-                        u.UserPreferencesApexPagesDeveloperMode,
-                        u.UserPreferencesActivityRemindersPopup,
-                        u.UserPermissionsSupportUser,
-                        u.UserPermissionsSiteforcePublisherUser,
-                        u.UserPermissionsSiteforceContributorUser,
-                        u.UserPermissionsSFContentUser,
-                        u.UserPermissionsOfflineUser,
-                        u.UserPermissionsMobileUser,
-                        u.UserPermissionsMarketingUser,
-                        u.UserPermissionsKnowledgeUser,
-                        u.UserPermissionsInteractionUser,
-                        u.UserPermissionsCallCenterAutoLogin,
-                        u.Travel_Concierge__c,
-                        u.Title,
-                        u.TimeZoneSidKey,
-                        u.SystemModstamp,
-                        u.Street,
-                        u.State,
-                        u.SmallPhotoUrl,
-                        u.ReceivesInfoEmails,
-                        u.ReceivesAdminInfoEmails,
-                        u.Receive_Staff_Messages__c,
-                        u.Receive_Portal_Messages__c,
-                        u.ProfileId,
-                        u.PostalCode,
-                        u.PortalRole,
-                        u.OfflineTrialExpirationDate,
-                        u.OfflinePdaTrialExpirationDate,
-                        u.MobilePhone,
-                        u.ManagerId,
-                        u.LocaleSidKey,
-                        u.LastPasswordChangeDate,
-                        u.LastName,
-                        u.LastModifiedDate,
-                        u.LastModifiedById,
-                        u.LastLoginDate,
-                        u.LanguageLocaleKey,
-                        u.IsPortalSelfRegistered,
-                        u.IsPortalEnabled,
-                        u.IsActive,
-                        u.Id,
-                        u.FullPhotoUrl,
-                        u.ForecastEnabled,
-                        u.FirstName,
-// u.FederationIdentifier, 
-                        u.Fax,
-                        u.Extension,
-                        u.EmployeeNumber,
-                        u.EmailEncodingKey,
-                        u.Division,
-                        u.DigestFrequency,
-                        u.Department,
-                        u.DelegatedApproverId,
-                        u.DefaultGroupNotificationFrequency,
-                        u.CreatedDate,
-                        u.CreatedById,
-                        u.Country,
-                        u.ContactId,
-                        u.CompanyName,
-                        u.CommunityNickname,
-                        u.City,
-                        u.CallCenterId,
-                        u.Alias,
-                        u.AccountId, 
-                        u.AboutMe */ 
-                    From User u 
+                   From User u 
                     where Travel_Concierge__c = true 
                     limit 1];
+    	if (travelConcierges.size()>0) {
+            travelConciergeName = travelConcierges[0].Name;
+    		travelConciergePhone = travelConcierges[0].Phone;
+    		travelConciergeMobilePhone = travelConcierges[0].MobilePhone;
+    		travelConciergeEmail = travelConcierges[0].Email;
+        }
     }
 }

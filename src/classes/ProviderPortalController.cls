@@ -49,6 +49,7 @@ Stage or Sub Stage
     	public TreatmentRow( Treatment__c treatment, Patient__c patient/*, List<Medical_Record__c> records*/ ) {
     		this.treatment = treatment;
     		this.patient = patient;
+  system.debug('headers='+patient.Survey_Headers__r);
    system.debug('TreatmentRow constr Treatment='+treatment);
 //    		this.records = records;
     	}
@@ -95,6 +96,7 @@ Stage or Sub Stage
     }
     public PageReference commPatientChanged() {
     	treatmentSelectList = patientToTreatmentSelectListMap.get(commPatientId);
+    	commTreatmentId = treatmentSelectList.size()>0?treatmentSelectList[0].getValue():null;
     	return null;
     }
     
@@ -118,6 +120,7 @@ Stage or Sub Stage
   		if (members.size()>0) {
   			currentTreatment = members[0].Treatment__r;
   		}
+  system.debug('# of treatments '+members.size());
   		Set<ID> patientIds = new Set<ID>();
   		patientSelectList = new List<SelectOption>();
   		treatmentSelectList = new List<SelectOption>();
@@ -150,7 +153,7 @@ Stage or Sub Stage
        		commPatientChanged();
        		commTreatmentId = treatmentList[0].treatment.id;
        	}
-  system.debug('loadTreatmentInfo 2');
+  system.debug('loadTreatmentInfo 2 list='+treatmentList);
     }
     
     public PageReference uploadDocument()
@@ -175,8 +178,8 @@ Stage or Sub Stage
     	Treatment__c treatment = [select Approval_State__c, Stage__c from Treatment__c where id = :treatmentId for update];
     	treatment.Approval_State__c = 'Approved';
  system.debug('stage='+treatment.Stage__c);
-    	if (treatment.Stage__c == 'Treatment Approval Requested') {
-    		treatment.Stage__c = 'Treatment Approved';
+    	if (treatment.Stage__c == PickListDefines.Stage.TreatmentApproval) {
+    		treatment.Stage__c = PickListDefines.Stage.Quoting;
 	    	update treatment;
     		loadTreatmentList();
     	}
@@ -187,7 +190,7 @@ Stage or Sub Stage
  system.debug('denyTreatment for id='+treatmentId);
     	Treatment__c treatment = [select Approval_State__c, Stage__c from Treatment__c where id = :treatmentId for update];
  system.debug('stage='+treatment.Stage__c);
-    	if (treatment.Stage__c == 'Treatment Approval Requested') {
+    	if (treatment.Stage__c == PickListDefines.Stage.TreatmentApproval) {
  system.debug('setting to denied...');
 		   	treatment.Approval_State__c = 'Denied';
 	    	update treatment;

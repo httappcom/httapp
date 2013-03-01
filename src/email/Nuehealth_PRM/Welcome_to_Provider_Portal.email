@@ -1,0 +1,13 @@
+<messaging:emailTemplate subject="Welcome to your Doctor Portal" recipientType="Contact" relatedToType="Medical_Professional__c">
+<messaging:plainTextEmailBody >
+Welcome to your Nuehealth Doctor Portal
+
+It sounds futuristic, but your Doctor Portal is just a personal website where you can manage all of the information related to your medical travel patients.
+
+Access your Doctor Portal from any browser, and use it to communicate efficiently and securely with everyone on your patient's care team about everything.
+
+Regards,
+
+The Nuehealth Support Team
+</messaging:plainTextEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,4 @@
+<apex:page showHeader="false" title="Thank You" controller="RequestQuoteController">
+  <h1>Thank You</h1>
+  <p>A case manager will contact you shortly.</p>
+</apex:page>

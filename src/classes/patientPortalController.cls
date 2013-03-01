@@ -14,8 +14,13 @@ public without sharing class patientPortalController {
     public string currentPage {get;set;}
     public Patient__c patient {get;set;}
     public string patientid {get;set;}
+    public String surveyId {get; set; }
+    public Boolean displaySurveyResults { get; private set; }
 
     public Id treatmentId {get;set;}
+    public String getTravelPhase() {
+    	return PickListDefines.Phase.Travel;
+    }
 
     public list<TreatmentRow> treatmentList {get; private set;}
     public Medical_Facility__c destinationFacility {get; private set; }
@@ -39,7 +44,6 @@ public without sharing class patientPortalController {
  system.debug('patientPortalController');
 //        medicalRecords = new list<Medical_Profile__c>();
         loadPrmConfig();
-        treatmentList = new list<TreatmentRow>();
  
         User u = [select id, contactid from User where id = :userinfo.getUserId()];
         
@@ -71,6 +75,7 @@ public without sharing class patientPortalController {
     
     public void loadTreatmentInfo() {
   system.debug('loadTreatmentInfo');
+        treatmentList = new list<TreatmentRow>();
         Treatment__c[] treatments = queryTreatmentRelatedDesc(patient.treatments__r);
         for (Treatment__c treatment : treatments) {
         	treatmentList.add(new TreatmentRow(treatment));
@@ -82,6 +87,14 @@ public without sharing class patientPortalController {
         }
     }
     
+    public PageReference showSurveyResults() {
+    	displaySurveyResults = true;
+    	return null;
+    }
+    public PageReference hideSurveyResults() {
+    	displaySurveyResults = false;
+    	return null;
+    }
     public pagereference goToHome(){ 
         currentPage='Home';
         return null;
@@ -103,10 +116,7 @@ public without sharing class patientPortalController {
     }
 
     public pagereference getItineraryPDF() {
-        if (apexpages.currentpage().getParameters().get('selectedItinerary') != null) {
-            selectedItinerary = apexpages.currentpage().getParameters().get('selectedItinerary');       
-        }
-        
+system.debug('selectedItinerary='+selectedItinerary);
         Pagereference p = Page.travelItineraryPDF;
         p.getParameters().put('id',selectedItinerary);
         p.setRedirect(true);
@@ -116,10 +126,6 @@ public without sharing class patientPortalController {
     public Patient__c queryPatientRelatedDesc(string patientId) {
         return  [Select id, 
                        Name,
-                       CreatedBy.Name,
-                       CreatedDate,
-                       LastModifiedBy.Name,
-                       LastModifiedDate,
                        Owner.Name,
                        Advocate_Email__c,
                        Advocate_Name__c,
@@ -147,10 +153,6 @@ public without sharing class patientPortalController {
                        Key_Contact__c,
                        (select id, 
                                Name,
-                               CreatedBy.Name,
-                               CreatedDate,                                                             
-                               LastModifiedBy.Name,
-                               LastModifiedDate,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
                                Case_Manager_s_Feel__c,
@@ -178,6 +180,7 @@ public without sharing class patientPortalController {
                                Response_SLA__c, 
                                Stage__c,
                                Sub_Stage__c,
+                               Quote_Status__c,
                                Patient_Not_Committed_Reason__c,
                                Patient__r.Name,
                                Request_Summary__c,
@@ -194,11 +197,7 @@ public without sharing class patientPortalController {
                                CallDisposition,
                                CallType,
                                Description,
-                               CreatedBy.Name,
-                               CreatedDate,
                                ActivityDate,
-                               LastModifiedBy.Name,
-                               LastModifiedDate,
                                Who.Name,
                                Priority,
                                What.Name,
@@ -211,8 +210,6 @@ public without sharing class patientPortalController {
                               Benefit_Percentage__c,
                               Claim_Address__c,
                               Co_pay__c,
-                              CreatedBy.Name,
-                              CreatedDate, 
                               Deductible__c,
                               IsDeleted,
                               Dependent_Coverage__c,
@@ -220,18 +217,20 @@ public without sharing class patientPortalController {
                               Fax_Number_Medical_Reviews__c,
                               Group__c,
                               Insurance_Contact__c,
-                              LastModifiedBy.Name, 
-                              LastModifiedDate,
                               Name_of_Insurance__c,
                               Patient__c,
                               Payment_Type__c,
                               Policy_ID__c, 
-                              SystemModstamp,
                               Treatment__c,
                               Verification_Date__c,
                               Verification_Phone_Number__c 
                       from Payments__r
                       order by lastModifiedDate desc),
+                      (select Id,
+                              Name,
+                              Patient__c,
+                              Survey_Id__c
+                      from Survey_Headers__r),
                       (SELECT Name, Id, S3_Doc_Key__c, Content_Type__c, File_Name__c FROM Medical_Records__r order by Name)
                 from Patient__c 
                 where id = :patientId];
@@ -241,8 +240,8 @@ public without sharing class patientPortalController {
         return 
             [ Select    t.Treatment_Summary__c,
                         t.Travel__c,
-                        t.SystemModstamp,
                         t.Sub_Stage__c,
+                        t.Quote_Status__c,
                         t.Stage__c,
                         t.Response_SLA__c,
                         t.Request_Summary__c,
@@ -265,11 +264,9 @@ public without sharing class patientPortalController {
                         t.Patient_Email__c,
                         t.Patient_Email_Formula__c,
                         t.On_Site_Recovery_Period__c,
-                        t.On_Hold__c,
+                        t.Active_Status__c,
                         t.Next_Follow_Up__c,
                         t.Name,
-                        t.LastModifiedDate,
-                        t.LastModifiedById,
                         t.LastActivityDate,
                         t.IsDeleted,
                         t.Inquiry_Source__c,
@@ -280,8 +277,6 @@ public without sharing class patientPortalController {
                         t.Final_Departure_Date__c,
                         t.Deposit_Required__c,
                         t.Decision_Timeframe__c,
-                        t.CreatedDate,
-                        t.CreatedById,
                         t.Close_Date__c,
                         t.Case_Manager_s_Feel__c,
                         t.Best_Time_to_Contact__c,
@@ -291,15 +286,11 @@ public without sharing class patientPortalController {
                             (Select tq.echosignDocKey__c,
                                     tq.Treatment__c,
                                     tq.Total_Price__c,
-                                    tq.SystemModstamp,
                                     tq.Syncing__c,
                                     tq.Sub_Total__c,
-                                    tq.Status__c,
                                     tq.Procedure__c,
                                     tq.Number_of_Hospital_Nights__c,
                                     tq.Name,
-                                    tq.LastModifiedDate,
-                                    tq.LastModifiedById,
                                     tq.IsDeleted,
                                     tq.Id,
                                     tq.Hotel_Nights_Needed__c,
@@ -309,8 +300,6 @@ public without sharing class patientPortalController {
                                     tq.Discount_Amount__c,
                                     tq.Description__c,
                                     tq.Departure_Date__c,
-                                    tq.CreatedDate,
-                                    tq.CreatedById,
                                     tq.Arrival_Date__c,
                                     tq.procedure__r.doctor__c,
                                     tq.procedure__r.facility__c 
