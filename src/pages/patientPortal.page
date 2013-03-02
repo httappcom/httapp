@@ -4,7 +4,11 @@
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
     <apex:stylesheet value="{!$Resource.SurveyResponse}"/>
     <script>
-        var j$ = jQuery.noConflict();
+        var jQuery = jQuery.noConflict();
+		function onFileChange( path ) {
+			var fileName = path.split(path.indexOf("\\")>0?"\\":"/").pop();
+			jQuery("input[id$='attachmentname']").val(fileName);
+		}
     </script>
     <apex:stylesheet value="{!$Resource[prmConfig.Patient_Portal_CSS__c]}"/>
 	<c:PortalBackground />
@@ -55,7 +59,7 @@
                 padding:10px;
                 position: absolute;
                 z-index: 9999;
-                width: 600px;
+                width: 700px;
                 margin-left: -300px;
                 top:130px;
                 //top:50px;
@@ -85,12 +89,10 @@
     </style>
     <script>
         function showUpload() {
-            document.getElementById('uploadIframe').src = '/apex/medicalRecordUpload';
-            j$("[id='"+outerUploadId+"']").show();
+//            jQuery("[id='"+outerUploadId+"']").show();
         }
         function hideUpload() {
-            j$("[id='"+outerUploadId+"']").hide();
-            rerenderMedRecs();
+        	hideUploadPanel();
         }
     </script>
     
@@ -106,10 +108,11 @@
     <apex:actionFunction name="rerenderMedRecs" action="{!load}" reRender="medRecsPnl"/> 
     <apex:actionFunction name="refreshTreatments" action="{!load}" reRender="treatmentsPanel"/> 
     <apex:actionFunction name="refreshTravel" action="{!load}" reRender="travelPanel"/> 
-    <apex:actionFunction name="goToHome" action="{!goToHome}"/> 
-    <apex:actionFunction name="goToMedicalRecords" action="{!goToMedicalRecords}"/> 
-    <apex:actionFunction name="goToYourTravel" action="{!goToYourTravel}"/> 
-    <apex:actionFunction name="goToYourTreatment" action="{!goToYourTreatment}"/> 
+    <apex:actionFunction name="goToHome" action="{!goToHome}" rerender="mainPanel"/> 
+    <apex:actionFunction name="goToMedicalRecords" action="{!goToMedicalRecords}" rerender="mainPanel"/> 
+    <apex:actionFunction name="goToYourTravel" action="{!goToYourTravel}" rerender="mainPanel"/> 
+    <apex:actionFunction name="goToYourTreatment" action="{!goToYourTreatment}" rerender="mainPanel"/>
+	<apex:actionFunction name="hideUploadPanel" action="{!hideUploadPanel}" rerender="uploadPanel"/>
     	<apex:actionFunction name="showSurveyResults" action="{!showSurveyResults}" reRender="surveyResultsPanel"> 
         	<apex:param name="surveyId" assignTo="{!surveyId}" value="" /> 
     	</apex:actionFunction> 
@@ -120,7 +123,7 @@
 <apex:outputPanel layout="block" id="menuTravel" styleClass="{!IF(currentpage == 'Your Travel','menu-item-selected','menu-item')}" onclick="goToYourTravel();">Your Travel</apex:outputPanel>
 <apex:outputPanel layout="block" id="menuTreatment" styleClass="{!IF(currentpage == 'Your Treatment','menu-item-selected','menu-item')}" onclick="goToYourTreatment();">Your Treatment</apex:outputPanel>
 </div>
-
+<apex:outputPanel id="mainPanel">
 <div id="content-wrapper" class="clearfix">
     <div id="content">
     
@@ -135,31 +138,25 @@
                     <apex:outputField value="{!prmConfig.Patient_Portal_Welcome_Message__c}" rendered="{!destinationFacility==null}"/>
                     <apex:outputField value="{!destinationFacility.Patient_Portal_Welcome_Message__c}" rendered="{!destinationFacility!=null}"/>
                     <br/><br/>
-                    <c:messaging pId="{!patientId}" treatmentId="{!treatmentId}" canAddCareTeamMember="false" /> 
-                    
+                    <c:messaging pId="{!patientId}" treatmentId="{!treatmentId}" canAddCareTeamMember="false" />
                 </apex:outputpanel>
                 
                 <apex:outputpanel id="medRecsPnl" rendered="{!currentpage == 'Medical Records'}">
-                     <!--  button class="btn" type="button" onclick="showUpload();">Upload Document</button><br/>-->                  
+                     <apex:commandButton value="Upload Document" action="{!showUploadPanel}" rerender="uploadPanel"/><br/>
                     <br/><br/>
                     <apex:outputPanel rendered="{!!ISNULL(patient.Survey_Headers__r) && patient.Survey_Headers__r.size>0}">
                        	<a href="javascript:showSurveyResults('{!patient.Survey_Headers__r[0].id}')">View Medical Profile</a>
                     </apex:outputPanel>
-                     
-                    <!-- apex:pageblocktable value="{!medicalRecords}" var="t">
-                        <apex:column >
-                            <apex:facet name="header">Name</apex:facet>
-                            <apex:outputfield value="{!t.name}"/>
+                    <apex:pageblocktable value="{!medicalRecords}" var="t">
+                        <apex:column headerValue="Name">
+                        	<apex:outputLink value="{!URLFOR($Action.Attachment.Download, t.id)}" target="_blank"><apex:outputText value="{!t.name}"/>
+	        			</apex:outputLink>
                         </apex:column>
-                        <apex:column >
-                            <apex:facet name="header">File Name</apex:facet>
-                            <apex:outputfield value="{!t.File_Name__c}"/>
+                        <apex:column headerValue="Description" value="{!t.Description}"/>
+                        <apex:column headerValue="Created Date" value="{!t.CreatedDate}"/>
+                        <apex:column headerValue="View">
                         </apex:column>
-                        <apex:column >
-                            <apex:facet name="header">View</apex:facet>
-                            <a target="_blank" href="http://connect.ajaxdocumentviewer.com/?key=K881661317312013132735&document=http://nuehealthtestbucket.s3-website-us-east-1.amazonaws.com/{!URLENCODE(t.S3_Doc_Key__c)}&viewerheight=600&viewerwidth=800&toolbarHeight=24&toolbarColor=00AF33">View</a>
-                        </apex:column>
-                    </apex:pageblocktable> -->
+                    </apex:pageblocktable>
                 </apex:outputpanel>
                 
                 <apex:outputpanel id="travelPanel" rendered="{!currentpage == 'Your Travel'}">
@@ -221,10 +218,7 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Signature</apex:facet>
-                            <apex:outputpanel rendered="{!ISBLANK(t.treatment.treatment_quotes__r) == false && UPPER(t.treatment.treatment_quotes__r[0].echosignDocKey__c) == 'NEEDED'}">
-                                <div style="background-color:#FFB2B2;"><apex:outputfield value="{!t.treatment.treatment_quotes__r[0].echosignDocKey__c}"/></div>
-                            </apex:outputpanel>
-                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].echosignDocKey__c}" rendered="{!ISBLANK(t.treatment.treatment_quotes__r) == false && UPPER(t.treatment.treatment_quotes__r[0].echosignDocKey__c) == 'RECEIVED'}"/>
+                            <apex:outputText value="SIGNED" rendered="{!!ISBLANK(t.treatment.treatment_quotes__r) && !ISBLANK(t.treatment.treatment_quotes__r[0].echosignDocKey__c)}"/>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Procedure</apex:facet>
@@ -261,22 +255,8 @@
             </apex:pageblock>
           </div>
         </div>
+    </apex:outputPanel>
         </apex:form>
-        <apex:outputPanel layout="block" id="outerUpload" style="display:none; width:500px;">
-            <apex:outputPanel layout="block" styleClass="uploadbox"/>
-            <apex:outputpanel styleClass="uploadlbox" layout="block">
-                <div>
-                <iframe height="400px" id="uploadIframe" name="uploadIframe" src="about:blank" width="100%"></iframe>
-                </div>
-                <div align="center">
-                    <apex:form >
-                        <a href="javascript:hideUpload();">Close</a>
-                    </apex:form>
-                </div>
-            </apex:outputpanel>
-        </apex:outputpanel>
-        <script>var outerUploadId = "{!$Component.outerUpload}";</script>
-    </div>
         <apex:outputPanel layout="block" id="surveyResultsPanel" >
             <apex:outputPanel layout="block" styleClass="surveyResultsBox" rendered="{!displaySurveyResults}" />
             <apex:outputpanel styleClass="surveyResultsLBox" layout="block" rendered="{!displaySurveyResults}" >
@@ -296,5 +276,42 @@
                 </div>
             </apex:outputpanel>
         </apex:outputpanel>
+        <apex:outputPanel layout="block" id="uploadPanel">
+            <apex:outputPanel layout="block" styleClass="uploadbox" rendered="{!displayUploadPanel}"/>
+            <apex:outputpanel styleClass="uploadlbox" layout="block" rendered="{!displayUploadPanel}">
+				<apex:pageMessages />
+				<apex:form enctype="multipart/form-data">
+    				<apex:pageBlock title="Upload an Attachment">
+ 
+      				<apex:pageBlockButtons >
+        				<apex:commandButton action="{!upload}" value="Save"/>
+                        <apex:commandButton value="Close" action="{!hideUploadPanel}" />
+      				</apex:pageBlockButtons>
+ 
+      				<apex:pageBlockSection showHeader="false" columns="2" id="block1">
+ 
+        			<apex:pageBlockSectionItem >
+          				<apex:outputLabel value="File Name" for="fileName"/>
+          				<apex:inputText value="{!attachment.name}" id="attachmentname" size="30"/>
+        			</apex:pageBlockSectionItem>
+ 
+        			<apex:pageBlockSectionItem >
+          				<apex:outputLabel value="File" for="file"/>
+          				<apex:inputFile value="{!attachment.body}" filename="{!attachment.name}" id="file" onChange="onFileChange(this.value);" />
+        			</apex:pageBlockSectionItem>
+ 
+        			<apex:pageBlockSectionItem >
+          				<apex:outputLabel value="Description" for="description"/>
+          				<apex:inputTextarea value="{!attachment.description}" id="description"/>
+        			</apex:pageBlockSectionItem>
+ 
+      			</apex:pageBlockSection>
+ 
+    			</apex:pageBlock>
+  				</apex:form>
+                
+            </apex:outputpanel>
+        </apex:outputpanel>
+    </div>
     </body>
 </apex:page>

@@ -1,5 +1,15 @@
 public without sharing class patientPortalController {
 
+	public Attachment attachment {
+  		get {
+      		if (attachment == null) {
+        		attachment = new Attachment();
+      		}
+      		return attachment;
+    	}
+  		set;
+  	}
+ 
     public static String quotePdfURL = null;
     public static String itineraryPdfURL = null;
     static {
@@ -16,6 +26,7 @@ public without sharing class patientPortalController {
     public string patientid {get;set;}
     public String surveyId {get; set; }
     public Boolean displaySurveyResults { get; private set; }
+    public Boolean displayUploadPanel { get; private set; }
 
     public Id treatmentId {get;set;}
     public String getTravelPhase() {
@@ -41,6 +52,7 @@ public without sharing class patientPortalController {
     public string selectedItinerary {get;set;}
     
     public patientPortalController () {
+    	displayUploadPanel = false;
  system.debug('patientPortalController');
 //        medicalRecords = new list<Medical_Profile__c>();
         loadPrmConfig();
@@ -73,6 +85,44 @@ public without sharing class patientPortalController {
         return null;
     }
     
+    public PageReference showUploadPanel() {
+    	displayUploadPanel = true;
+    	return null;
+    }
+    public PageReference hideUploadPanel() {
+    	displayUploadPanel = false;
+    	return null;
+    }
+  	public PageReference upload() {
+ system.debug('upload...');
+ Logger.info('upload...');
+ 
+	    attachment.OwnerId = UserInfo.getUserId();
+    	attachment.ParentId = patient.id; // the record the file is attached to
+    	attachment.IsPrivate = false;
+ 
+    	try {
+  system.debug('attachment='+attachment);
+  Logger.info('attachment='+attachment);
+      		insert attachment;
+      		displayUploadPanel = false;
+    	} catch (DMLException ex) {
+   system.debug('dmlex='+ex);
+      		ApexPages.addMessage(new ApexPages.message(ApexPages.severity.ERROR,'Error uploading attachment:'+ex.getMessage()));
+      		return null;
+    	} catch (Exception e) {
+   system.debug('ex='+e);
+      		ApexPages.addMessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+      		return null;
+    	} finally {
+      		attachment = new Attachment(); 
+    	}
+ 
+    	ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Attachment uploaded successfully'));
+    	patient = queryPatientRelatedDesc(patientid);
+    	return null;
+  	}
+  	
     public void loadTreatmentInfo() {
   system.debug('loadTreatmentInfo');
         treatmentList = new list<TreatmentRow>();
@@ -231,7 +281,7 @@ system.debug('selectedItinerary='+selectedItinerary);
                               Patient__c,
                               Survey_Id__c
                       from Survey_Headers__r),
-                      (SELECT Name, Id, S3_Doc_Key__c, Content_Type__c, File_Name__c FROM Medical_Records__r order by Name)
+                      (SELECT Id, Description, Name, CreatedDate FROM Attachments order by name)
                 from Patient__c 
                 where id = :patientId];
     }
@@ -316,8 +366,8 @@ system.debug('selectedItinerary='+selectedItinerary);
         return null;
     }
     
-    public List<Medical_Record__c> getMedicalRecords() {
-        return patient.Medical_Records__r;
+    public List<Attachment> getMedicalRecords() {
+        return patient.Attachments;
     }
     
     private void loadPrmConfig() {

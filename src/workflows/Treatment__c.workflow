@@ -12,6 +12,17 @@
         <template>Nuehealth_PRM/Introducing_Travel_Concierge_Services</template>
     </alerts>
     <alerts>
+        <fullName>Email_Patient_Check_in</fullName>
+        <description>Email Patient Check-in</description>
+        <protected>false</protected>
+        <recipients>
+            <field>Patient_Email__c</field>
+            <type>email</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Nuehealth_PRM/Patient_Checkin</template>
+    </alerts>
+    <alerts>
         <fullName>Email_Patient_Checkin</fullName>
         <description>Email: Patient Checkin</description>
         <protected>false</protected>
@@ -24,7 +35,7 @@
     </alerts>
     <alerts>
         <fullName>Email_Share_Your_Medical_Travel_Story</fullName>
-        <description>Email: Share Your Medical Travel Story</description>
+        <description>Email Share Your Medical Travel Story</description>
         <protected>false</protected>
         <recipients>
             <field>Patient_Email__c</field>
@@ -55,17 +66,6 @@
         <senderType>CurrentUser</senderType>
         <template>Nuehealth_PRM/Received_Medical_Travel_Inquiry</template>
     </alerts>
-    <alerts>
-        <fullName>Treatment_Itinerary_Email_to_Patient</fullName>
-        <description>Treatment Itinerary Email to Patient</description>
-        <protected>false</protected>
-        <recipients>
-            <field>Patient_Email__c</field>
-            <type>email</type>
-        </recipients>
-        <senderType>CurrentUser</senderType>
-        <template>Nuehealth_PRM/Nuehealth_Your_Travel_Itinerary_is_Ready</template>
-    </alerts>
     <fieldUpdates>
         <fullName>Admission</fullName>
         <field>Sub_Stage__c</field>
@@ -88,7 +88,7 @@
     <fieldUpdates>
         <fullName>Attach_Surgical_Report_Task</fullName>
         <field>Task_Specifiers__c</field>
-        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Onsite_Coordinator__c&apos; &amp;BR() &amp; &apos;Subject:Attach Surgical Report to Treatment&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DateValue(  Travel__r.Travel_End__c  ) )</formula>
+        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Onsite_Coordinator__c&apos; &amp;BR() &amp; &apos;Subject:Attach Surgical Report to Treatment&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DateValue( Travel__r.Travel_End__c ) )</formula>
         <name>Attach Surgical Report Task</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
@@ -176,34 +176,6 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Post_Treatment_Checkin_Task</fullName>
-        <field>Task_Specifiers__c</field>
-        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Medical Information Officer&apos; &amp; BR() &amp; &apos;Subject:Post Treatment Medical Checkin.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( TODAY()+2)</formula>
-        <name>Post Treatment Checkin Task</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Pre_Arrival_call</fullName>
-        <field>Task_Specifiers__c</field>
-        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; &apos;Subject:Make pre-arrival call 48 hrs before travel start.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( TODAY() )</formula>
-        <name>Pre-Arrival call</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Formula</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Restage_to_Travel_Itinerary</fullName>
-        <description>Set stage to Travel Itinerary</description>
-        <field>Stage__c</field>
-        <literalValue>Travel Itinerary</literalValue>
-        <name>Restage to Travel Itinerary</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Set_Approval_Stage</fullName>
         <field>Stage__c</field>
         <literalValue>Treatment Approval</literalValue>
@@ -218,15 +190,6 @@
         <field>Sub_Stage__c</field>
         <literalValue>Trip Preparation</literalValue>
         <name>Set Initialize Travel Sub Stage</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Set_to_New_Stage</fullName>
-        <field>Stage__c</field>
-        <literalValue>New</literalValue>
-        <name>Set to New Stage</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
@@ -259,18 +222,9 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Stage_to_Patient_Lost</fullName>
-        <field>Stage__c</field>
-        <literalValue>Patient Lost</literalValue>
-        <name>Stage to Patient Lost</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Start_Itinerary</fullName>
         <field>Task_Specifiers__c</field>
-        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; BR() &amp; &apos;Subject:Make first contact with patient for itinerary creation.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( TODAY()) &amp; BR() &amp; BR() &amp;&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; &apos;Subject:Make initial concierge call re itinerary.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( TODAY()+2 )</formula>
+        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; &apos;Subject:Make initial concierge call re itinerary.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( TODAY()+2 ) &amp; BR() &amp; BR() &amp; &apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; BR() &amp; &apos;Subject:Itinerary Prep&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DATEVALUE(Travel__r.Travel_End__c)-2 ) &amp; BR() &amp; BR() &amp; &apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; BR() &amp; &apos;Subject:Make pre-arrival call 48 hrs before travel start.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DATEVALUE(Travel__r.Travel_End__c)-2 )</formula>
         <name>Start Itinerary</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
@@ -357,11 +311,6 @@
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
         <workflowTimeTriggers>
-            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>0</timeLength>
-            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-        <workflowTimeTriggers>
             <actions>
                 <name>Admission</name>
                 <type>FieldUpdate</type>
@@ -371,16 +320,20 @@
                 <type>FieldUpdate</type>
             </actions>
             <actions>
-                <name>In_market_phone_call</name>
+                <name>In_Market_Phone_Call</name>
                 <type>Task</type>
             </actions>
             <offsetFromField>Treatment__c.Arrival_Time__c</offsetFromField>
-            <timeLength>-1</timeLength>
+            <timeLength>0</timeLength>
             <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
     </rules>
     <rules>
         <fullName>At Provider Surgical Report</fullName>
+        <actions>
+            <name>Attach_Surgical_Report_Task</name>
+            <type>FieldUpdate</type>
+        </actions>
         <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
@@ -393,15 +346,6 @@
             <value>At Provider</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
-        <workflowTimeTriggers>
-            <actions>
-                <name>Attach_Surgical_Report_Task</name>
-                <type>FieldUpdate</type>
-            </actions>
-            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>0</timeLength>
-            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
     </rules>
     <rules>
         <fullName>Cash Reconcile and Release</fullName>
@@ -494,21 +438,21 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
         <workflowTimeTriggers>
             <actions>
-                <name>Email_Patient_Checkin</name>
-                <type>Alert</type>
-            </actions>
-            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>1</timeLength>
-            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-        <workflowTimeTriggers>
-            <actions>
                 <name>Email_Share_Your_Medical_Travel_Story</name>
                 <type>Alert</type>
             </actions>
             <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>1</timeLength>
-            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+            <timeLength>30</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Email_Patient_Check_in</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
+            <timeLength>7</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
         <workflowTimeTriggers>
             <actions>
@@ -516,8 +460,8 @@
                 <type>Alert</type>
             </actions>
             <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>0</timeLength>
-            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+            <timeLength>1</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
     </rules>
     <rules>
@@ -543,7 +487,7 @@
         <criteriaItems>
             <field>Treatment__c.Stage__c</field>
             <operation>equals</operation>
-            <value>Itinerary</value>
+            <value>At Provider</value>
         </criteriaItems>
         <criteriaItems>
             <field>Treatment__c.Sub_Stage__c</field>
@@ -587,20 +531,6 @@
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
-        <fullName>Itinerary Available</fullName>
-        <actions>
-            <name>Treatment_Itinerary_Email_to_Patient</name>
-            <type>Alert</type>
-        </actions>
-        <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Sub_Stage__c</field>
-            <operation>equals</operation>
-            <value>Treatment Itinerary Available</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>Itinerary Tasks</fullName>
         <actions>
             <name>Start_Itinerary</name>
@@ -618,15 +548,6 @@
             <value>Itinerary</value>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
-        <workflowTimeTriggers>
-            <actions>
-                <name>Pre_Arrival_call</name>
-                <type>FieldUpdate</type>
-            </actions>
-            <offsetFromField>Treatment__c.Arrival_Time__c</offsetFromField>
-            <timeLength>-49</timeLength>
-            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
     </rules>
     <rules>
         <fullName>New Treatment</fullName>
@@ -650,44 +571,6 @@
         </criteriaItems>
         <description>Workflow rule to fire when a new treatment is created</description>
         <triggerType>onCreateOnly</triggerType>
-    </rules>
-    <rules>
-        <fullName>Post Treatment Workflow</fullName>
-        <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>Post-Op</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-        <workflowTimeTriggers>
-            <actions>
-                <name>Post_Treatment_Checkin_Task</name>
-                <type>FieldUpdate</type>
-            </actions>
-            <timeLength>8</timeLength>
-            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-        <workflowTimeTriggers>
-            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>30</timeLength>
-            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-        <workflowTimeTriggers>
-            <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>0</timeLength>
-            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
-        </workflowTimeTriggers>
-    </rules>
-    <rules>
-        <fullName>Relationship Terminated</fullName>
-        <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>Post-Op</value>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
         <fullName>Signed Quote</fullName>
@@ -731,12 +614,7 @@
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
-            <value>Travel</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>At Provider</value>
+            <value>Post-Op</value>
         </criteriaItems>
         <criteriaItems>
             <field>Treatment__c.Surgical_Report_Attached__c</field>
@@ -856,7 +734,7 @@
         <triggerType>onAllChanges</triggerType>
     </rules>
     <tasks>
-        <fullName>In_market_phone_call</fullName>
+        <fullName>In_Market_Phone_Call</fullName>
         <assignedToType>owner</assignedToType>
         <dueDateOffset>0</dueDateOffset>
         <notifyAssignee>true</notifyAssignee>
@@ -864,18 +742,7 @@
         <priority>Normal</priority>
         <protected>false</protected>
         <status>Not Started</status>
-        <subject>In market phone call</subject>
-    </tasks>
-    <tasks>
-        <fullName>Post_Treatment_Medical_Checkin</fullName>
-        <assignedTo>Medical_Information_Officers</assignedTo>
-        <assignedToType>role</assignedToType>
-        <dueDateOffset>2</dueDateOffset>
-        <notifyAssignee>true</notifyAssignee>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Not Started</status>
-        <subject>Post Treatment Medical Checkin</subject>
+        <subject>In Market Phone Call</subject>
     </tasks>
     <tasks>
         <fullName>Surgical_Report_Reminder</fullName>

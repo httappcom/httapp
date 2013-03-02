@@ -15,7 +15,7 @@
 		}
 	</style>
 	<apex:pageblock >
-		<div style="margin-left:auto; margin-right:auto; text-align:center; width:90%"><apex:image styleClass="banner" value="{!URLFOR($Resource.httItineraryBanner)}"/><br/><br/></div>
+		<div style="margin-left:auto; margin-right:auto; text-align:center; width:90%"><c:Branded_Image treatment_Id="{!treatmentQuote.Treatment__c}" PRM_Config_field="Quote_Itinerary_Header__c" width="700" height="154" /><br/><br/></div>
 		<div style="margin-left:auto; margin-right:auto; text-align:center; width:90%"><apex:outputlabel value="Travel Itinerary" style="font-weight:bold; text-decoration:underline;"/></div><br/>
 		<table style="width:100%">
 			<tr>

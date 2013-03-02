@@ -1,6 +1,16 @@
 public without sharing class ProviderPortalController {
 
-    public static String quotePdfURL = null;
+	public Attachment attachment {
+  		get {
+      		if (attachment == null) {
+        		attachment = new Attachment();
+      		}
+      		return attachment;
+    	}
+  		set;
+  	}
+ 
+	    public static String quotePdfURL = null;
     public static String itineraryPdfURL = null;
     static {
     	PageReference pr = Page.Quote;
@@ -13,6 +23,8 @@ public without sharing class ProviderPortalController {
 
     public string currentPage {get;set;}
     public Patient__c patient {get;set;}
+    public ID uploadPatientId { get; set; }
+    public String patientName { get; private set; }
     
     public Id doctorUserId {get; private set; }
     public Id patientid {get;set;}
@@ -30,6 +42,7 @@ public without sharing class ProviderPortalController {
     public Treatment__c currentTreatment { get; private set; }
     public ID surveyId { get; set; }
     public Boolean displaySurveyResults { get; private set; }
+    public Boolean displayUploadPanel { get; private set; }
     
     /*
 Patient,
@@ -94,6 +107,44 @@ Stage or Sub Stage
   		}
         return null;
     }
+    
+    public PageReference showUploadPanel() {
+    	displayUploadPanel = true;
+    	try {
+    		patientName = patientMap.get(uploadPatientId).Name;
+    	} catch (Exception ex) {}
+    	return null;
+    }
+    public PageReference hideUploadPanel() {
+    	displayUploadPanel = false;
+    	return null;
+    }
+  	public PageReference upload() {
+ system.debug('upload...');
+ 
+	    attachment.OwnerId = UserInfo.getUserId();
+    	attachment.ParentId = uploadPatientId; // the record the file is attached to
+    	attachment.IsPrivate = false;
+ 
+    	try {
+  system.debug('attachment='+attachment);
+      		insert attachment;
+      		displayUploadPanel = false;
+    	} catch (DMLException ex) {
+      		ApexPages.addMessage(new ApexPages.message(ApexPages.severity.ERROR,'Error uploading attachment:'+ex.getMessage()));
+      		return null;
+    	} catch (Exception e) {
+      		ApexPages.addMessage(new ApexPages.message(ApexPages.severity.ERROR,e.getMessage()));
+      		return null;
+    	} finally {
+      		attachment = new Attachment(); 
+    	}
+ 
+    	ApexPages.addMessage(new ApexPages.message(ApexPages.severity.INFO,'Attachment uploaded successfully'));
+    	load();
+    	return null;
+  	}
+  	
     public PageReference commPatientChanged() {
     	treatmentSelectList = patientToTreatmentSelectListMap.get(commPatientId);
     	commTreatmentId = treatmentSelectList.size()>0?treatmentSelectList[0].getValue():null;
@@ -111,6 +162,10 @@ Stage or Sub Stage
   			Treatment__r.Name,
   			Treatment__r.Patient__c,
   			Treatment__r.Patient__r.Name,
+  			Treatment__r.Engagement_Type__c,
+  			Treatment__r.Onsite_Coordinator__r.Name,
+  			Treatment__r.Insurance_Network_Contact__r.Name,
+  			Treatment__r.Procedure_Date__c,
   			Treatment__r.Procedure_Category__c,
   			Treatment__r.Procedure__c,
   			Treatment__r.Approval_State__c,
@@ -254,15 +309,31 @@ Stage or Sub Stage
         }
     }
     
-    private transient Map<ID, Patient__c> patientMap = null;
+    private Map<ID, Patient__c> patientMap = null;
+    private Map<ID, ID> patientUserIdMap = null;
     private void loadPatientMap( Set<ID> patientIds ) {
-    	patientMap = new Map<ID, Patient__c>([select id, (select Id,
+    	patientMap = new Map<ID, Patient__c>([select id,
+    				Gender__c,
+    				Date_of_Birth__c,
+    				Name, 
+    				Email__c,
+    				Phone__c,
+    				Mobile__c,
+    				Key_Contact__c,
+    				Insurance_Network__r.Name,
+    				(select Id,
                               Name,
                               Patient__c,
                               Survey_Id__c
                       from Survey_Headers__r),
-                      (SELECT Name,S3_Doc_Key__c,ObjectType__c,File_Name__c FROM Medical_Records__r)
+//                      (SELECT Name,S3_Doc_Key__c,ObjectType__c,File_Name__c FROM Medical_Records__r)
+					  (SELECT Id, Description, Name, CreatedDate FROM Attachments order by name)
                       from Patient__c where id in :patientIds]);
-    	
+ 	
+/* 		patientUserIdMap = new Map<ID, ID>();
+ 		Set<ID> contactIds = new Set<ID>();
+ 		for (Patient__c patient : patientMap.values()) {
+ 			//FIXME - when completed will be able to make Patient owner of uploaded attachments.
+ 		}*/
     }
 }

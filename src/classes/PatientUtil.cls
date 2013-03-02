@@ -194,7 +194,8 @@ public class PatientUtil {
                               Name,
                               Patient__c,
                               Survey_Id__c
-                      from Survey_Headers__r)
+                      from Survey_Headers__r),
+                      (SELECT Id, ContentType, Description, Name, ParentId, CreatedDate FROM Attachments order by name)
                 from Patient__c 
                 where id = :pPatientId];
       }

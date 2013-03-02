@@ -2678,10 +2678,6 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>brandedPatientPortal</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
         <apexPage>medicalRecordUpload</apexPage>
         <enabled>false</enabled>
     </pageAccesses>

@@ -11,11 +11,23 @@
         <visible>false</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>BrandingController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>BrandingUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>CareTeamUtil</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ChangePasswordController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>DefaultUsersUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -55,6 +67,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>MessagingUtil</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>MyProfilePageController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -79,6 +95,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PickListDefines</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>PipelineController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -99,7 +119,15 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>RequestQuoteController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>S3Utils</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SelectOptionUtil</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -120,6 +148,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>SurveyResponseController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TaskUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -221,7 +253,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Care_Team_Member__c.Email__c</field>
+        <field>Care_Team_Member__c.External_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Care_Team_Member__c.External_Id__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Care_Team_Member__c.FormulaExternalId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Care_Team_Member__c.FormulaName__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -237,11 +284,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Care_Team_Member__c.Treatment__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Care_Team_Member__c.UniqueId__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -301,11 +343,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Communication__c.To_User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Communication__c.Topic__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -317,6 +354,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Communication__c.Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>External_Contact__c.Email__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -476,6 +518,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Medical_Facility__c.Facilitator_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Medical_Facility__c.Footer_Image__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -527,6 +574,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Medical_Facility__c.Provider_Portal_Banner_Image__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Medical_Facility__c.Quote_Itinerary_Header__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -806,6 +858,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PRM_Config__c.Quote_Itinerary_Header__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>PRM_Config__c.Referral_Offer__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -937,6 +994,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Patient__c.Do_Not_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Patient__c.Email_Receipt_Allowed__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1136,11 +1198,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Patient__c.Portal_User__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Patient__c.Postal_Code__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1152,6 +1209,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Patient__c.Salutation__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Patient__c.Social_Security__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1252,31 +1314,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Payment__c.Verification_Phone_Number__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Procedure_Price__c.Doctor__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Procedure_Price__c.Facility__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Procedure_Price__c.List_Price__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Procedure_Price__c.Procedure__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Procedure_Price__c.Sale_Price__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1437,11 +1474,6 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Survey_Question__c.Row_Label__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Test__c.dummy__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1686,11 +1718,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment_Quote__c.Status__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>Treatment_Quote__c.Sub_Total__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1716,12 +1743,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Active_Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Additional_Amount__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Treatment__c.Amount__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Approval_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1766,6 +1803,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Engagement_Type__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Final_Departure_Date__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1781,6 +1823,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Fire_Surgical_Report_Task__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Inquiry_Quality__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1791,12 +1838,42 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment__c.Next_Follow_Up__c</field>
+        <field>Treatment__c.Insurance_Network_Contact__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment__c.On_Hold__c</field>
+        <field>Treatment__c.Interaction_Phase_Complete__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Lead_Entry__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Medical_Profile_Received__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Medical_Profile_Required__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Medical_Records_Received__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Medical_Records_Required__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Next_Follow_Up__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1891,7 +1968,42 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Quote_Status__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Referral_Source__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Referrer_Phone__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Referrer__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Referring_Provider_Fax__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Referring_Provider_NPI__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Referring_Provider_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Referring_Provider_Phone__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1911,12 +2023,37 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Responses__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Stage__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.SubStage_Visibility__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Sub_Stage__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Surgical_Report_Attached__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Task_Specifiers__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Treatment__c.Travel_Phase_Completed__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1987,10 +2124,10 @@
         <layout>Communication__c-Communication Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Hotel__c-Hotel Layout</layout>
+        <layout>External_Contact__c-External Contact Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Instruction__c-Instruction Layout</layout>
+        <layout>Hotel__c-Hotel Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Insurance_Network_User__c-Insurance Network User Layout</layout>
@@ -2020,15 +2157,6 @@
         <layout>Medical_Record__c-Medical Record Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
-        <layout>Message_Header__c-Message Header Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Message_User__c-Message User Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Message__c-Message Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
         <layout>PRM_Config__c-PRM Config Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -2042,12 +2170,6 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Patient__c-Patient Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Payment__c-Payment Layout</layout>
-    </layoutAssignments>
-    <layoutAssignments>
-        <layout>Procedure_Price__c-Procedure Price Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Procedure__c-Procedure Layout</layout>
@@ -2116,6 +2238,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Communication__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>External_Contact__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -2313,15 +2444,6 @@
         <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
-        <object>Procedure_Price__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
         <object>Procedure__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -2368,15 +2490,6 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Survey_Question__c</object>
-        <viewAllRecords>false</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>false</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Test__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -2477,6 +2590,14 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>Lead_Entry_Form_1</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>Lead_Entry_Form_2</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>MphRxConnect</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
@@ -2485,15 +2606,11 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>PatientTabWithData</apexPage>
+        <apexPage>Patient</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>Pipeline</apexPage>
-        <enabled>false</enabled>
-    </pageAccesses>
-    <pageAccesses>
-        <apexPage>PipelineWithData</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -2510,6 +2627,10 @@
     </pageAccesses>
     <pageAccesses>
         <apexPage>Quote</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>Request_Quote_Thank_You</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

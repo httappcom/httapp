@@ -47,7 +47,8 @@ public with sharing class BrandingController {
   public void setResource_URL(String s)
   {
     resource_URL = s;
-  }       
+  }   
+
   public String getimage_url()
   {
     string linkurl = '';

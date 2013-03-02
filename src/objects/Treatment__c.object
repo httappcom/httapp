@@ -68,6 +68,10 @@
                 <fullName>Unconverted - rejected</fullName>
                 <default>false</default>
             </picklistValues>
+            <picklistValues>
+                <fullName>Treatment Canceled</fullName>
+                <default>false</default>
+            </picklistValues>
             <sorted>false</sorted>
         </picklist>
         <trackFeedHistory>false</trackFeedHistory>
