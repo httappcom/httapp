@@ -14,6 +14,25 @@ public class PatientExtension {
     public UILookup__c lookup { get; public set; }
  
     public Treatment_Quote__c treatmentQuote { get; set; }
+    
+    public String getDoctorPortalURL() {
+    	if (treatment.Treatment_Quotes__r.size()>0 && treatment.Treatment_Quotes__r[0].Procedure__r != null &&
+            	treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__c != null &&
+            		treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__r.Key_Contact__c != null) {
+    		ID doctorUserId = doctorContactToUserMap.get(treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__r.Key_Contact__c);
+    		if (doctorUserId != null) {
+		    	PageReference pr = Page.DoctorPortal;
+    			pr.getParameters().put('docUserId', doctorUserId);
+    			return pr.getUrl();
+    		}
+		}
+    	return null;
+    }
+    public String getPatientPortalURL() {
+    	PageReference pr = Page.patientPortal;
+    	pr.getParameters().put('devPatId', patient.id);
+    	return pr.getUrl();
+    }
     public String emailType { get; set; }
     
     public List<SelectOption> taskOptions { get; set; }
@@ -495,12 +514,23 @@ Logger.info('saveTreatment');
     }
     
     private Map<ID, Treatment__c> treatmentMap = null;
+    private Map<ID, ID> doctorContactToUserMap = null;
     private void loadTreatments() {
         treatments = PatientUtil.getTreatmentsWithChildren(patient.Id);
 //        treatments = [select id, Preferred_Travel_Date_To__c, Preferred_Travel_Date_From__c, Procedure__c, Procedure_Category__c, Travel__c, Travel__r.Id from treatment__c where patient__c = :patient.id];
         treatmentMap = new Map<ID, Treatment__c>();
+        Set<ID> doctorContactIds = new Set<ID>();
         for (Treatment__c treatment : treatments) {
             treatmentMap.put(treatment.Id, treatment);
+            if (treatment.Treatment_Quotes__r.size()>0 && treatment.Treatment_Quotes__r[0].Procedure__r != null &&
+            	treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__c != null) {
+            	doctorContactIds.add(treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__r.Key_Contact__c);
+            }
+        }
+        User[] doctorUsers = [select id, contactId from User where contactId in :doctorContactIds];
+        doctorContactToUserMap = new map<ID, ID>();
+        for (User doctorUser : doctorUsers) {
+        	doctorContactToUserMap.put(doctorUser.contactId, doctorUser.id);
         }
     }
     private void loadNetworkContactsList() {

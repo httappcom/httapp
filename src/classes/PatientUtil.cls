@@ -323,6 +323,7 @@ public class PatientUtil {
                               Procedure__r.Comments__c,
                               Procedure__r.Details__c,
                               Procedure__r.Doctor__c,
+                              Procedure__r.Doctor__r.Key_Contact__c,
                               Procedure__r.Facility__c,
                               Procedure__r.Hospital_Nights_Required__c,
                               Procedure__r.Hotel_Nights_Included__c,

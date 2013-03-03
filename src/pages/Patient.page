@@ -475,6 +475,16 @@
                  <apex:outputLabel value="Medical Profile Type"/>
                  <apex:inputField value="{!patient.Medical_Profile_Type__c}"/>
             </apex:pageblocksectionitem>
+            <apex:pageblocksectionitem helpText="">
+            	<apex:outputPanel >
+            		<apex:outputPanel rendered="{!patientPortalURL!=null}">
+            			<a href="{!patientPortalURL}" target="_blank">Patient Portal</a>&nbsp;&nbsp;&nbsp;
+            		</apex:outputPanel>
+            		<apex:outputPanel rendered="{!doctorPortalURL!=null}">
+	            		<a href="{!doctorPortalURL}" target="_blank">Doctor Portal</a>
+	            	</apex:outputPanel>
+            	</apex:outputPanel> 
+            </apex:pageblocksectionitem>
         </apex:pageBlockSection>
             
                     <apex:pageBlockSection id="pbs_Complications" columns="2" collapsible="true" title="Treatment Additions">
