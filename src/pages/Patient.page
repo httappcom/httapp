@@ -293,7 +293,7 @@
             <apex:commandbutton action="{!saveTreatment}" value="Save Patient" rerender="errMsgs,mainPanel,treatmentList"/>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Patient Care Coordinator"/>
-                <apex:inputField value="{!patient.Ownerid}"/>
+                <apex:outputField value="{!patient.Ownerid}"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Suffix"/>
@@ -454,9 +454,9 @@
                  <apex:outputLabel value="Approval State"/>
                  <apex:outputPanel >
 	                 <apex:inputField value="{!treatment.Approval_State__c}"/>
-	                 <apex:outputField value="{0,date,short}" rendered="{!treatment.Approval_Date__c!=null && treatment.Approval_State__c=='Approved'}">
+	                 <apex:outputText value="{0,date,short}" rendered="{!treatment.Approval_Date__c!=null && treatment.Approval_State__c=='Approved'}">
 	                 	<apex:param value="{!treatment.Approval_Date__c}"/>
-	                 </apex:outputField>
+	                 </apex:outputText>
                  </apex:outputPanel>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 

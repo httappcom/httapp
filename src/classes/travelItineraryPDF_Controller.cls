@@ -15,6 +15,8 @@ public without sharing class travelItineraryPDF_Controller {
     public String ownerName {get; private set; }
     public String ownerPhone {get; private set; }
     public String ownerEmail {get; private set; }
+        
+    public BrandingUtil branding {get; set; }
     
     public travelItineraryPDF_Controller(Apexpages.standardcontroller cont) {
         
@@ -28,6 +30,7 @@ public without sharing class travelItineraryPDF_Controller {
             ownerPhone = treatmentQuote.treatment__r.patient__r.createdby.phone;
             ownerEmail = treatmentQuote.treatment__r.patient__r.createdby.email;
             getTravelConcierge();
+            branding = new BrandingUtil(treatmentQuote.treatment__r.id);
             if(apexpages.currentPage().getparameters().get('lang')!=null){
                 language = apexpages.currentPage().getparameters().get('lang');
             }

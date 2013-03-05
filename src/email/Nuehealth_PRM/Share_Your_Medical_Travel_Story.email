@@ -45,7 +45,7 @@
                         Thank you for choosing&#160;<c:Email_Template_BrandField treatment_Id="{!relatedTo.Id}" PRM_Config_field="Facilitator_Name__c"/> for your medical needs. We hope we have provided you with service that exceeded your expectations.
                       </p>
                       <p style="margin-bottom: 1em">
-                        Please take a moment to provide us with your candid feedback about your medical travel experience. We&rsquo;d love to hear why you chose to travel for your procedure, and what
+                        <c:Email_Template_SatSurvey_URL treatment_Id="{!relatedTo.Id}" patient_Id="{!relatedTo.Patient__r.Id}">Please take a moment to provide us with your candid feedback about your medical travel experience.</c:Email_Template_SatSurvey_URL> We&rsquo;d love to hear why you chose to travel for your procedure, and what
                         your experience was like with your physician and the facility you visited.
                       </p>
                       <p style="margin-bottom: 1em">

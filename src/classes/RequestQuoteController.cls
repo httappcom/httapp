@@ -17,21 +17,20 @@ public with sharing class RequestQuoteController
   public String time_frame { get; set; } 
   public String preferred_appointment { get; set; } 
   public String concierge_needed { get; set; } 
-  public boolean postBack;
-   
+  private Map<String, String> URLParams { get; set; } 
   public RequestQuoteController()
   {
   	treatment = new Treatment__c();
   	patient = new Patient__c();
-  	travel = new  Travel__c();  	
+  	travel = new  Travel__c();
+  	URLparams = System.currentPagereference().getParameters();
+    if (URLparams.containsKey('nextLead'))
+    {
+      ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.CONFIRM, 'Lead submitted. Submit next lead below.'));
+    }    	  	
   }
   public PageReference submitLead()
   {
-  	if (postBack == true)
-  	{
-  		ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.CONFIRM, 'Lead submitted. Submit next lead below.'));
-  	}
-  	postBack = true;
     //Check to see if patient already exists
     List<Patient__c> patients = [Select Id FROM Patient__c WHERE Email__c = : patient.Email__c];
     if (patients.size() > 0)
@@ -40,7 +39,10 @@ public with sharing class RequestQuoteController
     }
     treatment.Phase__c = PickListDefines.Phase.Inquiry;
     treatment.Stage__c = PickListDefines.Stage.Initial;
-    treatment.Lead_Entry__c = System.currentPagereference().getParameters().get('enteredBy');
+    if (URLparams.containsKey('enteredBy'))
+    {    
+      treatment.Lead_Entry__c = URLparams.get('enteredBy');
+    }
     INSERT travel;    
     if (patient.Id == null) { INSERT patient; }
     else { UPDATE patient; }
@@ -102,6 +104,7 @@ public with sharing class RequestQuoteController
     }
     PageReference nextEntry = new PageReference(ApexPages.currentPage().getUrl());
     nextEntry.setRedirect(true);
+    nextEntry.getParameters().put('nextLead', '1');    
     return nextEntry;    
 
   }   

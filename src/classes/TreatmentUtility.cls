@@ -2,7 +2,7 @@ public with sharing class TreatmentUtility {
 
   private static Set<id> patientIds;
   private static Map<Id, Patient__c> patientMap;
-  private static Map<Id, String> taskSpecifiersCache = new Map<Id, String>();
+  private static Map<Id, String> savedTaskSpecifiers = null;
 
 
   public static void beforeInsert (List<Treatment__c> treatments) {
@@ -39,7 +39,9 @@ public with sharing class TreatmentUtility {
     Map<Id, Treatment__c> oldTreatmentMap) {
     for (Treatment__c treatment : treatments ) {
     	if (treatment.Task_Specifiers__c != null) {
-    		taskSpecifiersCache.put(treatment.id, treatment.Task_Specifiers__c);
+    		if (savedTaskSpecifiers==null) savedTaskSpecifiers = new Map<Id, String>();
+ system.debug('beforeUpdate task specifiers='+treatment.Task_Specifiers__c);
+    		savedTaskSpecifiers.put(treatment.id, treatment.Task_Specifiers__c);
    			treatment.Task_Specifiers__c = null;
     	}
         treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
@@ -65,15 +67,21 @@ public with sharing class TreatmentUtility {
 		for (Treatment__c treatment: newTreatments) {
 			treatmentIds.add(treatment.id);
 		}
+		
+		TaskSpecifierUtility.loadTaskSpecifierCache();
+	    TaskSpecifierUtility.loadMetaData();
         loadExpandedTreatmentCache( treatmentIds );
         MessagingUtil.loadCareTeamMemberMap( treatmentIds );
         List<Communication__c> communications = new List<Communication__c>();
         List<Task> tasks = new List<Task>();
         for ( Treatment__c treatment : newTreatments ) {
-        	String taskSpecifier = taskSpecifiersCache.get(treatment.id);
-        	if (taskSPecifier != null) {
-	        	List<Task> taskList = TaskUtility.parseTreatmentTasks(taskSpecifier, treatment);
-				if (taskList.size()>0) tasks.addAll(taskList);
+        	if (savedTaskSpecifiers != null) {
+	        	String taskSpecifiers = savedTaskSpecifiers.get(treatment.id);
+system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
+    	    	if (taskSpecifiers != null) {
+	    	    	List<Task> taskList = TaskSpecifierUtility.parseSpecifiers(treatment, taskSpecifiers);
+					if (taskList.size()>0) tasks.addAll(taskList);
+        		}
         	}
         	Treatment__c expandedTreatment = getExpandedTreatment( treatment.id );
         	Treatment__c origTreatment = oldMap.get(treatment.id);
@@ -276,26 +284,24 @@ public with sharing class TreatmentUtility {
 	private static void loadExpandedTreatmentCache( List<ID> treatmentIds ) {
 		if (expandedTreatmentCache==null) {
 			if (treatmentIds.size()>0) {
-				expandedTreatmentCache = new Map<ID, Treatment__c>([
-					select id, Onsite_Coordinator__c, Insurance_Network_Contact__c, 
-						Travel__r.Travel_End__c,
-						Patient__r.Name from Treatment__c where id in :treatmentIds]);
+				String qry = 'select id, Patient__r.Name ';
+				for (String fld : TaskSpecifierUtility.validTreatmentAssignedToFields) {
+					qry += ','+fld;
+				}
+				for (String fld : TaskSpecifierUtility.validDueDateFields) {
+					qry += ','+fld;
+				}
+				qry += ' from treatment__c where id in (\''+String.join(treatmentIds, '\',\'') + '\')';
+system.debug('qry='+qry);
+				
+				expandedTreatmentCache = new Map<ID, Treatment__c>((Treatment__c[])Database.query(qry));
 			}
 		}
 	}
+
 	private static Treatment__c getExpandedTreatment( ID treatmentId ) {
 		return expandedTreatmentCache.get( treatmentId );
 	}
 	
-/*	private static Task createAttachSurgicalReportTask( Treatment__c treatment ) {
-		if (treatment == null || treatment.Travel__r.Travel_End__c == null) return null;
-		Task surgRepTask = new Task();
-		surgRepTask.ActivityDate = treatment.Travel__r.Travel_End__c.date();
-		surgRepTask.OwnerId = treatment.Onsite_Coordinator__c;
-		surgRepTask.Subject = 'Attach Surgical Report to Treatment';
-		surgRepTask.Description = 'Attach Surgical Report to Treatment';
-		surgRepTask.Status = 'Not Started';
-		surgRepTask.WhatId = treatment.id;
-		return surgRepTask;		
-	}*/
+	
 }

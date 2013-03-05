@@ -88,7 +88,7 @@
     <fieldUpdates>
         <fullName>Attach_Surgical_Report_Task</fullName>
         <field>Task_Specifiers__c</field>
-        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Onsite_Coordinator__c&apos; &amp;BR() &amp; &apos;Subject:Attach Surgical Report to Treatment&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DateValue( Travel__r.Travel_End__c ) )</formula>
+        <formula>&apos;Attach Surgical Report&apos;</formula>
         <name>Attach Surgical Report Task</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
@@ -224,7 +224,7 @@
     <fieldUpdates>
         <fullName>Start_Itinerary</fullName>
         <field>Task_Specifiers__c</field>
-        <formula>&apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; &apos;Subject:Make initial concierge call re itinerary.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( TODAY()+2 ) &amp; BR() &amp; BR() &amp; &apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; BR() &amp; &apos;Subject:Itinerary Prep&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DATEVALUE(Travel__r.Travel_End__c)-2 ) &amp; BR() &amp; BR() &amp; &apos;Task:&apos; &amp; BR() &amp; &apos;Assigned To:Travel Concierge&apos; &amp; BR() &amp; &apos;Subject:Make pre-arrival call 48 hrs before travel start.&apos; &amp; BR() &amp; &apos;Due Date:&apos; &amp; Text( DATEVALUE(Travel__r.Travel_End__c)-2 )</formula>
+        <formula>&apos;Pre-arrival Call; Itinerary Prep; Initial Travel Call&apos;</formula>
         <name>Start Itinerary</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Formula</operation>
@@ -547,6 +547,10 @@
             <operation>equals</operation>
             <value>Itinerary</value>
         </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Arrival_Time__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
@@ -560,10 +564,6 @@
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-        </criteriaItems>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>

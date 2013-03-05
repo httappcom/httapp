@@ -1,5 +1,79 @@
 public with sharing class BrandingUtil {
-	
+  public PRM_Config__c PRMConfig;
+  public Treatment__c treatment;
+  
+  public BrandingUtil(Id treatmentID) {
+ 	this.treatment = [Select Id, Destination_Facility__c From Treatment__c Where Id = :treatmentID ];
+ 	this.PRMConfig = new PRM_Config__c();
+ 	cachePRMConfig();
+ }
+ private void cachePRMConfig()
+  {
+      Logger.info('Setting up PRMConfig');
+      Map<String, Schema.SObjectField> fldObjMap = schema.SObjectType.PRM_Config__c.fields.getMap();
+      List<Schema.SObjectField> fldObjMapValues = fldObjMap.values();
+      String queryString = 'SELECT ';
+      for(Schema.SObjectField s : fldObjMapValues)
+      {
+         String fieldName = s.getDescribe().getName();     
+         queryString += fieldName + ',';
+      }
+      // Trim last comma
+      queryString = queryString.subString(0, queryString.length() - 1);    
+      queryString += ' FROM PRM_Config__c LIMIT 1';
+      this.PRMConfig = Database.query(queryString);
+      
+      if (treatment!=null)
+      {
+
+        if (treatment.Destination_Facility__c != null)
+        {
+          Medical_Facility__c medicalFacility = new Medical_Facility__c();
+          Set<String> PRM_Config_field_names = new Set<String>();
+          for(Schema.SObjectField f : fldObjMapValues)
+          {
+             String fieldName = f.getDescribe().getName();
+             if (f.getDescribe().isCustom() == true) { PRM_Config_field_names.add(fieldName); }
+          }
+          Logger.info('PRM_Config_field_names size: ' + PRM_Config_field_names.size());
+          Set<String> MedFacility_field_names = new Set<String>();
+          fldObjMap = schema.SObjectType.Medical_Facility__c.fields.getMap();
+          fldObjMapValues = fldObjMap.values();
+          for(Schema.SObjectField s : fldObjMapValues)
+          {
+             String fieldName = s.getDescribe().getName();     
+             MedFacility_field_names.add(fieldName);
+          }
+          MedFacility_field_names.retainAll(PRM_Config_field_names);
+          queryString = 'SELECT ';
+          for (String s : MedFacility_field_names)
+          {
+            queryString += s + ',';
+          }
+          
+          queryString = queryString.subString(0, queryString.length() - 1); 
+          queryString += ' FROM Medical_Facility__c WHERE Id = \'' + treatment.Destination_Facility__c + '\'';
+          Logger.info('queryString: ' + queryString);
+          Medical_Facility__c[] facilities = Database.query(queryString);
+          if (facilities.size()>0) {
+            medicalFacility = facilities[0];
+          }
+          for (String field : MedFacility_field_names)
+          {
+            if (medicalFacility.get(field) != null)
+            {
+              this.PRMConfig.put(field, medicalFacility.get(field));
+            }
+          }
+        }
+      }
+    
+  }
+  public String getPRM_field_value(String PRM_Config_field)
+  {
+    String fieldValue = (String)this.PRMConfig.get(PRM_Config_field);
+    return fieldValue;
+  } 
 	 public static String Instance {
       public get {
           if (Instance == null) {

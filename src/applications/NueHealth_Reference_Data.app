@@ -12,4 +12,5 @@
     <tab>Survey_Header__c</tab>
     <tab>PRM_Config__c</tab>
     <tab>Insurance_Network__c</tab>
+    <tab>Task_Specifier__c</tab>
 </CustomApplication>

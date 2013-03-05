@@ -218,7 +218,9 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Signature</apex:facet>
-                            <apex:outputText value="SIGNED" rendered="{!!ISBLANK(t.treatment.treatment_quotes__r) && !ISBLANK(t.treatment.treatment_quotes__r[0].echosignDocKey__c)}"/>
+                            <apex:outputPanel rendered="{!!ISNULL(t.treatment.treatment_quotes__r)}">
+	                            <apex:outputText value="SIGNED" rendered="{!t.treatment.treatment_quotes__r.size>0 && !ISBLANK(t.treatment.treatment_quotes__r[0].echosignDocKey__c)}"/>
+                            </apex:outputPanel>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Procedure</apex:facet>
@@ -226,15 +228,21 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Doctor</apex:facet>
-                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].procedure__r.doctor__c}"/>
+                            <apex:outputPanel rendered="{!!ISNULL(t.treatment.treatment_quotes__r)}">
+	                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].procedure__r.doctor__c}" rendered="{!t.treatment.treatment_quotes__r.size>0}"/>
+	                        </apex:outputPanel>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Hospital</apex:facet>
-                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].procedure__r.facility__c}"/>
+                            <apex:outputPanel rendered="{!!ISNULL(t.treatment.treatment_quotes__r)}">
+	                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].procedure__r.facility__c}" rendered="{!t.treatment.treatment_quotes__r.size>0}"/>
+	                        </apex:outputPanel>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Price</apex:facet>
-                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].total_price__c}"/>
+                            <apex:outputPanel rendered="{!!ISNULL(t.treatment.treatment_quotes__r)}">
+	                            <apex:outputfield value="{!t.treatment.treatment_quotes__r[0].total_price__c}" rendered="{!t.treatment.treatment_quotes__r.size>0}"/>
+	                        </apex:outputPanel>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Procedure<br/>Date</apex:facet>

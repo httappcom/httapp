@@ -76,7 +76,7 @@
 					<br/>		
 					<br/>
 					<apex:outputlabel value="EMERGENCY CONTACTS" style="text-decoration:underline; padding-bottom:10px;"/><br/>
-					<apex:outputlabel value="Patient Care Coordinator:" style="font-weight:bold;"/><br/>
+					<c:Branded_Field treatment_Id="{!treatmentQuote.Treatment__r.id}" PRM_Config_field="PCC_designation__c"/><br/>
 					<apex:outputtext value="{!ownername}"/><br/>
 					<apex:outputtext value="{!ownerphone}"/><br/>
 					<apex:outputtext value="{!owneremail}"/>

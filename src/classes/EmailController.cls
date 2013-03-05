@@ -1,6 +1,7 @@
 public with sharing class EmailController {
 	Id eTemplate = null;
 	public static PRM_Config__c PRMConfig = new PRM_Config__c();
+	public static Map<Id, String> templateMap = new Map<Id, String>();
   public PRM_Config__c getPRMConfig()
   {
   	cachePRMConfig();
@@ -88,7 +89,7 @@ public with sharing class EmailController {
   { 
   	return surveyGizmoUtil.generateMedicalProfileLink(patientId);
   }
-   public String patientPortalURL;
+  public String patientPortalURL;
   public String getPatientPortalURL()
   { 
   	return 'https://' + getPatientPortalDomain();
@@ -97,6 +98,11 @@ public with sharing class EmailController {
   	List<Site> patientPortal = [Select Subdomain From Site Where MasterLabel = 'Patient Portal' ];
     String patientPortalSubdomain = patientPortal.size()>0?patientPortal[0].Subdomain:'';  	
   	return patientPortalSubdomain + '.' + Instance + '.force.com';
+  }
+  public String satisfactionSurveyURL;
+  public String getSatisfactionSurveyURL()
+  { 
+    return PRMConfig.Satisfaction_Survey_Link__c;
   }
   public String resource_URL;
   public void setResource_URL(String s)
@@ -211,10 +217,38 @@ public with sharing class EmailController {
     Logger.info('Email Template: ' + eTemplate);
     Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
     Logger.info('patientId: ' + patientId);
-    Patient__c patient = [Select Id, Key_Contact__c from Patient__c Where Id = :patientId];
+    Patient__c patient = [Select Id, Key_Contact__c, Name from Patient__c Where Id = :patientId];
     mail.setTargetObjectId(patient.Key_Contact__c);
     mail.setWhatId(treatmentId);
     mail.setTemplateId(this.eTemplate);
+    if (templateMap.get(this.eTemplate) == 'Quote')
+    {
+    	//attach quote
+    	PageReference quotePDF = Page.Quote;
+    	List<Treatment_Quote__c> treatmentQuotes = [Select Id from Treatment_Quote__c where Treatment__c = :treatmentId Order by CreatedDate Desc];
+    	quotePDF.getParameters().put('id', (String)treatmentQuotes[0].Id);
+    	quotePDF.setRedirect(true);
+    	Blob attachmentBody = quotePDF.getContent();
+    	Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+    	String fileName = 'Quote for ' + patient.Name + '.pdf'; 
+    	attachment.setFileName(fileName);
+    	attachment.setBody(attachmentBody);
+    	mail.setFileAttachments(new Messaging.EmailFileAttachment[] {attachment});
+    }
+    if (templateMap.get(this.eTemplate) == 'Itinerary')
+    {
+      //attach itinerary
+      PageReference itineraryPDF = Page.travelItineraryPDF;
+      List<Treatment_Quote__c> treatmentQuotes = [Select Id from Treatment_Quote__c where Treatment__c = :treatmentId Order by CreatedDate Desc];
+      itineraryPDF.getParameters().put('id', (String)treatmentQuotes[0].Id);
+      itineraryPDF.setRedirect(true);
+      Blob attachmentBody = itineraryPDF.getContent();
+      Messaging.EmailFileAttachment attachment = new Messaging.EmailFileAttachment();
+      String fileName = 'Itinerary for ' + patient.Name + '.pdf'; 
+      attachment.setFileName(fileName);
+      attachment.setBody(attachmentBody);
+      mail.setFileAttachments(new Messaging.EmailFileAttachment[] {attachment});      
+    }    
     Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
     return null;
   } 
@@ -250,6 +284,7 @@ public with sharing class EmailController {
       et = [Select Id, DeveloperName, Name from EmailTemplate where DeveloperName = :prmt.Name];
       String optionText = et[0].Name + ' (' + prmt.Email_Type__c + ')';
       options.add(new SelectOption(et[0].Id, optionText));
+      templateMap.put(et[0].Id, prmt.Email_Type__c); // cache this so we know the email type when sending the email out
     }
   	return options;
   }
