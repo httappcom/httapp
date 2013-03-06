@@ -100,10 +100,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <relatedList>Instruction__c.Travel__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>Treatment__c.Travel__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

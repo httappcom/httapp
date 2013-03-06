@@ -5,13 +5,11 @@ public with sharing class PipelineController {
   public List<Treatment__c> active {get; set; }
   public List<Treatment__c> treatments {get; set; }
   public List<Payment__c> Payments {get;set; }    
-  public List<Task> tasks{get;set;}    
-  public List<Message__c> messages {get; set; }
+  public List<Task> tasks{get;set;}
      
   public List<Treatment__c> allTreatments {get; set; }    
   public List<Payment__c> allPayments {get;set; }
   public List<Task> allTasks{get;set;}    
-  public List<Message__c> allMessages {get; set; }
       
   public ApexPages.StandardSetController pcon{get;set;} 
   public ApexPages.StandardSetController tcon{get;set;} 
@@ -45,7 +43,6 @@ public with sharing class PipelineController {
     this.treatments = new List<Treatment__c>();        
     this.tasks = new List<Task>();
     this.payments = new List<Payment__c>();
-    this.messages = new List<Message__c>();
     try {
         active = [SELECT Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure__c,
         Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Patient__r.Last_Communication__c, Treatment_Summary__c
@@ -156,11 +153,6 @@ public with sharing class PipelineController {
   public void previousTasks(){ taskcon.previous();  tasks = taskcon.getRecords(); }
   public void nextTasks()    { taskcon.next();      tasks = taskcon.getRecords(); }
 
-  public void firstMessages()   { mcon.first();     messages = mcon.getRecords();  }
-  public void lastMessages()    { mcon.previous();  messages = mcon.getRecords();}
-  public void previousMessages(){ mcon.previous();  messages = mcon.getRecords();}  
-  public void nextMessages()    { mcon.next();      messages = mcon.getRecords();  }   
-    
    
   public void searchTask(){
     Id currentUserId =   UserInfo.getUserId();

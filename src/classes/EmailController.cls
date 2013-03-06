@@ -102,7 +102,7 @@ public with sharing class EmailController {
   public String satisfactionSurveyURL;
   public String getSatisfactionSurveyURL()
   { 
-    return PRMConfig.Satisfaction_Survey_Link__c;
+    return surveyGizmoUtil.generateSatisfactionSurveyLink(treatmentId);
   }
   public String resource_URL;
   public void setResource_URL(String s)

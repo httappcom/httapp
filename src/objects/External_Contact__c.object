@@ -45,6 +45,18 @@
         <type>Email</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Treatment__c</fullName>
+        <externalId>false</externalId>
+        <label>Treatment</label>
+        <referenceTo>Treatment__c</referenceTo>
+        <relationshipLabel>External Contact</relationshipLabel>
+        <relationshipName>External_Contact</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
     <label>External Contact</label>
     <nameField>
         <label>External Contact Name</label>
@@ -52,5 +64,5 @@
     </nameField>
     <pluralLabel>External Contact</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

@@ -37,6 +37,16 @@
     <enableFeeds>false</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
+    <fields>
+        <fullName>Public_Group__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>false</externalId>
+        <label>Public Group</label>
+        <length>80</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
     <label>Insurance Network</label>
     <listViews>
         <fullName>All</fullName>

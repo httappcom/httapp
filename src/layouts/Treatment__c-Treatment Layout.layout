@@ -159,6 +159,10 @@
                 <behavior>Edit</behavior>
                 <field>Task_Specifiers__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Created_Year__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -379,11 +383,6 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
-        <fields>Patient__c</fields>
-        <relatedList>Topic__c.Treatment__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
         <relatedList>Communication__c.Treatment__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -393,6 +392,14 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>UILookup__c.Treatment__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>Topic__c.Treatment__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>External_Contact__c.Treatment__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>

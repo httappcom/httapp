@@ -487,26 +487,34 @@ Logger.info('saveTreatment');
   private void loadOnsiteCoordinators() {
     onsiteCoordinators = new List<SelectOption>();
     if (treatment.Destination_Facility__c == null) {
-        PRM_User__c[] prmUsers = [select User__c, User__r.Name from PRM_User__c  where
-            Role__c in ('Primary Onsite Coordinator', 'Onsite Coordinator')];
-        for (PRM_User__c user : prmUsers) {
-            onsiteCoordinators.add(new SelectOption(user.User__c, user.User__r.Name));
+        User[] prmUsers = AccessUtil.getFacilitatorOrgUsers();
+        for (User user : prmUsers) {
+            onsiteCoordinators.add(new SelectOption(user.id, user.Name));
         }
     } else {
-        Medical_Facility_User__c[] medFacUsers = [select User__c, User__r.Name from Medical_Facility_User__c 
-            where Medical_Facility__c = :treatment.Destination_Facility__c and 
-            Role__c in ('Primary Onsite Coordinator', 'Onsite Coordinator')];
-        for (Medical_Facility_User__c user : medFacUsers) {
-            onsiteCoordinators.add(new SelectOption(user.User__c, user.User__r.Name));
+   		User[] medFacUsers = AccessUtil.getMedicalFacilityUsers(treatment.Destination_Facility__c);
+        for (User user : medFacUsers) {
+            onsiteCoordinators.add(new SelectOption(user.id, user.Name));
         }
 	}
   }
   
     private void loadProcedureList() {
         procedureList = new List<SelectOption>();
-        Procedure__c[] procs = [SELECT Name, Doctor__r.Last_Name__c, Facility__r.Name, Price__c FROM Procedure__c 
+        Procedure__c[] procs = new List<Procedure__c>();
+        if (treatment.Destination_Facility__c == null) //don't filter on Destination Facility
+        {
+	        procs = [SELECT Name, Doctor__r.Last_Name__c, Facility__r.Name, Price__c FROM Procedure__c 
+	            where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure__c
+	            order by Doctor__r.Last_Name__c, Facility__r.Name];
+        }
+        else //do filter on Destination Facility
+        {
+          procs = [SELECT Name, Doctor__r.Last_Name__c, Facility__r.Name, Price__c FROM Procedure__c 
             where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure__c
+                    and Facility__c = : treatment.Destination_Facility__c
             order by Doctor__r.Last_Name__c, Facility__r.Name];
+        }
         procedureList.add(new SelectOption('', ''));
         for (Procedure__c proc : procs) {
             procedureList.add(new SelectOption(proc.Id, proc.Doctor__r.Last_Name__c + ' / ' + proc.Facility__r.Name + ' / ' + proc.Price__c));
@@ -535,10 +543,10 @@ Logger.info('saveTreatment');
     }
     private void loadNetworkContactsList() {
     	insuranceNetworkContacts = new List<SelectOption>();
-    	List<Insurance_Network_User__c> users = PatientUtil.getInsuranceNetworkContacts( patient.Insurance_Network__c );
+        User[] users = AccessUtil.getInsuranceNetworkUsers();
     	if (users != null && users.size()>0) {
-    		for (Insurance_Network_User__c user : users) {
-    			insuranceNetworkContacts.add(new SelectOption(user.Insurance_Contact__c, user.Insurance_Contact__r.Name));
+    		for (User user : users) {
+    			insuranceNetworkContacts.add(new SelectOption(user.id, user.Name));
     		}
     	}
     }
@@ -671,7 +679,8 @@ Logger.info('saveTreatment');
     public pagereference retrieveMedicalProfile () {
     	try {
 	        String surveyId = surveyGizmoUtil.getSurveyId( patient.Medical_Profile_Type__r.name );
-        	surveyGizmoUtil.retrieveSurvey(surveyId, this.patient.id, 'Patient');
+system.debug('retrieveMedicalProfile surveyId='+surveyId);
+        	surveyGizmoUtil.retrieveMedicalProfile(surveyId, this.patient.id );
     	} catch (Exception ex) {
     		addError(ex.getMessage());
     		return null;

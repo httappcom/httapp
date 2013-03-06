@@ -201,6 +201,17 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Public_Group__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>Enter the name of an existing Public Group. Public Groups are defined under Setup, Administration Setup, Manage Users, Public Groups. This Public Group defines the Facilitator Orgs PCCs. There is a corresponding group for each Medical Facility.</description>
+        <externalId>false</externalId>
+        <label>Public Group</label>
+        <length>80</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>Quote_Itinerary_Header__c</fullName>
         <externalId>false</externalId>
         <label>Quote/Itinerary Header</label>

@@ -205,6 +205,16 @@
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>Created_Year__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(YEAR( DATEVALUE(CreatedDate )))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Created Year</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Decision_Timeframe__c</fullName>
         <externalId>false</externalId>
         <label>Decision Timeframe</label>
@@ -436,6 +446,18 @@
         <label>Medical Records Required</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Month_Created__c</fullName>
+        <externalId>false</externalId>
+        <formula>MONTH( DATEVALUE(CreatedDate) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Month Created</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Next_Follow_Up__c</fullName>

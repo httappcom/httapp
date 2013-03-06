@@ -298,7 +298,7 @@
     </fieldUpdates>
     <rules>
         <fullName>At Provider Now</fullName>
-        <active>true</active>
+        <active>false</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
@@ -308,6 +308,14 @@
             <field>Treatment__c.Stage__c</field>
             <operation>equals</operation>
             <value>Itinerary</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Final_Departure_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Arrival_Time__c</field>
+            <operation>notEqual</operation>
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
         <workflowTimeTriggers>
@@ -738,7 +746,7 @@
         <assignedToType>owner</assignedToType>
         <dueDateOffset>0</dueDateOffset>
         <notifyAssignee>true</notifyAssignee>
-        <offsetFromField>Treatment__c.Arrival_Time__c</offsetFromField>
+        <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
         <priority>Normal</priority>
         <protected>false</protected>
         <status>Not Started</status>

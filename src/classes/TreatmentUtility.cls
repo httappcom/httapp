@@ -12,25 +12,13 @@ public with sharing class TreatmentUtility {
   }
 
     public static void afterInsert (List<Treatment__c> treatments) {
-        patientIds = new Set<Id>();
-        for ( Treatment__c treatment : treatments ){
-            if ( treatment.Patient__c != null ){
-                patientIds.add(treatment.Patient__c);
-            }
-        }
-        patientMap = populatePatientMap(patientIds);
     	updateCareTeamMembers( treatments, true );
         List<Topic__c> topicInserts = new List<Topic__c>();
-        for ( Treatment__c treatment : treatments ){
-            if ( treatment.Patient__c != null && patientMap.containsKey(treatment.Patient__c) ) {
-                Patient__c thisPatient = patientMap.get(treatment.Patient__c);
-                topicInserts.add(new Topic__c(Name = 'Treatment', Treatment__c = treatment.Id, Patient__c = thisPatient.Id));
-                if ( treatment.Travel__c != null ) {
-                    topicInserts.add(new Topic__c(Name = 'Travel', Treatment__c = treatment.Id, Patient__c = thisPatient.Id));
-                }
-
+        for ( Treatment__c treatment : treatments ) {
+            topicInserts.add(new Topic__c(Name = 'Treatment', Treatment__c = treatment.Id ));
+            if ( treatment.Travel__c != null ) {
+                topicInserts.add(new Topic__c(Name = 'Travel', Treatment__c = treatment.Id ));
             }
-            
         }
         insert topicInserts;
     }
@@ -111,6 +99,13 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
     }
 
 	private static void updateCareTeamMembers( List<Treatment__c> treatments, Boolean isInsert ) {
+        patientIds = new Set<Id>();
+        for ( Treatment__c treatment : treatments ){
+            if ( treatment.Patient__c != null ){
+                patientIds.add(treatment.Patient__c);
+            }
+        }
+        patientMap = populatePatientMap(patientIds);
         List<Care_Team_Member__c> careTeamMemberInserts = new List<Care_Team_Member__c>();
 
 		Set<ID> treatmentIds = new Set<ID>();
@@ -126,7 +121,7 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
 
 				careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.PCC, User__c = treatment.OwnerId));
                 if ( treatment.Onsite_Coordinator__c != null ) {
-					careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.OnsiteCoordinator, User__c = treatment.Onsite_Coordinator__c));
+					careTeamMemberInserts.add(new Care_Team_Member__c( Treatment__c = treatment.Id, Role__c = PickListDefines.CareTeamMemberRoles.PCC, User__c = treatment.Onsite_Coordinator__c));
                 }
                 if ( treatment.Payment_Type__c == PickListDefines.PaymentType.Insurance &&
                 	 treatment.Insurance_Network_Contact__c != null ) {

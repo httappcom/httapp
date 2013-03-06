@@ -1,13 +1,11 @@
 /*
- * this class will support the message object and help display, retrieve,
- * and save data to the message data model.
- * author mfullmore
+Obsolete - replaced by MK Partners Messaging
 */
 
 public class Message {
   
 
-  public static List<Message.MsgResult> getUserMessages(User pUser) {
+/*  public static List<Message.MsgResult> getUserMessages(User pUser) {
     if (pUser == null) {
       return null;
     } else {
@@ -134,5 +132,5 @@ public class Message {
       this.msgs = pMessages;
       this.users = pUsers;
     }
-  }
+  }*/
 }

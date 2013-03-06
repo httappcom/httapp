@@ -114,6 +114,10 @@
                 <behavior>Edit</behavior>
                 <field>Quote_Itinerary_Header__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Required</behavior>
+                <field>Public_Group__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -158,10 +162,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>PRM_Email_Template__c.PRM_Config__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>PRM_User__c.PRM_Config__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>

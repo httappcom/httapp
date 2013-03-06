@@ -31,6 +31,7 @@
         <members>Branding__c</members>
         <members>Care_Team_Member__c</members>
         <members>Communication__c</members>
+        <members>Default_User_Indicator_Field__c</members>
         <members>External_Contact__c</members>
         <members>Hotel__c</members>
         <members>Instruction__c</members>
@@ -70,7 +71,6 @@
         <members>Treatment__c</members>
         <members>UILookup__c</members>
         <members>echoSignAPI__c</members>
-        <members>Default_User_Indicator_Field__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -141,6 +141,7 @@
         <members>Nuehealth_PRM/Welcome_Home</members>
         <members>Nuehealth_PRM/Welcome_to_Patient_Portal</members>
         <members>Nuehealth_PRM/Welcome_to_Provider_Portal</members>
+        <members>Nuehealth_PRM/Nuehealth_Send_Itinerary_to_Patient</members>
         <name>EmailTemplate</name>
     </types>
     <types>
@@ -195,6 +196,15 @@
         <members>Travel__c</members>
         <members>Treatment__c</members>
         <name>Workflow</name>
+    </types>
+    <types>
+        <members>User.EchoSign_Acct_Email__c</members>
+        <members>User.Last_UI_State__c</members>
+        <members>User.Medical_Information_Officer__c</members>
+        <members>User.Receive_Portal_Messages__c</members>
+        <members>User.Receive_Staff_Messages__c</members>
+        <members>User.Travel_Concierge__c</members>
+        <name>CustomField</name>
     </types>
     <version>27.0</version>
 </Package>

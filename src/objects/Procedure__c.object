@@ -85,15 +85,16 @@
     </fields>
     <fields>
         <fullName>Facility__c</fullName>
-        <deleteConstraint>Restrict</deleteConstraint>
         <description>What Hospital, facility provides this Procedure.</description>
         <externalId>false</externalId>
         <label>Facility</label>
         <referenceTo>Medical_Facility__c</referenceTo>
         <relationshipLabel>Procedures</relationshipLabel>
         <relationshipName>Procedures</relationshipName>
-        <required>true</required>
-        <type>Lookup</type>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Hospital_Nights_Required__c</fullName>
@@ -278,5 +279,5 @@
     </nameField>
     <pluralLabel>Procedures</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

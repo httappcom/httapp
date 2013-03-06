@@ -1209,7 +1209,7 @@
                 </apex:pageblocksection>
                 <br/>
                 <apex:pageblocksection columns="1" collapsible="true" title="Messaging" rendered="{!!ISNULL(treatment)}">
-                    <apex:form ><c:messaging height="300" pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}" canAddCareTeamMember="true" /></apex:form>
+                    <apex:form ><c:messaging height="300" treatmentId="{!treatment.Id}" canAddCareTeamMember="true" /></apex:form>
                 </apex:pageblocksection>
                  <apex:pageblocksection columns="1" collapsible="true" title="Email">
                       <c:Manual_Emails pId="{!Patient__c.Id}" treatmentId="{!treatment.Id}"/>

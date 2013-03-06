@@ -48,30 +48,18 @@
         <visibleLines>6</visibleLines>
     </fields>
     <fields>
-        <fullName>Patient__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Patient</label>
-        <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Topics</relationshipLabel>
-        <relationshipName>Topics</relationshipName>
-        <required>false</required>
-        <trackFeedHistory>false</trackFeedHistory>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>
-        <relationshipLabel>Topics</relationshipLabel>
-        <relationshipName>Topics</relationshipName>
-        <required>false</required>
+        <relationshipLabel>Topics (NewTreatment)</relationshipLabel>
+        <relationshipName>Topics1</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>false</trackHistory>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <label>Topic</label>
     <nameField>
@@ -82,5 +70,5 @@
     </nameField>
     <pluralLabel>Topics</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

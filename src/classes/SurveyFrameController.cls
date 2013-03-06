@@ -10,6 +10,7 @@ public with sharing class SurveyFrameController {
         String oid = paramMap.get('oid');
         String did = paramMap.get('did');
         String surveyName = paramMap.get('sname');
+        String treatmentId = paramMap.get('tid');
         String surveyLink = null;
         
         if (surveyType == 'MedicalProfile') {
@@ -18,6 +19,7 @@ public with sharing class SurveyFrameController {
     	    	surveyLink = links[0].Survey_Link__c;
         	}
         }
+       
   Logger.info('surveyLink='+surveyLink);
 		String[] parts = surveyLink==null?null:surveyLink.split('/');
 		String surveyId = (parts==null||parts.size()<3)?null:parts[parts.size()-2];

@@ -147,6 +147,10 @@
                 <behavior>Edit</behavior>
                 <field>Facilitator_Name__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Public_Group__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -188,10 +192,6 @@
     <relatedLists>
         <fields>NAME</fields>
         <relatedList>Procedure__c.Facility__c</relatedList>
-    </relatedLists>
-    <relatedLists>
-        <fields>NAME</fields>
-        <relatedList>Medical_Facility_User__c.Medical_Facility__c</relatedList>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>

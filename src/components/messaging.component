@@ -1,6 +1,5 @@
 <apex:component controller="messaging_Controller" allowDML="true" layout="none" id="messaging" >
     <apex:attribute name="height" description="Max Height in Pixels of this Component" type="Integer" />
-    <apex:attribute name="pId" description="Id of the Patient the component is on" type="Id" assignTo="{!patientId}" required="true" />
     <apex:attribute name="treatmentId" description="Id of the Treatment the component is on" type="Id" assignTo="{!treatmentId}" />
     <apex:attribute name="canAddCareTeamMember" description="Boolean to determine if Add Care Team Member is available" type="Boolean" />
     

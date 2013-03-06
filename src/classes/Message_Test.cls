@@ -1,10 +1,11 @@
 /*
- * test class to test the message class
+Obsolete - replaced by MK Partners Messaging
 */
 
-@isTest
-private class Message_Test {
 
+
+public class Message_Test {
+/*
   static testMethod void testMessage() {
     Profile pro = [select Id from Profile where Name = 'Standard User'];
     User testUser;
@@ -67,5 +68,5 @@ private class Message_Test {
        from Message__c 
        where Message_Header__c = :results[0].msgHeader.Id]  
     );  
-  }
+  }*/
 }

@@ -138,7 +138,7 @@
                     <apex:outputField value="{!prmConfig.Patient_Portal_Welcome_Message__c}" rendered="{!destinationFacility==null}"/>
                     <apex:outputField value="{!destinationFacility.Patient_Portal_Welcome_Message__c}" rendered="{!destinationFacility!=null}"/>
                     <br/><br/>
-                    <c:messaging pId="{!patientId}" treatmentId="{!treatmentId}" canAddCareTeamMember="false" />
+                    <c:messaging treatmentId="{!treatmentId}" canAddCareTeamMember="false" />
                 </apex:outputpanel>
                 
                 <apex:outputpanel id="medRecsPnl" rendered="{!currentpage == 'Medical Records'}">

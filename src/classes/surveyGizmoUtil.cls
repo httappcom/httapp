@@ -347,7 +347,47 @@ public without sharing class surveyGizmoUtil {
         linkurl += '&sname='+EncodingUtil.urlEncode(surveyName, 'UTF-8');
         return linkurl;
     }
-
+    public static string generateSatisfactionSurveyLink(string treatmentId) {
+    	Treatment__c[] treatments = [Select Destination_Facility__c, Patient__c from Treatment__c 
+    	                             Where Id = : treatmentId];
+      if (treatments.size() == 1)
+      {
+        string patientIDHash = encryptPatientId(treatments[0].Patient__c);
+        string oid = userinfo.getOrganizationId();
+        string did = '';
+        string linkurl = '';
+        if (treatments[0].Destination_Facility__c != null)
+	      {
+	      	Logger.info('Destination Facility: ' + treatments[0].Destination_Facility__c);
+	        Medical_Facility__c[] mfs = [Select Survey_Banner_Image__c, Satisfaction_Survey_Link__c from Medical_Facility__c 
+	                                      Where Id = :treatments[0].Destination_Facility__c];
+	        if (mfs.size() == 1)
+	        {
+	          if (mfs[0].Survey_Banner_Image__c != null) {did = mfs[0].Survey_Banner_Image__c;}
+	          if (mfs[0].Satisfaction_Survey_Link__c != null) {linkurl = mfs[0].Satisfaction_Survey_Link__c;}
+	        } 
+	      }
+        if ((did == '') || (linkurl == ''))
+        {
+          PRM_Config__c prm = [select Survey_Banner_Image__c, Satisfaction_Survey_Link__c  from PRM_Config__c limit 1];
+          if (did == '')
+	        {
+	          did = prm.Survey_Banner_Image__c;
+	        }
+	        if (linkurl == '')
+	        {
+	          linkurl = prm.Satisfaction_Survey_Link__c;
+	        }  
+        }      
+        linkurl += '?eid='+patientIDHash;
+        string serverinstance = System.URL.getSalesforceBaseUrl().getHost().substringbefore('-');
+        linkurl += '&sid='+serverinstance;
+        linkurl += '&oid='+oid;
+        linkurl += '&did='+did;
+        return linkurl;   
+      }
+      else { return ''; }    	                             
+   }
 	private static Decimal getLatestInstanceId(String surveyId, String entityId) {
 Logger.info('surveyId='+surveyId+', entityId='+entityId);
 		AggregateResult[] results = [select max(Instance_Id__c) latestInstance from Survey_Instance__c where Survey_Id__c = :surveyId and Entity_Id__c = :entityId];

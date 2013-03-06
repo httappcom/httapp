@@ -201,14 +201,6 @@ public class PatientUtil {
       }
    }
 
-	public static List<Insurance_Network_User__c> getInsuranceNetworkContacts( ID insuranceNetworkId ) {
-		if (insuranceNetworkId==null) return null;
-		Insurance_Network__c[] networks = [SELECT Id, 
-			(SELECT Id,Name,Insurance_Contact__c, Insurance_Contact__r.Name FROM Insurance_Network_Users__r order by Name) 
-				FROM Insurance_Network__c where id = :insuranceNetworkId];
-		return networks.size()==0?null:networks[0].Insurance_Network_Users__r;
-	}
-	
   public static List<Treatment__c> getTreatmentsWithChildren(Id patientId) { 
       if(patientId == null) {          
         return null;

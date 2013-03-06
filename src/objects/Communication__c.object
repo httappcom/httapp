@@ -121,18 +121,6 @@
         <type>Url</type>
     </fields>
     <fields>
-        <fullName>Patient__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Patient</label>
-        <referenceTo>Patient__c</referenceTo>
-        <relationshipLabel>Communications</relationshipLabel>
-        <relationshipName>Communications</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Title__c</fullName>
         <externalId>false</externalId>
         <label>Title</label>
@@ -156,15 +144,16 @@
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Treatment</label>
         <referenceTo>Treatment__c</referenceTo>
         <relationshipLabel>Communications</relationshipLabel>
         <relationshipName>Communications</relationshipName>
-        <required>false</required>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
-        <type>Lookup</type>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
         <fullName>Type__c</fullName>
@@ -200,5 +189,5 @@
     </nameField>
     <pluralLabel>Communications</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
 </CustomObject>

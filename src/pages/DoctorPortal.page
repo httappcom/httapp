@@ -172,7 +172,7 @@
 						</apex:outputPanel>
 					</apex:actionRegion>
 					<div>
-					<c:messaging pId="{!commPatientId}" treatmentId="{!commTreatmentId}" canAddCareTeamMember="false" />
+					<c:messaging treatmentId="{!commTreatmentId}" canAddCareTeamMember="false" />
 					</div>
 					</apex:panelGrid>
 				</apex:pageBlockSection>
