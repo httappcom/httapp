@@ -309,7 +309,6 @@ system.debug('selectedItinerary='+selectedItinerary);
                         t.Phase__c,
                         t.Payment_Type__c,
                         t.Patient__c,
-                        t.Patient_Pipeline_Color__c,
                         t.Patient_Not_Committed_Reason__c,
                         t.Patient_Email__c,
                         t.Patient_Email_Formula__c,

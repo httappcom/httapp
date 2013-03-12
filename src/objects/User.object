@@ -29,6 +29,14 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>PCC_Manager__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>PCC Manager</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Receive_Portal_Messages__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>

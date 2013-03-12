@@ -22,6 +22,10 @@
                 <behavior>Edit</behavior>
                 <field>Last_UI_State__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PCC_Manager__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

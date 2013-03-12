@@ -33,4 +33,12 @@ public with sharing class CareTeamUtil {
 		}
 		return key;
 	}
+	
+	public static void updateSharing( Care_Team_Member__c[] members ) {
+		Set<ID> treatmentIds = new Set<ID>();
+		for (Care_Team_Member__c member : members) {
+			treatmentIds.add(member.treatment__c);
+		}
+		TreatmentUtility.updateSharingForTreatmentRelated( treatmentIds );
+	}
 }

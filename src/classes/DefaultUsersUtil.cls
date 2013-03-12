@@ -1,7 +1,7 @@
 public with sharing class DefaultUsersUtil {
     public static String travelConcierge = 'Travel_Concierge__c';
     public static String medicalInformationOfficer = 'Medical_Information_Officer__c';
-
+    public static String pccManager = 'PCC_Manager__c';
 	private static Map<String, User> defaultUsersMap = null;
 	private static void init() {
 		defaultUsersMap = new Map<String, User>();
@@ -36,4 +36,7 @@ public with sharing class DefaultUsersUtil {
     public static User getTravelConcierge() {
     	return getDefaultUser(travelConcierge);
     }
+    public static User getPCCManager() {
+      return getDefaultUser(pccManager);
+    }    
 }

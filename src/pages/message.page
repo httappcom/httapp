@@ -1,5 +1,0 @@
-<apex:page sidebar="false" showHeader="false" >
-	<body>
-		<apex:form ><c:messaging height="1000" treatmentId="a0Fd000000FEbLL" /></apex:form>
-	</body>
-</apex:page>

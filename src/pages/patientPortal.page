@@ -276,7 +276,9 @@
                 <div align="center">
                     <apex:outputtext style="font-weight:bold;" value="Medical Profile Results"/><br/><br/>
                 </div>
+                <apex:form >
 				<c:SurveyResponse surveyId="{!surveyId}"/>
+				</apex:form>
                 <div align="center">
                     <apex:form >
                         <apex:commandLink value="Close" action="{!hideSurveyResults}" reRender="surveyResultsPanel"  />

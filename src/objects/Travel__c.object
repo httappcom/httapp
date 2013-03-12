@@ -140,6 +140,16 @@
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>External_id__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <externalId>true</externalId>
+        <label>External id</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>Extra_Local_Concier__c</fullName>
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
@@ -381,5 +391,9 @@
     </nameField>
     <pluralLabel>Travels</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
+    <sharingReasons>
+        <fullName>Care_Team__c</fullName>
+        <label>Care Team</label>
+    </sharingReasons>
 </CustomObject>

@@ -1,13 +1,31 @@
 <apex:component controller="SurveyResponseController" allowDML="true" layout="none" id="surveyResponse" >
     <apex:attribute name="surveyId" description="Id of the survey" type="ID" assignTo="{!surveyHeaderId}" required="true"/>
-<style>
-</style>
-    <div class='tab-content'>
+    <apex:actionFunction name="gotoPage" action="{!gotoPage}" reRender="tabContent"> 
+        <apex:param name="page" assignTo="{!page}" value="" /> 
+    </apex:actionFunction> 
+	
+    <apex:outputPanel id="tabContent" styleClass="tab-content" layout="block" rendered="{!!ISNULL(surveyPages)}">
+	<div style="padding-left:40px;width:100%;">Medical Profile Pages:&nbsp;
+		<apex:variable var="pn" value="{!1}" />
+		<apex:outputPanel rendered="{!page>1}"><a href="javascript:gotoPage({!page-1})" >Previous</a>&nbsp;&nbsp;&nbsp;</apex:outputPanel>
+        <apex:repeat var="pg" value="{!surveyPages}">
+        	<apex:outputPanel rendered="{!page!=pn}">
+	        	<a href="javascript:gotoPage( {!pn} )"> {!pn} </a>&nbsp;&nbsp;&nbsp;
+        	</apex:outputPanel>
+        	<apex:outputPanel rendered="{!page=pn}">
+        		<b>&nbsp;{!pn}&nbsp;&nbsp;&nbsp;&nbsp;</b>
+        	</apex:outputPanel>
+	        <apex:variable var="pn" value="{!pn+1}"/>
+		</apex:repeat>	
+		<apex:outputPanel rendered="{!page<surveyPages.size}"><a href="javascript:gotoPage({!page+1})" >Next</a></apex:outputPanel>
+	</div>
+	<apex:variable var="pageNum" value="{!1}" />
     <div class='static-survey'>
         <ul>
         <apex:repeat var="pg" value="{!surveyPages}">
+        <apex:outputPanel rendered="{!page=pageNum}">
         <li class="response-box">
-            <h3><apex:outputText value="{!pg.title}"/></h3>
+            <h3><apex:outputText value="{!pg.title & '(Page ' & Text(pageNum) & ')'}"/></h3>
             <apex:repeat var="pgQ" value="{!pg.questions}">
               <apex:outputPanel layout="block" rendered="{!pgQ.qGroup != null}">
                 <strong class="question-title"><apex:outputText value="{!pgQ.title}"/></strong>
@@ -44,9 +62,11 @@
                 </div>            
               </apex:outputPanel>
             </apex:repeat>
-        </li>       
+        </li>
+        </apex:outputPanel>
+        <apex:variable var="pageNum" value="{!pageNum+1}"/>
         </apex:repeat>
         </ul>
     </div>
-    </div>
+    </apex:outputPanel>
 </apex:component>

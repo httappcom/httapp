@@ -215,6 +215,28 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Day_of_Month__c</fullName>
+        <externalId>false</externalId>
+        <formula>DAY( DATEVALUE( CreatedDate ) )</formula>
+        <label>Day of Month Created</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Day_of_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Day of Year Created</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Decision_Timeframe__c</fullName>
         <externalId>false</externalId>
         <label>Decision Timeframe</label>
@@ -313,6 +335,17 @@
         <label>Fire Surgical Report Task</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Hour_of_Day_Created__c</fullName>
+        <externalId>false</externalId>
+        <label>Hour of Day Created</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Inquiry_Quality__c</fullName>
@@ -530,12 +563,12 @@
         <type>Picklist</type>
     </fields>
     <fields>
-        <fullName>Patient_Pipeline_Color__c</fullName>
+        <fullName>Patient_Pipeline_RowStyle__c</fullName>
         <externalId>false</externalId>
-        <formula>IF (Next_Follow_Up__c &gt;  NOW() , &apos;red&apos;, &apos;white&apos;)</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Patient Pipeline Color</label>
+        <label>Patient Pipeline RowStyle</label>
+        <length>18</length>
         <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
         <unique>false</unique>
     </fields>
@@ -1698,6 +1731,17 @@
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
+    <fields>
+        <fullName>Week_of_Year__c</fullName>
+        <externalId>false</externalId>
+        <label>Week of Year</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
     <label>Treatment</label>
     <listViews>
         <fullName>All</fullName>
@@ -1714,7 +1758,11 @@
     </nameField>
     <pluralLabel>Treatments</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
+    <sharingReasons>
+        <fullName>Care_Team__c</fullName>
+        <label>Care Team</label>
+    </sharingReasons>
     <validationRules>
         <fullName>Payment_Type_Required</fullName>
         <active>true</active>

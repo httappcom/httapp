@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>*</members>
@@ -20,6 +20,16 @@
         <members>NueHealth_Reference_Data</members>
         <members>Nuehealth_PRM</members>
         <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>User.EchoSign_Acct_Email__c</members>
+        <members>User.Last_UI_State__c</members>
+        <members>User.Medical_Information_Officer__c</members>
+        <members>User.PCC_Manager__c</members>
+        <members>User.Receive_Portal_Messages__c</members>
+        <members>User.Receive_Staff_Messages__c</members>
+        <members>User.Travel_Concierge__c</members>
+        <name>CustomField</name>
     </types>
     <types>
         <members>CustomLabels</members>
@@ -54,6 +64,7 @@
         <members>PRM_Medical_Profile_Link__c</members>
         <members>PRM_User__c</members>
         <members>Partner__c</members>
+        <members>Patient_Lead__c</members>
         <members>Patient__c</members>
         <members>Payment__c</members>
         <members>PortalLinks__c</members>
@@ -76,6 +87,11 @@
     <types>
         <members>*</members>
         <name>CustomTab</name>
+    </types>
+    <types>
+        <members>NueHealth_Dashboards</members>
+        <members>NueHealth_Dashboards/Lead_Volumes</members>
+        <name>Dashboard</name>
     </types>
     <types>
         <members>Email_Template_Documents</members>
@@ -128,6 +144,7 @@
         <members>Nuehealth_PRM/Nuehealth_Medical_Profile_Approved</members>
         <members>Nuehealth_PRM/Nuehealth_Passport_needed</members>
         <members>Nuehealth_PRM/Nuehealth_Post_op_from_PCC</members>
+        <members>Nuehealth_PRM/Nuehealth_Send_Itinerary_to_Patient</members>
         <members>Nuehealth_PRM/Nuehealth_Send_Quote_to_Patient</members>
         <members>Nuehealth_PRM/Nuehealth_Travel_Arrangements</members>
         <members>Nuehealth_PRM/Nuehealth_Your_Proof_of_Payment</members>
@@ -141,7 +158,6 @@
         <members>Nuehealth_PRM/Welcome_Home</members>
         <members>Nuehealth_PRM/Welcome_to_Patient_Portal</members>
         <members>Nuehealth_PRM/Welcome_to_Provider_Portal</members>
-        <members>Nuehealth_PRM/Nuehealth_Send_Itinerary_to_Patient</members>
         <name>EmailTemplate</name>
     </types>
     <types>
@@ -171,6 +187,7 @@
         <members>Survey_Header__c-Survey Header Layout</members>
         <members>Survey_Instance__c-Notification Layout</members>
         <members>Survey_Question__c-Survey Question Layout</members>
+        <members>Task_Specifier__c-Task Specifier Layout</members>
         <members>Topic__c-Topic Layout</members>
         <members>Travel__c-Travel Layout</members>
         <members>Treatment_Quote__c-Interaction Quote Layout</members>
@@ -188,6 +205,24 @@
         <name>Profile</name>
     </types>
     <types>
+        <members>NueHealth</members>
+        <members>NueHealth/Lead_Volume_by_Month</members>
+        <members>NueHealth_Reports</members>
+        <members>NueHealth_Reports/Daily_Lead_Volume</members>
+        <members>NueHealth_Reports/Daily_Lead_Volume_By_Year</members>
+        <members>NueHealth_Reports/Day_of_Month_Lead_Volume</members>
+        <members>NueHealth_Reports/Hour_of_Day_Lead_Volume</members>
+        <members>NueHealth_Reports/Monthly_Lead_Volume</members>
+        <members>NueHealth_Reports/Monthly_Lead_Volume_by_Year</members>
+        <members>NueHealth_Reports/Weekly_Lead_Volume</members>
+        <members>NueHealth_Reports/Weekly_Lead_Volume_by_Year</members>
+        <name>Report</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>ReportType</name>
+    </types>
+    <types>
         <members>*</members>
         <name>StaticResource</name>
     </types>
@@ -197,15 +232,5 @@
         <members>Treatment__c</members>
         <name>Workflow</name>
     </types>
-    <types>
-        <members>User.EchoSign_Acct_Email__c</members>
-        <members>User.Last_UI_State__c</members>
-        <members>User.Medical_Information_Officer__c</members>
-        <members>User.Receive_Portal_Messages__c</members>
-        <members>User.Receive_Staff_Messages__c</members>
-        <members>User.Travel_Concierge__c</members>
-        <name>CustomField</name>
-    </types>
     <version>27.0</version>
 </Package>
-

@@ -79,7 +79,7 @@
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Substract Hours</fullName>
+                <fullName>Subtract Hours</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>

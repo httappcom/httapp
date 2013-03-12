@@ -207,6 +207,7 @@ public class PatientUtil {
       } else {
         return [Select id,
                                Name,
+                               OwnerId,
                          	   Surgical_Report_Attached__c,
                                Approval_State__c,
                                Approval_Date__c,
@@ -666,5 +667,11 @@ public class PatientUtil {
     public static void deleteAll(map<id,Patient__c> oldmap) {
         list<Treatment__c> treatments = [select id from Treatment__c where patient__c IN :oldmap.keySet()];
         delete treatments;
+    }
+    public static String createUniqueID()
+    {
+    	Long timeStamp = Datetime.now().getTime();
+    	Integer randomPart = Math.abs(Crypto.getRandomInteger());
+    	return String.valueOf(timeStamp) + String.valueOf(randomPart);
     }
 }

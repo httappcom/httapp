@@ -1,11 +1,9 @@
-public with sharing class RequestQuoteController 
+public without sharing class RequestQuoteController 
 {
 	
   public Patient__c patient {get; set; }
   public Treatment__c treatment {get; set; }
-  public Travel__c travel { get; set; }    
-  public Treatment_Quote__c treatmentQuote { get; set; }
-  
+  public Patient_Lead__c patientLead {get; set; }  
   public String reference_number { get; set; }
   public String authorized_by_insurance { get; set; }
   public String guardian_info { get; set; }
@@ -18,42 +16,137 @@ public with sharing class RequestQuoteController
   public String preferred_appointment { get; set; } 
   public String concierge_needed { get; set; } 
   private Map<String, String> URLParams { get; set; } 
+  public Map<String, String> patientFieldMap 
+  {
+  	get 
+  	{
+  		// Must be lowercase!
+  		return new Map<String, String>
+		    {
+          'patient_first_name__c' => 'patient_first_name__c',
+          'patient_last_name__c' => 'patient_last_name__c',
+          'date_of_birth__c' => 'date_of_birth__c',
+          'gender__c' => 'gender__c',
+          'country__c' => 'country__c',
+          'phone__c' => 'phone__c',
+          'email__c' => 'email__c',
+          'preferred_language__c' => 'preferred_language__c',
+          'social_security__c' => 'social_security_number__c',
+          'ins_policy__c' => 'ins_policy__c'
+		    };
+  	} 
+  	private set;
+  }
+  public Map<String, String> treatmentFieldMap 
+  {
+    get 
+    {
+    	// Must be lowercase!
+      return new Map<String, String>
+        {
+          'payment_type__c' => 'treatment_payment_type__c',
+          'referrer__c' => 'treatment_referrer__c',
+          'referrer_phone__c' => 'treatment_referrer_phone__c',
+          'referral_source__c' => 'treatment_referral_source__c',
+          'referring_provider_name__c' => 'treatment_referring_provider_name__c',
+          'referring_provider_phone__c' => 'treatment_referring_provider_phone__c',
+          'referring_provider_fax__c' => 'treatment_referring_provider_fax__c',
+          'referring_provider_npi__c' => 'treatment_referring_provider_npi__c',
+          'procedure_category__c' => 'treatment_procedure_category__c',
+          'procedure__c' => 'treatment_procedure__c',
+          'preferred_destination__c' => 'treatment_preferred_destination__c',
+          'lead_entry__c' => 'treatment_lead_entry__c'          
+        };
+    } 
+    private set;
+    }  
   public RequestQuoteController()
   {
   	treatment = new Treatment__c();
   	patient = new Patient__c();
-  	travel = new  Travel__c();
-  	URLparams = System.currentPagereference().getParameters();
-    if (URLparams.containsKey('nextLead'))
+    patientLead = new Patient_Lead__c();
+    if ( System.currentPagereference() != null )
     {
-      ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.CONFIRM, 'Lead submitted. Submit next lead below.'));
+	  	URLparams = System.currentPagereference().getParameters();
+	    if (URLparams.containsKey('nextLead'))
+	    {
+	      ApexPages.addMessage(new ApexPages.Message(ApexPages.severity.CONFIRM, 'Lead submitted. Submit next lead below.'));
+	    }
     }    	  	
   }
+  
+  private Patient_Lead__c serializeLeadInfo()
+  {
+  	Patient_Lead__c pl = new Patient_Lead__c();
+  	Logger.info('Patient: ' + patient);
+  	Logger.info('Treatment: ' + treatment);
+    Map<String, Schema.SObjectField> treatmentSchemaFieldMap = Schema.SObjectType.Treatment__c.fields.getMap();
+    for ( String fieldName : treatmentSchemaFieldMap.keySet() )
+    {
+    	Logger.info('fieldName: ' + fieldName);
+    	if ( treatmentFieldMap.containsKey(fieldName.toLowerCase()) )
+    	{
+    		Logger.info('Found key' + fieldName + ' in treatmentFieldMap.');
+	    	if (treatment.get(fieldName) != null)
+	    	{
+	    		    Logger.info('pl: ' + pl);
+	    		pl.put(treatmentFieldMap.get(fieldName), treatment.get(fieldName));
+	      }
+      }
+    }
+    Map<String, Schema.SObjectField> patientSchemaFieldMap = Schema.SObjectType.Patient__c.fields.getMap();
+    for ( String fieldName : patientSchemaFieldMap.keySet() )
+    {
+    	
+      Logger.info('fieldName: ' + fieldName);
+      if ( patientFieldMap.containsKey( fieldName.toLowerCase() ) )
+      {
+        if (patient.get(fieldName) != null)
+        {
+        	    Logger.info('pl: ' + pl);
+          pl.put(patientFieldMap.get(fieldName), patient.get(fieldName));
+        }
+      }
+    }
+    Logger.info('pl: ' + pl);
+    return pl;   
+  }
+    public void deserializeLeadInfo(Patient_Lead__c pl)
+    {
+      this.patient = new Patient__c();      
+      this.treatment = new Treatment__c();
+      Set<String> patientFields = patientFieldMap.keySet();
+      for (String field : patientFields)
+      {      	
+      	if (pl.get(patientFieldMap.get(field)) != null)
+      	{
+      		this.patient.put( field, pl.get(patientFieldMap.get(field)) );
+      	}
+      }
+      Set<String> treatmentFields = treatmentFieldMap.keySet();
+      for (String field : treatmentFields)
+      {        
+        if (pl.get(treatmentFieldMap.get(field)) != null)
+        {
+          this.treatment.put( field, pl.get(treatmentFieldMap.get(field)) );
+        }
+      }            
+    }  
+  
+  
   public PageReference submitLead()
   {
-    //Check to see if patient already exists
-    List<Patient__c> patients = [Select Id FROM Patient__c WHERE Email__c = : patient.Email__c];
-    if (patients.size() > 0)
-    {
-      patient = patients[0];
-    }
-    treatment.Phase__c = PickListDefines.Phase.Inquiry;
-    treatment.Stage__c = PickListDefines.Stage.Initial;
+  	
+    patientLead = serializeLeadInfo();
+    
     if (URLparams.containsKey('enteredBy'))
     {    
-      treatment.Lead_Entry__c = URLparams.get('enteredBy');
+      patientLead.Treatment_Lead_Entry__c = URLparams.get('enteredBy');
     }
-    INSERT travel;    
-    if (patient.Id == null) { INSERT patient; }
-    else { UPDATE patient; }
-    treatment.Travel__c = travel.id;
-    treatment.Patient__c = patient.id;    
-    INSERT treatment; 
-    Note resultsNote = new Note(); 
     String noteBody = '';   
     if (! String.isBlank(reference_number) )
     {
-    	noteBody += 'Reference number: ' + reference_number + ' \r\n';
+      noteBody += 'Reference number: ' + reference_number + ' \r\n';
     }
     if (! String.isBlank(authorized_by_insurance) )
     {
@@ -97,11 +190,9 @@ public with sharing class RequestQuoteController
     }                                  
     if (! String.isBlank(noteBody) )
     {
-    	resultsNote.Title = 'Lead Entry Responses';
-      resultsNote.ParentId = patient.id;
-      resultsNote.Body = noteBody;
-      INSERT resultsNote;
+      patientLead.Treatment_Note__c = noteBody;
     }
+    Insert patientLead;
     PageReference nextEntry = new PageReference(ApexPages.currentPage().getUrl());
     nextEntry.setRedirect(true);
     nextEntry.getParameters().put('nextLead', '1');    
@@ -110,22 +201,9 @@ public with sharing class RequestQuoteController
   }   
   public PageReference requestQuote()
   {
-  	//Check to see if patient already exists
-  	List<Patient__c> patients = [Select Id FROM Patient__c WHERE Email__c = : patient.Email__c];
-  	if (patients.size() > 0)
-  	{
-  		patient = patients[0];
-  	}
-  	treatment.Phase__c = PickListDefines.Phase.Inquiry;
-  	treatment.Stage__c = PickListDefines.Stage.Initial;
-  	INSERT travel;  	
-  	if (patient.Id == null) { INSERT patient; }
-  	else { UPDATE patient; }
-  	treatment.Travel__c = travel.id;
-  	treatment.Patient__c = patient.id;
-  	INSERT treatment;
-  	PageReference thankYouPage = Page.Request_Quote_Thank_You;  
+    patientLead = serializeLeadInfo();
+    INSERT patientLead;
+    PageReference thankYouPage = Page.Request_Quote_Thank_You;  
     return thankYouPage;
-  }
- 
+  }  
 }

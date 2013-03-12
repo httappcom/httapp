@@ -1,5 +1,6 @@
 public without sharing class SurveyResponseController {
 	public ID surveyHeaderId { get; set; }
+	public Integer page { get; set; }
 	
 	private Survey_Header__c surveyHeader;
 	private Map<String, Survey_Question__c> surveyResponsesMap = null;
@@ -35,9 +36,14 @@ public without sharing class SurveyResponseController {
 	}
 	
 	public SurveyResponseController() {
-		
+		page = 1;
 	}
 	private List<VFSurveyPage> pages=null;
+	
+	public PageReference gotoPage() {
+system.debug('gotoPage page='+page);
+		return null;
+	}
 	
 	public List<VFSurveyPage> getSurveyPages() {
 		if (pages == null) {
@@ -85,7 +91,9 @@ public without sharing class SurveyResponseController {
        					setQuestion( vfPage.questions, q.id, null );
         			}
         		}
-        		pages.add( vfPage );
+        		if (vfPage.questions.size()>0) {
+	        		pages.add( vfPage );
+        		}
         	}
         }
 	}

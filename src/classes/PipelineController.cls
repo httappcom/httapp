@@ -32,6 +32,7 @@ public with sharing class PipelineController {
 		return PickListDefines.Stage.Initial;
 	}           
   public Pipelinecontroller(){
+  	PatientLeadUtil.execute();
     twoHoursAgo = system.now().addHours(-2);
     next24Hours = system.now().addhours(24);
     this.curPageSize = 10  ;
@@ -45,7 +46,7 @@ public with sharing class PipelineController {
     this.payments = new List<Payment__c>();
     try {
         active = [SELECT Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure__c,
-        Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Patient__r.Last_Communication__c, Treatment_Summary__c
+        Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Treatment_Summary__c, Patient_Pipeline_RowStyle__c, Destination_Facility__c
         FROM Treatment__c
         WHERE Phase__c in :(new List<String>{PickListDefines.Phase.Inquiry, PickListDefines.Phase.Interaction}) and 
             Active_Status__c IN :(new List<String>{PickListDefines.ActiveStatus.Active, PickListDefines.ActiveStatus.NotResponding})
@@ -55,7 +56,12 @@ public with sharing class PipelineController {
     for (Treatment__c r : active) {
 /*      if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
       if(p.Payments__r.size()>0)   for (Payment__c pay : p.Payments__r) allPayments.add(pay); 
-      if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);*/       
+      if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);*/
+      if (r.Phase__c == PickListDefines.Phase.Inquiry && r.Stage__c == PickListDefines.Stage.Initial && r.LastModifiedDate < twoHoursAgo ) r.Patient_Pipeline_RowStyle__c = 'redRow';
+      else if (r.Next_Follow_Up__c.date() < Date.today()) r.Patient_Pipeline_RowStyle__c = 'redRow';
+      else if (r.Next_Follow_Up__c < next24Hours) r.Patient_Pipeline_RowStyle__c = 'blueRow';
+      else r.Patient_Pipeline_RowStyle__c = 'whiteRow'; 
+      Logger.info('RowStyle: ' + r.Patient_Pipeline_RowStyle__c);        
     }                 
     System.debug('treatments list '+alltreatments);  
     tcon = new ApexPages.StandardSetController(allTreatments); 

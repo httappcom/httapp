@@ -3,7 +3,7 @@
 * Description : To display Patient and Related data on Patient Tab
 * CreatedBy   : Ramadevi Kanchadapu
 */ 
-public class PatientExtension {
+public with sharing class PatientExtension {
 	PUBLIC STRING SURVEYURL {GET;SET;}
 	public Boolean showLightbox {get;set;}
     public Patient__c patient { get; set; }
@@ -14,7 +14,7 @@ public class PatientExtension {
     public UILookup__c lookup { get; public set; }
  
     public Treatment_Quote__c treatmentQuote { get; set; }
-    
+    private Id usersMedicalFacility {get;set;}
     public String getDoctorPortalURL() {
     	if (treatment.Treatment_Quotes__r.size()>0 && treatment.Treatment_Quotes__r[0].Procedure__r != null &&
             	treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__c != null &&
@@ -38,6 +38,23 @@ public class PatientExtension {
     public List<SelectOption> taskOptions { get; set; }
     public List<SelectOption> onsiteCoordinators { get; set; }
     public List<SelectOption> insuranceNetworkContacts {get; private set;}
+    public List<SelectOption> assignablePCCs {get; private set;}
+    public Id assignedPCC;
+    public Id getAssignedPCC()
+    {
+    	if (assignedPCC==null)
+    	{
+    		if (treatment.OwnerId != null) { assignedPCC = treatment.OwnerId; }
+    		else { assignedPCC = UserInfo.getUserID(); }
+    	}
+    	Logger.info('assignedPCC: '+ assignedPCC);
+    	return assignedPCC;
+    }
+    public void setAssignedPCC(ID i)
+    {
+    	this.assignedPCC = i;
+    	this.treatment.OwnerId = i;
+    }
     public String selectedTaskOption { get; set; }
     public ID treatmentId { get; public set; }
     public ID treatmentLastId { get; set; }
@@ -73,6 +90,25 @@ public class PatientExtension {
         needTreatmentUpdate = false;
 		showLightbox = false;
         sendSuccess = false;
+          //Find Medical Facility Users
+        Medical_Facility__c[] allMedFacilities = [Select Id, Public_Group__c from Medical_Facility__c];
+        Group[] currentUsersGroups = 
+          [Select Name from Group Where Id in 
+            ( Select GroupId from Groupmember Where UserOrGroupId = :UserInfo.getUserID() )
+          ];
+        Set<String> groupNameSet = new Set<String>();
+               for (Group g : currentUsersGroups)
+        {
+          groupNameSet.add(g.Name);
+        }       
+        for (Medical_Facility__c facility : allMedFacilities)
+        {
+          if ( groupNameSet.contains(facility.Public_Group__c) )
+          // current user is a Medical Facility User
+          {
+            this.usersMedicalFacility = facility.Id;
+          }
+        }        
         this.initiatePatient();
         try {  
         if  (sc.getId() != null  ) {
@@ -87,13 +123,13 @@ public class PatientExtension {
             	setTreatmentInfo();
             	queryMedicalProfile();
             	if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
-
             	searchTask();                                                   
         	} 
         }
         if (patient == null) this.patient = new Patient__c ();
         if (treatment == null) initiateTreatment();                 
         	setInitialViewState();
+        	loadAssignablePCCsList();
         } catch(Exception e){
    Logger.info(e.getStackTraceString());
             ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
@@ -117,8 +153,14 @@ public class PatientExtension {
     private void initiateTreatment() {
         this.treatment = new Treatment__c (
         	Phase__c = PickListDefines.Phase.Inquiry, 
-        	Stage__c = PickListDefines.Stage.Initial
+        	Stage__c = PickListDefines.Stage.Initial,
+        	Active_Status__c = PickListDefines.ActiveStatus.Active
         	);
+        	//Find Medical Facility Users
+          if (this.usersMedicalFacility != null)          
+        	{
+        		this.treatment.Destination_Facility__c = this.usersMedicalFacility;
+        	}
         treatmentId = null;
         this.travel = new  Travel__c();
         this.treatmentQuote = new Treatment_Quote__c ();
@@ -550,7 +592,31 @@ Logger.info('saveTreatment');
     		}
     	}
     }
-
+    private void loadAssignablePCCsList() 
+    {
+    	User[] PCCs = AccessUtil.getFacilitatorOrgUsers();
+    	Logger.info('PCCs: ' + PCCs);
+    	assignablePCCs = new List<SelectOption>();
+    	if (PCCs != null && PCCs.size()>0)
+    	{
+    		for(User user: PCCs)
+    		{
+    			assignablePCCs.add(new SelectOption(user.id, user.Name));
+    		}
+    	}
+    	if (treatment.Destination_Facility__c != null)
+    	{
+    	   User[] facilityUsers = AccessUtil.getMedicalFacilityUsers(treatment.Destination_Facility__c);
+    	   if (facilityUsers != null && facilityUsers.size()>0)
+	      {
+	        for(User user: facilityUsers)
+	        {
+	          assignablePCCs.add(new SelectOption(user.id, user.Name));
+	        }
+	      }
+    	} 
+    	
+    }
     private void addError( DmlException dmlEx) {
         addError(dmlEx.getDmlMessage(0));
     }

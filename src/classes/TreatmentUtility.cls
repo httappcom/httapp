@@ -1,6 +1,5 @@
 public with sharing class TreatmentUtility {
 
-  private static Set<id> patientIds;
   private static Map<Id, Patient__c> patientMap;
   private static Map<Id, String> savedTaskSpecifiers = null;
 
@@ -8,6 +7,7 @@ public with sharing class TreatmentUtility {
   public static void beforeInsert (List<Treatment__c> treatments) {
     for (Treatment__c treatment : treatments ) {
         treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
+    	setDayAndWeekOfYear( treatment );
     }
   }
 
@@ -46,11 +46,12 @@ public with sharing class TreatmentUtility {
         if (treatment.Approval_State__c != PickListDefines.ApprovalState.Approved) {
         	treatment.Approval_Date__c = null;
         }
+        setDayAndWeekOfYear( treatment );
     }
   }
 
     public static void afterUpdate(Map<ID,Treatment__c> oldMap, List<Treatment__c> newTreatments ) {
-        patientIds = new Set<Id>();
+        Set<ID> patientIds = new Set<Id>();
 		List<ID> treatmentIds = new List<ID>();
 		for (Treatment__c treatment: newTreatments) {
 			treatmentIds.add(treatment.id);
@@ -99,7 +100,7 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
     }
 
 	private static void updateCareTeamMembers( List<Treatment__c> treatments, Boolean isInsert ) {
-        patientIds = new Set<Id>();
+        Set<ID> patientIds = new Set<Id>();
         for ( Treatment__c treatment : treatments ){
             if ( treatment.Patient__c != null ){
                 patientIds.add(treatment.Patient__c);
@@ -298,5 +299,77 @@ system.debug('qry='+qry);
 		return expandedTreatmentCache.get( treatmentId );
 	}
 	
-	
+	public static void updateSharingForTreatmentRelated( Set<ID> treatmentIds ) {
+		Treatment__c[] treatments = [SELECT Id, Patient__c, Travel__c, Destination_Facility__c,
+			Destination_Facility__r.Public_Group__c,
+			(SELECT User__c, User__r.UserType, Treatment__c FROM Care_Team_Members__r),
+			(SELECT UserOrGroupId,ParentId FROM Shares) 
+			FROM Treatment__c where id in :treatmentIds];
+		Set<ID> travelIds = new Set<ID>();
+		Set<ID> patientIds = new Set<ID>();
+		Map<ID, ID> travelToTreatmentMap = new Map<ID, ID>();
+		Map<ID, ID> patientToTreatmentMap = new Map<ID, ID>();
+		List<Treatment__Share> treatmentShares = new List<Treatment__Share>();
+		for ( Treatment__c treatment : treatments ) {
+			travelIds.add(treatment.Travel__c);
+			travelToTreatmentMap.put(treatment.Travel__c, treatment.id);
+			patientIds.add(treatment.Patient__c);
+			patientToTreatmentMap.put(treatment.Patient__c, treatment.id);
+			treatmentShares.addAll(treatment.Shares);
+		}
+system.debug('Existing treatment shares='+treatmentShares);
+		Map<ID, AccessUtil.UsersAndGroups> treatmentUsersGroupsMap = AccessUtil.getCareTeamUsersOrGroups( treatments );
+system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
+		
+		AccessUtil.updateSharing( 'Treatment__Share', Schema.Treatment__Share.RowCause.Care_Team__c, 
+			treatmentShares, treatmentUsersGroupsMap );
+			
+		Map<ID, AccessUtil.UsersAndGroups> travelUsersGroupsMap = AccessUtil.getParentUsersAndGroups( travelToTreatmentMap, treatmentUsersGroupsMap); 
+
+		Travel__c[] travels = [select id, 
+			(SELECT UserOrGroupId,ParentId FROM Shares)
+			 from Travel__c where id in :travelIds];
+		List<Travel__Share> travelShares = new List<Travel__Share>();
+		for (Travel__c travel : travels) {
+			travelShares.addAll(travel.Shares);
+		}
+		AccessUtil.updateSharing( 'Travel__Share', Schema.Travel__Share.RowCause.Care_Team__c, 
+			travelShares, travelUsersGroupsMap );
+			
+		Map<ID, AccessUtil.UsersAndGroups> patientUsersGroupsMap = AccessUtil.getParentUsersAndGroups( patientToTreatmentMap, treatmentUsersGroupsMap); 
+
+		Patient__c[] patients = [select id, 
+			(SELECT UserOrGroupId,ParentId FROM Shares)
+			 from Patient__c where id in :patientIds];
+		List<Patient__Share> patientShares = new List<Patient__Share>();
+		for (Patient__c patient : patients) {
+			patientShares.addAll(patient.Shares);
+		}
+		AccessUtil.updateSharing( 'Patient__Share', Schema.Patient__Share.RowCause.Care_Team__c, 
+			patientShares, patientUsersGroupsMap );
+			
+		Survey_Header__c[] surveyHeaders = [SELECT Id, Patient__c, 
+			(SELECT UserOrGroupId,RowCause,ParentId,Id,AccessLevel FROM Shares) 
+			FROM Survey_Header__c where Patient__c in :patientIds];
+		List<Survey_Header__Share> surveyHeaderShares = new List<Survey_Header__Share>();
+		Map<ID, ID> headerToPatientMap = new Map<ID, ID>();
+		for (Survey_Header__c header : surveyHeaders) {
+			surveyHeaderShares.addAll(header.Shares);
+			headerToPatientMap.put(header.id, header.Patient__c);
+		}
+		Map<ID, AccessUtil.UsersAndGroups> headerUsersGroupsMap = AccessUtil.getParentUsersAndGroups( headerToPatientMap, patientUsersGroupsMap); 
+		AccessUtil.updateSharing( 'Survey_Header__Share', Schema.Survey_Header__Share.RowCause.Care_Team__c, 
+			surveyHeaderShares, headerUsersGroupsMap );
+	}
+
+	private static void setDayAndWeekOfYear( Treatment__c treatment ) {
+		Date dte = treatment.CreatedDate == null? Date.today() : treatment.CreatedDate.date();
+		Integer yr = dte.year();
+		Date firstDayOfYear = Date.newInstance( yr, 1, 1);
+		Date firstDayOfYearStartOfWeek = firstDayOfYear.toStartOfWeek();
+		Treatment.Week_of_Year__c = (Integer)firstDayOfYearStartOfWeek.daysBetween(dte)/7;
+		Treatment.Day_of_Year__c = firstDayOfYear.daysBetween(dte)+1;
+		Datetime dt = treatment.CreatedDate == null ? Datetime.now() : treatment.CreatedDate;
+		Treatment.Hour_of_Day_Created__c =  dt.hour();
+	}
 }

@@ -5,6 +5,8 @@ public without sharing class messaging_Controller {
 
     private id thisUserCareTeamId;
     
+    public ID currentUserId { get; set; }
+    
     public Id treatmentId; 
     public void setTreatmentId(Id i) {
         treatmentId = i;
@@ -521,7 +523,7 @@ system.debug('selectFilterBy action topicId='+topicId);
  system.debug('userInfo.getUserId()='+userInfo.getUserId());
  system.debug('careTeamMemberCache='+careTeamMemberCache);
         for (Care_Team_Member__c m : careTeamMemberCache) {
-            if (m.User__c == userInfo.getUserId()) {
+            if (m.User__c == userInfo.getUserId() || (currentUserId!=null && m.User__c == currentUserId)) {
                 thisUserCareTeamId = m.Id;
             }
         }

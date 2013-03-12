@@ -164,6 +164,18 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>External_ID__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <label>External ID</label>
+        <length>64</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
         <fullName>Gender__c</fullName>
         <externalId>false</externalId>
         <label>Gender</label>
@@ -886,5 +898,9 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
     </nameField>
     <pluralLabel>Patients</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
+    <sharingReasons>
+        <fullName>Care_Team__c</fullName>
+        <label>Care Team</label>
+    </sharingReasons>
 </CustomObject>

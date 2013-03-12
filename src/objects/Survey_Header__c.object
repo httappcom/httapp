@@ -110,5 +110,9 @@
     </nameField>
     <pluralLabel>Survey Headers</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
+    <sharingReasons>
+        <fullName>Care_Team__c</fullName>
+        <label>Care Team</label>
+    </sharingReasons>
 </CustomObject>

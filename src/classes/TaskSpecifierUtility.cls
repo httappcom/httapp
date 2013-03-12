@@ -35,7 +35,7 @@ public with sharing class TaskSpecifierUtility {
             Map<String,Schema.SObjectField> treatmentFieldMap = Treatment__c.getSObjectType().getDescribe().fields.getMap();
             for (Schema.SObjectField sObjFld : treatmentFieldMap.values()) {
             	 Schema.DescribeFieldResult fldInfo = sObjFld.getDescribe();
-            	 if (fldInfo.getSoapType() == Schema.Soaptype.ID && (fldInfo.getReferenceTo()+'') == 'User') {
+            	 if (fldInfo.getSoapType() == Schema.Soaptype.ID && (fldInfo.getReferenceTo()+'') == '(User)') {
             	 	validTreatmentAssignedToFields.add(fldInfo.getName());
             	 } else if (fldInfo.getSoapType() == Schema.Soaptype.DATE || fldInfo.getSoapType() == Schema.Soaptype.DATETIME) {
             	 	validDueDateFields.add(fldInfo.getName());

@@ -79,7 +79,7 @@ public without sharing class surveyGizmoUtil {
     }
      
     public static void retrieveMedicalProfile (String surveyId, string patientId) {
- Logger.info('retrieveMedicalProfile pId='+patientId);
+ Logger.info('retrieveMedicalProfile pId='+patientId+', surveyId='+surveyId);
         surveyGizmoUtil.retrieveSurvey(surveyId, patientId, 'Patient');
     }
     
@@ -93,6 +93,7 @@ public without sharing class surveyGizmoUtil {
     	String entityId = encryptPatientId(patientId);
     	Decimal latestInstance = getLatestInstanceId(surveyId, entityId);
     	String instanceId = latestInstance == null ? '' : String.valueOf(latestInstance.intValue());
+ system.debug('instanceId='+instanceId);
         Survey_Header__c survey = new Survey_Header__c();
         if (surveyType == 'Treatment') {
             survey.treatment__c = null;
@@ -107,6 +108,7 @@ public without sharing class surveyGizmoUtil {
 
         HttpRequest req = new httprequest();
         String endPoint = 'https://restapi.surveygizmo.com/v3/survey/'+surveyID+'/surveypage?user:pass='+username+':'+password;
+system.debug('endPoint='+endPoint);
         req.setEndPoint(endPoint);
         req.setmethod('GET');
         Http ht = new http();

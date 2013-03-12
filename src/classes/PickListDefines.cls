@@ -10,6 +10,11 @@ public class PickListDefines {
 		public String TravelConcierge = 'Travel Concierge';
 		public String InsuranceAgent = 'Insurance Agent';
 	}
+	public static Set<String> PCC_CareTeamRoles = new Set<String> {
+		CareTeamMemberRoles.PCC,
+		CareTeamMemberRoles.OnsiteCoordinator,
+		CareTeamMemberRoles.InsuranceAgent
+	};
 	public static ApprovalState ApprovalState = new ApprovalState();
 	public class ApprovalState {
 		public String NotRequired = 'Not Required';

@@ -291,9 +291,11 @@
         </apex:panelGrid>
         <apex:pageblocksection title="Contact Details" id="pbs_Patient" columns="2">
             <apex:commandbutton action="{!saveTreatment}" value="Save Patient" rerender="errMsgs,mainPanel,treatmentList"/>
-            <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Patient Care Coordinator"/>
-                <apex:outputField value="{!patient.Ownerid}"/>
+            <apex:pageblocksectionitem helpText="" > 
+                <apex:outputLabel rendered="{!patient.Treatments__r.size<2 && !isNewTreatment}" value="Patient Care Coordinator"/>
+								<apex:selectList rendered="{!patient.Treatments__r.size<2 && !isNewTreatment}" value="{!assignedPCC}" multiselect="false" size="1">
+								  <apex:selectOptions value="{!assignablePCCs}" />
+								</apex:selectList>                
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Suffix"/>
@@ -393,10 +395,19 @@
         </apex:outputPanel>
         <apex:pageblocksection title="Treatment {!treatment.Name}" id="pbs_Treatment" columns="2">
             <apex:pageBlockSectionItem >
-                <apex:outputPanel >
-                    <apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel, errMsgs" disabled="{!patient.id==null}"/>
-                    <apex:actionStatus startText="saving..."  stopText="" id="treatmentSaveStatus"/>
-                    <apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!ISNULL(treatmentId)}"/>
+                <apex:outputPanel >            
+                    <apex:panelGrid columns="4" width="100%">
+	                    <apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel, errMsgs" disabled="{!patient.id==null}"/>
+	                    <apex:actionStatus startText="saving..."  stopText="" id="treatmentSaveStatus"/>
+	                    <apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!ISNULL(treatmentId)}"/>
+	                    <apex:pageblocksectionitem helpText="" > 
+	                      <apex:outputLabel rendered="{!patient.Treatments__r.size>=2 || isNewTreatment}" value="Patient Care Coordinator"/>	                      
+												<apex:selectList rendered="{!patient.Treatments__r.size>=2 || isNewTreatment}" value="{!assignedPCC}" multiselect="false" size="1">
+												  <apex:selectOptions value="{!assignablePCCs}" />
+												</apex:selectList>
+	                      
+	                    </apex:pageblocksectionitem>
+                    </apex:panelGrid>
                 </apex:outputPanel>
             </apex:pageBlockSectionItem>
             <apex:pageblocksectionitem >
@@ -693,7 +704,7 @@
                  </apex:panelGrid>
             </apex:pageblocksectionitem>
                 <apex:pageBlockSectionItem >
-                <apex:outputPanel styleClass="tabbox" layout="block">
+                  <apex:outputPanel >
                     <apex:outputpanel >    
                          <div class="treatmentfieldwrapper">
                             <div class="fieldheading"><div>Medical Profile</div><br/>
@@ -703,13 +714,15 @@
                             </div>
                         </div>
                     </apex:outputpanel>
-                    <apex:outputPanel id="surveyResultsPnl">
-                        <c:SurveyResponse surveyId="{!MedicalProfileId}"/>
                     </apex:outputPanel>
-                </apex:outputPanel>
                 </apex:pageBlockSectionItem>
                 </apex:pageBlockSection>
             </apex:pageblock>  
+                    <apex:outputPanel layout="block">
+                        <apex:outputPanel id="surveyResultsPnl">
+                            <c:SurveyResponse surveyId="{!MedicalProfileId}"/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
         </apex:tab>
             <apex:tab label="Insurance" id="InsuranceInfo" rendered="{!treatment.Payment_Type__c == 'Insurance'}">
                 <apex:outputPanel >
@@ -1136,7 +1149,7 @@
                     <apex:pageblocktable value="{!treatments}" var="t">
                         <apex:column >
                             <apex:facet name="header"><br/>Select</apex:facet>
-                            <a href="javascript:parent.selectTreatment('{!t.id}');">Select</a>
+                            <a href="javascript:selectTreatment('{!t.id}');">Select</a>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Treatment<br/>Number</apex:facet>
