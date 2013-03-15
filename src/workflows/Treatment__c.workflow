@@ -112,15 +112,6 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Consult_Interaction_Complete</fullName>
-        <field>Interaction_Phase_Complete__c</field>
-        <literalValue>1</literalValue>
-        <name>Consult Interaction Complete</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Goto_Interaction_Phase</fullName>
         <field>Phase__c</field>
         <literalValue>Interaction</literalValue>
@@ -143,15 +134,6 @@
         <field>Phase__c</field>
         <literalValue>Inquiry</literalValue>
         <name>Init Phase Inquiry</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Init_Quoting_Status</fullName>
-        <field>Quote_Status__c</field>
-        <literalValue>Preparing Quote</literalValue>
-        <name>Init Quoting Status</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
@@ -209,6 +191,16 @@
         <field>Sub_Stage__c</field>
         <literalValue>Trip Preparation</literalValue>
         <name>Set Initialize Travel Sub Stage</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Set_Preparing_Quote_Substage</fullName>
+        <field>Quote_Status__c</field>
+        <literalValue>Preparing Quote</literalValue>
+        <name>Set Preparing Quote Substage</name>
         <notifyAssignee>false</notifyAssignee>
         <operation>Literal</operation>
         <protected>false</protected>
@@ -306,15 +298,6 @@
         <protected>false</protected>
         <reevaluateOnChange>true</reevaluateOnChange>
     </fieldUpdates>
-    <fieldUpdates>
-        <fullName>Treatment_Interaction_Complete</fullName>
-        <field>Interaction_Phase_Complete__c</field>
-        <literalValue>1</literalValue>
-        <name>Treatment Interaction Complete</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
     <rules>
         <fullName>01 Init Treatment Phase%2FStage</fullName>
         <actions>
@@ -325,7 +308,7 @@
             <name>Init_Treatment_Stage</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <booleanFilter>1 OR (2 AND 3)</booleanFilter>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
@@ -363,10 +346,6 @@
     </rules>
     <rules>
         <fullName>03 Consult Med Info Check</fullName>
-        <actions>
-            <name>Consult_Interaction_Complete</name>
-            <type>FieldUpdate</type>
-        </actions>
         <actions>
             <name>Phase_to_Travel</name>
             <type>FieldUpdate</type>
@@ -461,10 +440,6 @@
     <rules>
         <fullName>05 Treatment Approval Stage</fullName>
         <actions>
-            <name>Init_Quoting_Status</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
             <name>To_Quoting_Stage</name>
             <type>FieldUpdate</type>
         </actions>
@@ -487,6 +462,29 @@
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
+        <fullName>05%2E1 Init Quoting Stage</fullName>
+        <actions>
+            <name>Set_Preparing_Quote_Substage</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>Interaction</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Quoting</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Quote_Status__c</field>
+            <operation>equals</operation>
+        </criteriaItems>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
         <fullName>06 Signed Quote</fullName>
         <actions>
             <name>Signed_to_Travel</name>
@@ -498,10 +496,6 @@
         </actions>
         <actions>
             <name>SubStage_to_Trip_Prep_2</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Treatment_Interaction_Complete</name>
             <type>FieldUpdate</type>
         </actions>
         <active>true</active>
@@ -523,40 +517,7 @@
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
-        <fullName>07 Invalid Travel or Post Op Phase</fullName>
-        <actions>
-            <name>Goto_Interaction_Phase</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <actions>
-            <name>Goto_Med_Info_Stage</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>true</active>
-        <booleanFilter>1 AND (2 OR 3)</booleanFilter>
-        <criteriaItems>
-            <field>Treatment__c.Interaction_Phase_Complete__c</field>
-            <operation>equals</operation>
-            <value>False</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>Travel</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>Post-Op</value>
-        </criteriaItems>
-        <triggerType>onAllChanges</triggerType>
-    </rules>
-    <rules>
         <fullName>08 Travel Itinerary Stage</fullName>
-        <actions>
-            <name>Email_Introducing_Travel_Concierge_Services</name>
-            <type>Alert</type>
-        </actions>
         <actions>
             <name>Intialize_Travel_Phase</name>
             <type>FieldUpdate</type>
@@ -571,12 +532,31 @@
             <operation>equals</operation>
             <value>Travel</value>
         </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Interaction_Phase_Complete__c</field>
-            <operation>equals</operation>
-            <value>True</value>
-        </criteriaItems>
         <description>WF fires when the treatment enters Travel Itinerary Stage</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+    </rules>
+    <rules>
+        <fullName>08%2E1 Travel Phase Email</fullName>
+        <actions>
+            <name>Email_Introducing_Travel_Concierge_Services</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Treatment__c.Phase__c</field>
+            <operation>equals</operation>
+            <value>Travel</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Stage__c</field>
+            <operation>equals</operation>
+            <value>Itinerary</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Treatment__c.Sub_Stage__c</field>
+            <operation>equals</operation>
+            <value>Trip Preparation</value>
+        </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
@@ -604,7 +584,7 @@
     </rules>
     <rules>
         <fullName>10 At Provider Now</fullName>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>
@@ -793,7 +773,7 @@
             <name>Init_Rehab_in_progress</name>
             <type>FieldUpdate</type>
         </actions>
-        <active>false</active>
+        <active>true</active>
         <criteriaItems>
             <field>Treatment__c.Phase__c</field>
             <operation>equals</operation>

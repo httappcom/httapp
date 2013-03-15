@@ -179,6 +179,10 @@
                 <behavior>Edit</behavior>
                 <field>Patient_Pipeline_RowStyle__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Days_to_Close__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

@@ -25,8 +25,10 @@
 	</apex:form>
 
 <script>
+alert("gh1");
 	{!mimeMapJS}
 	function onFileChange( path ) {
+	alert('on file change');
 		var re = /(?:\.([^.]+))?$/;
 		var parts = re.exec(path);
 		var ext = parts!=null && parts.length==2 ? parts[1] : null;

@@ -1,8 +1,66 @@
 public with sharing class PipelineController {
 
   public Integer curPageSize {get; set; }
+  public Boolean showAllPCCs {get; set; }
+  public Boolean allowShowAllPCCs {get; set; }
   
   public List<Treatment__c> active {get; set; }
+  public List<Treatment__c> myActive {get; set; }
+  public Integer activeNumber {get; set; }
+  public Integer myActiveNumber {get; set; }  
+  public List<AggregateResult> closesResult {get; set; }
+
+  public List<closesData> getClosesResults()
+  {
+  	 List<closesData> resultList = new List<closesData>();
+  	 for (AggregateResult ar: closesResult)
+  	 {
+  	 	closesData closesResultObj = new closesData(ar);
+  	 	resultList.add(closesResultObj);
+  	 }
+  	 return resultList;
+  }
+
+  class closesData
+  {
+  	public String PCC {get; set; }
+    public Integer numberOfCloses {get; set; }
+    public Decimal sumOfClosedValue {get; set; }
+    public Integer avgDaysToClose {get; set; }
+    public closesData(AggregateResult ar)
+    {
+    	PCC = (String)ar.get('PCC');
+    	numberOfCloses = (Integer)ar.get('numberOfCloses');
+    	sumOfClosedValue = (Decimal)ar.get('sumOfClosedValue');
+    	avgDaysToClose = (Integer)ar.get('avgDaysToClose');
+    }
+  }
+  public PageReference toggleAllPCCs()
+  {
+  	showAllPCCs = !showAllPCCs;
+  	return null;
+  }
+  public String toggleAllPCCsLabel 
+  {
+  	get 
+  	{
+  		    if (showAllPCCs) return 'Show My Records Only';
+           else return 'Show All Records';
+  	} 
+  	set;
+  }
+  public List<Treatment_Quote__c> travel_In_Progress {get; set; }
+  public Integer travel_In_ProgressNumber {get; set; }  
+  public List<Treatment_Quote__c> myTravel_In_Progress {get; set; }
+  public Integer myTravel_In_ProgressNumber {get; set; }  
+  public List<Treatment_Quote__c> post_Travel {get; set; }
+  public Integer post_TravelNumber {get; set; }
+  public List<Treatment_Quote__c> myPost_Travel {get; set; }
+  public Integer myPost_TravelNumber {get; set; }    
+  public List<Treatment__c> on_Hold {get; set; }
+  public Integer on_HoldNumber {get; set; }
+  public List<Treatment__c> myOn_Hold {get; set; }
+  public Integer myOn_HoldNumber {get; set; } 
   public List<Treatment__c> treatments {get; set; }
   public List<Payment__c> Payments {get;set; }    
   public List<Task> tasks{get;set;}
@@ -33,10 +91,37 @@ public with sharing class PipelineController {
 	}           
   public Pipelinecontroller(){
   	PatientLeadUtil.execute();
+  	showAllPCCs = false;
+  	allowShowAllPCCs = false;
+  	User[] currentUsers = [SELECT ProfileId, PCC_Manager__c FROM User WHERE Id = : userinfo.getUserId()];
+    if (currentUsers.size() == 1)
+    {
+    	if (currentUsers[0].PCC_Manager__c = true) 
+    	{
+    		showAllPCCs = true;
+    		allowShowAllPCCs = true;
+    	}
+    	else 
+    	{
+    		Profile[] enabledProfiles = [SELECT ID FROM Profile Where Name = 'System Administrator'];
+    		if (enabledProfiles.size() > 0)
+    		{
+    			for(Profile p : enabledProfiles)
+    			{
+    			   if (currentUsers[0].ProfileId == p.Id) 
+    			   {
+    			     showAllPCCs = true;
+    			     allowShowAllPCCs = true;
+    			   }
+    		  }
+    		}
+      }
+    }
     twoHoursAgo = system.now().addHours(-2);
     next24Hours = system.now().addhours(24);
     this.curPageSize = 10  ;
-    this.active = new List<Treatment__c>();      
+    this.active = new List<Treatment__c>();
+    this.on_hold = new List<Treatment__c>();      
     this.allTreatments  = new List<Treatment__c>();
     this.allTasks = new List<Task>();        
     this.allPayments =   new List<Payment__c>();     
@@ -45,34 +130,116 @@ public with sharing class PipelineController {
     this.tasks = new List<Task>();
     this.payments = new List<Payment__c>();
     try {
-        active = [SELECT Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure__c,
-        Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Treatment_Summary__c, Patient_Pipeline_RowStyle__c, Destination_Facility__c
+        active = [SELECT Name, Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure__c,
+        Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Treatment_Summary__c, Patient_Pipeline_RowStyle__c, Destination_Facility__c, Ownerid, Owner.Name
         FROM Treatment__c
         WHERE Phase__c in :(new List<String>{PickListDefines.Phase.Inquiry, PickListDefines.Phase.Interaction}) and 
             Active_Status__c IN :(new List<String>{PickListDefines.ActiveStatus.Active, PickListDefines.ActiveStatus.NotResponding})
-            and Engagement_Type__c = :PickListDefines.EngagementType.Treatment AND patient__r.ownerid = :userinfo.getUserId() 
-        	order by Phase__c, Next_Follow_Up__c ];
+            and Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
+          order by Phase__c, Next_Follow_Up__c ];
+        myActive = new List<Treatment__c>();
+        for (Treatment__c r : active) 
+        {
+          Logger.info('Active treatment: ' + r.Name);
+          if (r.Phase__c == PickListDefines.Phase.Inquiry && r.Stage__c == PickListDefines.Stage.Initial && r.LastModifiedDate < twoHoursAgo ) 
+          {
+            r.Patient_Pipeline_RowStyle__c = 'redRow';
+          }
+          else if (r.Next_Follow_Up__c != null) 
+          { 
+            if(r.Next_Follow_Up__c.date() < Date.today())
+            {
+               r.Patient_Pipeline_RowStyle__c = 'redRow';
+            }
+            else if (r.Next_Follow_Up__c < next24Hours) 
+            {
+              r.Patient_Pipeline_RowStyle__c = 'blueRow';
+            }
+          }         
+          else 
+          {
+            r.Patient_Pipeline_RowStyle__c = 'whiteRow';
+          }
+	      	if ( r.OwnerId == UserInfo.getUserId() )
+	      	{
+	      		 myActive.add(r);
+	      	   Logger.info('Adding ' + r.Name + ' to myActive.');
+	      	}        
+        }    
+        activeNumber = active.size();
+        myActiveNumber = myActive.size();
         
-    for (Treatment__c r : active) {
-/*      if(p.treatments__r.size()>0) for (Treatment__c t : p.Treatments__r) allTreatments.add(t); 
-      if(p.Payments__r.size()>0)   for (Payment__c pay : p.Payments__r) allPayments.add(pay); 
-      if(p.Tasks.size()>0)         for (Task task : p.Tasks) allTasks.add(task);*/
-      if (r.Phase__c == PickListDefines.Phase.Inquiry && r.Stage__c == PickListDefines.Stage.Initial && r.LastModifiedDate < twoHoursAgo ) r.Patient_Pipeline_RowStyle__c = 'redRow';
-      else if (r.Next_Follow_Up__c.date() < Date.today()) r.Patient_Pipeline_RowStyle__c = 'redRow';
-      else if (r.Next_Follow_Up__c < next24Hours) r.Patient_Pipeline_RowStyle__c = 'blueRow';
-      else r.Patient_Pipeline_RowStyle__c = 'whiteRow'; 
-      Logger.info('RowStyle: ' + r.Patient_Pipeline_RowStyle__c);        
-    }                 
-    System.debug('treatments list '+alltreatments);  
-    tcon = new ApexPages.StandardSetController(allTreatments); 
-    tcon.setPageSize(this.curPageSize); 
-    this.treatments = tcon.getRecords();
-
-    System.debug('payments list '+allPayments);        
-    pcon = new ApexPages.StandardSetController(allPayments); 
-    pcon.setPageSize(this.curPageSize); 
-    this.payments= pcon.getRecords();      
-     
+        closesResult = [Select Treatment__r.Owner.Name PCC, COUNT(Treatment__r.Id) numberOfCloses, SUM(Total_Price__c) sumOfClosedValue, AVG(Treatment__r.Days_to_Close__c) avgDaysToClose 
+                  From Treatment_Quote__c 
+                  Where Treatment__r.Phase__c = : PickListDefines.Phase.Travel 
+                    And Treatment__r.Active_Status__c = : PickListDefines.ActiveStatus.Active
+                    And Treatment__r.Engagement_Type__c = :PickListDefines.EngagementType.Treatment
+                  Group By Treatment__r.Owner.Name];
+              
+        travel_In_Progress = [Select Treatment__r.Phase__c, Treatment__r.Stage__c, Treatment__r.Patient__r.Name, Procedure__r.Name, Treatment__r.Travel__r.Travel_End__c,
+                              Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name, Treatment__r.Patient__r.Phone__c, Treatment__r.LastModifiedDate, Treatment__r.OwnerId
+                              From Treatment_Quote__c 
+                              Where Treatment__r.Phase__c = : PickListDefines.Phase.Travel 
+                                    And Treatment__r.Active_Status__c = : PickListDefines.ActiveStatus.Active
+                                    And Treatment__r.Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
+                              Order By Treatment__r.Travel__r.Travel_End__c];
+        myTravel_In_Progress = new List<Treatment_Quote__c>();
+        for (Treatment_Quote__c q : travel_In_Progress)
+        {
+          if ( q.Treatment__r.OwnerId == UserInfo.getUserId() )
+          {
+             myTravel_In_Progress.add(q);
+          }         	
+        }                               
+        travel_In_ProgressNumber = travel_In_Progress.size();
+        myTravel_In_ProgressNumber = myTravel_In_Progress.size();      
+        post_Travel = [Select Treatment__r.Phase__c, Treatment__r.Stage__c, Treatment__r.Patient__r.Name, Procedure__r.Name, Treatment__r.Travel__r.Travel_End__c,
+                              Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name, Treatment__r.Patient__r.Phone__c, Treatment__r.LastModifiedDate, 
+                              Treatment__r.Patient__r.Last_Communication__c, Treatment__r.OwnerId 
+                              From Treatment_Quote__c 
+                              Where Treatment__r.Phase__c = : PickListDefines.Phase.PostOp 
+                                    And Treatment__r.Active_Status__c = : PickListDefines.ActiveStatus.Active
+                                    And Treatment__r.Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
+                                    And Treatment__r.OwnerId = :userinfo.getUserId()
+                              Order By Treatment__r.Travel__r.Travel_End__c];                              
+        post_TravelNumber = post_Travel.size();
+        myPost_Travel = new List<Treatment_Quote__c>();
+        for (Treatment_Quote__c q : post_Travel)
+        {
+          if ( q.Treatment__r.OwnerId == UserInfo.getUserId() )
+          {
+             myPost_Travel.add(q);
+          }           
+        }  
+        myPost_TravelNumber = myPost_Travel.size();          
+        on_hold = [Select Patient__r.Name, Patient__r.Phone__c, LastModifiedDate, Next_Follow_Up__c, Procedure_Category__c, Procedure__c, Patient__r.Last_Communication__c,
+                          OwnerId 
+                              From Treatment__c 
+                              Where Phase__c = : PickListDefines.Phase.Interaction 
+                                    And Active_Status__c = : PickListDefines.ActiveStatus.OnHold
+                                    And Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
+                                    And OwnerId = :userinfo.getUserId()
+                              Order By Next_Follow_Up__c];
+        on_holdNumber = on_hold.size();
+        myOn_hold = new List<Treatment__c>(); 
+        for (Treatment__c t : on_hold)
+        {
+          if ( t.OwnerId == UserInfo.getUserId() )
+          {
+             myOn_hold.add(t);
+          }           
+        }
+        myOn_holdNumber = myOn_hold.size();                                                                    
+        System.debug('treatments list '+alltreatments);  
+        tcon = new ApexPages.StandardSetController(allTreatments); 
+        tcon.setPageSize(this.curPageSize); 
+        this.treatments = tcon.getRecords();
+    
+        System.debug('payments list '+allPayments);        
+        pcon = new ApexPages.StandardSetController(allPayments); 
+        pcon.setPageSize(this.curPageSize); 
+        this.payments= pcon.getRecords();      
+    
 
    /* System.debug('Tasks List'+allTasks);        
     taskcon = new ApexPages.StandardSetController(allTasks); 
@@ -89,9 +256,9 @@ public with sharing class PipelineController {
                             
     this.tasks = allTasks;      
     searchTask()   ; 
-    
+  
     }catch (Exception e) {
-       //ApexPages.addMessages(new ApexPages.Message(ApexPages.SEVERITY.ERROR,e.Message));
+       Logger.info('Exception: ' + e);
     }                                                                 
   }   
       

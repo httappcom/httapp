@@ -4,10 +4,13 @@
     <apex:includeScript value="{!URLFOR($Resource.KenResources, '/js/jquery-ui-1.8.20.custom.min.js')}"/>
     <apex:stylesheet value="{!$Resource.SurveyResponse}"/>
     <script>
-        var jQuery = jQuery.noConflict();
+        var j$ = jQuery.noConflict();
 		function onFileChange( path ) {
+		alert("onFileChange");
 			var fileName = path.split(path.indexOf("\\")>0?"\\":"/").pop();
-			jQuery("input[id$='attachmentname']").val(fileName);
+			
+alert("fileName="+fileName);
+			j$("input[id$='attachmentname']").val(fileName);
 		}
     </script>
     <apex:stylesheet value="{!$Resource[prmConfig.Patient_Portal_CSS__c]}"/>
@@ -142,20 +145,18 @@
                 </apex:outputpanel>
                 
                 <apex:outputpanel id="medRecsPnl" rendered="{!currentpage == 'Medical Records'}">
+                    <apex:outputPanel rendered="{!!ISNULL(patient.Survey_Headers__r) && patient.Survey_Headers__r.size>0}" style="float:right;">
+                       	<a href="javascript:showSurveyResults('{!patient.Survey_Headers__r[0].id}')">View Medical Profile</a><br/>
+                    </apex:outputPanel>
                      <apex:commandButton value="Upload Document" action="{!showUploadPanel}" rerender="uploadPanel"/><br/>
                     <br/><br/>
-                    <apex:outputPanel rendered="{!!ISNULL(patient.Survey_Headers__r) && patient.Survey_Headers__r.size>0}">
-                       	<a href="javascript:showSurveyResults('{!patient.Survey_Headers__r[0].id}')">View Medical Profile</a>
-                    </apex:outputPanel>
                     <apex:pageblocktable value="{!medicalRecords}" var="t">
                         <apex:column headerValue="Name">
-                        	<apex:outputLink value="{!URLFOR($Action.Attachment.Download, t.id)}" target="_blank"><apex:outputText value="{!t.name}"/>
+                        	<apex:outputLink value="{!URLFOR($Page.DisplayMedicalRecord) & '?attachmentId=' & t.id}" target="_blank"><apex:outputText value="{!t.name}"/>
 	        			</apex:outputLink>
                         </apex:column>
                         <apex:column headerValue="Description" value="{!t.Description}"/>
                         <apex:column headerValue="Created Date" value="{!t.CreatedDate}"/>
-                        <apex:column headerValue="View">
-                        </apex:column>
                     </apex:pageblocktable>
                 </apex:outputpanel>
                 
@@ -277,7 +278,11 @@
                     <apex:outputtext style="font-weight:bold;" value="Medical Profile Results"/><br/><br/>
                 </div>
                 <apex:form >
-				<c:SurveyResponse surveyId="{!surveyId}"/>
+                <apex:outputPanel layout="block" style="text-align:left;">
+                    <apex:outputPanel id="surveyResultsPnl" style="text-align:left;">
+						<c:SurveyResponse surveyId="{!surveyId}"/>
+					</apex:outputPanel>
+				</apex:outputPanel>
 				</apex:form>
                 <div align="center">
                     <apex:form >

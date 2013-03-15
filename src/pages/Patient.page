@@ -1,4 +1,7 @@
 <apex:page standardController="Patient__c" extensions="PatientExtension" contentType="text/html" action="{!checkOnEchoSign}">
+<head>
+<c:overlay style="processing" verticalPosition="40%"/>
+</head>
 
     <apex:stylesheet value="{!URLFOR($Resource.KenResources, '/stylesheets/sfstyle.css')}"/>
     <apex:stylesheet value="{!$Resource.SurveyResponse}"/>
@@ -163,6 +166,35 @@
                 /*zoom: 1;*/
             }
             
+        .surveyResultsLBox{
+                background-color: white;
+                border-style: solid;
+                border-width: 2px;
+                border-color: #000;
+                left: 50%;
+                padding:10px;
+                position: absolute;
+                z-index: 9999;
+                width: 900px;
+                margin-left: -250px;
+                top:130px;
+                //top:50px;
+            }
+             
+            .surveyResultsBox{
+                /*display: none;*/ 
+                position: absolute;
+                top: 0;/* must be 0 ideally*/
+                left: 0;/* must be 0 ideally */
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                z-index:1001;
+                -moz-opacity: 0.5;
+                opacity:.50;
+                filter: alpha(opacity=50);
+                /*zoom: 1;*/
+            }
             .link {
                 text-decoration:underline;
             }
@@ -172,11 +204,13 @@
     </style>
     <apex:pageMessages id="errMsgs"/>
 <apex:form >
-    <apex:actionFunction name="setTreatment" action="{!setTreatment}" reRender="mainPanel"> 
+    <apex:actionStatus id="overlayStatus" onStart="showOverlay();" onstop="hideOverlay();"></apex:actionstatus>
+    <apex:actionFunction status="overlayStatus" name="setTreatment" action="{!setTreatment}" reRender="mainPanel"> 
         <apex:param name="treatmentId" assignTo="{!treatmentId}" value="" /> 
     </apex:actionFunction> 
-    <apex:actionFunction name="medInfoIndicatorChanged" action="{!medInfoIndicatorChanged}" reRender="mainPanel"/>
-    <apex:actionFunction name="updateTreatmentSection" action="{!updateTreatment}" reRender="mainPanel"/>
+    <apex:actionFunction status="overlayStatus" name="medInfoIndicatorChanged" action="{!medInfoIndicatorChanged}" reRender="mainPanel"/>
+    <apex:actionFunction status="overlayStatus" name="updateTreatmentSection" action="{!updateTreatment}" reRender="mainPanel"/>
+   	<apex:actionFunction status="overlayStatus" name="showSurveyResults" action="{!showSurveyResults}" reRender="surveyResultsPanel, pageMessages"/> 
 <div class="wrapper">
     <!--
     <div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
@@ -286,11 +320,11 @@
                 <apex:outputPanel ><!-- rendered="{!treatments.size>1}" -->
                     <a href="javascript:showTreatmentList();" >Treatment List</a>
                 </apex:outputPanel>&nbsp;&nbsp;&nbsp;
-                <apex:commandButton action="{!newTreatment}" value="New Treatment" rerender="mainPanel"/>
+                <apex:commandButton action="{!newTreatment}" value="New Treatment" rerender="mainPanel" status="overlayStatus"/>
             </apex:outputPanel>
         </apex:panelGrid>
         <apex:pageblocksection title="Contact Details" id="pbs_Patient" columns="2">
-            <apex:commandbutton action="{!saveTreatment}" value="Save Patient" rerender="errMsgs,mainPanel,treatmentList"/>
+            <apex:commandbutton action="{!saveTreatment}" status="overlayStatus" value="Save Patient" rerender="errMsgs,mainPanel,treatmentList"/>
             <apex:pageblocksectionitem helpText="" > 
                 <apex:outputLabel rendered="{!patient.Treatments__r.size<2 && !isNewTreatment}" value="Patient Care Coordinator"/>
 								<apex:selectList rendered="{!patient.Treatments__r.size<2 && !isNewTreatment}" value="{!assignedPCC}" multiselect="false" size="1">
@@ -397,8 +431,7 @@
             <apex:pageBlockSectionItem >
                 <apex:outputPanel >            
                     <apex:panelGrid columns="4" width="100%">
-	                    <apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="treatmentSaveStatus" rerender="mainPanel, errMsgs" disabled="{!patient.id==null}"/>
-	                    <apex:actionStatus startText="saving..."  stopText="" id="treatmentSaveStatus"/>
+	                    <apex:commandbutton action="{!saveTreatment}" value="Save Treatment" status="overlayStatus" rerender="mainPanel, errMsgs" disabled="{!patient.id==null}"/>
 	                    <apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!ISNULL(treatmentId)}"/>
 	                    <apex:pageblocksectionitem helpText="" > 
 	                      <apex:outputLabel rendered="{!patient.Treatments__r.size>=2 || isNewTreatment}" value="Patient Care Coordinator"/>	                      
@@ -417,8 +450,7 @@
 	                	<apex:outputLabel value="Next Follow up Date" style="background-color:yellow;"/>
     	            	<apex:inputField value="{!treatment.Next_Follow_Up__c}"/>
     	            </apex:outputPanel>
-                    <!-- <a href="javascript:showTaskList();" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration"/></a> -->                    
-                    <apex:commandLink action="{!toggleLightbox}" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration" reRender="taskList" /></apex:commandLink>
+                    <apex:commandLink status="overlayStatus" action="{!toggleLightbox}" ><img src="http://www.sfdcstatic.com/common/assets/images/chatter/chatter_fluffy_groups_low.gif" alt="Collaboration" reRender="taskList" /></apex:commandLink>
                     </apex:panelGrid>
                 </apex:outputPanel>
             </apex:pageblocksectionitem>
@@ -462,13 +494,8 @@
                 </apex:outputPanel>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
-                 <apex:outputLabel value="Approval State"/>
-                 <apex:outputPanel >
-	                 <apex:inputField value="{!treatment.Approval_State__c}"/>
-	                 <apex:outputText value="{0,date,short}" rendered="{!treatment.Approval_Date__c!=null && treatment.Approval_State__c=='Approved'}">
-	                 	<apex:param value="{!treatment.Approval_Date__c}"/>
-	                 </apex:outputText>
-                 </apex:outputPanel>
+                 <apex:outputLabel value="Medical Profile Type"/>
+                 <apex:inputField value="{!patient.Medical_Profile_Type__c}"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Procedure Date" style="width: 15%;"/>
@@ -482,9 +509,15 @@
                 <apex:outputLabel value="Total Price" style="width: 15%;"/>
                 <apex:outputField value="{!treatmentQuote.Total_Price__c}"/>
             </apex:pageblocksectionitem>
-            <apex:pageblocksectionitem helpText=""> 
-                 <apex:outputLabel value="Medical Profile Type"/>
-                 <apex:inputField value="{!patient.Medical_Profile_Type__c}"/>
+            <apex:pageblocksectionitem rendered="{!treatment.Stage__c!='Treatment Approval'}"/>
+            <apex:pageblocksectionitem helpText="" rendered="{!treatment.Stage__c=='Treatment Approval'}"> 
+                 <apex:outputLabel value="Approval State"/>
+                 <apex:outputPanel >
+	                 <apex:inputField value="{!treatment.Approval_State__c}"/>
+	                 <apex:outputText value="{0,date,short}" rendered="{!treatment.Approval_Date__c!=null && treatment.Approval_State__c=='Approved'}">
+	                 	<apex:param value="{!treatment.Approval_Date__c}"/>
+	                 </apex:outputText>
+                 </apex:outputPanel>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText="">
             	<apex:outputPanel >
@@ -530,38 +563,37 @@
     <apex:pageBlock >
             <apex:outputPanel id="mainNavDiv" styleClass="mainNav" layout="block">
                 <div class="navitemfirst">
-                    <apex:commandLink id="nav1" onmousemove="document.getElementById('arrow1').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow1').style.color = '#CCCCCC'" action="{!displayInquiry}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">    
-                        <h3>Inquiry </h3>
+                    <apex:commandLink status="overlayStatus" id="nav1" onmousemove="document.getElementById('arrow1').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow1').style.color = '#CCCCCC'" action="{!displayInquiry}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">    
+                        <h3><span style="{!IF(treatment.Phase__c=='Inquiry','color:black;font-weight:bold;','color:gray')}">Inquiry </span></h3>
                     </apex:commandLink>
-                    <div class="lucida" id="arrow1"><span style="{!IF(inquiryFlag,'color:red','')}">&#187;</span></div><br /><br />
+                    <div class="lucida" id="arrow1"><span style="{!IF(treatment.Phase__c=='Inquiry','color:black;font-weight:bold;','color:gray')}">&#187;</span></div><br /><br />
                 </div>
                 <div class="navitem">
-                    <apex:commandLink id="nav2" onmousemove="document.getElementById('arrow2').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow2').style.color = '#CCCCCC'" action="{!displayInteraction}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
-                        <h3>Interaction </h3>
+                    <apex:commandLink status="overlayStatus" id="nav2" onmousemove="document.getElementById('arrow2').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow2').style.color = '#CCCCCC'" action="{!displayInteraction}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
+                        <h3><span style="{!IF(treatment.Phase__c=='Interaction','color:black;font-weight:bold;','color:gray')}">Interaction </span></h3>
                     </apex:commandLink>
-                    <div class="lucida" id="arrow2"><span style="{!IF(interactionFlag,'color:red','')}">&#187;</span></div><br /><br />
+                    <div class="lucida" id="arrow2"><span style="{!IF(treatment.Phase__c=='Interaction','color:black;font-weight:bold;','color:gray')}">&#187;</span></div><br /><br />
                 </div>
                 <div class="navitem">
-                    <apex:commandLink id="nav3" onmousemove="document.getElementById('arrow3').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow3').style.color = '#CCCCCC'" action="{!displayTravel}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
-                        <h3>Travel </h3>
+                    <apex:commandLink status="overlayStatus" id="nav3" onmousemove="document.getElementById('arrow3').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow3').style.color = '#CCCCCC'" action="{!displayTravel}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
+                        <h3><span style="{!IF(treatment.Phase__c=='Travel','color:black;font-weight:bold;','color:gray')}">Travel </span></h3>
                     </apex:commandLink>
-                    <div class="lucida" id="arrow3"><span style="{!IF(travelFlag,'color:red','')}">&#187;</span></div><br /><br />
+                    <div class="lucida" id="arrow3"><span style="{!IF(treatment.Phase__c=='Travel','color:black;font-weight:bold;','color:gray')}">&#187;</span></div><br /><br />
                 </div>
                 <div class="navitem">
-                    <apex:commandLink id="nav4" onmousemove="document.getElementById('arrow4').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow4').style.color = '#CCCCCC'" action="{!displayPostOp}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
-                        <h3>Post-Op </h3>
+                    <apex:commandLink status="overlayStatus" id="nav4" onmousemove="document.getElementById('arrow4').style.color = '#EA6C1A'" onmouseout="document.getElementById('arrow4').style.color = '#CCCCCC'" action="{!displayPostOp}" reRender="resultPanel, mainNavDiv, procCatSelectPnl">
+                        <h3><span style="{!IF(treatment.Phase__c=='Post-Op','color:black;font-weight:bold;','color:gray')}">Post-Op </span></h3>
                      </apex:commandLink>
-                    <div class="lucida" id="arrow4"><span style="{!IF(postopFlag,'color:red','')}">&#187;</span></div><br /><br />
+                    <div class="lucida" id="arrow4"><span style="{!IF(treatment.Phase__c=='Post-Op','color:black;font-weight:bold;','color:gray')}">&#187;</span></div><br /><br />
                 </div>
             </apex:outputPanel>
 
  
 <apex:outputPanel id="resultPanel">
-    <apex:pageblocksection title="Inquiry" id="pbs_Inquiry" columns="1" rendered="{!inquiryFlag}">
+    <apex:pageblocksection title="Inquiry" id="pbs_Inquiry" columns="1" rendered="{!treatment.Phase__c=='Inquiry'}">
         <apex:pageBlockSectionItem >
             <apex:outputPanel >
-                    <apex:commandbutton action="{!saveTreatment}" value="Save Inquiry Changes" status="inquirySaveStatus" rerender="mainPanel" disabled="{!patient.id==null}"/>
-                    <apex:actionStatus startText="saving..."  stopText="" id="inquirySaveStatus"/>
+                    <apex:commandbutton action="{!saveTreatment}" value="Save Inquiry Changes" status="overlayStatus" rerender="mainPanel" disabled="{!patient.id==null}"/>
                     <div style="float:right">
                     	<apex:outputLabel value="Responses"/><apex:inputField value="{!treatment.Responses__c}"/>
                     </div>
@@ -659,8 +691,8 @@
                 </apex:pageBlock>
     </apex:pageblocksection>
     
-    <apex:outputPanel id="interactionPanel" rendered="{!interactionFlag}">
-    <apex:pageblocksection title="Interaction" id="pbs_Interaction" columns="1" rendered="{!interactionFlag}">
+    <apex:outputPanel id="interactionPanel" rendered="{!treatment.Phase__c=='Interaction'}">
+    <apex:pageblocksection title="Interaction" id="pbs_Interaction" columns="1">
                     <apex:pageBlockSection columns="2">
                         <apex:pageblocksectionitem helpText=""> 
                             <apex:outputLabel value="Close Date"/>
@@ -678,8 +710,8 @@
     </apex:pageBlockSection>
     <apex:tabPanel switchType="client" value="{!activeInteractionTab}">
         <apex:tab label="Medical Information">
-            <apex:pageblock >
-              <apex:pageBlockSection columns="2">
+            <apex:pageblock id="pbMedicalInfo">
+              <apex:pageBlockSection columns="1">
             <apex:pageblocksectionitem helpText=""> 
                  <apex:outputLabel value="Medical Information"/>
                  <apex:panelGrid columns="3">
@@ -689,7 +721,7 @@
                         <apex:outputText value="Required" style="font-weight:bold;vertical-align:middle;color:#4a4a56;font-size:91%;"/>&nbsp;&nbsp;
                     </apex:outputPanel>
                     <apex:outputPanel layout="block" style="vertical-align:middle;">
-                        <apex:inputField value="{!treatment.Medical_Profile_Received__c}" onchange="medInfoIndicatorChanged()"/>
+                        <apex:outputField value="{!treatment.Medical_Profile_Received__c}"/>
                         <apex:outputText value="Received" style="font-weight:bold;vertical-align:middle;color:#4a4a56;font-size:91%;"/>
                     </apex:outputPanel>
                     <apex:outputLabel styleClass="label" value="Medical Records" style="color:#DAA520;font-weight:bold;font-size:91%;"/>
@@ -704,30 +736,24 @@
                  </apex:panelGrid>
             </apex:pageblocksectionitem>
                 <apex:pageBlockSectionItem >
-                  <apex:outputPanel >
-                    <apex:outputpanel >    
-                         <div class="treatmentfieldwrapper">
-                            <div class="fieldheading"><div>Medical Profile</div><br/>
-                                <apex:commandbutton status="retrieveStatus" style="font-size:x-small;" value="Request Medical Profile" action="{!retrieveMedicalProfile}" /><!-- rerender="surveyResultsPnl" -->
-                                <apex:actionStatus startText=" Retrieving..." stopText="" id="retrieveStatus"/>
-                                <br/><br/> <apex:outputlink style="font-size:x-small;" value="{!SURVEYURL}" target="_Blank">Fill-in Medical Profile</apex:outputlink>
-                            </div>
-                        </div>
-                    </apex:outputpanel>
+                  	<apex:outputLabel value="Medical Profile"/>
+                  	<apex:outputPanel >
+                  	<apex:outputPanel rendered="{!!ISNULL(patient.Medical_Profile_Type__c)}">
+                  		<apex:outputlink value="{!SURVEYURL}" target="_Blank">Fill-in Medical Profile</apex:outputlink>&nbsp;&nbsp;&nbsp;
+                  		<apex:outputPanel >
+	                  		<apex:outputLink value="javascript:showSurveyResults('{!MedicalProfileId}')">View Medical Profile</apex:outputLink>
+	                  	</apex:outputPanel>
                     </apex:outputPanel>
+                  	<apex:outputPanel rendered="{!ISNULL(patient.Medical_Profile_Type__c)}"><i>Please select a Medical Profile Type above.</i>
+                  	</apex:outputPanel>
+                  	</apex:outputPanel>
                 </apex:pageBlockSectionItem>
                 </apex:pageBlockSection>
-            </apex:pageblock>  
-                    <apex:outputPanel layout="block">
-                        <apex:outputPanel id="surveyResultsPnl">
-                            <c:SurveyResponse surveyId="{!MedicalProfileId}"/>
-                        </apex:outputPanel>
-                    </apex:outputPanel>
+            </apex:pageblock>
         </apex:tab>
             <apex:tab label="Insurance" id="InsuranceInfo" rendered="{!treatment.Payment_Type__c == 'Insurance'}">
                 <apex:outputPanel >
-                    <apex:commandbutton status="saveInsStatus" action="{!saveTreatment}" value="Save Insurance Info" rerender="errMsgs" disabled="{!patient.id==null}"></apex:commandbutton>
-                    <apex:actionStatus startText="saving..."  stopText="" id="saveInsStatus"/>
+                    <apex:commandbutton status="overlayStatus" action="{!saveTreatment}" value="Save Insurance Info" rerender="errMsgs" disabled="{!patient.id==null}"></apex:commandbutton>
                 </apex:outputPanel>
                 <apex:pageBlockSection title="Policy Info">
                     <apex:pageBlockSectionItem >
@@ -843,8 +869,7 @@
         <apex:tab label="Quotes" id="Quotes">
             <apex:panelGrid columns="2">
                 <apex:outputPanel >
-                        <apex:commandbutton status="saveQuoteStatus" action="{!saveQuote}" value="Save Quote" rerender="interactionPanel, pbs_Treatment, QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
-                        <apex:actionStatus startText="saving..."  stopText="" id="saveQuoteStatus"/>
+                        <apex:commandbutton status="overlayStatus" action="{!saveQuote}" value="Save Quote" rerender="interactionPanel, pbs_Treatment, QuotePanel, procCatSelectPnl, errMsgs"></apex:commandbutton>
                 </apex:outputPanel>
                     <apex:outputPanel layout="block" style="float:right">
                         &nbsp;&nbsp;<a href="{!quoteURL}" target="_blank">View/Print Quote</a>
@@ -867,10 +892,8 @@
         		    	<apex:outputLabel value="Quote Status"/>
         		    	<apex:outputPanel >
         		    		<apex:outputField value="{!treatment.Quote_Status__c}"/><apex:outputField value="{!treatmentQuote.Doc_Signed_Timestamp__c}" rendered="{!treatment.Quote_Status__c=='Quote Signed'}"/>&nbsp;
-			                <apex:commandButton action="{!reviseQuote}" value="Revise Quote" rerender="mainPanel" status="quoteReviseStatus" rendered="{!treatment.Quote_Status__c=='Quote Complete' || treatment.Quote_Status__c=='Quote Rejected' || treatment.Quote_Status__c=='Quote Expired' || treatment.Quote_Status__c=='Quote Signed'}"/>
-			                <apex:actionStatus startText="updating..."  stopText="" id="quoteReviseStatus"/>
-			                <apex:commandButton action="{!quoteCompleted}" value="Mark Quote Completed" status="echosignSendStatus" rerender="mainPanel" rendered="{!ISNULL(treatmentQuote.echosignDocKey__c) && (treatment.Quote_Status__c=='Preparing Quote' || treatment.Quote_Status__c=='Revising Quote')}"/>
-			                <apex:actionStatus startText="sending..."  stopText="" id="echosignSendStatus"/>
+			                <apex:commandButton action="{!reviseQuote}" value="Revise Quote" rerender="mainPanel" status="overlayStatus" rendered="{!treatment.Quote_Status__c=='Quote Complete' || treatment.Quote_Status__c=='Quote Rejected' || treatment.Quote_Status__c=='Quote Expired' || treatment.Quote_Status__c=='Quote Signed'}"/>
+			                <apex:commandButton action="{!quoteCompleted}" value="Mark Quote Completed" status="overlayStatus" rerender="mainPanel" rendered="{!ISNULL(treatmentQuote.echosignDocKey__c) && (treatment.Quote_Status__c=='Preparing Quote' || treatment.Quote_Status__c=='Revising Quote')}"/>
 			                
                		 	</apex:outputPanel>
 		            </apex:pageblocksectionitem>
@@ -981,12 +1004,11 @@
     </apex:tabPanel>
     </apex:outputPanel>
     
-    <apex:outputpanel id="travelPanel" rendered="{!travelFlag}">
+    <apex:outputpanel id="travelPanel" rendered="{!treatment.Phase__c=='Travel'}">
         <apex:pageblocksection title="Travel" columns="1">
             <apex:pageblocksectionitem >    
                 <apex:outputPanel >
-                    <apex:commandbutton action="{!saveTreatment}" value="Save Travel Changes" status="inquirySaveStatus" rerender="mainPanel"  disabled="{!patient.id==null}"/>
-                    <apex:actionStatus startText="saving..."  stopText="" id="inquirySaveStatus"/>
+                    <apex:commandbutton action="{!saveTreatment}" value="Save Travel Changes" status="overlayStatus" rerender="mainPanel"  disabled="{!patient.id==null}"/>
                     &nbsp;&nbsp;<a href="{!itineraryURL}" target="_blank">View Itinerary</a>
                 </apex:outputPanel>
             </apex:pageblocksectionitem>
@@ -1117,7 +1139,7 @@
         </apex:pageblocksection>
     </apex:outputpanel>
     
-    <apex:outputpanel id="postOpPanel" rendered="{!postopFlag}">
+    <apex:outputpanel id="postOpPanel" rendered="{!treatment.Phase__c=='Post-Op'}">
         <apex:pageblocksection title="Post-Op" columns="2">
             <apex:pageblocksectionitem >
                 <apex:outputlabel value="On-Site Recovery Period"/>
@@ -1198,7 +1220,7 @@
                 <div align="center">
                     <apex:outputtext style="font-weight:bold;" value="Collaboration for Treatment {!treatment.Name}"/><br/><br/>
                 </div>
-                <apex:pageblocksection columns="1" collapsible="true" title="Tasks">
+                <!-- apex:pageblocksection columns="1" collapsible="true" title="Tasks">
                     <apex:pageblocktable value="{!tasks}" var="t">
                         <apex:column >
                             <apex:facet name="header"><br/>Select</apex:facet>
@@ -1220,7 +1242,7 @@
                         </apex:column>
                     </apex:pageblocktable>
                 </apex:pageblocksection>
-                <br/>
+                <br/> -->
                 <apex:pageblocksection columns="1" collapsible="true" title="Messaging" rendered="{!!ISNULL(treatment)}">
                     <apex:form ><c:messaging height="300" treatmentId="{!treatment.Id}" canAddCareTeamMember="true" /></apex:form>
                 </apex:pageblocksection>
@@ -1283,4 +1305,30 @@
             </apex:pageBlock>
         </apex:outputpanel>
         <script>var emailFormId = "{!$Component.emailForm}";</script> -->
+        <apex:outputPanel layout="block" id="surveyResultsPanel" >
+            <apex:outputPanel layout="block" styleClass="surveyResultsBox" rendered="{!displaySurveyResults}" />
+            <apex:outputpanel styleClass="surveyResultsLBox" layout="block" rendered="{!displaySurveyResults}" >
+                <div align="center">
+                    <apex:form >
+                        <apex:commandLink value="Close" action="{!hideSurveyResults}" reRender="surveyResultsPanel"  />
+                    </apex:form>
+                </div>
+                <div align="center">
+                    <apex:outputtext style="font-weight:bold;" value="Medical Profile Results"/><br/><br/>
+                </div>
+                <apex:form >
+                <apex:outputPanel layout="block" style="text-align:left;">
+                    <apex:outputPanel id="surveyResultsPnl" style="text-align:left;">
+						<c:SurveyResponse surveyId="{!MedicalProfileId}"/>
+					</apex:outputPanel>
+				</apex:outputPanel>
+				</apex:form>
+                <div align="center">
+                    <apex:form >
+                        <apex:commandLink value="Close" action="{!hideSurveyResults}" reRender="surveyResultsPanel"  />
+                    </apex:form>
+                </div>
+            </apex:outputpanel>
+        </apex:outputpanel>
+<div id="overlay"></div>
 </apex:page>

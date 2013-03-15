@@ -79,19 +79,24 @@ public without sharing class surveyGizmoUtil {
     }
      
     public static void retrieveMedicalProfile (String surveyId, string patientId) {
+    	retrieveMedicalProfile ( surveyId, patientId, null );
+    }
+    public static void retrieveMedicalProfile (String surveyId, string patientId, Decimal instance) {
  Logger.info('retrieveMedicalProfile pId='+patientId+', surveyId='+surveyId);
-        surveyGizmoUtil.retrieveSurvey(surveyId, patientId, 'Patient');
+        surveyGizmoUtil.retrieveSurvey(surveyId, patientId, 'Patient', instance);
     }
     
     public static void test() {
 //        thisPatientId = 'a08d000000LPOls';
-        retrieveSurvey('?', 'a08d000000LPOls', 'Patient');
+        retrieveSurvey('?', 'a08d000000LPOls', 'Patient', null);
     }
     
-    public static void retrieveSurvey(String surveyId, String patientId, string surveyType) {
+    public static void retrieveSurvey(String surveyId, String patientId, string surveyType, Decimal latestInstance) {
     
     	String entityId = encryptPatientId(patientId);
-    	Decimal latestInstance = getLatestInstanceId(surveyId, entityId);
+    	if (latestInstance == null) {
+    		latestInstance = getLatestInstanceId(surveyId, entityId);
+    	}
     	String instanceId = latestInstance == null ? '' : String.valueOf(latestInstance.intValue());
  system.debug('instanceId='+instanceId);
         Survey_Header__c survey = new Survey_Header__c();
@@ -286,7 +291,11 @@ system.debug('endPoint='+endPoint);
         }
         return surveyId;
 	}
+	private static Map<String, surveyClass> surveyStructureMap = null;
     public static surveyClass getSurveyStructure( String surveyId ) {
+    	if (surveyStructureMap==null) surveyStructureMap = new Map<String, surveyClass>();
+    	SurveyClass surveyStruct = surveyStructureMap.get(surveyId);
+    	if (surveyStruct !=null) return surveyStruct; 
         HttpRequest req = new httprequest();
         String endPoint = 'https://restapi.surveygizmo.com/v3/survey/'+surveyId+'/surveyquestion?user:pass='+username+':'+password;
         req.setEndPoint(endPoint);
@@ -297,7 +306,9 @@ system.debug('endPoint='+endPoint);
             httpresponse res = ht.send(req);
             response = res.getbody();
         }
-        return parseSurvey(response);
+        surveyStruct = parseSurvey(response);
+        surveyStructureMap.put(surveyId, surveyStruct);
+        return surveyStruct;
     }
 
 /*    	String surveyType = paramMap.get('stype');
@@ -312,7 +323,6 @@ system.debug('endPoint='+endPoint);
     	if (patient.Medical_Profile_Type__c == null) return '';
         String surveyName = patient.Medical_Profile_Type__r.Name;
   Logger.info('surveyName='+surveyName);
-        string patientIDHash = encryptPatientId(patientId);
         string oid = userinfo.getOrganizationId();
         string did = '';
         Treatment__c[] treatments = [Select Destination_Facility__c from Treatment__c 
@@ -341,7 +351,7 @@ system.debug('endPoint='+endPoint);
     	String patientPortalSubdomain = patientPortal.size()>0?patientPortal[0].Subdomain:'';  	
         string linkurl = 'http://'+EmailController.getPatientPortalDomain()+'/SurveyFrame';
         
-        linkurl += '?eid='+patientIDHash;
+        linkurl += '?eid='+patientId;
         linkurl += '&sid='+serverinstance;
         linkurl += '&oid='+oid;
         linkurl += '&did='+did;
@@ -390,7 +400,7 @@ system.debug('endPoint='+endPoint);
       }
       else { return ''; }    	                             
    }
-	private static Decimal getLatestInstanceId(String surveyId, String entityId) {
+	public static Decimal getLatestInstanceId(String surveyId, String entityId) {
 Logger.info('surveyId='+surveyId+', entityId='+entityId);
 		AggregateResult[] results = [select max(Instance_Id__c) latestInstance from Survey_Instance__c where Survey_Id__c = :surveyId and Entity_Id__c = :entityId];
 Logger.info('results='+results);

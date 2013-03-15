@@ -12,6 +12,7 @@ public with sharing class PatientExtension {
     public Travel__c travel { get; set; }
     public List<Task> tasks { get; set; }
     public UILookup__c lookup { get; public set; }
+    public Boolean displaySurveyResults { get; private set; }
  
     public Treatment_Quote__c treatmentQuote { get; set; }
     private Id usersMedicalFacility {get;set;}
@@ -58,10 +59,6 @@ public with sharing class PatientExtension {
     public String selectedTaskOption { get; set; }
     public ID treatmentId { get; public set; }
     public ID treatmentLastId { get; set; }
-    public Boolean inquiryFlag { get; set; }     
-    public Boolean interactionFlag { get; set; }    
-    public Boolean travelFlag { get; set; }
-    public Boolean postopFlag { get; set; }
     public Boolean isNewTreatment { get; private set; }
     public String quoteURL { get; private set; }
     public String itineraryURL { get; private set; }
@@ -119,9 +116,9 @@ public with sharing class PatientExtension {
             showAdvocateInfo = (this.patient.Advocate_Name__c != null)?true:false;
             if (this.patient != null) {
             	treatmentId = patient.Treatments__r.size()==0 ? null : patient.Treatments__r[0].id;
-           	 loadTreatments();
+           	 	loadTreatments();
             	setTreatmentInfo();
-            	queryMedicalProfile();
+		       	MedicalProfileId = patient.Survey_Headers__r.size()>0?patient.Survey_Headers__r[0].Id:null;
             	if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
             	searchTask();                                                   
         	} 
@@ -137,10 +134,6 @@ public with sharing class PatientExtension {
         }
     }  
   private void initiatePatient() {
-    this.inquiryFlag = true;
-    this.interactionFlag = false;
-    this.travelFlag = false;
-    this.postopFlag = false;
     this.tasks = new List<Task> ();
     this.selectedTaskOption = 'All Open';
     this.taskOptions = new List<SelectOption>();
@@ -174,6 +167,20 @@ public with sharing class PatientExtension {
     	}
   	}
 
+    public PageReference showSurveyResults() {
+ 
+    	checkIfSurveyRetrieved();
+    	if (MedicalProfileId == null) {
+    		addError('No Medical Profile available - please fill-in a medical profile before attempting to view.');
+    	} else {
+	    	displaySurveyResults = true;
+    	}
+    	return null;
+    }
+    public PageReference hideSurveyResults() {
+    	displaySurveyResults = false;
+    	return null;
+    }
 	public PageReference toggleLightBox(){
 		showLightbox = !showLightbox;
 		return null;
@@ -194,7 +201,6 @@ public with sharing class PatientExtension {
 		return null;
 	}
 	public PageReference insuranceNetworkChanged() {
-system.debug('insuranceNetworkId='+patient.Insurance_Network__c);
         loadNetworkContactsList();
         return null;
 	}
@@ -403,36 +409,20 @@ Logger.info('saveTreatment');
         }
     }
 
-    public PageReference displayInquiry(){
-        inquiryFlag = true;
-        interactionFlag = false;
-        travelFlag = false;
-        postopFlag = false;
+    public PageReference displayInquiry() {
         calcEmailType();
         return null;
     }
-    public PageReference displayInteraction(){
-        inquiryFlag = false;
-        interactionFlag = true;
-        travelFlag = false;
-        postopFlag = false;
+    public PageReference displayInteraction() {
         calcEmailType();
         setInteractionState();
         return null;
     }   
-    public PageReference displayTravel(){
-        inquiryFlag = false;
-        interactionFlag = false;
-        travelFlag = true;
-        postopFlag = false;
+    public PageReference displayTravel() {
         calcEmailType();
         return null;
     }
-    public PageReference displayPostOp(){
-        inquiryFlag = false;
-        interactionFlag = false;
-        travelFlag = false;
-        postopFlag = true;
+    public PageReference displayPostOp() {
         calcEmailType();
         return null;
     }
@@ -645,7 +635,7 @@ Logger.info('saveTreatment');
     }*/
     
     private void calcEmailType() {
-        emailType = (interactionFlag==true)?'Quote':(travelFlag==true)?'Itinerary':'';
+        emailType = (treatment.Phase__c==PickListDefines.Phase.Interaction)?'Quote':(treatment.Phase__c==PickListDefines.Phase.Travel)?'Itinerary':'';
     }
     public pagereference sendEmail() {
         calcEmailType();
@@ -742,27 +732,30 @@ Logger.info('saveTreatment');
         }
     }
     
-    public pagereference retrieveMedicalProfile () {
+    public void checkIfSurveyRetrieved() {
+ system.debug('checkIfSurveyRetrieved');
+    	if (patient.Medical_Profile_Type__c == null) return;
     	try {
 	        String surveyId = surveyGizmoUtil.getSurveyId( patient.Medical_Profile_Type__r.name );
+ system.debug('checkIfSurveyRetrieved surveyId='+surveyId);
+
+	    	Decimal availableInstance = surveyGizmoUtil.getLatestInstanceId(surveyId, patient.Id);
+	    	Decimal lastRetrievedInstance = patient.Survey_Headers__r.size()>0?patient.Survey_Headers__r[0].Instance__c:null;
+system.debug('availableInstance='+availableInstance+', lastRetrievedInstance='+lastRetrievedInstance);
+	    	if (availableInstance == lastRetrievedInstance) return;
 system.debug('retrieveMedicalProfile surveyId='+surveyId);
-        	surveyGizmoUtil.retrieveMedicalProfile(surveyId, this.patient.id );
+        	surveyGizmoUtil.retrieveMedicalProfile(surveyId, this.patient.id, availableInstance );
+        	treatment.Medical_Profile_Received__c = true;
+        	update treatment;
     	} catch (Exception ex) {
+    		system.debug(ex.getStackTraceString());
     		addError(ex.getMessage());
-    		return null;
     	}
         this.patient = PatientUtil.queryPatientAll(this.patient.id);
-        queryMedicalProfile();
-        PageReference pr = ApexPages.currentPage();
-        pr.setRedirect(true);
-        return pr;
+ system.debug('Survey_Headers='+patient.Survey_Headers__r);
+       	MedicalProfileId = patient.Survey_Headers__r.size()>0?patient.Survey_Headers__r[0].Id:null;
     }
     
-    public void queryMedicalProfile() {
-        if ( patient.Survey_Headers__r.size() > 0 ){
-        	MedicalProfileId = patient.Survey_Headers__r[0].Id;
-        }
-    }
     
   static testMethod void testPatientExtension(){
     Patient__c pat = new Patient__c();

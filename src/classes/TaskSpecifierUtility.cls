@@ -2,7 +2,7 @@ public with sharing class TaskSpecifierUtility {
 	private static Map<String, Task_Specifier__c> taskSpecifierCache = null;
 	public static void loadTaskSpecifierCache() {
 		if (taskSpecifierCache==null) {
-			Task_Specifier__c[] specifiers = [SELECT Due_Date_Time_Field__c, Name, Offset_Value__c, Operation__c, Subject__c, Assigned_To_Field__c FROM Task_Specifier__c];
+			Task_Specifier__c[] specifiers = [SELECT Due_Date_Time_Field__c, Name, Offset_Value__c, Operation__c, Subject__c, Assigned_To_Field__c, Assigned_to_Fallback__c FROM Task_Specifier__c];
 			taskSpecifierCache = new Map<String, Task_Specifier__c>();
 			for (Task_Specifier__c specifier : specifiers) {
 				taskSpecifierCache.put(specifier.Name, specifier);
@@ -101,7 +101,17 @@ system.debug('task created from specifier='+task);
 		} else if (isTreatmentAssignedToField(specifier.Assigned_To_Field__c)) {
 			userId = (ID)treatment.get(specifier.Assigned_To_Field__c);
 		}
-		if (userId == null) throw new NueException('No User found for assigned to field '+specifier.Assigned_To_Field__c);
+		if (userId == null) //Assigned_To_Field__c did not produce a user; try Assigned_To_Fallback__c
+		{
+	    if (isDefaultUserAssignedToField(specifier.Assigned_to_Fallback__c)) {
+	      User user = DefaultUsersUtil.getDefaultUser(specifier.Assigned_to_Fallback__c);
+	      if (user != null) userId = user.id;
+	    } else if (isTreatmentAssignedToField(specifier.Assigned_to_Fallback__c)) {
+	      userId = (ID)treatment.get(specifier.Assigned_to_Fallback__c);     
+	    }			
+		}
+		if (userId == null) 
+		throw new NueException('No User found for assigned to field '+specifier.Assigned_To_Field__c);
 		Task task = new Task();
 		task.ownerId = userId;
 system.debug('owner id='+userId);

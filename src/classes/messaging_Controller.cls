@@ -8,13 +8,14 @@ public without sharing class messaging_Controller {
     public ID currentUserId { get; set; }
     
     public Id treatmentId; 
-    public void setTreatmentId(Id i) {
-        treatmentId = i;
-system.debug('setting treatment to '+i);
-        careTeamMemberCache = null;
-        clearFilterBy();
-        mode = 'TextPost';
-        setTreatment(treatmentId);
+    public void setTreatmentId(Id newId) {
+    	if (treatmentId != newId) {
+	        treatmentId = newId;
+    	    careTeamMemberCache = null;
+        	clearFilterBy();
+	        mode = 'Text';
+    	    setTreatment(treatmentId);
+    	}
     }
     
     public Id getTreatmentId() {
@@ -78,6 +79,7 @@ system.debug('setting treatment to '+i);
     }
 
     public class messageWrapper {
+    	public ID tId;
         public Attachment attachment {get;set;}
         public String body {get;set;}
         public List<commentWrapper> comments {get;set;}
@@ -100,6 +102,7 @@ system.debug('setting treatment to '+i);
             showNewComment = false;
         }
         public messageWrapper(Communication__c c){
+        	tId = c.Treatment__c;
             attachment = new Attachment();
             body = fixNulls(c.Body__c);
             comments = new List<commentWrapper>();
@@ -133,6 +136,7 @@ system.debug('setting treatment to '+i);
             Communication__c comment = new Communication__c();
             comment.Body__c = newComment.CommentBody;
             comment.Communication__c = newComment.ParentId;
+            comment.Treatment__c = tId;
             insert comment;
             
             newComment = new commentWrapper(newComment.ParentId);
@@ -150,7 +154,7 @@ system.debug('setting treatment to '+i);
         
     public messaging_Controller(){
         clearFilterBy();
-        mode = 'TextPost';
+        mode = 'Text';
     }
 
     public PageReference addNewCareTeamMember(){
@@ -193,12 +197,11 @@ system.debug('setting treatment to '+i);
         }
         c.Type__c = mode;
         if ( newMessage.parentId != null ) {
-            String objectType = newMessage.parentId.getSObjectType()+''; 
+            String objectType = newMessage.parentId.getSObjectType()+'';
+  system.debug('objectType='+objectType+', treatmdntId='+treatmentId); 
+            c.Treatment__c = treatmentId;
             if ( objectType == 'Topic__c' ){
                 c.Topic__c = newMessage.parentId;
-            } else
-            if ( objectType == 'Treatment__c' ){
-                c.Treatment__c = newMessage.parentId;
             } else
             if ( objectType == 'Care_Team_Member__c' ){
                 c.Care_Team_Member__c = newMessage.parentId;
@@ -257,7 +260,7 @@ system.debug('getMessageList called topicId='+topicId+', memberId='+memberId+', 
         if (thisUserCareTeamId == null) getCareTeamMemberList();
 system.debug('thisUserCareTeamId 2='+thisUserCareTeamId);
         String queryString = 'SELECT ';
-        queryString += 'Id, Body__c, Communication__c, Communication__r.Name, CreatedById, CreatedBy.Name, CreatedDate, File_Id__c, File_Name__c, Link_Name__c, Link_Url__c, Title__c, Topic__c, Topic__r.Name, Type__c, ';
+        queryString += 'Id, Treatment__c, Body__c, Communication__c, Communication__r.Name, CreatedById, CreatedBy.Name, CreatedDate, File_Id__c, File_Name__c, Link_Name__c, Link_Url__c, Title__c, Topic__c, Topic__r.Name, Type__c, ';
         queryString += '(SELECT Id, Body__c, Communication__c, CreatedDate, CreatedBy.Name FROM Communications__r order BY CreatedDate LIMIT 10) ';
         queryString += ' FROM Communication__c ';
         queryString += ' where ';
@@ -316,7 +319,8 @@ system.debug('selectFilterBy action topicId='+topicId);
         return null;        
     }
 
-    public PageReference selectTextmode(){
+    public PageReference selectTextmode() {
+   system.debug('selectTextMode');
         mode = 'Text';
         return null;
     }

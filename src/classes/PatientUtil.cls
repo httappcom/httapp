@@ -193,7 +193,8 @@ public class PatientUtil {
                       (select Id,
                               Name,
                               Patient__c,
-                              Survey_Id__c
+                              Survey_Id__c,
+                              Instance__c
                       from Survey_Headers__r),
                       (SELECT Id, ContentType, Description, Name, ParentId, CreatedDate FROM Attachments order by name)
                 from Patient__c 
@@ -480,7 +481,8 @@ public class PatientUtil {
                               Name,
                               IsDeleted,
                               Patient__c,
-                              Survey_Id__c       
+                              Survey_Id__c,
+                              Instance__c
                       from Survey_Headers__r)
                 from Patient__c];
     }

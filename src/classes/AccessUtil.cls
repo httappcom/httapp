@@ -109,16 +109,18 @@ system.debug('getCareTeamUsersOrGroups');
 			}
 system.debug('curGroup='+curGroup);
 			Set<ID> curGroupUsers = groupMembershipMap.get(curGroup);
+			if (curGroupUsers != null) {
 system.debug('treatment.Care_Team_Members__r='+treatment.Care_Team_Members__r);
-			for (Care_Team_Member__c member : treatment.Care_Team_Members__r) {
+				for (Care_Team_Member__c member : treatment.Care_Team_Members__r) {
 system.debug('member.User__r.UserType='+member.User__r.UserType);
-				if (member.User__r.UserType == 'Standard') {
+					if (member.User__r.UserType == 'Standard') {
 system.debug('curGroupUsers='+curGroupUsers);
-					if (curGroupUsers.contains(member.User__c)) {
-						lists.groups.add(groupIdMap.get(curGroup));
-					} else {
+						if (curGroupUsers.contains(member.User__c)) {
+							lists.groups.add(groupIdMap.get(curGroup));
+						} else {
 system.debug('adding member.User__c');
-						lists.users.add(member.User__c);
+							lists.users.add(member.User__c);
+						}
 					}
 				}
 			}

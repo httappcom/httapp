@@ -180,7 +180,7 @@ Stage or Sub Stage
   		patientSelectList = new List<SelectOption>();
   		treatmentSelectList = new List<SelectOption>();
   		for (Care_Team_Member__c member : members) {
-  system.debug('loadTreatment Patient='+member.Treatment__r.Patient__r.Name);
+  system.debug('loadTreatment ApprovalStatus='+member.Treatment__r.Approval_State__c);
   			patientIds.add(member.Treatment__r.Patient__c);
   			patientSelectList.add(new SelectOption(member.Treatment__r.Patient__c, member.Treatment__r.Patient__r.Name));
   			List<SelectOption> tList = patientToTreatmentSelectListMap.get(member.Treatment__r.Patient__c);

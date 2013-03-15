@@ -44,29 +44,20 @@
         <members>Default_User_Indicator_Field__c</members>
         <members>External_Contact__c</members>
         <members>Hotel__c</members>
-        <members>Instruction__c</members>
-        <members>Insurance_Network_User__c</members>
         <members>Insurance_Network__c</members>
         <members>Knowledge_Base__c</members>
         <members>Med_Facility_Email_Template__c</members>
         <members>Med_Facility_Med_Profile_L__c</members>
-        <members>Medical_Facility_User__c</members>
         <members>Medical_Facility__c</members>
         <members>Medical_Professional__c</members>
-        <members>Medical_Profile_Surveys__c</members>
         <members>Medical_Record__c</members>
-        <members>Message_Header__c</members>
-        <members>Message_User__c</members>
-        <members>Message__c</members>
         <members>My_Message_Settings__c</members>
         <members>PRM_Config__c</members>
         <members>PRM_Email_Template__c</members>
         <members>PRM_Medical_Profile_Link__c</members>
-        <members>PRM_User__c</members>
         <members>Partner__c</members>
         <members>Patient_Lead__c</members>
         <members>Patient__c</members>
-        <members>Payment__c</members>
         <members>PortalLinks__c</members>
         <members>Procedure__c</members>
         <members>Referral_Source__c</members>
@@ -81,8 +72,11 @@
         <members>Treatment_Quote__c</members>
         <members>Treatment__c</members>
         <members>UILookup__c</members>
-        <members>echoSignAPI__c</members>
         <name>CustomObject</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomPageWebLink</name>
     </types>
     <types>
         <members>*</members>
@@ -161,6 +155,14 @@
         <name>EmailTemplate</name>
     </types>
     <types>
+        <members>Reports</members>
+        <name>HomePageComponent</name>
+    </types>
+    <types>
+        <members>HTT Home Page</members>
+        <name>HomePageLayout</name>
+    </types>
+    <types>
         <members>Airline__c-Airline Layout</members>
         <members>Airport__c-Airport Layout</members>
         <members>Care_Team_Member__c-Care Team Member Layout</members>
@@ -214,6 +216,10 @@
         <members>NueHealth_Reports/Hour_of_Day_Lead_Volume</members>
         <members>NueHealth_Reports/Monthly_Lead_Volume</members>
         <members>NueHealth_Reports/Monthly_Lead_Volume_by_Year</members>
+        <members>NueHealth_Reports/Nueterra_Active_Referrals</members>
+        <members>NueHealth_Reports/Nueterra_Closed_and_Projected_Revenue</members>
+        <members>NueHealth_Reports/Nueterra_Referral_Volume_by_Referrer</members>
+        <members>NueHealth_Reports/Referral_Volume_by_Referrer</members>
         <members>NueHealth_Reports/Weekly_Lead_Volume</members>
         <members>NueHealth_Reports/Weekly_Lead_Volume_by_Year</members>
         <name>Report</name>

@@ -1,0 +1,5 @@
+<apex:page controller="RenderFileController" cache="true" 
+        contentType="application/octet-stream#{!fileName}" 
+        showHeader="false" sidebar="false" standardStylesheets="false">
+     <apex:outputText value="{!data}" escape="false"/>
+</apex:page>

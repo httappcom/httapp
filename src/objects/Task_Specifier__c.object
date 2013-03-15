@@ -47,6 +47,16 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Assigned_to_Fallback__c</fullName>
+        <description>Optional field to use as a fallback in case the user in Assigned_To_Field__c is not set.</description>
+        <externalId>false</externalId>
+        <label>Assigned to Fallback</label>
+        <length>80</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Due_Date_Time_Field__c</fullName>
         <externalId>false</externalId>
         <label>Due Date/Time Field</label>

@@ -1,0 +1,7 @@
+<apex:page Controller="ArrivalsReportController" sidebar="false">
+<head>
+<title>Pipeline</title>
+<apex:includeScript value="{!$Resource.sfscript}" />
+ <apex:stylesheet value="{!$Resource.sfstyles}"/>
+</head>
+</apex:page>
