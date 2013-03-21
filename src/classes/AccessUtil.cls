@@ -50,13 +50,29 @@ public with sharing class AccessUtil {
 			fullList.addAll(lists.groups);
 			for (ID id : fullList) {
 				if (curSharingSet == null || !curSharingSet.contains(id)) {
-					Type t = Type.forName( className );
-					SObject shareObj = (SObject)t.newInstance();
-					shareObj.put('parentId', parentId);
-					shareObj.put('UserOrGroupId', id);
-					shareObj.put('AccessLevel', 'edit');
-					shareObj.put('RowCause', sharingReason);
-					shareList.add(shareObj);
+	system.debug('className='+className);
+					if (className == 'Treatment__Share') {
+						Treatment__Share st = new Treatment__Share(parentId=parentId, UserOrGroupId=id,AccessLevel='edit',RowCause=(String)sharingReason);
+	system.debug('st='+st);
+						shareList.add(st);
+					} else if (className == 'Travel__Share'){
+						Travel__Share st = new Travel__Share(parentId=parentId, UserOrGroupId=id,AccessLevel='edit',RowCause=(String)sharingReason);
+	system.debug('st='+st);
+/*					} else if (className == 'Care_Team_Member__Share'){
+						Care_Team_Member__Share st = new Care_Team_Member__Share(parentId=parentId, UserOrGroupId=id,AccessLevel='edit',RowCause=(String)sharingReason);
+						shareList.add(st);*/
+					} else if (className == 'Medical_Facility__Share'){
+						Medical_Facility__Share st = new Medical_Facility__Share(parentId=parentId, UserOrGroupId=id,AccessLevel='edit',RowCause=(String)sharingReason);
+						shareList.add(st);
+					} else if (className == 'Patient__Share'){
+						Patient__Share st = new Patient__Share(parentId=parentId, UserOrGroupId=id,AccessLevel='edit',RowCause=(String)sharingReason);
+						shareList.add(st);
+					} else if (className == 'Survey_Header__Share'){
+						Survey_Header__Share st = new Survey_Header__Share(parentId=parentId, UserOrGroupId=id,AccessLevel='edit',RowCause=(String)sharingReason);
+						shareList.add(st);
+					} else {
+						throw new NueException('Unknown share class '+className);
+					}
 				}
 			}
 		}
@@ -138,4 +154,36 @@ system.debug('list.groups='+lists.groups);
 		return retMap;
 	}
 
+	/*
+		This function assumes this is called for a newly create Treatment for which there is currently no apex sharing yet created.
+		Need to add current owner to sharing
+	*/
+/*	public static void replaceTreatmentOwner( List<Treatment__c> treatments, Map<Integer, ID> changeOwnershipRequests ) {
+		if (!Trigger.isInsert && !Trigger.isAfter) throw new NueException('replaceTreatmentOwner should only be used in Treatment after insert event.');
+  		ID curUser = UserInfo.getUserId();
+  		Set<ID> treatmentIds = new Set<ID>();
+		List<Treatment__Share> insertShares = new List<Treatment__Share>();
+		for (Integer idx : changeOwnershipRequests.keySet()) {
+			Treatment__c treatment = treatments[idx];
+			if (treatment != null) {
+				treatmentIds.add(treatment.id);
+				insertShares.add(new Treatment__Share(parentId=treatment.id, UserOrGroupId=curUser,AccessLevel='edit',RowCause=Schema.Treatment__Share.RowCause.Care_Team__c));
+			}
+		} 
+		insert insertShares;
+		Map<ID,Treatment__c> updateTreatmentsMap = new Map<ID,Treatment__c>([select Id,OwnerId from Treatment__c where id in:treatmentIds]);
+		Set<ID> updatedTreatments = new Set<ID>();
+		List<Treatment__c> updateTreatments = new List<Treatment__c>();
+		for (Integer idx : changeOwnershipRequests.keySet()) {
+			Treatment__c treatment = treatments[idx];
+			if (!updatedTreatments.contains(treatment.id)) {
+				ID newOwner = changeOwnershipRequests.get(idx);
+				Treatment__c updateTreatment = updateTreatmentsMap.get(treatment.id);
+				updateTreatment.OwnerId = newOwner;
+				updateTreatments.add(updateTreatment);
+				updatedTreatments.add(treatment.id);
+			}
+		}
+		update updateTreatments;
+	}*/
 }

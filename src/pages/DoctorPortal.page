@@ -302,7 +302,7 @@
                     </apex:pageblocktable>
 				</apex:pageBlockSection>
 
-				<apex:pageBlockSection id="pbsTreatmentCalendar" collapsible="true" title="Treatment Calendar">
+				<apex:pageBlockSection id="pbsTreatmentCalendar" collapsible="true" title="Treatment Calendar" rendered="false">
 				</apex:pageBlockSection>
                 
             </apex:pageblock>

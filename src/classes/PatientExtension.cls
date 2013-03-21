@@ -4,15 +4,15 @@
 * CreatedBy   : Ramadevi Kanchadapu
 */ 
 public with sharing class PatientExtension {
-	PUBLIC STRING SURVEYURL {GET;SET;}
+	public String surveyURL {get; private set;}
 	public Boolean showLightbox {get;set;}
     public Patient__c patient { get; set; }
-    public ID MedicalProfileId { get; set; }
     public Treatment__c treatment { get; set; }
     public Travel__c travel { get; set; }
-    public List<Task> tasks { get; set; }
+//    public List<Task> tasks { get; set; }
     public UILookup__c lookup { get; public set; }
     public Boolean displaySurveyResults { get; private set; }
+    public String curPhaseTab {get; private set;}
  
     public Treatment_Quote__c treatmentQuote { get; set; }
     private Id usersMedicalFacility {get;set;}
@@ -40,22 +40,6 @@ public with sharing class PatientExtension {
     public List<SelectOption> onsiteCoordinators { get; set; }
     public List<SelectOption> insuranceNetworkContacts {get; private set;}
     public List<SelectOption> assignablePCCs {get; private set;}
-    public Id assignedPCC;
-    public Id getAssignedPCC()
-    {
-    	if (assignedPCC==null)
-    	{
-    		if (treatment.OwnerId != null) { assignedPCC = treatment.OwnerId; }
-    		else { assignedPCC = UserInfo.getUserID(); }
-    	}
-    	Logger.info('assignedPCC: '+ assignedPCC);
-    	return assignedPCC;
-    }
-    public void setAssignedPCC(ID i)
-    {
-    	this.assignedPCC = i;
-    	this.treatment.OwnerId = i;
-    }
     public String selectedTaskOption { get; set; }
     public ID treatmentId { get; public set; }
     public ID treatmentLastId { get; set; }
@@ -75,6 +59,11 @@ public with sharing class PatientExtension {
     public string emailError {get;set;}
     public boolean sendSuccess {get;set;}
     
+	private transient Patient__c origPatient = null;
+	private transient Treatment__c origTreatment = null;
+	private transient Travel__c origTravel = null;
+	private transient Treatment_Quote__c origQuote = null;
+
     public Boolean getCanEditQuote() {
     	return treatment != null &&
     		treatment.Quote_Status__c != PickListDefines.QuoteStatus.Signed &&
@@ -83,10 +72,12 @@ public with sharing class PatientExtension {
     }
 
     public PatientExtension(ApexPages.StandardController sc) {
+    	curPhaseTab = PickListDefines.Phase.Inquiry;
     	isNewTreatment = false;
         needTreatmentUpdate = false;
 		showLightbox = false;
         sendSuccess = false;
+        loadPrmConfig();
           //Find Medical Facility Users
         Medical_Facility__c[] allMedFacilities = [Select Id, Public_Group__c from Medical_Facility__c];
         Group[] currentUsersGroups = 
@@ -111,30 +102,43 @@ public with sharing class PatientExtension {
         if  (sc.getId() != null  ) {
             //this.patient = (Patient__c)sc.getRecord();
             this.patient = PatientUtil.queryPatientAll(sc.getId());
+            
             loadNetworkContactsList();
-			SURVEYURL = surveyGizmoUtil.generateMedicalProfileLink(Patient.Id); 
+            updateSurveyURL();
             showAdvocateInfo = (this.patient.Advocate_Name__c != null)?true:false;
             if (this.patient != null) {
             	treatmentId = patient.Treatments__r.size()==0 ? null : patient.Treatments__r[0].id;
            	 	loadTreatments();
             	setTreatmentInfo();
-		       	MedicalProfileId = patient.Survey_Headers__r.size()>0?patient.Survey_Headers__r[0].Id:null;
-            	if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
-            	searchTask();                                                   
+//            	if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
+//            	searchTask();                                                   
         	} 
         }
         if (patient == null) this.patient = new Patient__c ();
         if (treatment == null) initiateTreatment();                 
         	setInitialViewState();
         	loadAssignablePCCsList();
+        	if (patient.Medical_Profile_Type__c == null) patient.Medical_Profile_Type__c = prmConfig.Default_Medical_Profile__c;
         } catch(Exception e){
    Logger.info(e.getStackTraceString());
             ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
             throw e;
         }
-    }  
+    }
+    private Boolean hasMedicalProfile() {
+    	return patient.Survey_Headers__r.size()>0;
+    }
+  	public String getMedicalProfileId() {
+        loadTreatments();
+        setTreatmentInfo();
+        if (!hasMedicalProfile()) {
+        	addError('Pleases fill in an medical profile before attempting to view.');
+        	return null;
+        }
+		return patient.Survey_Headers__r[0].Id;
+  	}  
   private void initiatePatient() {
-    this.tasks = new List<Task> ();
+//    this.tasks = new List<Task> ();
     this.selectedTaskOption = 'All Open';
     this.taskOptions = new List<SelectOption>();
     this.taskOptions.add(new SelectOption('All Open', 'All Open'));
@@ -145,6 +149,7 @@ public with sharing class PatientExtension {
   
     private void initiateTreatment() {
         this.treatment = new Treatment__c (
+        	Assigned_To__c = UserInfo.getUserId(),
         	Phase__c = PickListDefines.Phase.Inquiry, 
         	Stage__c = PickListDefines.Stage.Initial,
         	Active_Status__c = PickListDefines.ActiveStatus.Active
@@ -160,7 +165,9 @@ public with sharing class PatientExtension {
         this.procedure = null;
     }
 	private void savePatient() {
+system.debug('savePatient patient.id='+patient.id);
     	if ( patient.id == null ) {
+    		origPatient = patient.clone();
 			insert patient;
     	} else {
       		update patient;  
@@ -168,15 +175,15 @@ public with sharing class PatientExtension {
   	}
 
     public PageReference showSurveyResults() {
- 
     	checkIfSurveyRetrieved();
-    	if (MedicalProfileId == null) {
+    	if (!hasMedicalProfile()) {
     		addError('No Medical Profile available - please fill-in a medical profile before attempting to view.');
     	} else {
 	    	displaySurveyResults = true;
     	}
     	return null;
     }
+
     public PageReference hideSurveyResults() {
     	displaySurveyResults = false;
     	return null;
@@ -187,6 +194,10 @@ public with sharing class PatientExtension {
 	}
 
 	public PageReference quoteCompleted() {
+		if (patient.Email__c == null) {
+			addError('Please enter an email address for this patient before indicating the quote is complete.');
+			return null;
+		}
 		treatment.Quote_Status__c = 'Quote Complete';
 		saveTreatment();
 		needTreatmentUpdate = true;
@@ -237,9 +248,16 @@ Logger.info('saveTreatment');
 			return null;
 		}
 		Savepoint sp = Database.setSavepoint();
+		origPatient = null;
+		origTreatment = null;
+		origTravel = null;
+		origQuote = null;
+		
 		try {
+system.debug('before savePatient');
             savePatient();
             saveTravel();
+            origTreatment = treatment.clone();
             treatment.Travel__c = travel.id;
             if ( treatment.id == null ) {
                 treatment.Patient__c = patient.id;
@@ -254,18 +272,30 @@ Logger.info('saveTreatment');
   Logger.info('Updating Treatment...');
                 update treatment; 
             }
+            updateSurveyURL();
+            curPhaseTab = treatment.Phase__c;
+            return null;
         } catch (DmlException dmlEx) {
-			Database.rollback(sp);
+system.debug('got DmlException='+dmlEx);
             addError(dmlEx);
         } catch (NueException ex) {
-			Database.rollback(sp);
+system.debug('got NueException '+ex);
             addError(ex.getMessage());
+        } catch (Exception ex2) {
+system.debug('got Exception'+ex2);
+            addError(ex2.getMessage());
         }
+		Database.rollback(sp);
+		if (origPatient!=null) patient = origPatient;
+		if (origTreatment!=null) treatment = origTreatment;
+		if (origTravel!=null) travel = origTravel;
+		if (origQuote!=null) treatmentQuote = origQuote;
         return null;
     }
     
     public pagereference saveTravel() {
         if (travel.id == null) {
+        	origTravel = travel.clone();
             insert travel;
         } else {
             update travel;
@@ -331,23 +361,28 @@ Logger.info('saveTreatment');
     
     public PageReference saveQuote() {
         if (treatmentQuote == null) newQuote();
-        if (treatment.Payment_Type__c != null)
-        {
-        if (treatmentQuote.Treatment__c==null) {
-			saveTreatment();
-			treatmentQuote.Treatment__c = treatment.id;
-		}
-		if ( treatmentQuote.id == null ) {
-			insert treatmentQuote ;
+        if (treatment.Payment_Type__c != null) {
+	    	ID origQuoteTreatmentId = treatmentQuote.Treatment__c;
+        	if (treatmentQuote.Treatment__c==null || treatmentQuote.id == null) {
+        		origQuote = treatmentQuote.clone();
+        	}	
+	        	if (treatmentQuote.Treatment__c==null) {
+				saveTreatment();
+				treatmentQuote.Treatment__c = treatment.id;
+			}
+			if ( treatmentQuote.id == null ) {
+				insert treatmentQuote ;
+       	    	loadTreatments();
+           		setTreatmentInfo();
 //        treatmentQuotes.add(treatmentQuote);
 //        quoteTotCount = quoteTotCount + 1; 
 //        quoteCurNumber =  quoteCurNumber +1 ;      
 //        tempQuote = [select id, Name from  Treatment_Quote__c where id = : treatmentQuote.id ];
 //        quoteName =  tempQuote.Name;                          
-		} else {
-			update treatmentQuote;
-			saveTreatment();
-		}
+			} else {
+				update treatmentQuote;
+				saveTreatment();
+			}
 //      setQuoteInfo();
         }
 		return null;
@@ -362,6 +397,7 @@ Logger.info('saveTreatment');
 	public PageReference updateTreatment() {
         loadTreatments();
         setTreatmentInfo();
+        curPhaseTab = treatment.Phase__c;
         needTreatmentUpdate = false;
         return null;
 	}
@@ -410,19 +446,23 @@ Logger.info('saveTreatment');
     }
 
     public PageReference displayInquiry() {
+    	curPhaseTab = PickListDefines.Phase.Inquiry;
         calcEmailType();
         return null;
     }
     public PageReference displayInteraction() {
+    	curPhaseTab = PickListDefines.Phase.Interaction;
         calcEmailType();
         setInteractionState();
         return null;
     }   
     public PageReference displayTravel() {
+    	curPhaseTab = PickListDefines.Phase.Travel;
         calcEmailType();
         return null;
     }
     public PageReference displayPostOp() {
+    	curPhaseTab = PickListDefines.Phase.PostOp;
         calcEmailType();
         return null;
     }
@@ -431,7 +471,7 @@ Logger.info('saveTreatment');
     setQuoteInfo();
   }    
   
-  public void searchTask(){
+/*  public void searchTask(){
     Id currentUserId =   UserInfo.getUserId();
     this.tasks = new List<Task>();
         
@@ -464,10 +504,10 @@ Logger.info('saveTreatment');
             }
         }
       }                                                                 
-/*    }catch(Exception e){
+    }catch(Exception e){
       ApexPages.addMessage(new ApexPages.Message(ApexPages.SEVERITY.Info, e.getMessage()));
-    }*/
-  }
+    }
+  }*/
     public PageReference changeViewState() {
         this.setInitialViewState();
         return null;
@@ -753,16 +793,26 @@ system.debug('retrieveMedicalProfile surveyId='+surveyId);
     	}
         this.patient = PatientUtil.queryPatientAll(this.patient.id);
  system.debug('Survey_Headers='+patient.Survey_Headers__r);
-       	MedicalProfileId = patient.Survey_Headers__r.size()>0?patient.Survey_Headers__r[0].Id:null;
     }
     
-    
+    private PRM_Config__c prmConfig=null;
+    private void loadPrmConfig() {
+    	if (prmConfig==null) {
+    		PRM_Config__c[] configs = [select Default_Medical_Profile__c from PRM_Config__c limit 1];
+    		if (configs.size()>0) prmConfig = configs[0];
+    	}
+    }
+
+	private void updateSurveyURL() { 
+ 		surveyURL = surveyGizmoUtil.generateMedicalProfileLink(patient.Id); 
+	}
+	
   static testMethod void testPatientExtension(){
     Patient__c pat = new Patient__c();
     pat.name = 'Test';
     insert pat;
         
-    Treatment__c t = new Treatment__c(Phase__c = PickListDefines.Phase.Inquiry, Stage__c = PickListDefines.Stage.Initial);
+    Treatment__c t = new Treatment__c(Assigned_To__c=UserInfo.getUserId(),Phase__c = PickListDefines.Phase.Inquiry, Stage__c = PickListDefines.Stage.Initial);
     t.Patient__c = pat.id;
     insert t;
     
@@ -779,7 +829,7 @@ system.debug('retrieveMedicalProfile surveyId='+surveyId);
     pe.displayPostOp();
     pe.displayQuotes();  
     pe.selectedTaskOption = 'All Closed';
-    pe.searchTask();
+//    pe.searchTask();
   } 
   
   public static void testEmailSend() {

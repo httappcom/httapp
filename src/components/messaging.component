@@ -70,7 +70,7 @@
                                                 </li>
                                             </apex:repeat>
                                             <li>
-                                                <apex:commandLink styleClass="NEWS trigger" value="Add New Member" action="{!addNewCareTeamMember}" reRender="leftContent,newfeed,newPost" rendered="{!canAddCareTeamMember}"/>
+                                                <apex:commandLink styleClass="NEWS trigger" value="Add/Remove Member" action="{!addNewCareTeamMember}" reRender="leftContent,newfeed,newPost" rendered="{!canAddCareTeamMember}"/>
                                             </li>
                                         </ul>
                                     </div>

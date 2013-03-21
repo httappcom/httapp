@@ -1,0 +1,14 @@
+<apex:page Controller="ReportController">
+  <head>
+    <title>Management Report</title>
+    <style>
+    </style>
+  </head>
+<h1>Management Report</h1>
+   <apex:form >
+      <apex:pageBlock >
+      <apex:pageBlockSection columns="2">
+      </apex:pageBlockSection>
+      </apex:pageBlock>
+     </apex:form>
+</apex:page>

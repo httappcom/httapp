@@ -70,6 +70,17 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Default_Medical_Profile__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Default Medical Profile</label>
+        <referenceTo>PRM_Medical_Profile_Link__c</referenceTo>
+        <relationshipLabel>PRM Config</relationshipLabel>
+        <relationshipName>PRM_Config</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Doctor_Portal_Welcome_Msg__c</fullName>
         <externalId>false</externalId>
         <label>Doctor Portal Welcome Msg</label>

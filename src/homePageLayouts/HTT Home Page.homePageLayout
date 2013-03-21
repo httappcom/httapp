@@ -5,7 +5,5 @@
     <narrowComponents>standard-UsefulLinks</narrowComponents>
     <narrowComponents>standard-MessagesAndAlerts</narrowComponents>
     <narrowComponents>Reports</narrowComponents>
-    <wideComponents>standard-Dashboard</wideComponents>
-    <wideComponents>standard-Tasks</wideComponents>
-    <wideComponents>standard-Calendar</wideComponents>
+    <wideComponents>NueHealth My Tasks</wideComponents>
 </HomePageLayout>

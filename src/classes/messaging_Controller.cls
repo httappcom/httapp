@@ -23,7 +23,7 @@ public without sharing class messaging_Controller {
     }
     public static Treatment__c treatment;
     public void setTreatment(Id i) {
-        treatment = [Select Id, Destination_Facility__c, OwnerId From Treatment__c Where Id = :i ];
+        treatment = [Select Id, Destination_Facility__c, Assigned_To__c From Treatment__c Where Id = :i ];
     }
     public Treatment__c getTreatment() {
         return treatment;
@@ -393,6 +393,8 @@ system.debug('selectFilterBy action topicId='+topicId);
   }  
   
     private void addMedicalFacilityUsers() {
+    	Logger.info('Treatment(addMedicalFacilityUsers): ' + treatment);
+    	  if (treatment == null) setTreatment(treatmentId);
         if (treatment.Destination_Facility__c != null) {
             User[] medFacilityUsers = AccessUtil.getMedicalFacilityUsers(treatment.Destination_Facility__c);
             for (User u : medFacilityUsers) {
@@ -457,6 +459,7 @@ system.debug('selectFilterBy action topicId='+topicId);
   
   public List<Care_Team_Member__c> getCareTeamCandidates()
   {
+  	Logger.info('Treatment(getCareTeamCandidates): ' + treatment);
     addMedicalFacilityUsers();
     addPRMConfigUsers();
     addMedProfessionalUsers();
@@ -485,6 +488,7 @@ system.debug('selectFilterBy action topicId='+topicId);
   }  
   public List<SelectOption> getCareTeamCandidateNames()
   {
+  	Logger.info('Treatment(getCareTeamCandidateNames): '+treatment);
     if (careTeamCandidates.isEmpty() == true)
     {
         careTeamCandidates = getCareTeamCandidates();
@@ -504,11 +508,12 @@ system.debug('selectFilterBy action topicId='+topicId);
       careTeamMembers = getCareTeamMemberList();
     }
     List<SelectOption> options = new List<SelectOption>(); 
-    Boolean disabled = false;   
+    Boolean disabled = false; 
+    if (treatment == null) setTreatment(treatmentId);  
     for(Care_Team_Member__c u : careTeamMembers)
     {
         disabled = false;
-      if ( (u.Role__c == 'Patient') || (treatment.OwnerId == u.User__c) )
+      if ( (u.Role__c == 'Patient') || (treatment.Assigned_To__c == u.User__c) )
         {
             disabled = true;
             Logger.info('Disabled User: ' + u.Name);

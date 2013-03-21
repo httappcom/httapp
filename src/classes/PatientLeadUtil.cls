@@ -13,7 +13,10 @@ public with sharing class PatientLeadUtil {
       queryString += ' FROM Patient_Lead__c WHERE Deserialized__c = false FOR UPDATE';
       List<Patient_Lead__c> newLeads = Database.query(queryString);
       List<String> patientLeadEmails = new List<String>(); 
-      for (Patient_Lead__c patientLead : newLeads) patientLeadEmails.add(patientLead.Email__c);
+      for (Patient_Lead__c patientLead : newLeads) 
+      {
+        if (patientLead.Email__c != null) patientLeadEmails.add(patientLead.Email__c);
+      }
       Patient__c[] existingPatients = [Select Id, Email__c, External_ID__c from Patient__c Where Email__c in : patientLeadEmails Order By Email__c, LastModifiedDate DESC];
       Logger.info('existingPatients: ' + existingPatients );
       Set<String> existingPatientEmails = new Set<String>();
@@ -69,7 +72,7 @@ public with sharing class PatientLeadUtil {
         	}
         }
         else patientsToInsert.add(patient);
-		    treatment.OwnerId = DefaultUsersUtil.getPCCManager().Id;      	
+		    treatment.Assigned_To__c = DefaultUsersUtil.getPCCManager().Id;      	
         if (treatment.Payment_Type__c == null) treatment.Payment_Type__c = PickListDefines.PaymentType.Cash;           
         patientLead.Deserialized__c = true;        
         travelsToInsert.add(travel);

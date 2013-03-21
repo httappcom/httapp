@@ -1,5 +1,7 @@
 <apex:page showHeader="false" standardController="Medical_Record__c" extensions="MedicalRecordUploadController" action="{!constructor}">
-	<apex:form >
+<!-- Not used - upload html is located in patientPortal and DoctorPortal pages 
+
+<apex:form >
 		<apex:actionRegion >
 		<apex:outputPanel id="msgs">
     		<apex:pageMessages />
@@ -51,8 +53,6 @@ alert("gh1");
 		type="hidden"  name="policy" value="{!policy}" /> <input 
 		type="hidden"  name="signature" value="{!signedPolicy}" /> <input type="hidden"  name="acl" value="public-read" />
 		
-		<!-- input type="hidden"  name="Content-Type" value="{Medical_Record__c.Content_Type__c}" 
-		input type="hidden" name="success_action_redirect" value="https://{!serverURL}/{.id}" -->
 	<div class="bPageBlock brandSecondaryBrd bEditBlock secondaryPalette"><br/><br/>
 	<div class="pbHeader">
 		<table border="0" cellpadding="0" cellspacing="0">
@@ -72,5 +72,5 @@ alert("gh1");
 		</div>
 	</div>
 	</div>
-	</form>
+	</form> -->	
 </apex:page>

@@ -141,6 +141,17 @@
         <type>DateTime</type>
     </fields>
     <fields>
+        <fullName>Assigned_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Assigned To</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Assigned_Treatments</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Best_Time_to_Contact__c</fullName>
         <externalId>false</externalId>
         <label>Best Time to Contact</label>

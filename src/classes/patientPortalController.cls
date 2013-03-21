@@ -203,6 +203,8 @@ system.debug('selectedItinerary='+selectedItinerary);
                        Key_Contact__c,
                        (select id, 
                                Name,
+                               Assigned_To__c,
+                               Assigned_To__r.Name,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
                                Case_Manager_s_Feel__c,
@@ -290,6 +292,8 @@ system.debug('selectedItinerary='+selectedItinerary);
         return 
             [ Select    t.Treatment_Summary__c,
                         t.Travel__c,
+                        t.Assigned_To__c,
+                        t.Assigned_To__r.Name,
                         t.Sub_Stage__c,
                         t.Quote_Status__c,
                         t.Stage__c,

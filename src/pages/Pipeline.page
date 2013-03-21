@@ -1,4 +1,4 @@
-<apex:page Controller="PipelineController" sidebar="false">
+<apex:page Controller="PipelineController" sidebar="false" action="{!pollForNewLeads}">
 <head>
 <title>Pipeline</title>
 <apex:includeScript value="{!$Resource.sfscript}" />
@@ -40,7 +40,7 @@
 
               --> 		
 		             <apex:pageBlockTable value="{!IF(showAllPCCs, active, myActive)}" var="r">
-                    <apex:column value="{!r.Owner.Name}" headerValue="Assigned to" styleClass="{!r.Patient_Pipeline_RowStyle__c}" rendered="{!showAllPCCs}"/>		             
+                    <apex:column value="{!r.Assigned_To__r.Name}" headerValue="Assigned to" styleClass="{!r.Patient_Pipeline_RowStyle__c}" rendered="{!showAllPCCs}"/>		             
 		                <apex:column value="{!r.Phase__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Stage__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Procedure_Category__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/> 

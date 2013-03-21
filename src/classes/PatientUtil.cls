@@ -10,7 +10,6 @@ public class PatientUtil {
       } else {
         return [Select id, 
                        Name,
-                       Owner.Name,
                        Advocate_Email__c,
                        Advocate_Name__c,
                        Advocate_Phone__c,
@@ -63,6 +62,8 @@ public class PatientUtil {
                        Email_Receipt_Allowed__c,
                        (select id, 
                                Name,
+                       			Assigned_To__c,
+                       			Assigned_To__r.Name,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -138,7 +139,7 @@ public class PatientUtil {
                               Travel__r.Notes__c                                
 
                        from Treatments__r order by CreatedDate desc),
-                       (select id,
+/*                       (select id,
                                Owner.Name,
                                CallDurationInSeconds,
                                CallObject,
@@ -151,7 +152,7 @@ public class PatientUtil {
                                What.Name,
                                Status,
                                Subject
-                       from Tasks order by CreatedDate desc),
+                       from Tasks order by CreatedDate desc),*/
                      /*(select id,
                                Name,
                               Owner.Name,
@@ -209,6 +210,8 @@ public class PatientUtil {
         return [Select id,
                                Name,
                                OwnerId,
+                       			Assigned_To__c,
+                       			Assigned_To__r.Name,
                          	   Surgical_Report_Attached__c,
                                Approval_State__c,
                                Approval_Date__c,
@@ -333,7 +336,6 @@ public class PatientUtil {
   public static List<Patient__c> queryPatientListAll() {
         return [Select id, 
                        Name,
-                       Owner.Name,
                        Advocate_Email__c,
                        Advocate_Name__c,
                        Advocate_Phone__c,
@@ -385,6 +387,8 @@ public class PatientUtil {
                        Email_Receipt_Allowed__c,
                        (select id, 
                                Name,
+                       			Assigned_To__c,
+                      			Assigned_To__r.Name,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -423,7 +427,7 @@ public class PatientUtil {
                                Related_Campaign__c,
                                Treatment_Summary__c 
                        from Treatments__r),
-                       (select id,
+/*                       (select id,
                                Owner.Name,
                                CallDurationInSeconds,
                                CallObject,
@@ -436,7 +440,7 @@ public class PatientUtil {
                                What.Name,
                                Status,
                                Subject
-                       from Tasks order by CreatedDate desc),
+                       from Tasks order by CreatedDate desc),*/
                      /*(select id,
                                Name,
                               Owner.Name,

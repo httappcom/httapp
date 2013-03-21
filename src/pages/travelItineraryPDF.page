@@ -77,9 +77,9 @@
 					<br/>
 					<apex:outputlabel value="EMERGENCY CONTACTS" style="text-decoration:underline; padding-bottom:10px;"/><br/>
 					<c:Branded_Field treatment_Id="{!treatmentQuote.Treatment__r.id}" PRM_Config_field="PCC_designation__c"/><br/>
-					<apex:outputtext value="{!ownername}"/><br/>
-					<apex:outputtext value="{!ownerphone}"/><br/>
-					<apex:outputtext value="{!owneremail}"/>
+					<apex:outputtext value="{!assignedToname}"/><br/>
+					<apex:outputtext value="{!assignedTophone}"/><br/>
+					<apex:outputtext value="{!assignedToemail}"/>
 					<br/>---<br/><br/>
 					<apex:outputlabel value="Travel Logistics Manager:" style="font-weight:bold;"/><br/>
 					<apex:outputText value="{!TravelConciergeName}"/><br/>

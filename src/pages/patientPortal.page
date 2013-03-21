@@ -6,10 +6,7 @@
     <script>
         var j$ = jQuery.noConflict();
 		function onFileChange( path ) {
-		alert("onFileChange");
 			var fileName = path.split(path.indexOf("\\")>0?"\\":"/").pop();
-			
-alert("fileName="+fileName);
 			j$("input[id$='attachmentname']").val(fileName);
 		}
     </script>
@@ -152,7 +149,7 @@ alert("fileName="+fileName);
                     <br/><br/>
                     <apex:pageblocktable value="{!medicalRecords}" var="t">
                         <apex:column headerValue="Name">
-                        	<apex:outputLink value="{!URLFOR($Page.DisplayMedicalRecord) & '?attachmentId=' & t.id}" target="_blank"><apex:outputText value="{!t.name}"/>
+                        	<apex:outputLink value="{!URLFOR($Page.RenderFile) & '?attachmentId=' & t.id}" target="_blank"><apex:outputText value="{!t.name}"/>
 	        			</apex:outputLink>
                         </apex:column>
                         <apex:column headerValue="Description" value="{!t.Description}"/>

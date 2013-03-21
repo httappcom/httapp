@@ -221,6 +221,7 @@ public with sharing class EmailController {
     mail.setTargetObjectId(patient.Key_Contact__c);
     mail.setWhatId(treatmentId);
     mail.setTemplateId(this.eTemplate);
+    mail.setSaveAsActivity(false);
     if (templateMap.get(this.eTemplate) == 'Quote')
     {
     	//attach quote

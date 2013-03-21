@@ -76,7 +76,7 @@
             <h1>Your Medical Travel Quote</h1>
             <div class="quoteSummary">
                 <p>Traveler Name: {!q.Treatment__r.Patient__r.Name}</p>
-                <p>Your &#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="PCC_designation__c"/>: {!q.Treatment__r.Patient__r.Owner.Name}</p>
+                <p>Your &#160;<c:Branded_Field treatment_Id="{!q.Treatment__c}" PRM_Config_field="PCC_designation__c"/>: {!q.Treatment__r.Assigned_To__r.Name}</p>
                 <p>Doctor: {!q.Procedure__r.Doctor__r.Name}</p>
                 <p>Traveling To: {!q.Procedure__r.Facility__r.Name}</p>
              </div>  

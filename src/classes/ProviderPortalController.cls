@@ -159,6 +159,8 @@ Stage or Sub Stage
         treatmentList = new list<TreatmentRow>();
   system.debug('loadTreatmentList user.id='+user.id);
   		Care_Team_Member__c[] members = [select 
+  		    Treatment__r.Assigned_To__c,
+  		    Treatment__r.Assigned_To__r.Name,
   			Treatment__r.Name,
   			Treatment__r.Patient__c,
   			Treatment__r.Patient__r.Name,

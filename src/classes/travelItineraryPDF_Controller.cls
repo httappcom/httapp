@@ -12,9 +12,9 @@ public without sharing class travelItineraryPDF_Controller {
     public String onsiteCoordinatorMobilePhone {get; private set; }
     public String onsiteCoordinatorEmail {get; private set; }
 
-    public String ownerName {get; private set; }
-    public String ownerPhone {get; private set; }
-    public String ownerEmail {get; private set; }
+    public String assignedToName {get; private set; }
+    public String assignedToPhone {get; private set; }
+    public String assignedToEmail {get; private set; }
         
     public BrandingUtil branding {get; set; }
     
@@ -26,9 +26,9 @@ public without sharing class travelItineraryPDF_Controller {
             onsiteCoordinatorPhone = treatmentQuote.treatment__r.onsite_Coordinator__r.phone;
             onsiteCoordinatorMobilePhone = treatmentQuote.treatment__r.onsite_Coordinator__r.mobilePhone;
             onsiteCoordinatorEmail = treatmentQuote.treatment__r.onsite_Coordinator__r.email;
-            ownerName = treatmentQuote.treatment__r.patient__r.createdby.name;
-            ownerPhone = treatmentQuote.treatment__r.patient__r.createdby.phone;
-            ownerEmail = treatmentQuote.treatment__r.patient__r.createdby.email;
+            assignedToName = treatmentQuote.treatment__r.Assigned_To__r.name;
+            assignedToPhone = treatmentQuote.treatment__r.Assigned_To__r.phone;
+            assignedToEmail = treatmentQuote.treatment__r.Assigned_To__r.email;
             getTravelConcierge();
             branding = new BrandingUtil(treatmentQuote.treatment__r.id);
             if(apexpages.currentPage().getparameters().get('lang')!=null){

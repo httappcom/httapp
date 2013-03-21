@@ -1,17 +1,22 @@
 public with sharing class TreatmentUtility {
 
-  private static Map<Id, Patient__c> patientMap;
-  private static Map<Id, String> savedTaskSpecifiers = null;
+  	private static Map<Id, Patient__c> patientMap;
+  	private static Map<Id, String> savedTaskSpecifiers = null;
+//  	private static Map<Integer, ID> changeOwnershipRequests = null;
 
 
-  public static void beforeInsert (List<Treatment__c> treatments) {
-    for (Treatment__c treatment : treatments ) {
-        treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
-    	setDayAndWeekOfYear( treatment );
-    }
-  }
+  	public static void beforeInsert (List<Treatment__c> treatments) {
+//  		makeChangeOwnershipRequests();
+    	for (Treatment__c treatment : treatments ) {
+        	treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
+    		setDayAndWeekOfYear( treatment );
+    	}
+  	}
 
     public static void afterInsert (List<Treatment__c> treatments) {
+/*    	if (changeOwnershipRequests != null) {
+			AccessUtil.replaceTreatmentOwner( (List<Treatment__c>)Trigger.new, changeOwnershipRequests );
+    	}*/
     	updateCareTeamMembers( treatments, true );
         List<Topic__c> topicInserts = new List<Topic__c>();
         for ( Treatment__c treatment : treatments ) {
@@ -81,7 +86,7 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
             	expandedTreatment!=null) {
             	if (!origTreatment.Surgical_Report_Attached__c && treatment.Surgical_Report_Attached__c) {
             		Communication__c comm = MessagingUtil.createPrivateMessage( treatment.id, 
-            			treatment.OwnerId, expandedTreatment.Insurance_Network_Contact__c, 
+            			treatment.Assigned_To__c, expandedTreatment.Insurance_Network_Contact__c, 
             			'The surgical report for '+expandedTreatment.Patient__r.Name+' has been attached.' );
             		if (comm != null) communications.add(comm);
             	}
@@ -141,6 +146,9 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
             }
             
         }
+ for (Care_Team_Member__c mem : careTeamMemberInserts) {
+ 	system.debug('inserting careteammember='+mem);
+ }
         CareTeamUtil.addMembersToCareTeam(careTeamMemberInserts);
 	}
     
@@ -372,4 +380,17 @@ system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
 		Datetime dt = treatment.CreatedDate == null ? Datetime.now() : treatment.CreatedDate;
 		Treatment.Hour_of_Day_Created__c =  dt.hour();
 	}
+	
+/*	private static void makeChangeOwnershipRequests() {
+		changeOwnershipRequests = new Map<Integer, ID>();
+  		ID curUser = UserInfo.getUserId();
+    	for (Integer i=0;i<Trigger.new.size();i++ ) {
+    		Treatment__c treatment = (Treatment__c)Trigger.new[i];
+    		if (treatment.OwnerId != curUser) {
+    			changeOwnershipRequests.put(i, treatment.OwnerId);
+    			treatment.OwnerId = curUser;
+    		}
+    	}
+    }*/
+	
 }

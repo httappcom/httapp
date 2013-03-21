@@ -88,9 +88,13 @@ public with sharing class PipelineController {
 	}           
 	public String getNewStage() {
 		return PickListDefines.Stage.Initial;
-	}           
+	}  
+	public PageReference pollForNewLeads()
+	{		
+    PatientLeadUtil.execute();
+    return null;
+	}         
   public Pipelinecontroller(){
-  	PatientLeadUtil.execute();
   	showAllPCCs = false;
   	allowShowAllPCCs = false;
   	User[] currentUsers = [SELECT ProfileId, PCC_Manager__c FROM User WHERE Id = : userinfo.getUserId()];
@@ -131,12 +135,13 @@ public with sharing class PipelineController {
     this.payments = new List<Payment__c>();
     try {
         active = [SELECT Name, Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure__c,
-        Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Treatment_Summary__c, Patient_Pipeline_RowStyle__c, Destination_Facility__c, Ownerid, Owner.Name
-        FROM Treatment__c
-        WHERE Phase__c in :(new List<String>{PickListDefines.Phase.Inquiry, PickListDefines.Phase.Interaction}) and 
-            Active_Status__c IN :(new List<String>{PickListDefines.ActiveStatus.Active, PickListDefines.ActiveStatus.NotResponding})
-            and Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
-          order by Phase__c, Next_Follow_Up__c ];
+        		Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Treatment_Summary__c, Patient_Pipeline_RowStyle__c, 
+        		Destination_Facility__c, Ownerid, Owner.Name, Assigned_To__c, Assigned_To__r.Name 
+        	FROM Treatment__c
+        	WHERE Phase__c in :(new List<String>{PickListDefines.Phase.Inquiry, PickListDefines.Phase.Interaction}) and 
+            	Active_Status__c IN :(new List<String>{PickListDefines.ActiveStatus.Active, PickListDefines.ActiveStatus.NotResponding})
+            	and Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
+          	order by Phase__c, Next_Follow_Up__c ];
         myActive = new List<Treatment__c>();
         for (Treatment__c r : active) 
         {
@@ -160,7 +165,7 @@ public with sharing class PipelineController {
           {
             r.Patient_Pipeline_RowStyle__c = 'whiteRow';
           }
-	      	if ( r.OwnerId == UserInfo.getUserId() )
+	      	if ( r.Assigned_To__c == UserInfo.getUserId() )
 	      	{
 	      		 myActive.add(r);
 	      	   Logger.info('Adding ' + r.Name + ' to myActive.');
@@ -169,15 +174,16 @@ public with sharing class PipelineController {
         activeNumber = active.size();
         myActiveNumber = myActive.size();
         
-        closesResult = [Select Treatment__r.Owner.Name PCC, COUNT(Treatment__r.Id) numberOfCloses, SUM(Total_Price__c) sumOfClosedValue, AVG(Treatment__r.Days_to_Close__c) avgDaysToClose 
+        closesResult = [Select Treatment__r.Assigned_To__r.Name PCC, COUNT(Treatment__r.Id) numberOfCloses, SUM(Total_Price__c) sumOfClosedValue, 
+        			AVG(Treatment__r.Days_to_Close__c) avgDaysToClose 
                   From Treatment_Quote__c 
                   Where Treatment__r.Phase__c = : PickListDefines.Phase.Travel 
                     And Treatment__r.Active_Status__c = : PickListDefines.ActiveStatus.Active
                     And Treatment__r.Engagement_Type__c = :PickListDefines.EngagementType.Treatment
-                  Group By Treatment__r.Owner.Name];
+                  Group By Treatment__r.Assigned_To__r.Name];
               
         travel_In_Progress = [Select Treatment__r.Phase__c, Treatment__r.Stage__c, Treatment__r.Patient__r.Name, Procedure__r.Name, Treatment__r.Travel__r.Travel_End__c,
-                              Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name, Treatment__r.Patient__r.Phone__c, Treatment__r.LastModifiedDate, Treatment__r.OwnerId
+                              Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name, Treatment__r.Patient__r.Phone__c, Treatment__r.LastModifiedDate, Treatment__r.Assigned_To__c
                               From Treatment_Quote__c 
                               Where Treatment__r.Phase__c = : PickListDefines.Phase.Travel 
                                     And Treatment__r.Active_Status__c = : PickListDefines.ActiveStatus.Active
@@ -186,7 +192,7 @@ public with sharing class PipelineController {
         myTravel_In_Progress = new List<Treatment_Quote__c>();
         for (Treatment_Quote__c q : travel_In_Progress)
         {
-          if ( q.Treatment__r.OwnerId == UserInfo.getUserId() )
+          if ( q.Treatment__r.Assigned_To__c == UserInfo.getUserId() )
           {
              myTravel_In_Progress.add(q);
           }         	
@@ -195,36 +201,36 @@ public with sharing class PipelineController {
         myTravel_In_ProgressNumber = myTravel_In_Progress.size();      
         post_Travel = [Select Treatment__r.Phase__c, Treatment__r.Stage__c, Treatment__r.Patient__r.Name, Procedure__r.Name, Treatment__r.Travel__r.Travel_End__c,
                               Procedure__r.Doctor__r.Name, Procedure__r.Facility__r.Name, Treatment__r.Patient__r.Phone__c, Treatment__r.LastModifiedDate, 
-                              Treatment__r.Patient__r.Last_Communication__c, Treatment__r.OwnerId 
+                              Treatment__r.Patient__r.Last_Communication__c, Treatment__r.Assigned_To__c 
                               From Treatment_Quote__c 
                               Where Treatment__r.Phase__c = : PickListDefines.Phase.PostOp 
                                     And Treatment__r.Active_Status__c = : PickListDefines.ActiveStatus.Active
                                     And Treatment__r.Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
-                                    And Treatment__r.OwnerId = :userinfo.getUserId()
+                                    And Treatment__r.Assigned_To__c = :userinfo.getUserId()
                               Order By Treatment__r.Travel__r.Travel_End__c];                              
         post_TravelNumber = post_Travel.size();
         myPost_Travel = new List<Treatment_Quote__c>();
         for (Treatment_Quote__c q : post_Travel)
         {
-          if ( q.Treatment__r.OwnerId == UserInfo.getUserId() )
+          if ( q.Treatment__r.Assigned_To__c == UserInfo.getUserId() )
           {
              myPost_Travel.add(q);
           }           
         }  
         myPost_TravelNumber = myPost_Travel.size();          
         on_hold = [Select Patient__r.Name, Patient__r.Phone__c, LastModifiedDate, Next_Follow_Up__c, Procedure_Category__c, Procedure__c, Patient__r.Last_Communication__c,
-                          OwnerId 
+                          Assigned_To__c 
                               From Treatment__c 
                               Where Phase__c = : PickListDefines.Phase.Interaction 
                                     And Active_Status__c = : PickListDefines.ActiveStatus.OnHold
                                     And Engagement_Type__c = :PickListDefines.EngagementType.Treatment 
-                                    And OwnerId = :userinfo.getUserId()
+                                    And Assigned_To__c = :userinfo.getUserId()
                               Order By Next_Follow_Up__c];
         on_holdNumber = on_hold.size();
         myOn_hold = new List<Treatment__c>(); 
         for (Treatment__c t : on_hold)
         {
-          if ( t.OwnerId == UserInfo.getUserId() )
+          if ( t.Assigned_To__c == UserInfo.getUserId() )
           {
              myOn_hold.add(t);
           }           

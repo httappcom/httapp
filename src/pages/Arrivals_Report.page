@@ -1,7 +1,41 @@
 <apex:page Controller="ArrivalsReportController" sidebar="false">
-<head>
-<title>Pipeline</title>
-<apex:includeScript value="{!$Resource.sfscript}" />
- <apex:stylesheet value="{!$Resource.sfstyles}"/>
-</head>
+	<head>
+		<title>Arrivals</title>
+		<style>
+		</style>
+		<apex:includeScript value="{!$Resource.sfscript}" />
+		 <apex:stylesheet value="{!$Resource.sfstyles}"/>
+	</head>
+		<apex:form >
+      <apex:pageBlock >
+      <apex:pageBlockSection columns="2">
+        <apex:pageBlockSectionItem >    		
+				  <apex:outputLabel value="Facility" />
+				  <apex:selectList multiselect="true" value="{!facilityList}" id="facilitySelect" >
+				    <apex:selectOptions value="{!availableFacilityNames}" />
+				  </apex:selectList>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem > 
+				  <apex:outputLabel value="Timeframe" />
+				  <apex:selectList value="{!dateFilterChosen}" id="periodSelect"  size="1">
+				    <apex:selectOptions value="{!dateFilterOptions}" />
+				  </apex:selectList>
+				</apex:pageBlockSectionItem>
+			  <apex:commandButton action="{!showArrivals}" value="Show Arrivals" rerender="arrivalsList"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1">
+          <apex:pageBlockTable id="arrivalsList" value="{!treatmentQuoteList}" var="q">
+             <apex:column value="{!q.Treatment__r.Patient__r.Name}" headerValue="Patient" />
+             <apex:column value="{!q.Treatment__r.Patient__r.Phone__c}" headerValue="Phone" />
+             <apex:column value="{!q.Treatment__r.Arrival_Time__c}" />
+             <apex:column value="{!q.Treatment__r.Travel__r.Arrival_Airline__r.Name}" headerValue="Airline" />
+             <apex:column value="{!q.Treatment__r.Travel__r.Arrival_Flight_No__c}" />
+             <apex:column value="{!q.Treatment__r.Travel__r.Wheel_Chair_Bound__c}" />
+             <apex:column value="{!q.Treatment__r.Procedure_Date__c}"/>
+             <apex:column value="{!q.Treatment__r.Travel__r.Companion__c}" />
+             <apex:column value="{!q.Hotel_Nights_Included__c}" />
+          </apex:pageBlockTable>
+        </apex:pageBlockSection>
+      </apex:pageBlock>
+		</apex:form>
 </apex:page>

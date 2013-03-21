@@ -58,6 +58,10 @@
         <fields>NAME</fields>
         <relatedList>Patient__c.Medical_Profile_Type__c</relatedList>
     </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>PRM_Config__c.Default_Medical_Profile__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>

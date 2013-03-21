@@ -1,0 +1,39 @@
+<apex:page Controller="MyTasksController" sidebar="false" showheader="false">
+<head>
+<title>My Tasks</title>
+</head>
+<apex:form id="MyTasksForm">
+	<apex:pageBlock >
+		<apex:inputCheckbox value="{!includeCompleted}">
+           	<apex:actionSupport event="onchange" action="{!setFilter}" rerender="pbsTasks"/>
+		</apex:inputCheckbox>&nbsp;Include Completed
+		<div style="float:right;">
+			<apex:selectList value="{!filter}" size="1">
+            	<apex:selectOptions value="{!filterList}"/>
+            	<apex:actionSupport event="onchange" action="{!setFilter}" rerender="pbsTasks"/>
+        	</apex:selectList> 
+		</div>
+	    <apex:pageBlockSection columns="1">
+		    <apex:pageBlockTable id="pbsTasks" value="{!tasks}" var="r">
+                <apex:column headerValue="Completed">
+                	<apex:outputText value="X" rendered="{!r.completed}}"/> 
+                </apex:column>
+                <apex:column headerValue="Due Date">
+                	<apex:outputText value="{0,date,short}">
+                		<apex:param value="{!r.dueDate}" />
+                	</apex:outputText>
+                </apex:column>
+                <apex:column headerValue="Subject">
+                	<a href="/{!r.taskId}"><apex:outputText value="{!r.subject}"/></a>
+                </apex:column>
+                <apex:column headerValue="Patient">
+                	<apex:outputField value="{!r.lu.Patient__c}" />
+                </apex:column>
+                <apex:column headerValue="Related To">
+                	<apex:outputField value="{!r.lu.Treatment__c}" />
+                </apex:column>
+		    </apex:pageBlockTable>          
+		</apex:pageBlockSection>
+	</apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -13,6 +13,7 @@ public with sharing class CareTeamUtil {
    		List<Care_Team_Member__c> insertMembers = new List<Care_Team_Member__c>();
    		for (Care_Team_Member__c member : careTeamMembers) {
    			if (!careTeamMemberMap.containsKey(makeExternalId(member))) {
+  system.debug('inserting into careteam:'+member);
    				insertMembers.add(member);
    				careTeamMemberMap.put( makeExternalId(member), 'NEW');
    			}
