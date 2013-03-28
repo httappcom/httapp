@@ -1,0 +1,71 @@
+<apex:page controller="RecentActivityController" sidebar="false" showheader="false">
+    <apex:includeScript value="{!$Resource.cometd}"/>
+    <apex:includeScript value="{!$Resource.jquery}"/>
+    <apex:includeScript value="{!$Resource.json2}"/>
+    <apex:includeScript value="{!$Resource.jquery_cometd}"/>
+    <script type="text/javascript">
+    var $jq = jQuery.noConflict();
+    $jq(document).ready(function() {
+            // Connect to the CometD endpoint
+            $jq.cometd.init({
+               url: window.location.protocol+'//'+window.location.hostname+'/cometd/24.0/',
+               requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+           });
+
+           // Subscribe to a topic. JSON-encoded update will be returned           // in the callback
+           $jq.cometd.subscribe('/topic/NewlyAssignedTreatments', function(message) {
+           		if (message.data.sobject.Assigned_To__c == '{!$User.Id}') {
+	               appendObject(message.data.sobject.Id);
+	            }
+            });
+           $jq.cometd.subscribe('/topic/NewPrivateMessages', function(message) {
+           		if (message.data.sobject.Recipient__c == '{!$User.Id}') {
+                    appendObject(message.data.sobject.Id);
+               	}
+            });
+           $jq.cometd.subscribe('/topic/NewPrivateMessageComments', function(message) {
+           		if (message.data.sobject.Recipient__c == '{!$User.Id}') {
+	               appendObject(message.data.sobject.Id);
+	            }
+            });
+           $jq.cometd.subscribe('/topic/NewCommunications', function(message) {
+               var recipients = message.data.sobject.Notification_Recipients__c;
+               var recipientArray = recipients.split(",");
+               for (var i = 0; i < recipientArray.length; i++)
+               {
+                  if (recipientArray[i] == '{!$User.Id}')
+                  {
+                    console.log('Id: ' + message.data.sobject.Id);
+                    appendObject(message.data.sobject.Id);
+                  }
+               }
+               
+            });
+        });
+   </script>
+   <body>
+   <apex:form id="dummyForm">
+	   <apex:actionFunction action="{!appendObject}" name="appendObject" reRender="content">
+	      <apex:param name="appendId" value="" assignTo="{!appendId}" />
+	   </apex:actionFunction>
+   </apex:form>
+   <apex:outputPanel layout="block" id="content">
+   	<apex:dataTable value="{!sidebarRecentActivity}" var="r">
+                <apex:column >
+                	<apex:outputPanel rendered="{!r.activityType == 'Treatment'}">
+ 	              		Assigned:&nbsp;<apex:outputField value="{!r.lu.Treatment__c}"/>
+ 	              	</apex:outputPanel>
+                	<apex:outputPanel rendered="{!r.activityType == 'TopicPost'}">
+ 	              		<apex:outputText value="{!r.alertTag}"/>:&nbsp;<apex:outputField value="{!r.lu.Communication__c}"/>
+ 	              	</apex:outputPanel>
+                	<apex:outputPanel rendered="{!r.activityType == 'PrivateMessage'}">
+ 	              		Message:&nbsp;<apex:outputField value="{!r.lu.Timestamp__c}"/>
+ 	              	</apex:outputPanel>
+                	<apex:outputPanel rendered="{!r.activityType == 'PrivateMessageComment'}">
+ 	              		Comment:&nbsp;<apex:outputField value="{!r.lu.Timestamp__c}"/>
+ 	              	</apex:outputPanel>
+                </apex:column>
+   	</apex:dataTable>
+   </apex:outputPanel>
+   </body>
+</apex:page>

@@ -243,6 +243,7 @@
                                                                 <label for="publisherOptionsMenu" id="publisherOptionsMenuLabel"></label>
                                                                 <apex:selectList value="{!newMessage.ParentId}" size="1" >
                                                                     <apex:selectOptions value="{!topicOptions}" />
+                                                                    <apex:actionSupport event="onchange" rerender="postButton" action="{!postTopicChanged}"/>
                                                                 </apex:selectList>
                                                             </span>
                                                             <span class="visibilityWidgetParent">
@@ -251,9 +252,9 @@
                                                                 </a>
                                                             </span>
                                                         </div>
-                                                        <div class="bottomBarRight" > 
-                                                            <apex:commandLink styleClass="zen-btn zen-highlightBtn st_round-btn" action="{!insertNewMessage}" id="publishersharebutton" value="Share" reRender="mainContent,messaging.newFeed,newPost" />
-                                                        </div>
+                                                        <apex:outputPanel id="postButton" layout="block" styleClass="bottomBarRight" > 
+                                                            <apex:commandLink styleClass="zen-btn zen-highlightBtn st_round-btn" action="{!insertNewMessage}" id="publishersharebutton" value="{!postButtonLabel}" reRender="mainContent,messaging.newFeed,newPost" />
+                                                        </apex:outputPanel>
                                                     </div>
                                                 </apex:outputPanel>
 
@@ -409,7 +410,7 @@
                                                                     <apex:commandLink action="{!m.addNewComment}" styleClass="feeditemactionlink cxaddcommentaction" reRender="newFeed,newPost" >Comment</apex:commandLink>
                                                                     <span class="cxfeeditemcommentdot feeditemseparatingdot"> · </span>
                                                                 </span>
-                                                                <a class="feeditemtimestamp" title="Click for single-item view of this post." href="/{!m.recordId}"><apex:outputText value="{0,date,MMMMM d',' yyyy 'at' h:mm a}"><apex:param value="{!m.createdDateTime}" /></apex:outputText></a>
+                                                                <a class="feeditemtimestamp" title="Click for single-item view of this post." href="/{!m.recordId}"><apex:outputField value="{!m.lu.Timestamp__c}" /></a>
                                                             </div>
                                                         </div>
                                                         <div class="feeditemextras cxchattertextareacontainer chattertextareacontainer">
@@ -443,7 +444,7 @@
                                                                                     <a onclick="chatter.getFeed().checkAccessAndDeleteComment(this, event, '{!c.recordId}', true);" class="feeditemactionlink commentDeleteLink" title="Delete this comment" href="javascript:void(0);">Delete</a>
                                                                                     <span class="feeditemseparatingdot deleteDot"> · </span>
                                                                                 </apex:outputPanel> -->
-                                                                                <span class="feeditemtimestamp"><apex:outputText value="{0,date,MMMMM d',' yyyy 'at' h:mm a}"><apex:param value="{!c.createdDate}" /></apex:outputText></span>
+                                                                                <span class="feeditemtimestamp"><apex:outputField value="{!c.lu.Timestamp__c}" /></span>
                                                                             </div>
                                                                         </div>    
                                                                     </div>

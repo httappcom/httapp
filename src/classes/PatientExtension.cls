@@ -16,6 +16,7 @@ public with sharing class PatientExtension {
  
     public Treatment_Quote__c treatmentQuote { get; set; }
     private Id usersMedicalFacility {get;set;}
+    private Map<String, String> URLParams { get; set; }    
     public String getDoctorPortalURL() {
     	if (treatment.Treatment_Quotes__r.size()>0 && treatment.Treatment_Quotes__r[0].Procedure__r != null &&
             	treatment.Treatment_Quotes__r[0].Procedure__r.Doctor__c != null &&
@@ -37,7 +38,6 @@ public with sharing class PatientExtension {
     public String emailType { get; set; }
     
     public List<SelectOption> taskOptions { get; set; }
-    public List<SelectOption> onsiteCoordinators { get; set; }
     public List<SelectOption> insuranceNetworkContacts {get; private set;}
     public List<SelectOption> assignablePCCs {get; private set;}
     public String selectedTaskOption { get; set; }
@@ -78,25 +78,6 @@ public with sharing class PatientExtension {
 		showLightbox = false;
         sendSuccess = false;
         loadPrmConfig();
-          //Find Medical Facility Users
-        Medical_Facility__c[] allMedFacilities = [Select Id, Public_Group__c from Medical_Facility__c];
-        Group[] currentUsersGroups = 
-          [Select Name from Group Where Id in 
-            ( Select GroupId from Groupmember Where UserOrGroupId = :UserInfo.getUserID() )
-          ];
-        Set<String> groupNameSet = new Set<String>();
-               for (Group g : currentUsersGroups)
-        {
-          groupNameSet.add(g.Name);
-        }       
-        for (Medical_Facility__c facility : allMedFacilities)
-        {
-          if ( groupNameSet.contains(facility.Public_Group__c) )
-          // current user is a Medical Facility User
-          {
-            this.usersMedicalFacility = facility.Id;
-          }
-        }        
         this.initiatePatient();
         try {  
         if  (sc.getId() != null  ) {
@@ -109,13 +90,22 @@ public with sharing class PatientExtension {
             if (this.patient != null) {
             	treatmentId = patient.Treatments__r.size()==0 ? null : patient.Treatments__r[0].id;
            	 	loadTreatments();
+              URLparams = System.currentPagereference().getParameters();
+              if (URLparams.containsKey('tid'))
+              {
+                for (Treatment__c t : treatments)
+                {
+                  if (t.id == URLparams.get('tid')) treatmentId = t.id;
+                }                
+              }               
             	setTreatmentInfo();
 //            	if ( patient.Tasks.size() > 0 ) this.tasks = patient.tasks;  
 //            	searchTask();                                                   
         	} 
         }
         if (patient == null) this.patient = new Patient__c ();
-        if (treatment == null) initiateTreatment();                 
+        if (treatment == null) initiateTreatment();
+        loadProcedureNames();
         	setInitialViewState();
         	loadAssignablePCCsList();
         	if (patient.Medical_Profile_Type__c == null) patient.Medical_Profile_Type__c = prmConfig.Default_Medical_Profile__c;
@@ -306,11 +296,12 @@ system.debug('got Exception'+ex2);
     private void setTreatmentInfo() {
         treatment = treatmentId == null? null : treatmentMap.get(treatmentId);
         if (treatment == null) return;
+        assignablePCCs = null;
         treatmentWithChildren = treatmentMap==null?null:treatmentMap.get( treatmentId );
         this.travel = treatment.Travel__c==null?(new Travel__c()): treatment.Travel__r;
         setQuoteInfo();
         loadProcedureList();
-        loadOnsiteCoordinators();
+        loadAssignablePCCsList();
     }
     
     public PageReference setTreatment() {
@@ -556,34 +547,19 @@ system.debug('got Exception'+ex2);
     }
   }
   
-  private void loadOnsiteCoordinators() {
-    onsiteCoordinators = new List<SelectOption>();
-    if (treatment.Destination_Facility__c == null) {
-        User[] prmUsers = AccessUtil.getFacilitatorOrgUsers();
-        for (User user : prmUsers) {
-            onsiteCoordinators.add(new SelectOption(user.id, user.Name));
-        }
-    } else {
-   		User[] medFacUsers = AccessUtil.getMedicalFacilityUsers(treatment.Destination_Facility__c);
-        for (User user : medFacUsers) {
-            onsiteCoordinators.add(new SelectOption(user.id, user.Name));
-        }
-	}
-  }
-  
     private void loadProcedureList() {
         procedureList = new List<SelectOption>();
         Procedure__c[] procs = new List<Procedure__c>();
         if (treatment.Destination_Facility__c == null) //don't filter on Destination Facility
         {
 	        procs = [SELECT Name, Doctor__r.Last_Name__c, Facility__r.Name, Price__c FROM Procedure__c 
-	            where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure__c
+	            where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure_Subcategory__c
 	            order by Doctor__r.Last_Name__c, Facility__r.Name];
         }
         else //do filter on Destination Facility
         {
           procs = [SELECT Name, Doctor__r.Last_Name__c, Facility__r.Name, Price__c FROM Procedure__c 
-            where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure__c
+            where Procedure_Category__c = :treatment.Procedure_Category__c and Name = :treatment.Procedure_Subcategory__c
                     and Facility__c = : treatment.Destination_Facility__c
             order by Doctor__r.Last_Name__c, Facility__r.Name];
         }
@@ -597,7 +573,7 @@ system.debug('got Exception'+ex2);
     private Map<ID, ID> doctorContactToUserMap = null;
     private void loadTreatments() {
         treatments = PatientUtil.getTreatmentsWithChildren(patient.Id);
-//        treatments = [select id, Preferred_Travel_Date_To__c, Preferred_Travel_Date_From__c, Procedure__c, Procedure_Category__c, Travel__c, Travel__r.Id from treatment__c where patient__c = :patient.id];
+//        treatments = [select id, Preferred_Travel_Date_To__c, Preferred_Travel_Date_From__c, Procedure_Subcategory__c, Procedure_Category__c, Travel__c, Travel__r.Id from treatment__c where patient__c = :patient.id];
         treatmentMap = new Map<ID, Treatment__c>();
         Set<ID> doctorContactIds = new Set<ID>();
         for (Treatment__c treatment : treatments) {
@@ -615,37 +591,28 @@ system.debug('got Exception'+ex2);
     }
     private void loadNetworkContactsList() {
     	insuranceNetworkContacts = new List<SelectOption>();
-        User[] users = AccessUtil.getInsuranceNetworkUsers();
+        Insurance_Network_User__c[] users = AccessUtility.getInsuranceNetworkUsers();
     	if (users != null && users.size()>0) {
-    		for (User user : users) {
-    			insuranceNetworkContacts.add(new SelectOption(user.id, user.Name));
+    		for (Insurance_Network_User__c user : users) {
+    			insuranceNetworkContacts.add(new SelectOption(user.Insurance_Contact__c, user.Insurance_Contact__r.Name));
     		}
     	}
     }
-    private void loadAssignablePCCsList() 
-    {
-    	User[] PCCs = AccessUtil.getFacilitatorOrgUsers();
-    	Logger.info('PCCs: ' + PCCs);
-    	assignablePCCs = new List<SelectOption>();
-    	if (PCCs != null && PCCs.size()>0)
-    	{
-    		for(User user: PCCs)
-    		{
-    			assignablePCCs.add(new SelectOption(user.id, user.Name));
+    private void loadAssignablePCCsList() {
+    	if (assignablePCCs==null) {
+	    	assignablePCCs = new List<SelectOption>();
+   			for (Prm_User__c user : prmConfig.Prm_Users__r) {
+   				assignablePCCs.add(new SelectOption(user.User__c, user.User__r.Name));
     		}
+    		if (treatment.Destination_Facility__c != null) {
+    		   	Medical_Facility_User__c[] facilityUsers = AccessUtility.getMedicalFacilityUsers(treatment.Destination_Facility__c);
+    	   		if (facilityUsers != null && facilityUsers.size()>0) {
+	        		for(Medical_Facility_User__c user: facilityUsers) {
+	          			assignablePCCs.add(new SelectOption(user.User__c, user.User__r.Name));
+	        		}
+	        	}
+	      	}
     	}
-    	if (treatment.Destination_Facility__c != null)
-    	{
-    	   User[] facilityUsers = AccessUtil.getMedicalFacilityUsers(treatment.Destination_Facility__c);
-    	   if (facilityUsers != null && facilityUsers.size()>0)
-	      {
-	        for(User user: facilityUsers)
-	        {
-	          assignablePCCs.add(new SelectOption(user.id, user.Name));
-	        }
-	      }
-    	} 
-    	
     }
     private void addError( DmlException dmlEx) {
         addError(dmlEx.getDmlMessage(0));
@@ -661,6 +628,32 @@ system.debug('got Exception'+ex2);
         patient.Advocate_Phone__c = (patient.Advocate_Phone__c==null)?patient.Phone__c:patient.Advocate_Phone__c;
         patient.Advocate_Name__c = (patient.Advocate_Name__c==null)?patient.Name:patient.Advocate_Name__c;
         return null;
+    }
+    
+    public List<SelectOption> getProcedureNames() {
+    	List<SelectOption> retList = new List<SelectOption>();
+    	for (String s : procedure_Names) {
+    		retList.add(new SelectOption(s,s));
+    	}
+    	return retList;
+    }
+    private List<String> procedure_Names = null;
+    public PageReference refreshProcedureNames() {
+    	loadProcedureNames();
+    	return null;
+    }
+    private void loadProcedureNames() {
+    	AggregateResult[] results = null;
+//    	if (treatment.Destination_Facility__c==null) {
+    		results = [SELECT Name FROM Procedure__c where Procedure_Category__c=:treatment.Procedure_Category__c group by Name order by Name];
+/*    	} else {
+    		results = [SELECT Name FROM Procedure_Subcategory__c where Procedure_Category__c=:treatment.Procedure_Category__c AND
+    			Facility__c=:treatment.Destination_Facility__c group by Name order by Name];
+    	}*/
+    	procedure_Names = new List<String>();
+    	for (AggregateResult result : results) {
+    		procedure_Names.add((String)result.get('Name'));
+    	}
     }
     
 /*    public pagereference showEmailForm() {
@@ -798,7 +791,8 @@ system.debug('retrieveMedicalProfile surveyId='+surveyId);
     private PRM_Config__c prmConfig=null;
     private void loadPrmConfig() {
     	if (prmConfig==null) {
-    		PRM_Config__c[] configs = [select Default_Medical_Profile__c from PRM_Config__c limit 1];
+    		PRM_Config__c[] configs = [select Default_Medical_Profile__c,
+    			(select User__c, User__r.Name from PRM_Users__r order by Name) from PRM_Config__c limit 1];
     		if (configs.size()>0) prmConfig = configs[0];
     	}
     }

@@ -195,6 +195,11 @@
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>User_Name__c</fields>
+        <relatedList>Medical_Facility_User__c.Medical_Facility__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
         <relatedList>Med_Facility_Email_Template__c.Medical_Facility__c</relatedList>
     </relatedLists>
     <relatedLists>

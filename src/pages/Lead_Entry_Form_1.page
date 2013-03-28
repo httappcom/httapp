@@ -26,7 +26,7 @@
       </div>
       <div class="question">
         <label>Procedure:</label>
-        <apex:inputfield value="{!treatment.Procedure__c}" />      
+        <apex:inputfield value="{!treatment.Procedure_Subcategory__c}" />      
       </div>      
       <apex:commandButton value="Request a Quote" action="{!requestQuote}"/>
     </apex:form>

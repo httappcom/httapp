@@ -30,6 +30,14 @@
          }
         );
 
+		function initializePatientId() {
+			var patientId = j$("input[id*=':PatientId']").val();
+			var email = j$("input[id*=':Email']").val();
+			if (email!=null && email!='' && (patientId==null|| patientId=='')) {
+				j$("input[id*=':PatientId']").val(email);
+			} 
+		}
+		
     </script>
     
     <!-- This of course is required. The full version (not .min) is also included in the js directory -->
@@ -210,7 +218,8 @@
     </apex:actionFunction> 
     <apex:actionFunction status="overlayStatus" name="medInfoIndicatorChanged" action="{!medInfoIndicatorChanged}" reRender="mainPanel,updateTreatmentPanel"/>
     <apex:actionFunction status="overlayStatus" name="updateTreatmentSection" action="{!updateTreatment}" reRender="mainPanel, errMsgs"/>
-   	<apex:actionFunction status="overlayStatus" name="showSurveyResults" action="{!showSurveyResults}" reRender="surveyResultsPanel,errMsgs,updateTreatmentPanel"/> 
+   	<apex:actionFunction status="overlayStatus" name="showSurveyResults" action="{!showSurveyResults}" reRender="surveyResultsPanel,errMsgs,updateTreatmentPanel"/>
+   	<apex:actionFunction status="overlayStatus" name="refreshProcedureNames" action="{!refreshProcedureNames}" reRender="procCatSelectPnl"/>
 <div class="wrapper">
     <!--
     <div id="rightpanelname" style="position:absolute; right:0; top:0;z-index:10001">
@@ -320,11 +329,15 @@
         </apex:panelGrid>
         <apex:pageblocksection title="Contact Details" id="pbs_Patient" columns="2">
             <apex:commandbutton action="{!saveTreatment}" status="overlayStatus" value="Save Patient" rerender="errMsgs,mainPanel,treatmentList,updateTreatmentPanel"/>
-            <apex:pageblocksectionitem helpText="" > 
-                <apex:outputLabel rendered="{!ISNULL(patient.id)}" value="Assigned To PCC"/>
-					<apex:selectList value="{!treatment.Assigned_To__c}" multiselect="false" size="1">
-						<apex:selectOptions value="{!assignablePCCs}" />
-					</apex:selectList>                
+            <apex:pageblocksectionitem helpText="" rendered="{!!ISNULL(patient.id)}" /> 
+            <apex:pageblocksectionitem helpText="" rendered="{!ISNULL(patient.id)}" > 
+                <apex:outputLabel value="Assigned To PCC"/>
+                	<apex:outputPanel >
+						<apex:selectList value="{!treatment.Assigned_To__c}" multiselect="false" size="1" >
+							<apex:selectOptions value="{!assignablePCCs}" />
+						</apex:selectList>
+						<apex:outputField value="{!treatment.Assigned_Timestamp__c}"/>
+					</apex:outputPanel>                
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Suffix"/>
@@ -350,9 +363,10 @@
                 <apex:outputLabel value="State/Province"/>
                 <apex:inputField value="{!patient.State__c}"  taborderhint="100"/>
             </apex:pageblocksectionitem>
-            <apex:pageblocksectionitem helpText=""> 
-                <apex:outputLabel value="Payment Type" rendered="{!ISNULL(patient.id)}"/>
-                <apex:inputField value="{!treatment.Payment_Type__c}" taborderhint="35" required="true" rendered="{!ISNULL(patient.id)}"/>
+            <apex:pageblocksectionitem helpText="" rendered="{!!ISNULL(patient.id)}"/> 
+            <apex:pageblocksectionitem helpText="" rendered="{!ISNULL(patient.id)}"> 
+                <apex:outputLabel value="Payment Type"/>
+                <apex:inputField value="{!treatment.Payment_Type__c}" taborderhint="35" required="true"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Zip/Postal Code"/>
@@ -360,7 +374,7 @@
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Email"/>
-                <apex:inputField value="{!patient.Email__c}"  taborderhint="40"/>
+                <apex:inputField id="Email" value="{!patient.Email__c}"  taborderhint="40" onchange="initializePatientId();"/>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Country"/>
@@ -416,6 +430,10 @@
                 <apex:outputLabel value="Advocate Email"/>
                 <apex:inputField value="{!patient.Advocate_Email__c}" taborderhint="360"/>
            </apex:pageblocksectionitem>
+            <apex:pageblocksectionitem >
+            	<apex:outputLabel value="Patient Id"/>
+            	<apex:inputText id="PatientId" value="{!patient.External_ID__c}"/>
+            </apex:pageblocksectionitem>
         </apex:pageblocksection>
         <apex:outputPanel rendered="{!!ISNULL(patient.id)}">
         <script>
@@ -430,9 +448,12 @@
 	                    <apex:commandbutton action="{!cancelTreatment}" value="Cancel" rendered="{!ISNULL(treatmentId)}"/>
 	                    <apex:pageblocksectionitem helpText="" > 
 	                    	<apex:outputLabel rendered="{!!ISNULL(patient.id)}" value="Assigned To PCC"/>
-							<apex:selectList value="{!treatment.Assigned_To__c}" multiselect="false" size="1">
-								<apex:selectOptions value="{!assignablePCCs}" />
-							</apex:selectList>
+	                    	<apex:outputPanel rendered="{!!ISNULL(patient.id)}" >
+								<apex:selectList value="{!treatment.Assigned_To__c}" multiselect="false" size="1">
+									<apex:selectOptions value="{!assignablePCCs}" />
+								</apex:selectList>
+								<apex:outputField value="{!treatment.Assigned_Timestamp__c}"/>
+							</apex:outputPanel>
 	                    </apex:pageblocksectionitem>
                     </apex:panelGrid>
                 </apex:outputPanel>
@@ -463,7 +484,7 @@
             <apex:pageblocksectionitem helpText="">
             	<apex:outputLabel value="Payment Type"/>
             	<apex:outputPanel >
-            		<apex:outputField value="{!treatment.Payment_Type__c}" rendered="{!!ISNULL(patient.id)}"/>
+            		<apex:outputField value="{!treatment.Payment_Type__c}" rendered="{!ISNULL(patient.id)}"/>
 	                <apex:inputField value="{!treatment.Payment_Type__c}" taborderhint="600" required="true" rendered="{!!ISNULL(patient.id)}"/>
             	</apex:outputPanel>
             </apex:pageblocksectionitem> 
@@ -481,10 +502,11 @@
             <apex:pageblocksectionitem helpText=""> 
                 <apex:outputLabel value="Procedure" style="width: 15%;"/>
                 <apex:outputPanel id="procCatSelectPnl">
-                    <apex:inputField value="{!treatment.Procedure_Category__c}" tabOrderHint="220"/>
-                    <apex:inputfield value="{!treatment.Procedure__c}" tabOrderHint="212">
-                         <apex:actionSupport event="onchange" rerender="mainPanel" action="{!changeProcedureSubCategory}"/>
-                    </apex:inputfield>
+                    <apex:inputField value="{!treatment.Procedure_Category__c}" tabOrderHint="220" onchange="refreshProcedureNames();"/>
+                    <apex:selectList value="{!treatment.Procedure_Subcategory__c}" size="1" >
+                        <apex:selectOptions value="{!procedureNames}" />
+                        <apex:actionSupport event="onchange" rerender="mainPanel" action="{!changeProcedureSubCategory}"/>
+                    </apex:selectList>
                 </apex:outputPanel>
             </apex:pageblocksectionitem>
             <apex:pageblocksectionitem helpText=""> 
@@ -1036,7 +1058,7 @@
                     <apex:pageblocksectionitem >
                         <apex:outputlabel value="Onsite Coordinator"/>
                         <apex:selectList value="{!treatment.Onsite_Coordinator__c}" multiselect="false" size="1">
-                            <apex:selectOptions value="{!onsiteCoordinators}" />
+                            <apex:selectOptions value="{!assignablePCCs}" />
                         </apex:selectList>
                     </apex:pageblocksectionitem>
                 </apex:pageblocksection>
@@ -1177,7 +1199,7 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header"><br/>Procedure</apex:facet>
-                            <apex:outputfield value="{!t.Procedure__c}"/>
+                            <apex:outputfield value="{!t.Procedure_Subcategory__c}"/>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header"><br/>Doctor</apex:facet>

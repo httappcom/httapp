@@ -1,0 +1,8 @@
+<apex:page sidebar="false" showheader="false">
+<head>
+<title>My Recent ACtivity</title>
+</head>
+<apex:form id="MyRecentActivityForm">
+	<c:RecentActivity />
+</apex:form>
+</apex:page>

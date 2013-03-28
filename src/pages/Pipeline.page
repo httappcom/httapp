@@ -1,4 +1,4 @@
-<apex:page Controller="PipelineController" sidebar="false" action="{!pollForNewLeads}">
+<apex:page Controller="PipelineController" sidebar="true" action="{!pollForNewLeads}">
 <head>
 <title>Pipeline</title>
 <apex:includeScript value="{!$Resource.sfscript}" />
@@ -44,7 +44,7 @@
 		                <apex:column value="{!r.Phase__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Stage__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Procedure_Category__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/> 
-		                <apex:column value="{!r.Procedure__c}" headerValue="Procedure" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
+		                <apex:column value="{!r.Procedure_Subcategory__c}" headerValue="Procedure" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Patient__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Destination_Facility__c}" headerValue="Facility" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
 		                <apex:column value="{!r.Next_Follow_Up__c}" styleClass="{!r.Patient_Pipeline_RowStyle__c}"/>
@@ -110,7 +110,7 @@
                     <apex:column value="{!oh.LastModifiedDate}" />
                     <apex:column value="{!oh.Patient__c}"/>
                     <apex:column value="{!oh.Procedure_Category__c}" /> 
-                    <apex:column value="{!oh.Procedure__c}" />
+                    <apex:column value="{!oh.Procedure_Subcategory__c}" />
                     <apex:column value="{!oh.Next_Follow_Up__c}" />
                     <apex:column value="{!oh.Patient__r.Last_Communication__c}" />
                     <apex:column value="{!oh.Patient__r.Phone__c}" /> 

@@ -130,6 +130,15 @@
         <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
+        <fullName>In_Market_Phone_Call</fullName>
+        <field>Task_Specifiers__c</field>
+        <formula>&apos;Final_Departure_Date__c&apos;</formula>
+        <name>In Market Phone Call</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+    </fieldUpdates>
+    <fieldUpdates>
         <fullName>Init_Phase_Inquiry</fullName>
         <field>Phase__c</field>
         <literalValue>Inquiry</literalValue>
@@ -197,15 +206,6 @@
         <reevaluateOnChange>true</reevaluateOnChange>
     </fieldUpdates>
     <fieldUpdates>
-        <fullName>Set_Preparing_Quote_Substage</fullName>
-        <field>Quote_Status__c</field>
-        <literalValue>Preparing Quote</literalValue>
-        <name>Set Preparing Quote Substage</name>
-        <notifyAssignee>false</notifyAssignee>
-        <operation>Literal</operation>
-        <protected>false</protected>
-    </fieldUpdates>
-    <fieldUpdates>
         <fullName>Signed_to_Travel</fullName>
         <field>Phase__c</field>
         <literalValue>Travel</literalValue>
@@ -259,6 +259,15 @@
         <operation>Literal</operation>
         <protected>false</protected>
         <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Surgical_Report_Reminder</fullName>
+        <field>Task_Specifiers__c</field>
+        <formula>&apos;Surgical Report Reminder&apos;</formula>
+        <name>Surgical Report Reminder</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
     </fieldUpdates>
     <fieldUpdates>
         <fullName>To_Closed_Claim_Pending</fullName>
@@ -340,6 +349,7 @@
         <criteriaItems>
             <field>Treatment__c.Patient_Email__c</field>
             <operation>notEqual</operation>
+            <value>Null</value>
         </criteriaItems>
         <description>Workflow rule to fire when a new treatment is created</description>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
@@ -462,29 +472,6 @@
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
-        <fullName>05%2E1 Init Quoting Stage</fullName>
-        <actions>
-            <name>Set_Preparing_Quote_Substage</name>
-            <type>FieldUpdate</type>
-        </actions>
-        <active>false</active>
-        <criteriaItems>
-            <field>Treatment__c.Phase__c</field>
-            <operation>equals</operation>
-            <value>Interaction</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Stage__c</field>
-            <operation>equals</operation>
-            <value>Quoting</value>
-        </criteriaItems>
-        <criteriaItems>
-            <field>Treatment__c.Quote_Status__c</field>
-            <operation>equals</operation>
-        </criteriaItems>
-        <triggerType>onCreateOrTriggeringUpdate</triggerType>
-    </rules>
-    <rules>
         <fullName>06 Signed Quote</fullName>
         <actions>
             <name>Signed_to_Travel</name>
@@ -517,7 +504,7 @@
         <triggerType>onAllChanges</triggerType>
     </rules>
     <rules>
-        <fullName>08 Travel Itinerary Stage</fullName>
+        <fullName>07 Travel Itinerary Stage</fullName>
         <actions>
             <name>Intialize_Travel_Phase</name>
             <type>FieldUpdate</type>
@@ -536,7 +523,7 @@
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
     <rules>
-        <fullName>08%2E1 Travel Phase Email</fullName>
+        <fullName>08 Travel Phase Email</fullName>
         <actions>
             <name>Email_Introducing_Travel_Concierge_Services</name>
             <type>Alert</type>
@@ -615,7 +602,7 @@
             </actions>
             <actions>
                 <name>In_Market_Phone_Call</name>
-                <type>Task</type>
+                <type>FieldUpdate</type>
             </actions>
             <offsetFromField>Treatment__c.Arrival_Time__c</offsetFromField>
             <timeLength>0</timeLength>
@@ -760,10 +747,10 @@
         <workflowTimeTriggers>
             <actions>
                 <name>Surgical_Report_Reminder</name>
-                <type>Task</type>
+                <type>FieldUpdate</type>
             </actions>
             <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-            <timeLength>10</timeLength>
+            <timeLength>8</timeLength>
             <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
         </workflowTimeTriggers>
     </rules>
@@ -790,27 +777,4 @@
         </criteriaItems>
         <triggerType>onCreateOrTriggeringUpdate</triggerType>
     </rules>
-    <tasks>
-        <fullName>In_Market_Phone_Call</fullName>
-        <assignedToType>owner</assignedToType>
-        <dueDateOffset>0</dueDateOffset>
-        <notifyAssignee>true</notifyAssignee>
-        <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Not Started</status>
-        <subject>In Market Phone Call</subject>
-    </tasks>
-    <tasks>
-        <fullName>Surgical_Report_Reminder</fullName>
-        <assignedToType>owner</assignedToType>
-        <description>Double check that the surgical report has been attached to the treatment record.</description>
-        <dueDateOffset>10</dueDateOffset>
-        <notifyAssignee>true</notifyAssignee>
-        <offsetFromField>Treatment__c.Final_Departure_Date__c</offsetFromField>
-        <priority>Normal</priority>
-        <protected>false</protected>
-        <status>Not Started</status>
-        <subject>Surgical Report Reminder</subject>
-    </tasks>
 </Workflow>

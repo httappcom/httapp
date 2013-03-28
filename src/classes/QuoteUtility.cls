@@ -10,7 +10,7 @@ public with sharing class QuoteUtility {
         return [Select id,
                         Total_Price__c,
                         Treatment__r.Name,
-                        Treatment__r.Procedure__c, 
+                        Treatment__r.Procedure_Subcategory__c, 
                         Treatment__r.Patient__r.Name,
                         Treatment__r.Assigned_To__r.Name,                        
                         Arrival_Date__c,

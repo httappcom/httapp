@@ -123,6 +123,7 @@
 <apex:outputPanel layout="block" id="menuTravel" styleClass="{!IF(currentpage == 'Your Travel','menu-item-selected','menu-item')}" onclick="goToYourTravel();">Your Travel</apex:outputPanel>
 <apex:outputPanel layout="block" id="menuTreatment" styleClass="{!IF(currentpage == 'Your Treatment','menu-item-selected','menu-item')}" onclick="goToYourTreatment();">Your Treatment</apex:outputPanel>
 </div>
+<div class="clear"></div>
 <apex:outputPanel id="mainPanel">
 <div id="content-wrapper" class="clearfix">
     <div id="content">
@@ -175,7 +176,7 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Procedure</apex:facet>
-                            <apex:outputfield value="{!t.treatment.Procedure__c}"/>
+                            <apex:outputfield value="{!t.treatment.Procedure_Subcategory__c}"/>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Doctor</apex:facet>
@@ -222,7 +223,7 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Procedure</apex:facet>
-                            <apex:outputfield value="{!t.treatment.Procedure__c}"/>
+                            <apex:outputfield value="{!t.treatment.Procedure_Subcategory__c}"/>
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Doctor</apex:facet>
@@ -248,7 +249,9 @@
                         </apex:column>
                         <apex:column >
                             <apex:facet name="header">Printable<br/>Version</apex:facet>
-                           <a href="{!t.quoteURL}" target="_blank">View</a>
+                            <apex:outputPanel rendered="{!!ISNULL(t.quoteURL)}">
+                           		<a href="{!t.quoteURL}" target="_blank">View</a>
+                           	</apex:outputPanel>
                         </apex:column>
                         <!-- apex:column >
                             <apex:facet name="header">Email</apex:facet>

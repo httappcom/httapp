@@ -10,6 +10,7 @@ public class PatientUtil {
       } else {
         return [Select id, 
                        Name,
+                       External_Id__c,
                        Advocate_Email__c,
                        Advocate_Name__c,
                        Advocate_Phone__c,
@@ -64,6 +65,7 @@ public class PatientUtil {
                                Name,
                        			Assigned_To__c,
                        			Assigned_To__r.Name,
+                       			Assigned_Timestamp__c,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -87,7 +89,7 @@ public class PatientUtil {
                                Preferred_Travel_Date_To__c,
                                Onsite_Coordinator__c,
                                Onsite_Coordinator__r.Email,
-                               Procedure__c, 
+                               Procedure_Subcategory__c, 
                                Procedure_Category__c,
                                Procedure_Date__c,
                                Response_SLA__c, 
@@ -212,6 +214,7 @@ public class PatientUtil {
                                OwnerId,
                        			Assigned_To__c,
                        			Assigned_To__r.Name,
+                       			Assigned_Timestamp__c,
                          	   Surgical_Report_Attached__c,
                                Approval_State__c,
                                Approval_Date__c,
@@ -238,7 +241,7 @@ public class PatientUtil {
                                Preferred_Form_of_Contact__c, 
                                Preferred_Travel_Date_From__c,
                                Preferred_Travel_Date_To__c,
-                               Procedure__c, 
+                               Procedure_Subcategory__c, 
                                Procedure_Category__c,
                                Procedure_Date__c,
                                Response_SLA__c, 
@@ -336,6 +339,7 @@ public class PatientUtil {
   public static List<Patient__c> queryPatientListAll() {
         return [Select id, 
                        Name,
+                       External_Id__c,
                        Advocate_Email__c,
                        Advocate_Name__c,
                        Advocate_Phone__c,
@@ -389,6 +393,7 @@ public class PatientUtil {
                                Name,
                        			Assigned_To__c,
                       			Assigned_To__r.Name,
+                       			Assigned_Timestamp__c,
                                Destination_Facility__c,
                                Additional_Amount__c,
                                Best_Time_to_Contact__c, 
@@ -412,7 +417,7 @@ public class PatientUtil {
                                Preferred_Form_of_Contact__c, 
                                Preferred_Travel_Date_From__c,
                                Preferred_Travel_Date_To__c,
-                               Procedure__c, 
+                               Procedure_Subcategory__c, 
                                Procedure_Category__c,
                                Procedure_Date__c,
                                Response_SLA__c, 
@@ -531,7 +536,7 @@ public class PatientUtil {
         
         // query patient for data
         Patient__c patient = [select    id,
-                                        Name, 
+                                        Name,
                                         Patient_First_Name__c, 
                                         Patient_Last_Name__c, 
                                         email__c, 
@@ -567,6 +572,14 @@ public class PatientUtil {
     		futureCreatePortalUser(patientId);
     	}
     }
+    
+    public static String makeNickNameFromEmail(String email) {
+        String nickName = email.substringBefore('@')+email.substringAfter('@').substringBefore('.');
+        if (nickName.length()>40) {
+        	nickName=nickName.substring(0,40);
+        }
+        return nickName;
+    }
     /**
      * mWicherski@mkpartners.com
      * futureCreatePortalUser
@@ -578,6 +591,7 @@ public class PatientUtil {
         
         // query patient for data
         Patient__c patient = [select    id, 
+        								External_Id__c,
                                         Patient_First_Name__c, 
                                         Patient_Last_Name__c, 
                                         email__c, 
@@ -597,9 +611,9 @@ public class PatientUtil {
         u.firstname = patient.patient_First_name__c;
         u.lastname = patient.patient_last_name__c;
         u.Alias = username.substring(0,5)+username.substring(username.length()-2,username.length());
-        u.Username = username+='@patient.nuehealth.com';
+        u.Username = patient.External_Id__c;
         u.Email = patient.email__c;
-        u.CommunityNickname = username; 
+        u.CommunityNickname = makeNickNameFromEmail( u.Email ); 
         u.TimeZoneSidKey = 'America/Tijuana';
         u.LocaleSidKey = 'en_US';
         u.EmailEncodingKey ='UTF-8';

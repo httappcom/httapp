@@ -110,7 +110,7 @@
       </div>
       <div class="question">
         <label>Procedure:</label>
-        <apex:inputfield value="{!treatment.Procedure__c}" />      
+        <apex:inputfield value="{!treatment.Procedure_Subcategory__c}" />      
       </div>
       <div class="question">
           <label>Preferred facility type and location:</label>

@@ -134,7 +134,7 @@ public with sharing class PipelineController {
     this.tasks = new List<Task>();
     this.payments = new List<Payment__c>();
     try {
-        active = [SELECT Name, Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure__c,
+        active = [SELECT Name, Phase__c, Stage__c, LastModifiedDate, Procedure_Category__c, Patient__r.Name, Next_Follow_Up__c, Procedure_Subcategory__c,
         		Patient__r.Phone__c, Patient__r.Time_Zone__c, CreatedDate, Treatment_Summary__c, Patient_Pipeline_RowStyle__c, 
         		Destination_Facility__c, Ownerid, Owner.Name, Assigned_To__c, Assigned_To__r.Name 
         	FROM Treatment__c
@@ -218,7 +218,7 @@ public with sharing class PipelineController {
           }           
         }  
         myPost_TravelNumber = myPost_Travel.size();          
-        on_hold = [Select Patient__r.Name, Patient__r.Phone__c, LastModifiedDate, Next_Follow_Up__c, Procedure_Category__c, Procedure__c, Patient__r.Last_Communication__c,
+        on_hold = [Select Patient__r.Name, Patient__r.Phone__c, LastModifiedDate, Next_Follow_Up__c, Procedure_Category__c, Procedure_Subcategory__c, Patient__r.Last_Communication__c,
                           Assigned_To__c 
                               From Treatment__c 
                               Where Phase__c = : PickListDefines.Phase.Interaction 

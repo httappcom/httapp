@@ -11,7 +11,7 @@ public without sharing class messaging_Controller {
     public void setTreatmentId(Id newId) {
     	if (treatmentId != newId) {
 	        treatmentId = newId;
-    	    careTeamMemberCache = null;
+    	    careTeamMemberMap = null;
         	clearFilterBy();
 	        mode = 'Text';
     	    setTreatment(treatmentId);
@@ -48,11 +48,13 @@ public without sharing class messaging_Controller {
     }
     
     public class commentWrapper {
+    	private Private_Message__c parentMsg;
         public Id RelatedRecordId {get;set;}
         public Id ParentId {get;set;}
         public Id InsertedById {get;set;}
         public Id FeedItemId {get;set;}
         public DateTime CreatedDate {get;set;}
+        public UILookup__c lu {get; private set;}
         public Id CreatedById {get;set;}
         public String CreatedByName {get;set;}
         public String CommentType {get;set;}
@@ -67,18 +69,38 @@ public without sharing class messaging_Controller {
             InsertedById = c.CreatedById;
             FeedItemId = c.Communication__c;
             CreatedDate = c.CreatedDate;
+            lu = new UILookup__c(Timestamp__c=CreatedDate);
             CreatedById = c.CreatedById;
             CreatedByName = c.CreatedBy.Name;
             CommentType = '';
             CommentBody = c.Body__c;
             recordId = c.Id;
         }
-        public commentWrapper(id pId){
+        public commentWrapper(Private_Message_Comment__c comment){
+            RelatedRecordId = null; 
+            ParentId = null;
+            InsertedById = comment.CreatedById;
+            FeedItemId = comment.Private_Message__c;
+            CreatedDate = comment.CreatedDate;
+            lu = new UILookup__c(Timestamp__c=CreatedDate);
+            CreatedById = comment.CreatedById;
+            CreatedByName = comment.CreatedBy.Name;
+            CommentType = '';
+            CommentBody = comment.Body__c;
+            recordId = comment.Id;
+        }
+        public commentWrapper(Private_Message__c parentMessage){
+        	parentMsg = parentMessage;
+            ParentId = parentMsg.id;
+            lu = new UILookup__c();
+        }
+        public commentWrapper(Id pId){
             ParentId = pId;
+            lu = new UILookup__c();
         }
     }
 
-    public class messageWrapper {
+    public class messageWrapper implements Comparable {
     	public ID tId;
         public Attachment attachment {get;set;}
         public String body {get;set;}
@@ -86,6 +108,7 @@ public without sharing class messaging_Controller {
         public Id createdById {get;set;}
         public String createdByName {get;set;}
         public DateTime createdDateTime {get;set;}
+        public UILookup__c lu {get; private set;}
         public String fileId {get;set;}
         public String fileName {get;set;}
         public String linkURL {get;set;}
@@ -100,7 +123,14 @@ public without sharing class messaging_Controller {
         public messageWrapper(){
             attachment = new Attachment();
             showNewComment = false;
+            lu = new UILookup__c();
         }
+		public Integer compareTo(Object compareTo) {
+			MessageWrapper compareToMsg = (MessageWrapper)compareTo;
+			if (createdDateTime<compareToMsg.createdDateTime) return 1;
+			if (createdDateTime==compareToMsg.createdDateTime) return 0;
+			return -1;
+		}
         public messageWrapper(Communication__c c){
         	tId = c.Treatment__c;
             attachment = new Attachment();
@@ -112,6 +142,7 @@ public without sharing class messaging_Controller {
             createdById = c.CreatedById;
             createdByName = fixNulls(c.CreatedBy.Name);
             createdDateTime = c.CreatedDate;
+            lu = new UILookup__c(Timestamp__c=createdDateTime);
             fileId = c.File_Id__c;
             fileName = c.File_Name__c;
             linkName = c.link_Name__c;
@@ -127,18 +158,43 @@ public without sharing class messaging_Controller {
             title = fixNulls(c.Title__c);
         }
 
+        public messageWrapper(Private_Message__c msg) {
+            attachment = new Attachment();
+            body = fixNulls(msg.Body__c);
+            comments = new List<commentWrapper>();
+            for ( Private_Message_Comment__c comment : msg.Private_Message_Comments__r ) {
+                comments.add(new commentWrapper(comment));
+            }
+            createdById = msg.Sender__c;
+            createdByName = fixNulls(msg.Sender__r.Name);
+            createdDateTime = msg.CreatedDate;
+            lu = new UILookup__c(Timestamp__c=createdDateTime);
+            messageType = 'Text';
+            newComment = new commentWrapper(msg);
+            recordId = msg.Id;
+            showNewComment = false;
+        }
+
         public PageReference addNewComment(){
             showNewComment = true;
+            lu = new UILookup__c();
             return null;
         }
 
         public PageReference insertNewComment(){
-            Communication__c comment = new Communication__c();
-            comment.Body__c = newComment.CommentBody;
-            comment.Communication__c = newComment.ParentId;
-            comment.Treatment__c = tId;
-            insert comment;
-            
+            if ((newComment.ParentId.getSObjectType()+'') == 'Communication__c') {
+            	Communication__c comment = new Communication__c();
+	            comment.Body__c = newComment.CommentBody;
+    	        comment.Communication__c = newComment.ParentId;
+        	    comment.Treatment__c = tId;
+            	insert comment;
+            } else {
+            	Private_Message_Comment__c comment = new Private_Message_Comment__c(
+            		Private_Message__c = newComment.ParentId,
+            		Body__c = newComment.CommentBody,
+            		Recipient__c=UserInfo.getUserId()==newComment.parentMsg.Sender__c?newComment.parentMsg.Recipient__c:UserInfo.getUserId());
+            	insert comment;
+            }
             newComment = new commentWrapper(newComment.ParentId);
             return null;
         }
@@ -146,6 +202,10 @@ public without sharing class messaging_Controller {
 
     public String mode {get;set;}
     public String topicId {get;set;}
+    public String getPostButtonLabel() {
+    	if (newMessage==null || newMessage.parentId==null) return 'Share';
+    	return (newMessage.ParentId.getSObjectType()+'')=='Topic__c'?'Share':'Send Private Message';
+    } 
     public ID memberId {get; set; }
     public Care_Team_Member__c newCareTeamMember {get;set;}
     public Topic__c newTopic {get;set;}
@@ -157,6 +217,9 @@ public without sharing class messaging_Controller {
         mode = 'Text';
     }
 
+	public PageReference postTopicChanged() {
+		return null;
+	}
     public PageReference addNewCareTeamMember(){
         newTopic = null;
         newCareTeamMember = new Care_Team_Member__c();
@@ -174,7 +237,7 @@ public without sharing class messaging_Controller {
     public PageReference insertNewCareTeamMember(){
         if ( newCareTeamMember.User__c != null && newCareTeamMember.Role__c != null ) {
             CareTeamUtil.addMembersToCareTeam( new List<Care_Team_Member__c>{newCareTeamMember});
-            careTeamMemberCache = null;
+            careTeamMemberMap = null;
 //          newCareTeamMember = null;
         } else {
             
@@ -183,38 +246,55 @@ public without sharing class messaging_Controller {
     }
 
     public PageReference insertNewMessage(){
-        Communication__c c = new Communication__c();
-        c.Body__c = newMessage.Body;
-        if ( newMessage.linkURL != null ){
-            if ( newMessage.linkURL.contains('http://') || newMessage.linkURL.contains('https://') ){
-                c.Link_URL__c = newMessage.linkURL;
-            } else {
-                c.Link_URL__c = 'http://'+newMessage.linkURL;
-            }
-        }
-        if ( newMessage.linkName != null ){
-            c.Link_Name__c = newMessage.linkName;
-        }
-        c.Type__c = mode;
         if ( newMessage.parentId != null ) {
             String objectType = newMessage.parentId.getSObjectType()+'';
   system.debug('objectType='+objectType+', treatmdntId='+treatmentId); 
-            c.Treatment__c = treatmentId;
             if ( objectType == 'Topic__c' ){
-                c.Topic__c = newMessage.parentId;
+			        Communication__c comm = new Communication__c();
+	    	      comm.Treatment__c = treatmentId;
+	    		    comm.Body__c = newMessage.Body;
+	        		if ( newMessage.linkURL != null ){
+	            		if ( newMessage.linkURL.contains('http://') || newMessage.linkURL.contains('https://') ){
+	                		comm.Link_URL__c = newMessage.linkURL;
+			            } else {
+	    		            comm.Link_URL__c = 'http://'+newMessage.linkURL;
+	        		    }
+		        	}
+		    	    if ( newMessage.linkName != null ){
+	    	    	    comm.Link_Name__c = newMessage.linkName;
+	        		}
+			    		comm.Type__c = mode;
+			        comm.Topic__c = newMessage.parentId;
+					    if (careTeamMembers.isEmpty()) careTeamMembers = getCareTeamMemberList();
+			        comm.Notification_Recipients__c = '';
+			        for (Care_Team_Member__c ctm : careTeamMembers)
+			        {
+			        	if (ctm.User__c != userInfo.getUserId() && ctm.Role__c != 'Patient' && ctm.Role__c != 'Doctor')
+			        	{
+			        		comm.Notification_Recipients__c += (String)ctm.User__c + ',';
+			        	}			        	
+			        }
+			        comm.Notification_Recipients__c = comm.Notification_Recipients__c.subString(0, comm.Notification_Recipients__c.length() - 1); 
+			        insert comm;
             } else
-            if ( objectType == 'Care_Team_Member__c' ){
-                c.Care_Team_Member__c = newMessage.parentId;
-                c.From_User__c = thisUserCareTeamId;
+            if ( objectType == 'Care_Team_Member__c' ) {
+	            ID senderUserId = UserInfo.getUserId();
+    	        Care_Team_Member__c crMember = [select User__c, User__r.UserType from Care_Team_Member__c where id=:newMessage.parentId limit 1];
+        	    ID recipientUserId = crMember.User__c;
+        	    Boolean reassignOwnership = crMember.User__r.UserType=='Standard' && UserInfo.getUserType()=='CSPLitePortal'; 
+            	Private_Message__c privateMsg = new Private_Message__c(
+            		OwnerId=reassignOwnership?recipientUserId:senderUserId, 
+            		Body__c=newMessage.Body, Sender__c=senderUserId, Recipient__c=recipientUserId );
+            	insert privateMsg;
+            	if (crMember.User__r.UserType=='Standard' && privateMsg.OwnerId!=recipientUserId) PrivateMessageUtil.addSharing(privateMsg);
             }
-            insert c;
-            if ( mode == 'ContentPost' ){
-                newMessage.Attachment.ParentId = c.Id;
+/*            if ( mode == 'ContentPost' ) {
+                newMessage.Attachment.ParentId = comm.Id;
                 insert newMessage.Attachment;
-                c.File_Id__c = newMessage.Attachment.Id;
-                c.File_Name__c = newMessage.Attachment.Name;
-                update c;
-            }
+                comm.File_Id__c = newMessage.Attachment.Id;
+                comm.File_Name__c = newMessage.Attachment.Name;
+                update comm;
+            }*/
         }
         newMessage = new messageWrapper();
         return null;
@@ -259,36 +339,57 @@ public without sharing class messaging_Controller {
 system.debug('getMessageList called topicId='+topicId+', memberId='+memberId+', thisUserCareTeamId='+thisUserCareTeamId);
         if (thisUserCareTeamId == null) getCareTeamMemberList();
 system.debug('thisUserCareTeamId 2='+thisUserCareTeamId);
-        String queryString = 'SELECT ';
-        queryString += 'Id, Treatment__c, Body__c, Communication__c, Communication__r.Name, CreatedById, CreatedBy.Name, CreatedDate, File_Id__c, File_Name__c, Link_Name__c, Link_Url__c, Title__c, Topic__c, Topic__r.Name, Type__c, ';
-        queryString += '(SELECT Id, Body__c, Communication__c, CreatedDate, CreatedBy.Name FROM Communications__r order BY CreatedDate LIMIT 10) ';
-        queryString += ' FROM Communication__c ';
-        queryString += ' where ';
-        if (memberId != null && topicId == null) {
-            if (memberId == this.thisUserCareTeamId) {
-                //Private Message from this User
-                queryString += 'From_User__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' or ';
-                queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' ';
-            } else {
-                queryString += '(From_User__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' and ';
-                queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(memberId) +'\') or ';
-                queryString += '(From_User__c = \''+String.escapeSingleQuotes(memberId) +'\' and ';
-                queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\')  ';
-            }
-        } else if (memberId == null && topicId == null) {
-            queryString += 'From_User__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' or ';
-            queryString += 'Care_Team_Member__c = \''+String.escapeSingleQuotes(thisUserCareTeamId) +'\' or ';
-            queryString += 'Topic__r.Treatment__c = \''+String.escapeSingleQuotes(treatmentId) +'\' ';
-        } else {
-            queryString += 'Topic__c = \''+String.escapeSingleQuotes(topicId) +'\' ';
-        }
-        queryString += ' order by CreatedDate DESC';
-        queryString += ' limit 20';
-        MessageList = new List<messageWrapper>();
+	    MessageList = new List<messageWrapper>();
+	
+		if (topicId != null || memberId == null) {
+	        String queryString = 'SELECT ';
+    	    queryString += 'Id, Treatment__c, Body__c, Communication__c, Communication__r.Name, CreatedById, CreatedBy.Name, CreatedDate, File_Id__c, File_Name__c, Link_Name__c, Link_Url__c, Title__c, Topic__c, Topic__r.Name, Type__c, ';
+        	queryString += '(SELECT Id, Body__c, Communication__c, CreatedDate, CreatedBy.Name FROM Communications__r order BY CreatedDate LIMIT 10) ';
+	        queryString += ' FROM Communication__c ';
+        	queryString += ' where ';
+        	if (topicId == null) {
+    	        queryString += 'Topic__r.Treatment__c = \''+String.escapeSingleQuotes(treatmentId) +'\' ';
+        	} else {
+            	queryString += 'Topic__c = \''+String.escapeSingleQuotes(topicId) +'\' ';
+        	}
+	        queryString += ' order by CreatedDate DESC';
+    	    queryString += ' limit 20';
 system.debug('qry='+queryString);
-        for ( Communication__c n : database.query(queryString) ){
-            MessageList.add(new messageWrapper(n));
-        }
+	        for ( Communication__c n : database.query(queryString) ){
+    	        MessageList.add(new messageWrapper(n));
+        	}
+		}
+		if (topicId==null) {
+	        String queryString = 'SELECT ';
+    	    queryString += 'Id, Parent__c, Body__c, CreatedDate, Sender__c, Sender__r.Name, Recipient__c, ';
+        	queryString += '(SELECT Id, Private_Message__c, Body__c, CreatedDate, CreatedById, CreatedBy.Name  FROM Private_Message_Comments__r order BY CreatedDate LIMIT 10) ';
+	        queryString += ' FROM Private_Message__c ';
+   	    	queryString += ' where ';
+			ID thisUserId = UserInfo.getUserId();
+        	if (memberId != null) {
+				ID selectedUserId = lookupCareTeamMemberUserId( memberId );
+            	if (memberId == this.thisUserCareTeamId) {
+                	//Private Message from this User
+	                queryString += 'Sender__c = \''+thisUserId +'\' or ';
+    	            queryString += 'Recipient__c = \''+thisUserId +'\' ';
+        	    } else {
+            	    queryString += '(Sender__c = \''+thisUserId +'\' and ';
+                	queryString += 'Recipient__c = \''+selectedUserId +'\') or ';
+	                queryString += '(Sender__c = \''+selectedUserId +'\' and ';
+    	            queryString += 'Recipient__c = \''+thisUserId +'\')  ';
+        	    }
+        	} else {
+                queryString += 'Sender__c = \''+thisUserId +'\' or ';
+   	            queryString += 'Recipient__c = \''+thisUserId +'\' ';
+        	}
+	        queryString += ' order by CreatedDate DESC';
+    	    queryString += ' limit 20';
+system.debug('qry='+queryString);
+	        for ( Private_Message__c n : database.query(queryString) ){
+    	        MessageList.add(new messageWrapper(n));
+        	}
+		}
+		MessageList.sort();
         return MessageList;
     }
 
@@ -394,15 +495,15 @@ system.debug('selectFilterBy action topicId='+topicId);
   
     private void addMedicalFacilityUsers() {
     	Logger.info('Treatment(addMedicalFacilityUsers): ' + treatment);
-    	  if (treatment == null) setTreatment(treatmentId);
+    	if (treatment == null) setTreatment(treatmentId);
         if (treatment.Destination_Facility__c != null) {
-            User[] medFacilityUsers = AccessUtil.getMedicalFacilityUsers(treatment.Destination_Facility__c);
-            for (User u : medFacilityUsers) {
+            Medical_Facility_User__c[] medFacilityUsers = AccessUtility.getMedicalFacilityUsers(treatment.Destination_Facility__c);
+            for (Medical_Facility_User__c u : medFacilityUsers) {
                 Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
-                careTeamCandidate.User__c = u.Id;
+                careTeamCandidate.User__c = u.User__c;
                 careTeamCandidate.Role__c = 'PCC';
                 careTeamCandidate.Treatment__c = treatmentId;       
-                careTeamCandidate.Name = u.Name;
+                careTeamCandidate.Name = u.User__r.Name;
                 careTeamCandidates.add(careTeamCandidate);
             }
         }
@@ -410,13 +511,13 @@ system.debug('selectFilterBy action topicId='+topicId);
     }
      
     private void addPRMConfigUsers() {
-        List<User> prmUsers = AccessUtil.getFacilitatorOrgUsers();
-        for (User u : prmUsers ) {
+        List<Prm_User__c> prmUsers = AccessUtility.getFacilitatorOrgUsers();
+        for (Prm_User__c u : prmUsers ) {
             Care_Team_Member__c careTeamCandidate = new Care_Team_Member__c();
-            careTeamCandidate.User__c = u.Id;
+            careTeamCandidate.User__c = u.User__c;
             careTeamCandidate.Role__c = 'PCC';
             careTeamCandidate.Treatment__c = treatmentId;       
-            careTeamCandidate.Name = u.Name;
+            careTeamCandidate.Name = u.User__r.Name;
             careTeamCandidates.add(careTeamCandidate);
         }
     }
@@ -523,20 +624,26 @@ system.debug('selectFilterBy action topicId='+topicId);
     return options;
   }
   
-  private List<Care_Team_Member__c> careTeamMemberCache = null;
-  public List<Care_Team_Member__c> getCareTeamMemberList() {
-    if (treatmentId==null) return null;
+  	private Map<ID,Care_Team_Member__c> careTeamMemberMap = null;
+  	public List<Care_Team_Member__c> getCareTeamMemberList() {
+    	if (treatmentId==null) return null;
  system.debug('getCareTeamMemberList treatmentId='+treatmentId);
-    if (careTeamMemberCache == null) {
-        careTeamMemberCache = [Select Id, Name, User__c, Role__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name];
+    	if (careTeamMemberMap == null) {
+        	careTeamMemberMap = new Map<ID,Care_Team_Member__c>([Select Id, Name, User__c, Role__c from Care_Team_Member__c where Treatment__c =:treatmentId order by Name]);
  system.debug('userInfo.getUserId()='+userInfo.getUserId());
- system.debug('careTeamMemberCache='+careTeamMemberCache);
-        for (Care_Team_Member__c m : careTeamMemberCache) {
-            if (m.User__c == userInfo.getUserId() || (currentUserId!=null && m.User__c == currentUserId)) {
-                thisUserCareTeamId = m.Id;
-            }
-        }
-    }
-    return careTeamMemberCache;
-  }
+ system.debug('careTeamMemberMap='+careTeamMemberMap.values());
+        	for (Care_Team_Member__c m : careTeamMemberMap.values()) {
+            	if (m.User__c == userInfo.getUserId() || (currentUserId!=null && m.User__c == currentUserId)) {
+                	thisUserCareTeamId = m.Id;
+            	}
+        	}
+    	}
+    	return careTeamMemberMap.values();
+  	}
+  
+  	private ID lookupCareTeamMemberUserId( ID careTeamMemberId ) {
+  		Care_Team_Member__c member = careTeamMemberMap.get(careTeamMemberId);
+  		return member==null?null:member.User__c;
+  	}
+  	
 }

@@ -121,6 +121,17 @@
         <type>Url</type>
     </fields>
     <fields>
+        <fullName>Notification_Recipients__c</fullName>
+        <description>List of User IDs, comma separated, who can receive Streaming API notifications of a new communication.</description>
+        <externalId>false</externalId>
+        <label>Notification Recipients</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Title__c</fullName>
         <externalId>false</externalId>
         <label>Title</label>

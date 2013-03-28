@@ -292,9 +292,8 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <displayFormat>{0}</displayFormat>
-        <label>PRM Config Name</label>
-        <type>AutoNumber</type>
+        <label>Name</label>
+        <type>Text</type>
     </nameField>
     <pluralLabel>PRM Config</pluralLabel>
     <searchLayouts/>

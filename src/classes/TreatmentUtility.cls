@@ -10,12 +10,16 @@ public with sharing class TreatmentUtility {
     	for (Treatment__c treatment : treatments ) {
         	treatment.Patient_Email__c = treatment.Patient_Email_Formula__c;
     		setDayAndWeekOfYear( treatment );
+    		if (treatment.Assigned_To__c == null) {
+    			treatment.Assigned_To__c = treatment.OwnerId;
+    		}
+    		treatment.Assigned_Timestamp__c = Datetime.now();
     	}
   	}
 
     public static void afterInsert (List<Treatment__c> treatments) {
 /*    	if (changeOwnershipRequests != null) {
-			AccessUtil.replaceTreatmentOwner( (List<Treatment__c>)Trigger.new, changeOwnershipRequests );
+			AccessUtility.replaceTreatmentOwner( (List<Treatment__c>)Trigger.new, changeOwnershipRequests );
     	}*/
     	updateCareTeamMembers( treatments, true );
         List<Topic__c> topicInserts = new List<Topic__c>();
@@ -44,6 +48,9 @@ public with sharing class TreatmentUtility {
            	treatment.Approval_State__c = PickListDefines.ApprovalState.AwaitingApproval;
         }
         Treatment__c origTreatment = oldTreatmentMap.get(treatment.id);
+        if (origTreatment.Assigned_To__c != treatment.Assigned_To__c ) {
+        	treatment.Assigned_Timestamp__c = Datetime.now();
+        }
         if (origTreatment.Approval_State__c != PickListDefines.ApprovalState.Approved &&
         	treatment.Approval_State__c == PickListDefines.ApprovalState.Approved) {
         		treatment.Approval_Date__c = Date.today();
@@ -210,7 +217,7 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
                         Preferred_Form_of_Contact__c, 
                         Preferred_Travel_Date_From__c,
                         Preferred_Travel_Date_To__c,
-                        Procedure__c, 
+                        Procedure_Subcategory__c, 
                         Procedure_Category__c,
                         Procedure_Date__c,
                         Response_SLA__c, 
@@ -251,7 +258,7 @@ system.debug('afterUpdate; saved specifiers='+taskSpecifiers);
                         Preferred_Form_of_Contact__c, 
                         Preferred_Travel_Date_From__c,
                         Preferred_Travel_Date_To__c,*/
-                        Procedure__c, 
+                        Procedure_Subcategory__c, 
                         /* Procedure_Category__c,
                         Procedure_Date__c,
                         Response_SLA__c, 
@@ -309,7 +316,7 @@ system.debug('qry='+qry);
 	
 	public static void updateSharingForTreatmentRelated( Set<ID> treatmentIds ) {
 		Treatment__c[] treatments = [SELECT Id, Patient__c, Travel__c, Destination_Facility__c,
-			Destination_Facility__r.Public_Group__c,
+			Destination_Facility__r.Name,
 			(SELECT User__c, User__r.UserType, Treatment__c FROM Care_Team_Members__r),
 			(SELECT UserOrGroupId,ParentId FROM Shares) 
 			FROM Treatment__c where id in :treatmentIds];
@@ -326,13 +333,12 @@ system.debug('qry='+qry);
 			treatmentShares.addAll(treatment.Shares);
 		}
 system.debug('Existing treatment shares='+treatmentShares);
-		Map<ID, AccessUtil.UsersAndGroups> treatmentUsersGroupsMap = AccessUtil.getCareTeamUsersOrGroups( treatments );
+		Map<ID, AccessUtility.UsersAndGroups> treatmentUsersGroupsMap = AccessUtility.getCareTeamUsersOrGroups( treatments );
 system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
 		
-		AccessUtil.updateSharing( 'Treatment__Share', Schema.Treatment__Share.RowCause.Care_Team__c, 
-			treatmentShares, treatmentUsersGroupsMap );
+		AccessUtility.updateSharing( 'Treatment__Share', treatmentShares, treatmentUsersGroupsMap );
 			
-		Map<ID, AccessUtil.UsersAndGroups> travelUsersGroupsMap = AccessUtil.getParentUsersAndGroups( travelToTreatmentMap, treatmentUsersGroupsMap); 
+		Map<ID, AccessUtility.UsersAndGroups> travelUsersGroupsMap = AccessUtility.getParentUsersAndGroups( travelToTreatmentMap, treatmentUsersGroupsMap); 
 
 		Travel__c[] travels = [select id, 
 			(SELECT UserOrGroupId,ParentId FROM Shares)
@@ -341,10 +347,9 @@ system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
 		for (Travel__c travel : travels) {
 			travelShares.addAll(travel.Shares);
 		}
-		AccessUtil.updateSharing( 'Travel__Share', Schema.Travel__Share.RowCause.Care_Team__c, 
-			travelShares, travelUsersGroupsMap );
+		AccessUtility.updateSharing( 'Travel__Share', travelShares, travelUsersGroupsMap );
 			
-		Map<ID, AccessUtil.UsersAndGroups> patientUsersGroupsMap = AccessUtil.getParentUsersAndGroups( patientToTreatmentMap, treatmentUsersGroupsMap); 
+		Map<ID, AccessUtility.UsersAndGroups> patientUsersGroupsMap = AccessUtility.getParentUsersAndGroups( patientToTreatmentMap, treatmentUsersGroupsMap); 
 
 		Patient__c[] patients = [select id, 
 			(SELECT UserOrGroupId,ParentId FROM Shares)
@@ -353,8 +358,7 @@ system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
 		for (Patient__c patient : patients) {
 			patientShares.addAll(patient.Shares);
 		}
-		AccessUtil.updateSharing( 'Patient__Share', Schema.Patient__Share.RowCause.Care_Team__c, 
-			patientShares, patientUsersGroupsMap );
+		AccessUtility.updateSharing( 'Patient__Share', patientShares, patientUsersGroupsMap );
 			
 		Survey_Header__c[] surveyHeaders = [SELECT Id, Patient__c, 
 			(SELECT UserOrGroupId,RowCause,ParentId,Id,AccessLevel FROM Shares) 
@@ -365,9 +369,8 @@ system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
 			surveyHeaderShares.addAll(header.Shares);
 			headerToPatientMap.put(header.id, header.Patient__c);
 		}
-		Map<ID, AccessUtil.UsersAndGroups> headerUsersGroupsMap = AccessUtil.getParentUsersAndGroups( headerToPatientMap, patientUsersGroupsMap); 
-		AccessUtil.updateSharing( 'Survey_Header__Share', Schema.Survey_Header__Share.RowCause.Care_Team__c, 
-			surveyHeaderShares, headerUsersGroupsMap );
+		Map<ID, AccessUtility.UsersAndGroups> headerUsersGroupsMap = AccessUtility.getParentUsersAndGroups( headerToPatientMap, patientUsersGroupsMap); 
+		AccessUtility.updateSharing( 'Survey_Header__Share', surveyHeaderShares, headerUsersGroupsMap );
 	}
 
 	private static void setDayAndWeekOfYear( Treatment__c treatment ) {
@@ -392,5 +395,6 @@ system.debug('treatmentUsersMap='+treatmentUsersGroupsMap);
     		}
     	}
     }*/
+	
 	
 }

@@ -152,7 +152,7 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Procedure__c</field>
+            <field>Obsolete_Procedure__c</field>
             <table>Treatment__c</table>
         </columns>
         <columns>

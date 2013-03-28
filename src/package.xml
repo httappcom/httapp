@@ -13,7 +13,22 @@
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
+        <members>AttachmentTrigger</members>
+        <members>CareTeamMemberTrigger</members>
+        <members>MedicalFacility</members>
+        <members>PatientTrigger</members>
+        <members>SurveyHeader</members>
+        <members>TaskSpecifierTrigger</members>
+        <members>TopicTrigger</members>
+        <members>TravelTrigger</members>
+        <members>TreatmentQuoteTrigger</members>
+        <members>TreatmentTrigger</members>
+        <members>UserTrigger</members>
+        <members>commTrigger</members>
+        <members>medicalFacilityUserTrigger</members>
+        <members>medicalProfessional</members>
+        <members>prmConfig</members>
+        <members>prmUserTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
@@ -44,10 +59,12 @@
         <members>Default_User_Indicator_Field__c</members>
         <members>External_Contact__c</members>
         <members>Hotel__c</members>
+        <members>Insurance_Network_User__c</members>
         <members>Insurance_Network__c</members>
         <members>Knowledge_Base__c</members>
         <members>Med_Facility_Email_Template__c</members>
         <members>Med_Facility_Med_Profile_L__c</members>
+        <members>Medical_Facility_User__c</members>
         <members>Medical_Facility__c</members>
         <members>Medical_Professional__c</members>
         <members>Medical_Record__c</members>
@@ -55,10 +72,13 @@
         <members>PRM_Config__c</members>
         <members>PRM_Email_Template__c</members>
         <members>PRM_Medical_Profile_Link__c</members>
+        <members>PRM_User__c</members>
         <members>Partner__c</members>
         <members>Patient_Lead__c</members>
         <members>Patient__c</members>
         <members>PortalLinks__c</members>
+        <members>Private_Message_Comment__c</members>
+        <members>Private_Message__c</members>
         <members>Procedure__c</members>
         <members>Referral_Source__c</members>
         <members>S3_Credentials__c</members>
@@ -155,7 +175,9 @@
         <name>EmailTemplate</name>
     </types>
     <types>
+        <members>Alerts</members>
         <members>NueHealth My Tasks</members>
+        <members>NueHealth Recent Activity</members>
         <members>Reports</members>
         <name>HomePageComponent</name>
     </types>
@@ -185,6 +207,8 @@
         <members>PRM_User__c-PRM User Layout</members>
         <members>Patient_Lead__c-Patient Lead Layout</members>
         <members>Patient__c-Patient Layout</members>
+        <members>Private_Message_Comment__c-Private Message Comment Layout</members>
+        <members>Private_Message__c-Private Message Layout</members>
         <members>Procedure__c-Procedure Layout</members>
         <members>Referral_Source__c-Referral Source Layout</members>
         <members>Server_Log__c-Server Log Layout</members>

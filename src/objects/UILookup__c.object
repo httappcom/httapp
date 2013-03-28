@@ -38,11 +38,44 @@
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
     <fields>
+        <fullName>Comment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Private Message Comment</label>
+        <referenceTo>Private_Message_Comment__c</referenceTo>
+        <relationshipLabel>UILookups</relationshipLabel>
+        <relationshipName>UILookups</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Communication__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Communication</label>
+        <referenceTo>Communication__c</referenceTo>
+        <relationshipLabel>UILookups</relationshipLabel>
+        <relationshipName>UILookups</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Patient__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
         <label>Patient</label>
         <referenceTo>Patient__c</referenceTo>
+        <relationshipLabel>UILookups</relationshipLabel>
+        <relationshipName>UILookups</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Private_Message__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Private Message</label>
+        <referenceTo>Private_Message__c</referenceTo>
         <relationshipLabel>UILookups</relationshipLabel>
         <relationshipName>UILookups</relationshipName>
         <required>false</required>
@@ -58,6 +91,13 @@
         <relationshipName>UILookups</relationshipName>
         <required>false</required>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Timestamp__c</fullName>
+        <externalId>false</externalId>
+        <label>Timestamp</label>
+        <required>false</required>
+        <type>DateTime</type>
     </fields>
     <fields>
         <fullName>Treatment__c</fullName>

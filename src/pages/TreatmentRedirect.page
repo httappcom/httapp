@@ -1,0 +1,2 @@
+<apex:page standardController="Treatment__c" extensions="TreatmentRedirectController" action="load">
+</apex:page>

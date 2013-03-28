@@ -222,7 +222,7 @@
                         <apex:column >
                             <apex:facet name="header">Treatment</apex:facet>
                             <apex:outputPanel ></apex:outputPanel>
-	                        <a rel="#treatment{!t.treatment.id}" href="javascript:{}"><apex:outputText value="{!t.treatment.Procedure__c}"/></a> 
+	                        <a rel="#treatment{!t.treatment.id}" href="javascript:{}"><apex:outputText value="{!t.treatment.Procedure_Subcategory__c}"/></a> 
     	                    <div class="overlayStyle" id="treatment{!t.treatment.id}">
        			                	<apex:pageBlock title="{!t.treatment.Name}">
 								        <apex:pageBlockSection showHeader="true" title="" columns="1" collapsible="false">
@@ -232,7 +232,7 @@
 							    	        </apex:pageBlockSectionItem>
 								            <apex:pageBlockSectionItem >
                									<apex:outputLabel value="Procedure" />
-               									<apex:outputField value="{!t.treatment.Procedure__c}"/>
+               									<apex:outputField value="{!t.treatment.Procedure_Subcategory__c}"/>
 							    	        </apex:pageBlockSectionItem>
 								            <apex:pageBlockSectionItem >
                									<apex:outputLabel value="Procedure Date" />

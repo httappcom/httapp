@@ -11,7 +11,7 @@
         <visible>false</visible>
     </applicationVisibilities>
     <classAccesses>
-        <apexClass>AccessUtil</apexClass>
+        <apexClass>AccessUtility</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -59,6 +59,10 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>GroupMemberUtil</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>Logger</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -95,11 +99,11 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>NueException</apexClass>
+        <apexClass>NotificationController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
-        <apexClass>PRMConfigUtil</apexClass>
+        <apexClass>NueException</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
@@ -135,6 +139,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>PrivateMessageUtil</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ProviderPortalController</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -149,6 +157,10 @@
     <classAccesses>
         <apexClass>QuoteUtility</apexClass>
         <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>RecentActivityController</apexClass>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>RenderFileController</apexClass>
@@ -207,6 +219,10 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TreatmentRedirectController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>TreatmentTests</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -260,7 +276,7 @@
     </classAccesses>
     <classAccesses>
         <apexClass>patientPortalController</apexClass>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>surveyGizmoUtil</apexClass>
@@ -373,6 +389,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Communication__c.Notification_Recipients__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Communication__c.Title__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -428,6 +449,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Insurance_Network_User__c.Insurance_Contact__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Insurance_Network_User__c.Insurance_Network__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Insurance_Network__c.Public_Group__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -455,6 +486,21 @@
         <editable>false</editable>
         <field>Med_Facility_Med_Profile_L__c.Survey_Link__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Medical_Facility_User__c.Medical_Facility__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Medical_Facility_User__c.User_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Medical_Facility_User__c.User__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -893,6 +939,21 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>PRM_User__c.PRM_Config__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PRM_User__c.User_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>PRM_User__c.User__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Partner__c.Preferred_Medical_Facility__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -1324,6 +1385,41 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Patient__c.hashid__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Private_Message_Comment__c.Body__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Private_Message_Comment__c.Private_Message__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Private_Message_Comment__c.Recipient__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Private_Message__c.Body__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Private_Message__c.Parent__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Private_Message__c.Recipient__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Private_Message__c.Sender__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -1813,8 +1909,13 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Assigned_Timestamp__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.Assigned_To__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1953,6 +2054,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Treatment__c.Obsolete_Procedure__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Treatment__c.On_Site_Recovery_Period__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -2033,12 +2139,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment__c.Procedure_Treatment_Type__c</field>
+        <field>Treatment__c.Procedure_Subcategory__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Treatment__c.Procedure__c</field>
+        <field>Treatment__c.Procedure_Treatment_Type__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -2153,13 +2259,33 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UILookup__c.Comment__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UILookup__c.Communication__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UILookup__c.Patient__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UILookup__c.Private_Message__c</field>
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>UILookup__c.Referral_Source__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UILookup__c.Timestamp__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -2220,6 +2346,9 @@
         <layout>Hotel__c-Hotel Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Insurance_Network_User__c-Insurance Network User Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Insurance_Network__c-Insurance Network Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -2230,6 +2359,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Med_Facility_Med_Profile_L__c-Med Facility Med Profile Link Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Medical_Facility_User__c-Medical Facility User Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Medical_Facility__c-Medical Facility Layout</layout>
@@ -2250,10 +2382,19 @@
         <layout>PRM_Medical_Profile_Link__c-PRM Medical Profile Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>PRM_User__c-PRM User Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Patient_Lead__c-Patient Lead Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Patient__c-Patient Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Private_Message_Comment__c-Private Message Comment Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Private_Message__c-Private Message Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Procedure__c-Procedure Layout</layout>
@@ -2351,6 +2492,15 @@
         <allowEdit>false</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
+        <object>Insurance_Network_User__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Insurance_Network__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
@@ -2379,6 +2529,15 @@
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Med_Facility_Med_Profile_L__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Medical_Facility_User__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -2439,6 +2598,15 @@
         <allowCreate>false</allowCreate>
         <allowDelete>false</allowDelete>
         <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>PRM_User__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
         <allowRead>false</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Partner__c</object>
@@ -2460,6 +2628,24 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>false</modifyAllRecords>
         <object>Patient__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Private_Message_Comment__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>false</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Private_Message__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -2663,11 +2849,19 @@
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
+        <apexPage>RecentActivity</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
         <apexPage>RenderFile</apexPage>
         <enabled>true</enabled>
     </pageAccesses>
     <pageAccesses>
         <apexPage>Request_Quote_Thank_You</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>SidebarAlerts</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
@@ -2695,7 +2889,7 @@
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>
-        <apexPage>Test_Page_for_Email_Templates</apexPage>
+        <apexPage>TreatmentRedirect</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
     <pageAccesses>

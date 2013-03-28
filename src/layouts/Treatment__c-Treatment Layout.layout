@@ -187,6 +187,14 @@
                 <behavior>Edit</behavior>
                 <field>Assigned_To__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Assigned_Timestamp__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Procedure_Subcategory__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -296,7 +304,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Procedure__c</field>
+                <field>Obsolete_Procedure__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -358,7 +366,7 @@
         <fields>Treatment_Name__c</fields>
         <fields>Procedure_Date__c</fields>
         <fields>Procedure_Category__c</fields>
-        <fields>Procedure__c</fields>
+        <fields>Obsolete_Procedure__c</fields>
     </miniLayout>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>

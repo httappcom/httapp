@@ -14,7 +14,9 @@
     </actionOverrides>
     <actionOverrides>
         <actionName>Edit</actionName>
-        <type>Default</type>
+        <content>Patient</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
     </actionOverrides>
     <actionOverrides>
         <actionName>List</actionName>
@@ -887,6 +889,7 @@ YEAR(TODAY())-YEAR(Date_of_Birth__c),
         <columns>Email__c</columns>
         <columns>NAME</columns>
         <columns>CREATED_DATE</columns>
+        <columns>External_ID__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

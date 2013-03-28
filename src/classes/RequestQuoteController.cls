@@ -53,7 +53,7 @@ public without sharing class RequestQuoteController
           'referring_provider_fax__c' => 'treatment_referring_provider_fax__c',
           'referring_provider_npi__c' => 'treatment_referring_provider_npi__c',
           'procedure_category__c' => 'treatment_procedure_category__c',
-          'procedure__c' => 'treatment_procedure__c',
+          'procedure_subcategory__c' => 'treatment_procedure__c',
           'preferred_destination__c' => 'treatment_preferred_destination__c',
           'lead_entry__c' => 'treatment_lead_entry__c'          
         };

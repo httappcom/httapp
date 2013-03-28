@@ -53,6 +53,10 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <relatedList>Insurance_Network_User__c.Insurance_Network__c</relatedList>
+    </relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
         <relatedList>Patient__c.Insurance_Network__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

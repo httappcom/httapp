@@ -169,7 +169,7 @@ Stage or Sub Stage
   			Treatment__r.Insurance_Network_Contact__r.Name,
   			Treatment__r.Procedure_Date__c,
   			Treatment__r.Procedure_Category__c,
-  			Treatment__r.Procedure__c,
+  			Treatment__r.Procedure_Subcategory__c,
   			Treatment__r.Approval_State__c,
   			Treatment__r.Stage__c,
   			Treatment__r.Sub_Stage__c
