@@ -26,13 +26,13 @@ public with sharing class PipelineController {
   	public String PCC {get; set; }
     public Integer numberOfCloses {get; set; }
     public Decimal sumOfClosedValue {get; set; }
-    public Integer avgDaysToClose {get; set; }
+    public Decimal avgDaysToClose {get; set; }
     public closesData(AggregateResult ar)
     {
     	PCC = (String)ar.get('PCC');
     	numberOfCloses = (Integer)ar.get('numberOfCloses');
     	sumOfClosedValue = (Decimal)ar.get('sumOfClosedValue');
-    	avgDaysToClose = (Integer)ar.get('avgDaysToClose');
+    	avgDaysToClose = (Decimal)ar.get('avgDaysToClose');
     }
   }
   public PageReference toggleAllPCCs()

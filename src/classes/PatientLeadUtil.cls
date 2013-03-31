@@ -19,14 +19,17 @@ public without sharing class PatientLeadUtil {
         		externalIdCandidates.add(patientLead.Phone__c);
         	}
       	}
-      	String pQry = 'select id,External_Id__c from Patient__c where ';
-      	String delim = '';
-      	for (String x : externalIdCandidates) {
-      		pQry += delim + 'External_Id__c like \''+String.escapeSingleQuotes(x)+'%\'';
-	      	delim = ' OR ';
-      	}
+      	Patient__c[] existingPatients = new List<Patient__c>();
+      	if (externalIdCandidates.size()>0) {
+	      	String pQry = 'select id,External_Id__c from Patient__c where ';
+    	  	String delim = '';
+      		for (String x : externalIdCandidates) {
+      			pQry += delim + 'External_Id__c like \''+String.escapeSingleQuotes(x)+'%\'';
+	      		delim = ' OR ';
+      		}
   system.debug('pQry='+pQry);
-      	Patient__c[] existingPatients = Database.query(pQry);
+	      	existingPatients = Database.query(pQry);
+      	}
       	Logger.info('existingPatients: ' + existingPatients );
       	Set<String> existingExternalIds = new Set<String>();
       	for (Patient__c p: existingPatients) {

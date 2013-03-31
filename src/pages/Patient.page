@@ -432,7 +432,7 @@
            </apex:pageblocksectionitem>
             <apex:pageblocksectionitem >
             	<apex:outputLabel value="Patient Id"/>
-            	<apex:inputText id="PatientId" value="{!patient.External_ID__c}"/>
+            	<apex:inputField id="PatientId" value="{!patient.External_ID__c}" required="true"/>
             </apex:pageblocksectionitem>
         </apex:pageblocksection>
         <apex:outputPanel rendered="{!!ISNULL(patient.id)}">
